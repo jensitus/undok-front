@@ -8,7 +8,9 @@
         <input type="text" formControlName="name" class="form-control"
                [ngClass]="{ 'is-invalid': submitted && f.name.errors }"/>
         <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-          <div *ngIf="f.name.errors.required">First Name is required</div>
+          <div *ngIf="f.name.errors.required">Name is required</div>
+          <div *ngIf="f.name.errors.minlength">God damn, that is way too short</div>
+          <div *ngIf="f.name.errors.maxlength">God damn, that is way too long</div>
         </div>
       </div>
       <div class="form-group">
@@ -16,7 +18,8 @@
         <input type="text" formControlName="email" class="form-control"
                [ngClass]="{ 'is-invalid': submitted && f.email.errors }"/>
         <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-          <div *ngIf="f.email.errors.required">Username is required</div>
+          <div *ngIf="f.email.errors.required">Email is required</div>
+          <div *ngIf="f.email.errors.email">Well, this isn't really an emailaddress</div>
         </div>
       </div>
       <div class="form-group">
