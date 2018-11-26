@@ -25,7 +25,6 @@ export class AuthenticationService {
           password: '',
           auth_token: user.auth_token
         };
-        console.log('this.u:');
         console.log(this.u);
         localStorage.setItem('currentUser', JSON.stringify(this.u));
       }

@@ -16,12 +16,16 @@ import {JwtInterceptor} from './auth/helpers/jwt.interceptor';
 import {ErrorInterceptor} from './auth/helpers/error.interceptor';
 import {AuthGuard} from './auth/guards/auth.guard';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 
 const app_routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: '',     redirectTo: 'home', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent }
+  { path: 'register', component: RegisterComponent },
+  { path: 'forgot', component: ForgotPasswordComponent },
+  { path: 'reset/:token', component: ResetPasswordComponent }
 ];
 
 @NgModule({
@@ -31,7 +35,9 @@ const app_routes: Routes = [
     LoginComponent,
     RegisterComponent,
     AlertComponent,
-    NavbarComponent
+    NavbarComponent,
+    ResetPasswordComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,

@@ -23,4 +23,16 @@ export class UserService {
     return this.http.post(this.apiUrl + '/signup', user);
   }
 
+  forgotPassword(email: string) {
+    return this.http.post(this.apiUrl + '/password_resets', email);
+  }
+
+  checkTokenExpired(token: string, email: string) {
+    return this.http.get(`${this.apiUrl}/password_resets/${token}/edit?email=` + email);
+  }
+
+  resetPassword(user: User, token: string, email: string) {
+    return this.http.put(this.apiUrl + '/password_resets/' + token + '?email=' + email, user);
+  }
+
 }
