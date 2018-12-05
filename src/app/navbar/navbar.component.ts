@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {User} from '../auth/model/user';
 import {UserService} from '../auth/services/user.service';
@@ -9,6 +9,7 @@ import {UserService} from '../auth/services/user.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+
   currentUser: User;
 
   constructor(private userService: UserService) {
@@ -16,6 +17,9 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  toggle($event) {
   }
 
 }

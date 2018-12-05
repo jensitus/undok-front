@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../services/authentication.service';
@@ -11,6 +11,9 @@ import {first} from 'rxjs/operators';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
+  @Output() toggle = new EventEmitter<any>();
+
   loginForm: FormGroup;
   loading = false;
   submitted = false;
