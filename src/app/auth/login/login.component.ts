@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../services/authentication.service';
 import {AlertService} from '../services/alert.service';
 import {first} from 'rxjs/operators';
+import {CommonService} from '../../common/common.service';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,8 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private commenService: CommonService
   ) {
   }
 
@@ -61,6 +63,10 @@ export class LoginComponent implements OnInit {
         console.log(data);
         this.router.navigate([this.returnUrl]);
         this.loading = false;
+        this.commenService.setSubject(true);
+      }, error => {
+        console.log(error);
+        this.alertService.error(error, true);
       }
     );
   }
