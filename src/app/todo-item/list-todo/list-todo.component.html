@@ -1,6 +1,8 @@
+<app-navbar></app-navbar>
 <div class="container">
   <div *ngFor="let t of todos">
     {{t.id}}: <a href="todos/{{t.id}}">{{t.title}}</a>
   </div>
 </div>
+<app-add-todo></app-add-todo>
 
