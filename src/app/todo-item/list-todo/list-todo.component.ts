@@ -42,7 +42,7 @@ export class ListTodoComponent implements OnInit {
       },
       (error) => {
         this.error = error;
-        if (this.error === 'Missing token') {
+        if (this.error === 'Missing token' || 'Signature has expired') {
           this.alertService.error('you need to login', true);
           this.router.navigate(['/login']);
         } else {

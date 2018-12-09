@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from '../auth/model/user';
 import {UserService} from '../auth/services/user.service';
 import {first} from 'rxjs/operators';
@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-console.log(this.users);
+
   }
 
   loadUsers() {
