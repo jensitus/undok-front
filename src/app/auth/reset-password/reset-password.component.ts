@@ -40,14 +40,11 @@ export class ResetPasswordComponent implements OnInit {
 
     this.userService.checkTokenExpired(this.token, this.email).pipe(first()).subscribe((data) => {
         this.data = data;
-        console.log(data);
         if (this.data.message) {
-          console.log(this.data.message);
           this.alertService.error(this.data.message, true);
           this.router.navigate(['/login']);
         }
         if (this.data.status) {
-          console.log(this.data.status);
           if (this.data.status === 204) {
             this.alertService.error('session expired', true);
             this.router.navigate(['/forgot']);
