@@ -33,5 +33,4 @@ export class TodoService {
     return this.http.post(`${this.apiUrl}/todos/${todo_id}/items`, item);
   }
 
-
 }
