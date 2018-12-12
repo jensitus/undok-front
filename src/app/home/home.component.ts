@@ -3,6 +3,7 @@ import {User} from '../auth/model/user';
 import {UserService} from '../auth/services/user.service';
 import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {CommonService} from '../common/common.service';
 
 @Component({
   selector: 'app-home',
@@ -16,23 +17,15 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private commonService: CommonService
   ) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   ngOnInit() {
-    if (this.currentUser != null) {
-      console.log(this.currentUser);
-      this.userService.checkAuthToken(this.currentUser.auth_token).subscribe(data => {
-        console.log('current User Token valid zum Donner:');
-        console.log(data);
-      }, error => {
-        console.log('error zum donner');
-        console.log(error);
-        this.router.navigate(['/login']);
-      });
-    }
+      this.commonService.checkAuthToken();
+
     // this.loadAllUsers();
   }
 

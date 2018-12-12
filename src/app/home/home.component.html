@@ -2,7 +2,7 @@
 <div class="container" *ngIf="currentUser != null">
   <h1>Hi {{currentUser.name}}!</h1>
   <p>You're logged in with Angular 6!!</p>
-  <button class="btn btn-outline-danger mr-2" (click)="loadUsers()">load Users</button>
+  <button class="btn btn-outline-danger mr-2" (click)="loadAllUsers()">load Users</button>
   <a [routerLink]="['/todos']" class="btn btn-outline-success ml-2">todos</a>
   <div *ngIf="users.length > 0">
     <h3>All registered users:</h3>
