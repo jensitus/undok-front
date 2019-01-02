@@ -18,6 +18,11 @@ import {AuthGuard} from './auth/guards/auth.guard';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { ListTodoComponent } from './todo-item/list-todo/list-todo.component';
+import { ItemsComponent } from './todo-item/items/items.component';
+import { ShowTodoComponent } from './todo-item/show-todo/show-todo.component';
+import { AddTodoComponent } from './todo-item/add-todo/add-todo.component';
+import { EditTodoComponent } from './todo-item/edit-todo/edit-todo.component';
 
 const app_routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -25,7 +30,9 @@ const app_routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot', component: ForgotPasswordComponent },
-  { path: 'password_resets/:token/edit', component: ResetPasswordComponent }
+  { path: 'password_resets/:token/edit', component: ResetPasswordComponent },
+  { path: 'todos', component: ListTodoComponent },
+  { path: 'todos/:id', component: ShowTodoComponent }
 ];
 
 @NgModule({
@@ -37,7 +44,12 @@ const app_routes: Routes = [
     AlertComponent,
     NavbarComponent,
     ResetPasswordComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    ListTodoComponent,
+    ItemsComponent,
+    ShowTodoComponent,
+    AddTodoComponent,
+    EditTodoComponent
   ],
   imports: [
     BrowserModule,

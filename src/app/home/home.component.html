@@ -2,13 +2,17 @@
 <div class="container" *ngIf="currentUser != null">
   <h1>Hi {{currentUser.name}}!</h1>
   <p>You're logged in with Angular 6!!</p>
-  <h3>All registered users:</h3>
-  <ul>
-    <li *ngFor="let user of users">
-      {{user.name}} ({{user.email}})
-      - <!--<a (click)="deleteUser(user.id)" class="text-danger">Delete</a> -->
-    </li>
-  </ul>
+  <button class="btn btn-outline-danger mr-2" (click)="loadAllUsers()">load Users</button>
+  <a [routerLink]="['/todos']" class="btn btn-outline-success ml-2">todos</a>
+  <div *ngIf="users.length > 0">
+    <h3>All registered users:</h3>
+    <ul>
+      <li *ngFor="let user of users">
+        {{user.name}} ({{user.email}})
+        - <!--<a (click)="deleteUser(user.id)" class="text-danger">Delete</a> -->
+      </li>
+    </ul>
+  </div>
   <p><a [routerLink]="['/login']">Logout</a></p>
 </div>
 <div class="container" *ngIf="currentUser == null">
