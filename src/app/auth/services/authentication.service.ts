@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {User} from '../model/user';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  apiUrl = 'http://localhost:3000';
+  apiUrl = environment.api_url;
   u: User;
 
   constructor(private http: HttpClient) { }
