@@ -3,13 +3,14 @@ import {HttpClient} from '@angular/common/http';
 import {Todo} from '../model/todo';
 import {Item} from '../model/item';
 import {User} from '../../auth/model/user';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
 
-  apiUrl = 'http://localhost:3000';
+  apiUrl = environment.api_url;
 
   constructor(private http: HttpClient) {
   }
