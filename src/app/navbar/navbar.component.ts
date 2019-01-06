@@ -13,6 +13,7 @@ export class NavbarComponent implements OnInit {
 
   currentUser: User;
   reload = false;
+  navbarOpen = false;
 
   constructor(private commonService: CommonService) {
   }
@@ -33,6 +34,5 @@ export class NavbarComponent implements OnInit {
   getCurrentUser() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
-
-
+  
 }
