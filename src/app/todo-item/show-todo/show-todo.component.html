@@ -1,12 +1,37 @@
 <app-navbar></app-navbar>
 <div class="container">
   <div class="row">
-    <div class="col-4">
+  </div>
+  <div class="row">
+    <div class="col-md-8">
       <div>
         <b>{{todo_title}}</b>
       </div>
+
       <div *ngFor="let i of items">
-        {{i.name}}
+        <div class="row">
+          <div class="col">
+            {{i.id}}
+          </div>
+          <div class="col">
+            <span *ngIf="i.done == false">
+              {{i.name}}
+            </span>
+            <span *ngIf="i.done == true">
+              <s>{{i.name}}</s>
+            </span>
+          </div>
+          <div class="col">
+            <small>{{i.done}}</small>
+          </div>
+          <div class="col">
+            <a (click)="deleteItem(i.id)"><i class="fa fa-trash" *ngIf="i.done == true"></i></a>
+          </div>
+          <div class="col">
+            <button class="btn btn-sm btn-outline-success" (click)="updateTodoItem(i.id)" [disabled]="loading">done
+            </button>
+          </div>
+        </div>
       </div>
       <div class="mt-5">
         <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
@@ -27,7 +52,7 @@
         </form>
       </div>
     </div>
-    <div class="col-4">
+    <div class="col-md-4">
       <div class="row">
         <div class="col">
           <form [formGroup]="addUserForm" (ngSubmit)="addUserToTodo()">
@@ -37,7 +62,7 @@
               </select>
             </div>
             <div class="form-group">
-              <button [disabled]="loading" class="btn btn-outline-warning">add user</button>
+              <button [disabled]="loading" class="btn btn-sm btn-outline-warning">add user</button>
             </div>
           </form>
         </div>
