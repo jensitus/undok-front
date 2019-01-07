@@ -47,6 +47,7 @@ export class ShowTodoComponent implements OnInit {
     this.todoService.getTodo(this.todo_id).subscribe(data => {
       this.todo = data;
       this.todo_title = this.todo.title;
+      this.alertService.success('here you can manage your business', true);
     }, error => {
       this.alertService.error(error);
     });
@@ -108,7 +109,11 @@ export class ShowTodoComponent implements OnInit {
       this.item.done = !this.item.done;
       console.log(this.item);
       this.todoService.updateTodoItem(this.todo_id, this.item.id, this.item).subscribe(updateSuccess => {
-        this.alertService.success('item successfully done', false);
+        if (this.item.done === true) {
+          this.alertService.success('item successfully done', false);
+        } else if (this.item.done === false) {
+          this.alertService.success('item is still open', false);
+        }
         this.getTodoItems();
       }, error => {
         this.alertService.error(error, false);
