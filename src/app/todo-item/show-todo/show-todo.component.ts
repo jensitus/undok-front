@@ -120,7 +120,15 @@ export class ShowTodoComponent implements OnInit {
   }
 
   deleteItem(item_id) {
-    console.log(item_id);
+    this.loading = true;
+    this.todoService.deleteTodoItem(this.todo_id, item_id).subscribe(data => {
+      this.alertService.success('item successfully deleted', true);
+      this.getTodoItems();
+      this.loading = false;
+    }, error => {
+      this.alertService.error(error, true);
+      this.loading = false;
+    });
   }
 
   private getTodoItems() {

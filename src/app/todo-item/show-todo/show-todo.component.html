@@ -4,33 +4,31 @@
   </div>
   <div class="row">
     <div class="col-md-8">
-      <div>
+      <div class="mb-4">
         <b>{{todo_title}}</b>
       </div>
 
-      <div *ngFor="let i of items">
-        <div class="row">
-          <div class="col">
-            {{i.id}}
-          </div>
+      <div *ngFor="let i of items" class="">
+        <div class="row itemlist">
           <div class="col">
             <span *ngIf="i.done == false">
-              {{i.name}}
+              <a (click)="updateTodoItem(i.id)">{{i.name}}</a>
             </span>
             <span *ngIf="i.done == true">
-              <s>{{i.name}}</s>
+              <a (click)="updateTodoItem(i.id)"><s>{{i.name}}</s></a>
             </span>
           </div>
           <div class="col">
-            <small>{{i.done}}</small>
+            <small *ngIf="i.done == false">open</small>
+            <small *ngIf="i.done == true">done</small>
           </div>
           <div class="col">
-            <a (click)="deleteItem(i.id)"><i class="fa fa-trash" *ngIf="i.done == true"></i></a>
+            <a (click)="deleteItem(i.id)" title="delete"><i class="fa fa-trash" *ngIf="i.done == true"></i></a>
           </div>
-          <div class="col">
+<!--          <div class="col">
             <button class="btn btn-sm btn-outline-success" (click)="updateTodoItem(i.id)" [disabled]="loading">done
             </button>
-          </div>
+          </div>-->
         </div>
       </div>
       <div class="mt-5">

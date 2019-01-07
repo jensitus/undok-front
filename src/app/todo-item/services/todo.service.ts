@@ -44,11 +44,15 @@ export class TodoService {
   }
 
   getTodoItem(todo_id, item_id) {
-    return this.http.get<Item>(this.apiUrl + '/todos/' + todo_id + '/items/' + item_id);
+    return this.http.get<Item>(`${this.apiUrl}/todos/${todo_id}/items/${item_id}`);
   }
 
   updateTodoItem(todo_id, item_id, item: Item) {
     return this.http.put(`${this.apiUrl}/todos/${todo_id}/items/${item_id}`, item);
+  }
+
+  deleteTodoItem(todo_id, item_id) {
+    return this.http.delete(this.apiUrl + '/todos/' + todo_id + '/items/' + item_id);
   }
 
 }
