@@ -101,6 +101,36 @@ export class ShowTodoComponent implements OnInit {
     });
   }
 
+  updateTodoItem(item_id) {
+    this.loading = true;
+    this.todoService.getTodoItem(this.todo_id, item_id).subscribe(data => {
+      this.item = data;
+      this.item.done = !this.item.done;
+      console.log(this.item);
+      this.todoService.updateTodoItem(this.todo_id, this.item.id, this.item).subscribe(updateSuccess => {
+        this.alertService.success('item successfully done', false);
+        this.getTodoItems();
+      }, error => {
+        this.alertService.error(error, false);
+      });
+      this.loading = false;
+    }, error => {
+      this.alertService.error(error, false);
+    });
+  }
+
+  deleteItem(item_id) {
+    this.loading = true;
+    this.todoService.deleteTodoItem(this.todo_id, item_id).subscribe(data => {
+      this.alertService.success('item successfully deleted', true);
+      this.getTodoItems();
+      this.loading = false;
+    }, error => {
+      this.alertService.error(error, true);
+      this.loading = false;
+    });
+  }
+
   private getTodoItems() {
     this.todoService.getTodoItems(this.todo_id).subscribe(data => {
       this.items = data;

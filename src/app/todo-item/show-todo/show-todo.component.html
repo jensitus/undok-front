@@ -1,12 +1,35 @@
 <app-navbar></app-navbar>
 <div class="container">
   <div class="row">
-    <div class="col-4">
-      <div>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="mb-4">
         <b>{{todo_title}}</b>
       </div>
-      <div *ngFor="let i of items">
-        {{i.name}}
+
+      <div *ngFor="let i of items" class="">
+        <div class="row itemlist">
+          <div class="col">
+            <span *ngIf="i.done == false">
+              <a (click)="updateTodoItem(i.id)">{{i.name}}</a>
+            </span>
+            <span *ngIf="i.done == true">
+              <a (click)="updateTodoItem(i.id)"><s>{{i.name}}</s></a>
+            </span>
+          </div>
+          <div class="col">
+            <small *ngIf="i.done == false">open</small>
+            <small *ngIf="i.done == true">done</small>
+          </div>
+          <div class="col">
+            <a (click)="deleteItem(i.id)" title="delete"><i class="fa fa-trash" *ngIf="i.done == true"></i></a>
+          </div>
+<!--          <div class="col">
+            <button class="btn btn-sm btn-outline-success" (click)="updateTodoItem(i.id)" [disabled]="loading">done
+            </button>
+          </div>-->
+        </div>
       </div>
       <div class="mt-5">
         <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
@@ -27,7 +50,7 @@
         </form>
       </div>
     </div>
-    <div class="col-4">
+    <div class="col-md-4">
       <div class="row">
         <div class="col">
           <form [formGroup]="addUserForm" (ngSubmit)="addUserToTodo()">
@@ -37,7 +60,7 @@
               </select>
             </div>
             <div class="form-group">
-              <button [disabled]="loading" class="btn btn-outline-warning">add user</button>
+              <button [disabled]="loading" class="btn btn-sm btn-outline-warning">add user</button>
             </div>
           </form>
         </div>

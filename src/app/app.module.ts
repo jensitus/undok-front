@@ -23,6 +23,7 @@ import { ItemsComponent } from './todo-item/items/items.component';
 import { ShowTodoComponent } from './todo-item/show-todo/show-todo.component';
 import { AddTodoComponent } from './todo-item/add-todo/add-todo.component';
 import { EditTodoComponent } from './todo-item/edit-todo/edit-todo.component';
+import {AngularFontAwesomeModule} from 'angular-font-awesome';
 
 const app_routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -55,7 +56,8 @@ const app_routes: Routes = [
     BrowserModule,
     RouterModule.forRoot(app_routes, { enableTracing: true }),
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFontAwesomeModule
   ],
   providers: [
     AuthGuard,
