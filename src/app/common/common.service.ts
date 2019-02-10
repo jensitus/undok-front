@@ -21,6 +21,7 @@ export class CommonService {
 
   public demoSubject: BehaviorSubject<any> = new BehaviorSubject(null);
   public todoSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
+  public diarySubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
 
   setSubject(value) {
     if (value) {
@@ -54,6 +55,14 @@ export class CommonService {
 
   private getCurrentUser() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  }
+
+  setDiarySubject(value) {
+    if (value) {
+      this.diarySubject.next(value);
+    } else {
+      this.diarySubject.next(null);
+    }
   }
 
 }

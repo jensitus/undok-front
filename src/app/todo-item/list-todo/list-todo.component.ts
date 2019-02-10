@@ -28,7 +28,6 @@ export class ListTodoComponent implements OnInit {
     this.commonService.todoSubject.subscribe(res => {
       this.reload = res;
       if (this.reload) {
-        console.log('THE NEW DONNER OR HIMMEL TODO');
         console.log(this.reload);
         this.getTodos();
       }
