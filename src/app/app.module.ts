@@ -24,6 +24,10 @@ import { ShowTodoComponent } from './todo-item/show-todo/show-todo.component';
 import { AddTodoComponent } from './todo-item/add-todo/add-todo.component';
 import { EditTodoComponent } from './todo-item/edit-todo/edit-todo.component';
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
+import { DiaryComponent } from './diary/diary/diary.component';
+import { DiaryListComponent } from './diary/diary-list/diary-list.component';
+import { AddDiaryComponent } from './diary/add-diary/add-diary.component';
+import { EditDiaryComponent } from './diary/edit-diary/edit-diary.component';
 
 const app_routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -33,7 +37,10 @@ const app_routes: Routes = [
   { path: 'forgot', component: ForgotPasswordComponent },
   { path: 'password_resets/:token/edit', component: ResetPasswordComponent },
   { path: 'todos', component: ListTodoComponent },
-  { path: 'todos/:id', component: ShowTodoComponent }
+  { path: 'todos/:id', component: ShowTodoComponent },
+  { path: 'diaries', component: DiaryListComponent },
+  { path: 'diaries/:id', component: DiaryComponent },
+  { path: 'diaries/:id/edit', component: EditDiaryComponent }
 ];
 
 @NgModule({
@@ -50,7 +57,11 @@ const app_routes: Routes = [
     ItemsComponent,
     ShowTodoComponent,
     AddTodoComponent,
-    EditTodoComponent
+    EditTodoComponent,
+    DiaryComponent,
+    DiaryListComponent,
+    AddDiaryComponent,
+    EditDiaryComponent
   ],
   imports: [
     BrowserModule,

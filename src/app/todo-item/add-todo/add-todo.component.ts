@@ -43,8 +43,6 @@ export class AddTodoComponent implements OnInit {
     }
     this.loading = true;
     this.todoService.createTodo(this.todoForm.value).subscribe(data => {
-      console.log('this.alertService.success();');
-      console.log(data);
       this.commonService.setNewTodoSubject(true);
       this.loading = false;
       this.todoForm.reset();
