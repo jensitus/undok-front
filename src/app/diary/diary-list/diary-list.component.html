@@ -1,10 +1,14 @@
 <app-navbar></app-navbar>
 <div class="container">
-  <div *ngFor="let d of diaries">
-    <div class="mt-2">
-      <div>{{d.title}}</div>
-      <div>{{d.body}}</div>
-      <div><a [routerLink]="['/diaries/', d.id]">{{d.id}}: link</a> </div>
+  <div class="row">
+    <div class="col-md-5">
+      <div *ngFor="let d of diaries">
+        <div class="mt-2">
+          <div>{{d.title}}</div>
+          <div>{{d.body}}</div>
+          <div><a [routerLink]="['/diaries/', d.id]">{{d.id}}: link</a></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
