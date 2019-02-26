@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../services/user.service';
 import {first} from 'rxjs/operators';
-import {AlertService} from '../services/alert.service';
+import {AlertService} from '../../common/alert/services/alert.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -73,12 +73,8 @@ export class ResetPasswordComponent implements OnInit {
     this.loading = true;
     this.userService.resetPassword(this.resetForm.value, this.token, this.email).pipe(first()).subscribe(
       data => {
-        console.log('data: ');
-        console.log(data);
         this.data = data;
         if (this.data.message) {
-          console.log('this.data.message');
-          console.log(this.data.message);
         }
         this.alertService.success('data', true);
         this.router.navigate(['/login']);

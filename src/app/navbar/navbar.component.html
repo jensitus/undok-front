@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
   <a class="navbar-brand" href="/">service - b . org</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -7,6 +7,7 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
+-->
 <!--
       <li class="nav-item active">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
@@ -30,12 +31,15 @@
         <a class="nav-link disabled" href="#">Disabled</a>
       </li>
 -->
+<!--
     </ul>
-    <!--<form [formGroup]="navbarForm" class="form-inline my-2 my-lg-0">
-      <input formControlName="search" class="form-control mr-sm-2" type="search" placeholder="Search"
-             aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>-->
+    -->
+<!--<form [formGroup]="navbarForm" class="form-inline my-2 my-lg-0">
+  <input formControlName="search" class="form-control mr-sm-2" type="search" placeholder="Search"
+         aria-label="Search">
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>-->
+<!--
     <span *ngIf="currentUser != null">
       <ul class="navbar-nav">
         <li class="nav-item mr-2">{{currentUser.name}}</li>
@@ -49,4 +53,19 @@
     </span>
   </div>
 </nav>
+-->
+<div class="nav">
+  <span class="brand">
+    <a [routerLink]="['/']"> service - b . org </a>
+  </span>
+  <span *ngIf="currentUser != null" class="nav-user-man">
+    {{currentUser.name}}
+    <button pButton label="Logout" icon="fa fa-sign-out" style="margin-left:.25em"></button>
+  </span>
+  <span *ngIf="currentUser == null" class="nav-user-man">
+    <a [routerLink]="['/login']">Login </a>
+    <a [routerLink]="['/register']"> Register</a>
+  </span>
+</div>
+
 <app-alert></app-alert>

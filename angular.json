@@ -24,11 +24,10 @@
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "/home/jensitus/workspace/service-b/service-front/node_modules/primeflex/primeflex.css",
               "/home/jensitus/workspace/service-b/service-front/node_modules/font-awesome/css/font-awesome.min.css"
             ],
             "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "/home/jensitus/workspace/service-b/service-front/node_modules/jquery/dist/jquery.min.js"
             ]
           },

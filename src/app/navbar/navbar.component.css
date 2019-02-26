@@ -1,0 +1,75 @@
+.backlink {
+  cursor: pointer;
+}
+
+a {
+  color: black;
+}
+
+.link {
+  cursor: pointer;
+}
+
+.logo {
+  height: 40px;
+}
+
+.bg-white {
+  background-color: #ffffff;
+}
+
+@media screen and (max-width: 768px) {
+  #bottom-nav {
+    display: block;
+    border-top: 1px solid;
+    border-color: #000000;
+  }
+
+  .top-nav-mobile {
+    display: block;
+  }
+
+  .top-nav-desk {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  #bottom-nav {
+    display: none;
+  }
+
+  .top-nav-mobile {
+    display: none;
+  }
+
+  .top-nav-desk {
+    display: block;;
+  }
+}
+
+.nav {
+  height: 3.5em;
+  line-height: 3.5em;
+  background-color: white;
+  border-bottom: 1px solid #ccc;
+}
+
+.nav-user-man {
+  float: right;
+  margin-right: 1em;
+}
+
+.nav a {
+  color: blue;
+}
+
+.brand {
+  margin-left: 1em;
+  font-weight: bolder;
+  font-size: large;
+}
+
+.brand a {
+  color: slategrey;
+}

@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -9,8 +9,8 @@ import {UserService} from './auth/services/user.service';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {AlertService} from './auth/services/alert.service';
-import { AlertComponent } from './auth/directives/alert/alert.component';
+import {AlertService} from './common/alert/services/alert.service';
+import { AlertComponent } from './common/alert/alert.component';
 import {AuthenticationService} from './auth/services/authentication.service';
 import {JwtInterceptor} from './auth/helpers/jwt.interceptor';
 import {ErrorInterceptor} from './auth/helpers/error.interceptor';
@@ -28,6 +28,17 @@ import { DiaryComponent } from './diary/diary/diary.component';
 import { DiaryListComponent } from './diary/diary-list/diary-list.component';
 import { AddDiaryComponent } from './diary/add-diary/add-diary.component';
 import { EditDiaryComponent } from './diary/edit-diary/edit-diary.component';
+import {MenubarModule} from 'primeng/menubar';
+import {ContextMenuModule} from 'primeng/contextmenu';
+import {ButtonModule} from 'primeng/button';
+import {DropdownModule} from 'primeng/dropdown';
+import {SplitButtonModule} from 'primeng/splitbutton';
+import {MenuModule} from 'primeng/menu';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {InputTextModule} from 'primeng/inputtext';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 const app_routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -65,6 +76,18 @@ const app_routes: Routes = [
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    MenubarModule,
+    ContextMenuModule,
+    ButtonModule,
+    SplitButtonModule,
+    MenuModule,
+    BrowserAnimationsModule,
+    InputTextModule,
+    DropdownModule,
+    MessagesModule,
+    MessageModule,
+    InputTextareaModule,
     RouterModule.forRoot(app_routes, { enableTracing: true }),
     HttpClientModule,
     ReactiveFormsModule,

@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {UserService} from '../services/user.service';
 import {first} from 'rxjs/operators';
-import {AlertService} from '../services/alert.service';
+import {AlertService} from '../../common/alert/services/alert.service';
 
 @Component({
   selector: 'app-forgot-password',
