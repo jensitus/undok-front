@@ -29,6 +29,7 @@ export class ShowTodoComponent implements OnInit {
   user_id: string;
   todo_users: User[];
   selectedUser: User;
+  data: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -96,7 +97,9 @@ export class ShowTodoComponent implements OnInit {
     this.user_id = this.addUserForm.value['selectedUser'].id;
     this.todoService.addUserToTodo(this.todo.id, this.user_id).subscribe(data => {
       this.getUserForTodo();
+      this.data = data;
       this.loading = false;
+      this.alertService.success(this.data.message);
     }, error => {
       this.alertService.error(error);
       this.loading = false;

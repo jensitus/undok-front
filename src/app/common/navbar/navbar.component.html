@@ -60,7 +60,7 @@
   </span>
   <span *ngIf="currentUser != null" class="nav-user-man">
     {{currentUser.name}}
-    <button pButton label="Logout" icon="fa fa-sign-out" style="margin-left:.25em"></button>
+    <!--<button pButton label="Logout" icon="fa fa-sign-out" style="margin-left:.25em"></button>-->
   </span>
   <span *ngIf="currentUser == null" class="nav-user-man">
     <a [routerLink]="['/login']">Login </a>
