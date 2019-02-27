@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DiaryService} from '../services/diary.service';
 import {Diary} from '../model/diary';
-import {AlertService} from '../../auth/services/alert.service';
+import {AlertService} from '../../common/alert/services/alert.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {first} from 'rxjs/operators';
 import {routerNgProbeToken} from '@angular/router/src/router_module';
@@ -46,6 +46,7 @@ export class EditDiaryComponent implements OnInit {
       };
       this.diaryForm.setValue(this.val);
     }, error => {
+      console.log('error: ', error);
       this.alertService.error(error);
     });
   }
@@ -56,9 +57,8 @@ export class EditDiaryComponent implements OnInit {
 
   onSubmit() {
     this.diaryService.updateDiary(this.diaryForm.value).pipe(first()).subscribe(data => {
-      console.log('this.diaryForm.value: ');
-      console.log(this.diaryForm.value);
-      console.log(this.diaryForm.value.id);
+      console.log(data);
+      this.alertService.success('Yes', true);
       this.router.navigate(['diaries/' + this.diaryForm.value.id]);
     }, error => {
       this.alertService.error(error);

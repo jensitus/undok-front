@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Todo} from '../model/todo';
 import {ActivatedRoute} from '@angular/router';
 import {TodoService} from '../services/todo.service';
-import {AlertService} from '../../auth/services/alert.service';
+import {AlertService} from '../../common/alert/services/alert.service';
 import {CommonService} from '../../common/common.service';
 
 @Component({

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {TodoService} from '../services/todo.service';
-import {AlertService} from '../../auth/services/alert.service';
+import {AlertService} from '../../common/alert/services/alert.service';
 import {Todo} from '../model/todo';
 import {Item} from '../model/item';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -28,6 +28,8 @@ export class ShowTodoComponent implements OnInit {
   users: User[];
   user_id: string;
   todo_users: User[];
+  selectedUser: User;
+  data: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -90,12 +92,14 @@ export class ShowTodoComponent implements OnInit {
     if (this.addUserForm.invalid) {
       return;
     }
-    console.log('this.assUserForm: ' + this.addUserForm.value['user_id']);
+    console.log('this.assUserForm: ' + this.addUserForm.value['selectedUser'].id);
     this.loading = true;
-    this.user_id = this.addUserForm.value['user_id'];
+    this.user_id = this.addUserForm.value['selectedUser'].id;
     this.todoService.addUserToTodo(this.todo.id, this.user_id).subscribe(data => {
       this.getUserForTodo();
+      this.data = data;
       this.loading = false;
+      this.alertService.success(this.data.message);
     }, error => {
       this.alertService.error(error);
       this.loading = false;
@@ -151,9 +155,9 @@ export class ShowTodoComponent implements OnInit {
   }
 
   private getAddUserForm() {
-    this.getUsers();
     this.addUserForm = this.formBuilder.group({
-      user_id: []
+      user_id: [],
+      selectedUser: this.selectedUser
     });
   }
 
@@ -171,6 +175,11 @@ export class ShowTodoComponent implements OnInit {
     }, error => {
       this.alertService.error(error);
     });
+  }
+
+  loadUser() {
+    console.log('loadUser()');
+    this.getUsers();
   }
 
 }

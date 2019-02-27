@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {UserService} from '../services/user.service';
-import {AlertService} from '../services/alert.service';
+import {AlertService} from '../../common/alert/services/alert.service';
 import {first} from 'rxjs/operators';
 
 @Component({
@@ -43,12 +43,12 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
+    // this.loading = true;
     this.userService.register(this.registerForm.value).pipe(first()).subscribe(
       data => {
         console.log(data);
         this.alertService.success('Registration successful', true);
-        this.loading = false;
+        // this.loading = false;
         this.router.navigate(['/login']);
       }, error => {
         this.alertService.error(error);

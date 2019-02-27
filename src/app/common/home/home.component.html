@@ -1,0 +1,34 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="p-grid">
+    <div class="p-col-12 p-md-4">
+      <div *ngIf="currentUser != null">
+        <h1>Hi {{currentUser.name}}!</h1>
+        <p>You're logged in with Angular 6!!</p>
+        <div class="p-grid">
+          <div class="p-col-6">
+            <button pButton class="ui-button-danger" (click)="loadAllUsers()" label="load Users"></button>
+          </div>
+          <div class="p-col-6">
+            <a [routerLink]="['/todos']" class="ui-button-success">todos</a>
+          </div>
+        </div>
+        <div *ngIf="users.length > 0">
+          <h3>All registered users:</h3>
+          <ul>
+            <li *ngFor="let user of users">
+              {{user.name}} ({{user.email}})
+              - <!--<a (click)="deleteUser(user.id)" class="text-danger">Delete</a> -->
+            </li>
+          </ul>
+        </div>
+        <p><a [routerLink]="['/login']">Logout</a></p>
+      </div>
+      <div *ngIf="currentUser == null">
+        <h3>Welcome to Service B</h3>
+        <p><a [routerLink]="['/login']">Login</a></p>
+        <p><a [routerLink]="['/register']">Register</a></p>
+      </div>
+    </div>
+  </div>
+</div>

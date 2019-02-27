@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {User} from '../auth/model/user';
-import {UserService} from '../auth/services/user.service';
-import {CommonService} from '../common/common.service';
+import {User} from '../../auth/model/user';
+import {UserService} from '../../auth/services/user.service';
+import {CommonService} from '../common.service';
+import {MenuItem} from 'primeng/api';
 
 @Component({
   selector: 'app-navbar',
@@ -14,6 +15,8 @@ export class NavbarComponent implements OnInit {
   currentUser: User;
   reload = false;
   navbarOpen = false;
+  items: MenuItem[];
+  links: MenuItem[];
 
   constructor(private commonService: CommonService) {
   }
@@ -21,9 +24,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.getCurrentUser();
     this.commonService.demoSubject.subscribe(res => {
-      console.log('demo_subject_nav_bar_comp: ');
-      console.log(res);
-      this.reload = res;
+      // this.reload = res;
     });
     if (this.reload === true) {
       console.log('RELOAD');
@@ -34,5 +35,5 @@ export class NavbarComponent implements OnInit {
   getCurrentUser() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
-  
+
 }

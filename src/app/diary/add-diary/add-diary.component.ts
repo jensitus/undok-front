@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {AlertService} from '../../auth/services/alert.service';
+import {AlertService} from '../../common/alert/services/alert.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CommonService} from '../../common/common.service';
 import {DiaryService} from '../services/diary.service';

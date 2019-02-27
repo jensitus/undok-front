@@ -1,8 +1,10 @@
 <app-navbar></app-navbar>
 <div class="container">
-  <div class="col-md-5">
-    <div>{{diary.title}}</div>
-    <div>{{diary.body}}</div>
-    <div><a [routerLink]="['/diaries/', diary.id, 'edit']">edit</a> </div>
+  <div class="p-grid">
+    <div class="p-col-12">
+      <div>{{diary_title}}</div>
+      <div>{{diary_body}}</div>
+      <div><a [routerLink]="['/diaries/', diary_id, 'edit']">edit</a></div>
+    </div>
   </div>
 </div>
