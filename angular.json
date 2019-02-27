@@ -25,7 +25,10 @@
             "styles": [
               "src/styles.css",
               "/home/jensitus/workspace/service-b/service-front/node_modules/primeflex/primeflex.css",
-              "/home/jensitus/workspace/service-b/service-front/node_modules/font-awesome/css/font-awesome.min.css"
+              "/home/jensitus/workspace/service-b/service-front/node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeng/resources/themes/nova-light/theme.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/primeng.min.css"
             ],
             "scripts": [
               "/home/jensitus/workspace/service-b/service-front/node_modules/jquery/dist/jquery.min.js"
