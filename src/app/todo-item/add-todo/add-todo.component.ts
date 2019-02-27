@@ -46,6 +46,7 @@ export class AddTodoComponent implements OnInit {
       this.commonService.setNewTodoSubject(true);
       this.loading = false;
       this.todoForm.reset();
+      this.alertService.success('have fun with your very new Todo!', true);
     }, error => {
       this.alertService.error(error);
     });
