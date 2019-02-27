@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from '../auth/model/user';
-import {UserService} from '../auth/services/user.service';
+import {User} from '../../auth/model/user';
+import {UserService} from '../../auth/services/user.service';
 import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {CommonService} from '../common/common.service';
+import {CommonService} from '../common.service';
 
 @Component({
   selector: 'app-home',

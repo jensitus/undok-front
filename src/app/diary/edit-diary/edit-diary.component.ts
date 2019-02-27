@@ -46,6 +46,7 @@ export class EditDiaryComponent implements OnInit {
       };
       this.diaryForm.setValue(this.val);
     }, error => {
+      console.log('error: ', error);
       this.alertService.error(error);
     });
   }
@@ -58,7 +59,7 @@ export class EditDiaryComponent implements OnInit {
     this.diaryService.updateDiary(this.diaryForm.value).pipe(first()).subscribe(data => {
       console.log(data);
       this.alertService.success('Yes', true);
-      // this.router.navigate(['diaries/' + this.diaryForm.value.id]);
+      this.router.navigate(['diaries/' + this.diaryForm.value.id]);
     }, error => {
       this.alertService.error(error);
     });

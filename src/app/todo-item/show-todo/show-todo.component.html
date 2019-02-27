@@ -1,11 +1,10 @@
 <app-navbar></app-navbar>
 <div class="container">
+  <div class="mb-2 mt-2">
+    <b>{{todo_title}}</b>
+  </div>
   <div class="p-grid">
     <div class="p-col-12 p-md-6">
-      <div class="mb-2 mt-2">
-        <b>{{todo_title}}</b>
-      </div>
-
       <div *ngFor="let i of items" class="">
         <div class="p-grid itemlist">
           <div class="p-col-4">
@@ -52,20 +51,20 @@
         </form>
       </div>
     </div>
-    <div class="p-col-12 p-md-6">
+    <div class="p-col-12 p-md-6 mt-2">
       <div class="p-grid">
-        <div class="p-col-4">
+        <div class="p-col-6">
           <form [formGroup]="addUserForm" (ngSubmit)="addUserToTodo()">
             <div class="ui-inputgroup">
               <p-dropdown [options]="users" [style]="{'width':'150px'}" formControlName="selectedUser"
-                          optionLabel="name" placeholder="Select a user"></p-dropdown>
+                          optionLabel="name" placeholder="Select a user" (onShow)="loadUser()"></p-dropdown>
             </div>
-            <div class="ui-inputgroup">
+            <div class="ui-inputgroup mt-1">
               <button pButton [disabled]="loading" class="ui-button-warning" label="add user"></button>
             </div>
           </form>
         </div>
-        <div class="p-col-4">
+        <div class="p-col-6">
           <div *ngFor="let u of todo_users">
             {{u.name}}
           </div>

@@ -152,7 +152,6 @@ export class ShowTodoComponent implements OnInit {
   }
 
   private getAddUserForm() {
-    this.getUsers();
     this.addUserForm = this.formBuilder.group({
       user_id: [],
       selectedUser: this.selectedUser
@@ -173,6 +172,11 @@ export class ShowTodoComponent implements OnInit {
     }, error => {
       this.alertService.error(error);
     });
+  }
+
+  loadUser() {
+    console.log('loadUser()');
+    this.getUsers();
   }
 
 }

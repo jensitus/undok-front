@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './common/home/home.component';
 import { RouterModule, Routes } from '@angular/router';
 import {UserService} from './auth/services/user.service';
 import { LoginComponent } from './auth/login/login.component';
@@ -15,7 +15,7 @@ import {AuthenticationService} from './auth/services/authentication.service';
 import {JwtInterceptor} from './auth/helpers/jwt.interceptor';
 import {ErrorInterceptor} from './auth/helpers/error.interceptor';
 import {AuthGuard} from './auth/guards/auth.guard';
-import { NavbarComponent } from './navbar/navbar.component';
+import { NavbarComponent } from './common/navbar/navbar.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ListTodoComponent } from './todo-item/list-todo/list-todo.component';
