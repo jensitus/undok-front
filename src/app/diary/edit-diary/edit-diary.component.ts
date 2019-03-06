@@ -46,7 +46,6 @@ export class EditDiaryComponent implements OnInit {
       };
       this.diaryForm.setValue(this.val);
     }, error => {
-      console.log('error: ', error);
       this.alertService.error(error);
     });
   }

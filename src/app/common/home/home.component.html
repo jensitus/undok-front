@@ -17,7 +17,9 @@
           <h3>All registered users:</h3>
           <ul>
             <li *ngFor="let user of users">
-              {{user.name}} ({{user.email}})
+              <a [routerLink]="['/users', user.id]">
+                {{user.name}} ({{user.email}})
+              </a>
               - <!--<a (click)="deleteUser(user.id)" class="text-danger">Delete</a> -->
             </li>
           </ul>

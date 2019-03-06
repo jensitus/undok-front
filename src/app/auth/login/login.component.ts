@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private alertService: AlertService,
-    private commenService: CommonService
+    private commonService: CommonService
   ) {
   }
 
@@ -59,13 +59,10 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.authenticationService.login(this.f.email.value, this.f.password.value).pipe(first()).subscribe(
       data => {
-        console.log('authenticationService:');
-        console.log(data);
         this.router.navigate([this.returnUrl]);
         this.loading = false;
-        this.commenService.setSubject(true);
+        this.commonService.setSubject(true);
       }, error => {
-        console.log(error);
         this.alertService.error(error, true);
       }
     );
