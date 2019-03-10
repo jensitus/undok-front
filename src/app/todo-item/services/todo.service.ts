@@ -55,4 +55,12 @@ export class TodoService {
     return this.http.delete(this.apiUrl + '/todos/' + todo_id + '/items/' + item_id);
   }
 
+  updateTodo(todo_id, todo: Todo) {
+    return this.http.put(`${this.apiUrl}/todos/${todo_id}`, todo);
+  }
+
+  deleteTodo(todo_id) {
+    return this.http.delete(`${this.apiUrl}/todos/${todo_id}`);
+  }
+
 }
