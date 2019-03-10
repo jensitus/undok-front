@@ -1,9 +1,32 @@
 <app-navbar></app-navbar>
 <div class="container">
-  <div *ngFor="let t of todos">
-    <div class="mt-1">
-      {{t.id}}: <a [routerLink]='["/todos/", t.id]'>{{t.title}}</a>
+  <div class="p-grid" class="mt-1">
+    <div class="p-col-12 p-md-6">
+      <div *ngFor="let t of todos">
+        <div class="p-grid">
+          <div class="p-col-6">
+            <span *ngIf="t.done == false">
+              {{t.id}}: <a [routerLink]='["/todos/", t.id]'>{{t.title}}</a>
+            </span>
+            <span *ngIf="t.done == true">
+              <s>{{t.id}}</s>: <s>{{t.title}}</s>
+            </span>
+          </div>
+          <div class="p-col-3">
+            <a (click)="updateTodo(t.id)"><i class="pi pi-check"></i></a>
+          </div>
+          <div class="p-col-3">
+            <span *ngIf="t.done == true">
+              <a (click)="deleteTodo(t.id)"><i class="pi pi-trash"></i></a>
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="mt-2 ml-2">
+    <img *ngIf="loading"
+         src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
   </div>
 </div>
 <app-add-todo></app-add-todo>
