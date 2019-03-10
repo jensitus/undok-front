@@ -55,17 +55,19 @@
 </nav>
 -->
 <div class="nav">
+  <div class="container">
   <span class="brand">
     <a [routerLink]="['/']"> service - b . org </a>
   </span>
-  <span *ngIf="currentUser != null" class="nav-user-man">
-    {{currentUser.name}}
-    <!--<button pButton label="Logout" icon="fa fa-sign-out" style="margin-left:.25em"></button>-->
+    <span *ngIf="currentUser != null" class="nav-user-man">
+    <a [routerLink]="['/users', currentUser.id]">{{currentUser.name}}</a>
+      <!--<button pButton label="Logout" icon="fa fa-sign-out" style="margin-left:.25em"></button>-->
   </span>
-  <span *ngIf="currentUser == null" class="nav-user-man">
+    <span *ngIf="currentUser == null" class="nav-user-man">
     <a [routerLink]="['/login']">Login </a>
     <a [routerLink]="['/register']"> Register</a>
   </span>
+  </div>
 </div>
 
 <app-alert></app-alert>

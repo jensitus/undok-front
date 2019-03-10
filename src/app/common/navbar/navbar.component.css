@@ -65,7 +65,7 @@ a {
 }
 
 .brand {
-  margin-left: 1em;
+  /* margin-left: 1em; */
   font-weight: bolder;
   font-size: large;
 }
