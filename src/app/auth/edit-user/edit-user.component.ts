@@ -4,6 +4,7 @@ import {UserService} from '../services/user.service';
 import {AlertService} from '../../common/alert/services/alert.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MessageService} from 'primeng/api';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-edit-user',
@@ -18,6 +19,9 @@ export class EditUserComponent implements OnInit {
   data: any;
   avatar: any;
   file: any;
+  submitted = false;
+  avatar_upload_url: string;
+  apiUrl = environment.api_url;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -53,6 +57,7 @@ export class EditUserComponent implements OnInit {
     }, error => {
       this.alertService.error(error);
     });
+    this.avatar_upload_url = this.apiUrl + '/users/' + this.user_id + '/updateavatar';
   }
 
   get f() {
