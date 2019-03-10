@@ -41,4 +41,10 @@ export class UserService {
     return this.http.post(this.apiUrl + '/users/check_auth_token', {token: token});
   }
 
+  uploadAvatar(avatar: any, user_id: number) {
+    const formData = new FormData();
+    formData.append('avatar', avatar)
+    return this.http.post(`${this.apiUrl}/users/${user_id}/updateavatar`, formData);
+  }
+
 }

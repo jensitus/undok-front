@@ -7,7 +7,7 @@
     <div class="p-col-12 p-md-6">
       <div *ngFor="let i of items" class="">
         <div class="p-grid itemlist">
-          <div class="p-col-4">
+          <div class="p-col-8">
             <span *ngIf="i.done == false">
               <a (click)="updateTodoItem(i.id)">{{i.name}}</a>
             </span>
@@ -15,11 +15,11 @@
               <a (click)="updateTodoItem(i.id)"><s>{{i.name}}</s></a>
             </span>
           </div>
-          <div class="p-col-4">
+          <div class="p-col-2">
             <small *ngIf="i.done == false">open</small>
             <small *ngIf="i.done == true">done</small>
           </div>
-          <div class="p-col-4">
+          <div class="p-col-2">
             <a (click)="deleteItem(i.id)" title="delete"><i class="fa fa-trash" *ngIf="i.done == true"></i></a>
           </div>
           <div>

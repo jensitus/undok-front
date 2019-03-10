@@ -67,3 +67,27 @@
 .ml-5 {
   margin-left: 5em;
 }
+
+/* * * * * * * * *
+* spacing padding
+* * * * * * * * */
+
+.p-1 {
+  padding: 1em;
+}
+
+.p-2 {
+  padding: 2em;
+}
+
+.p-3 {
+  padding: 3em;
+}
+
+.p-4 {
+  padding: 4em;
+}
+
+.p-5 {
+  padding: 5em;
+}

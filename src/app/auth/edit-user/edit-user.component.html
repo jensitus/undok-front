@@ -1,0 +1,28 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="p-grid">
+    <div class="p-col-12 p-md-8">
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <div class="ui-inputgroup mt-1">
+          <input pInputText type="text" formControlName="name" placeholder="name"
+                 [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+        </div>
+        <div class="ui-inputgroup mt-1">
+          <input pInputText type="email" formControlName="email" placeholder="email"
+                 [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+        </div>
+        <div class="ui-inputgroup mt-1">
+          <button pButton class="ui-button-danger" label="Zack"></button>
+        </div>
+      </form>
+    </div>
+    <div class="p-col-12 p-md-4">
+      <div class="ui-inputgroup mt-1">
+        <p-fileUpload name="avatar" accept="image/*" url="http://localhost:3000/users/29/updateavatar" maxFileSize="1000000"></p-fileUpload>
+      </div>
+    </div>
+  </div>
+</div>
+<!--
+url="http://localhost:3000/users/29/updateavatar"
+ -->
