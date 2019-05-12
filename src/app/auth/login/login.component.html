@@ -6,10 +6,10 @@
       <div class="ui-g-12 ui-md-4">
         <div class="ui-inputgroup">
           <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-          <input type="text" pInputText placeholder="Email" formControlName="email">
+          <input type="text" pInputText placeholder="username" formControlName="username">
         </div>
-        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-          <div *ngIf="f.email.errors.required"><small>email is required</small></div>
+        <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required"><small>username is required</small></div>
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
     </div>
     <div class="ui-g-12 ui-md-4">
       <div class="ui-inputgroup">
-        <p-button label="Login"></p-button>
+        <button pButton class="ui-button-success" label="Login"></button>
       </div>
       <div class="ui-inputgroup">
         <img *ngIf="loading"

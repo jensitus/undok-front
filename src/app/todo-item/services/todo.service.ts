@@ -16,15 +16,15 @@ export class TodoService {
   }
 
   createTodo(todo: Todo) {
-    return this.http.post(`${this.apiUrl}/todos`, todo);
+    return this.http.post(`${this.apiUrl}/todos/create`, todo);
   }
 
   getTodos() {
-    return this.http.get<Todo[]>(`${this.apiUrl}/todos`);
+    return this.http.get(`${this.apiUrl}/todos/`);
   }
 
   getTodo(todo_id) {
-    return this.http.get<Todo>(`${this.apiUrl}/todos/${todo_id}`);
+    return this.http.get(`${this.apiUrl}/todos/${todo_id}`);
   }
 
   getTodoItems(todo_id) {
@@ -35,8 +35,8 @@ export class TodoService {
     return this.http.post(`${this.apiUrl}/todos/${todo_id}/items`, item);
   }
 
-  addUserToTodo(id, user_id) {
-    return this.http.post(`${this.apiUrl}/todos/${id}/add_user`, {user_id: user_id});
+  addUserToTodo(todo_id, user_id) {
+    return this.http.post(`${this.apiUrl}/todos/${todo_id}/add_user`, {user_id: user_id});
   }
 
   getTodoUsers(todo_id) {

@@ -1,7 +1,10 @@
 <app-navbar></app-navbar>
 <div class="container">
   <div class="p-grid">
-    <div class="p-col-12 p-md-8">
+    <div class="p-col">
+      <img src="{{avatar}}" class="img-avatar">
+    </div>
+    <div class="p-col">
       <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
         <div class="ui-inputgroup mt-1">
           <input pInputText type="text" formControlName="name" placeholder="name"
@@ -16,7 +19,7 @@
         </div>
       </form>
     </div>
-    <div class="p-col-12 p-md-4">
+    <div class="p-col">
       <div class="ui-inputgroup mt-1">
         <p-fileUpload name="avatar" accept="image/*" url="{{avatar_upload_url}}" maxFileSize="1000000"></p-fileUpload>
       </div>

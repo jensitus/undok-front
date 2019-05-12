@@ -73,3 +73,7 @@ a {
 .brand a {
   color: slategrey;
 }
+
+.img-avatar {
+  width: 2.5em;
+}

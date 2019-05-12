@@ -60,12 +60,14 @@
     <a [routerLink]="['/']"> service - b . org </a>
   </span>
     <span *ngIf="currentUser != null" class="nav-user-man">
-    <a [routerLink]="['/users', currentUser.id]">{{currentUser.name}}</a>
-      <!--<button pButton label="Logout" icon="fa fa-sign-out" style="margin-left:.25em"></button>-->
+      <small><a [routerLink]="['/users', currentUser.id]">{{currentUser.username}} </a></small>
+       |
+      <small><a [routerLink]="['/login']"> logout</a></small>
   </span>
     <span *ngIf="currentUser == null" class="nav-user-man">
-    <a [routerLink]="['/login']">Login </a>
-    <a [routerLink]="['/register']"> Register</a>
+    <small><a [routerLink]="['/login']">Login </a></small>
+      |
+    <small><a [routerLink]="['/register']"> Register</a></small>
   </span>
   </div>
 </div>

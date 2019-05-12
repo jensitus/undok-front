@@ -43,6 +43,8 @@ import {FileUploadModule} from 'primeng/fileupload';
 import {UserComponent} from './auth/user/user.component';
 import {EditUserComponent} from './auth/edit-user/edit-user.component';
 import {MessageService} from 'primeng/api';
+import {SidebarModule} from 'primeng/sidebar';
+import {OrderModule} from 'ngx-order-pipe';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -84,6 +86,7 @@ const app_routes: Routes = [
   ],
   imports: [
     BrowserModule,
+    OrderModule,
     FormsModule,
     MenubarModule,
     ContextMenuModule,
@@ -97,6 +100,7 @@ const app_routes: Routes = [
     MessageModule,
     InputTextareaModule,
     FileUploadModule,
+    SidebarModule,
     RouterModule.forRoot(app_routes, {enableTracing: true}),
     HttpClientModule,
     ReactiveFormsModule,

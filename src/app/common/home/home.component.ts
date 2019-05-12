@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.commonService.checkAuthToken();
+      // this.commonService.checkAuthToken();
   }
 
   loadAllUsers() {

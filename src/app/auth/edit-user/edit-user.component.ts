@@ -43,6 +43,7 @@ export class EditUserComponent implements OnInit {
     });
     this.userService.getById(this.user_id).subscribe(data => {
       this.data = data;
+      console.log(this.data);
       if (this.data.avatar === null) {
         this.avatar = '';
       } else {

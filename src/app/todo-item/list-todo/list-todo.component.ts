@@ -27,20 +27,20 @@ export class ListTodoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.commonService.checkAuthToken();
     this.getTodos();
     this.getReloadFromCommenService();
   }
 
   private getTodos() {
-    this.todoService.getTodos().subscribe(
-      (data) => {
+    this.todoService.getTodos().subscribe((data) => {
         this.todos = data;
-      },
-      (error) => {
+        console.log('todos', this.todos);
+      }, (error) => {
         this.error = error;
         if (this.error === 'Missing token' || 'Signature has expired') {
           this.alertService.error('you need to login', true);
-          this.router.navigate(['/login']);
+          // this.router.navigate(['/login']);
         } else {
           this.alertService.error(error);
         }

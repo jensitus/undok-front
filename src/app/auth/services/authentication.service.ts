@@ -14,19 +14,19 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) { }
 
-  login(email: string, password: string) {
-    return this.http.post<any>(this.apiUrl + '/auth/login', { email: email.toLowerCase(), password: password }).pipe(map(user => {
+  login(username: string, password: string) {
+    return this.http.post<any>(this.apiUrl + '/auth/login', { username: username, password: password }).pipe(map(user => {
       // login successful if there's a jwt token in the response
-      if (user && user.auth_token) {
+      if (user && user.userDto.accessToken) {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         this.u = {
-          id: user.user.id,
-          name: user.user.name,
-          email: user.user.email,
+          id: user.userDto.id,
+          username: user.userDto.username,
+          email: user.userDto.email,
           password: '',
-          auth_token: user.auth_token
+          auth_token: user.userDto.accessToken,
+          avatar: user.userDto.avatar
         };
-        console.log(this.u);
         localStorage.setItem('currentUser', JSON.stringify(this.u));
       }
       return user;
@@ -36,6 +36,10 @@ export class AuthenticationService {
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
+  }
+
+  register(user: User) {
+    return this.http.post(this.apiUrl + '/auth/signup', user);
   }
 
 }

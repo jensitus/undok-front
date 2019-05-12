@@ -13,23 +13,13 @@ import {MenuItem} from 'primeng/api';
 export class NavbarComponent implements OnInit {
 
   currentUser: User;
-  reload = false;
-  navbarOpen = false;
-  items: MenuItem[];
-  links: MenuItem[];
 
-  constructor(private commonService: CommonService) {
+  constructor() {
   }
 
   ngOnInit() {
     this.getCurrentUser();
-    this.commonService.demoSubject.subscribe(res => {
-      // this.reload = res;
-    });
-    if (this.reload === true) {
-      console.log('RELOAD');
-      console.log(this.reload);
-    }
+    console.log(this.currentUser);
   }
 
   getCurrentUser() {

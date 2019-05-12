@@ -17,11 +17,12 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
-      console.log('ERROR:', err);
+      console.log('error:', err);
       if (err.status === 401) {
         // auto logout if 401 response returned from api
         this.authenticationService.logout();
         location.reload(true);
+      } else if (err.status === 409) {
       } else if (err.error.message === 'Missing token' || 'Signature has expired') {
         this.authenticationService.logout();
         this.alertService.error('you need to login', true);

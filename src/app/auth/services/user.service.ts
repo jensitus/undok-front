@@ -13,15 +13,11 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getAll() {
-    return this.http.get<User[]>(this.apiUrl + '/users/index');
+    return this.http.get<User[]>(this.apiUrl + '/users/all');
   }
 
   getById(id: number) {
     return this.http.get(this.apiUrl + '/users/' + id);
-  }
-
-  register(user: User) {
-    return this.http.post(this.apiUrl + '/signup', user);
   }
 
   forgotPassword(email: string) {
@@ -38,7 +34,7 @@ export class UserService {
 
   checkAuthToken(token: string) {
     console.log('token ' + token);
-    return this.http.post(this.apiUrl + '/users/check_auth_token', {token: token});
+    return this.http.post(this.apiUrl + '/users/check_auth_token', token);
   }
 
   uploadAvatar(avatar: any, user_id: number) {

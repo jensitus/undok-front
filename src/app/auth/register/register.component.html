@@ -8,13 +8,13 @@
     <div class="ui-g ui-fluid">
       <div class="ui-g-12 ui-md-4">
         <div class="ui-inputgroup">
-          <input type="text" pInputText placeholder="Name" formControlName="name"
-                 [ngClass]="{ 'is-invalid': submitted && f.name.errors }"/>
+          <input type="text" pInputText placeholder="Name" formControlName="username"
+                 [ngClass]="{ 'is-invalid': submitted && f.username.errors }"/>
         </div>
-        <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-          <div *ngIf="f.name.errors.required"><small>Name is required</small></div>
-          <div *ngIf="f.name.errors.minlength"><small>God damn, that is way too short</small></div>
-          <div *ngIf="f.name.errors.maxlength"><small>God damn, that is way too long</small></div>
+        <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required"><small>Name is required</small></div>
+          <div *ngIf="f.username.errors.minlength"><small>God damn, that is way too short</small></div>
+          <div *ngIf="f.username.errors.maxlength"><small>God damn, that is way too long</small></div>
         </div>
       </div>
     </div>

@@ -2,12 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {TodoService} from '../services/todo.service';
 import {AlertService} from '../../common/alert/services/alert.service';
-import {Todo} from '../model/todo';
 import {Item} from '../model/item';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {User} from '../../auth/model/user';
 import {UserService} from '../../auth/services/user.service';
 import {CommonService} from '../../common/common.service';
+import {concatMap, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-show-todo',
@@ -19,7 +19,7 @@ export class ShowTodoComponent implements OnInit {
   itemForm: FormGroup;
   todo_id: string;
   items: Item[];
-  todo: Todo;
+  todo: any;
   todo_title: string;
   loading = false;
   submitted = false;
@@ -30,6 +30,7 @@ export class ShowTodoComponent implements OnInit {
   todo_users: User[];
   selectedUser: User;
   data: any;
+  updatedItem: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -49,19 +50,26 @@ export class ShowTodoComponent implements OnInit {
     this.todoService.getTodo(this.todo_id).subscribe(data => {
       this.todo = data;
       this.todo_title = this.todo.title;
+      this.todo_users = this.todo.users;
+      this.items = this.todo.items
+      this.todo_id = this.todo.id;
       this.alertService.success('here you can manage your business', true);
     }, error => {
       this.alertService.error(error);
     });
-    this.getTodoItems();
     this.getItemForm();
     this.getAddUserForm();
-    this.getUserForTodo();
   }
 
   get f() {
     return this.itemForm.controls;
   }
+
+  // get sortedItems() {
+  //   return this.items.sort((a, b) => {
+  //
+  //   })
+  // }
 
   onSubmit() {
     this.submitted = true;
@@ -74,12 +82,15 @@ export class ShowTodoComponent implements OnInit {
       done: false
     };
     this.todoService.createTodoItem(this.todo_id, this.item).subscribe(data => {
+      this.data = JSON.stringify({data});
       this.alertService.success('yes, you did it', false);
       this.getTodoItems();
       this.itemForm.reset();
       this.loading = false;
+      this.data = data;
+      console.log('Data:', this.data);
     }, error => {
-      this.alertService.error(error);
+      this.alertService.error(error, true);
     });
   }
 
@@ -93,6 +104,7 @@ export class ShowTodoComponent implements OnInit {
       return;
     }
     console.log('this.assUserForm: ' + this.addUserForm.value['selectedUser'].id);
+    console.log(this.todo.id);
     this.loading = true;
     this.user_id = this.addUserForm.value['selectedUser'].id;
     this.todoService.addUserToTodo(this.todo.id, this.user_id).subscribe(data => {
@@ -108,30 +120,37 @@ export class ShowTodoComponent implements OnInit {
 
   updateTodoItem(item_id) {
     this.loading = true;
-    this.todoService.getTodoItem(this.todo_id, item_id).subscribe(data => {
+    this.item = {
+      id: item_id
+    };
+    this.todoService.updateTodoItem(this.todo_id, item_id, this.item).subscribe(data => {
       this.item = data;
-      this.item.done = !this.item.done;
-      console.log(this.item);
-      this.todoService.updateTodoItem(this.todo_id, this.item.id, this.item).subscribe(updateSuccess => {
-        if (this.item.done === true) {
-          this.alertService.success('item successfully done', false);
-        } else if (this.item.done === false) {
-          this.alertService.success('item is still open', false);
-        }
-        this.getTodoItems();
-      }, error => {
-        this.alertService.error(error, false);
-      });
+      if (this.item.done === true) {
+        this.alertService.success('item successfully done', false);
+      } else if (this.item.done === false) {
+        this.alertService.success('item is still open', false);
+      }
+      this.getTodoItems();
       this.loading = false;
     }, error => {
-      this.alertService.error(error, false);
+      this.alertService.error(error);
     });
+
+    // this.todoService.getTodoItem(this.todo_id, item_id).pipe(
+    //   tap(data1 => this.item = data1),
+    //   concatMap(data1 => this.todoService.updateTodoItem(this.todo_id, this.item.id, this.item)),
+    // ).subscribe(data2 => {
+    //   this.updatedItem = data2;
+    //   console.log('updatedItem: ', this.updatedItem);
+    // });
+
   }
 
   deleteItem(item_id) {
     this.loading = true;
     this.todoService.deleteTodoItem(this.todo_id, item_id).subscribe(data => {
-      this.alertService.success('item successfully deleted', true);
+      this.data = data;
+      this.alertService.success(this.data.text, true);
       this.getTodoItems();
       this.loading = false;
     }, error => {
@@ -143,6 +162,7 @@ export class ShowTodoComponent implements OnInit {
   private getTodoItems() {
     this.todoService.getTodoItems(this.todo_id).subscribe(data => {
       this.items = data;
+
     }, error => {
       this.alertService.error(error);
     });
