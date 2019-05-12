@@ -7,7 +7,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {User} from '../../auth/model/user';
 import {UserService} from '../../auth/services/user.service';
 import {CommonService} from '../../common/common.service';
-import {concatMap, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-show-todo',
@@ -30,7 +29,6 @@ export class ShowTodoComponent implements OnInit {
   todo_users: User[];
   selectedUser: User;
   data: any;
-  updatedItem: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -51,7 +49,8 @@ export class ShowTodoComponent implements OnInit {
       this.todo = data;
       this.todo_title = this.todo.title;
       this.todo_users = this.todo.users;
-      this.items = this.todo.items
+      this.items = this.todo.items;
+      this.items = this.items.sort();
       this.todo_id = this.todo.id;
       this.alertService.success('here you can manage your business', true);
     }, error => {
@@ -65,11 +64,11 @@ export class ShowTodoComponent implements OnInit {
     return this.itemForm.controls;
   }
 
-  // get sortedItems() {
-  //   return this.items.sort((a, b) => {
-  //
-  //   })
-  // }
+  get sortedItems() {
+    return this.items.sort((a, b) => {
+      return <any>new Date(b.created_at) - <any>new Date(a.created_at);
+    });
+  }
 
   onSubmit() {
     this.submitted = true;
