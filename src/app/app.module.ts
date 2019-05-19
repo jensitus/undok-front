@@ -13,7 +13,7 @@ import {AlertService} from './common/alert/services/alert.service';
 import {AlertComponent} from './common/alert/alert.component';
 import {AuthenticationService} from './auth/services/authentication.service';
 import {JwtInterceptor} from './auth/helpers/jwt.interceptor';
-import {ErrorInterceptor} from './auth/helpers/error.interceptor';
+import {ErrorInterceptor} from './common/helper/error.interceptor';
 import {AuthGuard} from './auth/guards/auth.guard';
 import {NavbarComponent} from './common/navbar/navbar.component';
 import {ResetPasswordComponent} from './auth/reset-password/reset-password.component';
@@ -52,7 +52,7 @@ const app_routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'forgot', component: ForgotPasswordComponent},
-  {path: 'password_resets/:token/edit', component: ResetPasswordComponent},
+  {path: 'auth/reset_password/:token/edit', component: ResetPasswordComponent},
   {path: 'users/:id', component: UserComponent},
   {path: 'users/:id/edit', component: EditUserComponent},
   {path: 'todos', component: ListTodoComponent},

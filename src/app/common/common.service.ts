@@ -42,20 +42,14 @@ export class CommonService {
 
   checkAuthToken() {
     this.getCurrentUser();
-    console.log(this.currentUser != null);
-    if (this.currentUser != null) {
-      console.log(this.currentUser.auth_token);
-      this.userService.checkAuthToken(this.currentUser.auth_token).subscribe(data => {
-        this.data = JSON.stringify({data});
-        console.log('checkauthtoken', this.data);
-      }, error => {
-        console.log('erroraauthcheck', error);
-        this.alertService.error(error, true);
-        this.router.navigate(['/login']);
-      });
-    } else {
+    if (this.currentUser == null) {
       this.router.navigate(['/login']);
+      return;
     }
+    this.userService.checkAuthToken(this.currentUser.auth_token).subscribe(data => {
+      this.data = data;
+    }, error => {
+    });
   }
 
   private getCurrentUser() {

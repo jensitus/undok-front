@@ -34,9 +34,7 @@ export class ResetPasswordComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.token = params['token'];
     });
-    console.log('token: ' + this.token);
     this.email = this.activatedRoute.snapshot.queryParamMap.get('email');
-    console.log('email: ' + this.email);
 
     this.userService.checkTokenExpired(this.token, this.email).pipe(first()).subscribe((data) => {
         this.data = data;
@@ -61,7 +59,8 @@ export class ResetPasswordComponent implements OnInit {
 
     this.resetForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(6)]],
-      password_confirmation: ['', Validators.required]
+      password_confirmation: ['', Validators.required],
+      email: [this.email, Validators.required]
     });
   }
 

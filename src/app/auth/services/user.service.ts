@@ -21,20 +21,20 @@ export class UserService {
   }
 
   forgotPassword(email: string) {
-    return this.http.post(this.apiUrl + '/password_resets', email);
+    return this.http.post(this.apiUrl + '/auth/reset_password', email);
   }
 
   checkTokenExpired(token: string, email: string) {
-    return this.http.get(`${this.apiUrl}/password_resets/${token}/edit?email=` + email);
+    return this.http.get(`${this.apiUrl}/auth/reset_password/${token}/edit?email=` + email);
   }
 
   resetPassword(user: User, token: string, email: string) {
-    return this.http.put(this.apiUrl + '/password_resets/' + token + '?email=' + email, user);
+    return this.http.put(this.apiUrl + '/auth/reset_password/' + token + '?email=' + email, user);
   }
 
   checkAuthToken(token: string) {
     console.log('token ' + token);
-    return this.http.post(this.apiUrl + '/users/check_auth_token', token);
+    return this.http.post(this.apiUrl + '/users/auth/check_auth_token', token);
   }
 
   uploadAvatar(avatar: any, user_id: number) {

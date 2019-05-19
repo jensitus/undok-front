@@ -17,6 +17,7 @@ export class ListTodoComponent implements OnInit {
   reload = false;
   loading = false;
   todo: any;
+  data: any;
 
   constructor(
     private router: Router,
@@ -30,12 +31,12 @@ export class ListTodoComponent implements OnInit {
     this.commonService.checkAuthToken();
     this.getTodos();
     this.getReloadFromCommenService();
+    this.alertService.success('your Todo List');
   }
 
   private getTodos() {
     this.todoService.getTodos().subscribe((data) => {
         this.todos = data;
-        console.log('todos', this.todos);
       }, (error) => {
         this.error = error;
         if (this.error === 'Missing token' || 'Signature has expired') {
@@ -50,33 +51,34 @@ export class ListTodoComponent implements OnInit {
 
   updateTodo(todo_id) {
     this.loading = true;
-    this.todoService.getTodo(todo_id).subscribe(data => {
+    this.todo = {
+      id: todo_id
+    };
+    this.todoService.updateTodo(todo_id, this.todo).subscribe(data => {
       this.todo = data;
-      this.todo.done = !this.todo.done;
-      console.log(this.todo.done);
-      console.log(!this.todo.done);
-      this.todoService.updateTodo(todo_id, this.todo).subscribe(updateSuccess => {
-        if (this.todo.done === true) {
-          this.alertService.success('Todo is really done');
-        } else if (this.todo.done === false) {
-          this.alertService.success('this todo is not done yet');
-        }
-        this.loading = false;
-        this.getTodos();
-      });
+      if (this.todo.done === true) {
+        this.alertService.success('Todo is really done');
+      } else if (this.todo.done === false) {
+        this.alertService.success('this todo is not done yet');
+      }
+      this.loading = false;
+      this.getTodos();
     }, error => {
-      console.log(error);
+      console.log('update todo', error);
     });
   }
 
   deleteTodo(todo_id) {
     this.loading = true;
     this.todoService.deleteTodo(todo_id).subscribe(data => {
-      console.log(data);
+      this.data = data;
+      console.log('delete todo success', this.data, data);
+      this.alertService.success(this.data.text, true);
       this.getTodos();
       this.loading = false;
     }, error => {
-      console.log(error);
+      this.error = error;
+      // this.alertService.error(error);
     });
 
   }
@@ -85,7 +87,6 @@ export class ListTodoComponent implements OnInit {
     this.commonService.todoSubject.subscribe(res => {
       this.reload = res;
       if (this.reload) {
-        console.log(this.reload);
         this.getTodos();
       }
     });

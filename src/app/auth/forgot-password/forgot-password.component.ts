@@ -46,11 +46,11 @@ export class ForgotPasswordComponent implements OnInit {
       data => {
         console.log(data);
         this.data = data;
-        this.alertService.success(this.data.message, true);
-        this.router.navigate(['/login']);
+        this.alertService.success(this.data.text, true);
+        this.router.navigate(['/home']);
       }, error => {
-        console.log(error);
-        this.alertService.error(error);
+        // console.log(error);
+        // this.alertService.error(error);
       }
     );
   }

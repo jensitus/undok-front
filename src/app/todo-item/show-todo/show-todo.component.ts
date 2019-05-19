@@ -41,7 +41,7 @@ export class ShowTodoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.commonService.checkAuthToken();
+    // this.commonService.checkAuthToken();
     this.activatedRoute.params.subscribe(params => {
       this.todo_id = params['id'];
     });
@@ -87,9 +87,8 @@ export class ShowTodoComponent implements OnInit {
       this.itemForm.reset();
       this.loading = false;
       this.data = data;
-      console.log('Data:', this.data);
     }, error => {
-      this.alertService.error(error, true);
+      // this.alertService.error(error, true);
     });
   }
 
@@ -102,8 +101,6 @@ export class ShowTodoComponent implements OnInit {
     if (this.addUserForm.invalid) {
       return;
     }
-    console.log('this.assUserForm: ' + this.addUserForm.value['selectedUser'].id);
-    console.log(this.todo.id);
     this.loading = true;
     this.user_id = this.addUserForm.value['selectedUser'].id;
     this.todoService.addUserToTodo(this.todo.id, this.user_id).subscribe(data => {
@@ -112,7 +109,7 @@ export class ShowTodoComponent implements OnInit {
       this.loading = false;
       this.alertService.success(this.data.message);
     }, error => {
-      this.alertService.error(error);
+      // this.alertService.error(error);
       this.loading = false;
     });
   }
@@ -132,7 +129,7 @@ export class ShowTodoComponent implements OnInit {
       this.getTodoItems();
       this.loading = false;
     }, error => {
-      this.alertService.error(error);
+      // this.alertService.error(error);
     });
 
     // this.todoService.getTodoItem(this.todo_id, item_id).pipe(
@@ -153,7 +150,7 @@ export class ShowTodoComponent implements OnInit {
       this.getTodoItems();
       this.loading = false;
     }, error => {
-      this.alertService.error(error, true);
+      // this.alertService.error(error, true);
       this.loading = false;
     });
   }
@@ -163,7 +160,7 @@ export class ShowTodoComponent implements OnInit {
       this.items = data;
 
     }, error => {
-      this.alertService.error(error);
+      // this.alertService.error(error);
     });
   }
 
@@ -184,7 +181,6 @@ export class ShowTodoComponent implements OnInit {
     this.userService.getAll().subscribe(data => {
       this.users = data;
     }, error => {
-      console.log(error);
     });
   }
 
@@ -192,7 +188,7 @@ export class ShowTodoComponent implements OnInit {
     this.todoService.getTodoUsers(this.todo_id).subscribe(data => {
       this.todo_users = data;
     }, error => {
-      this.alertService.error(error);
+      // this.alertService.error(error);
     });
   }
 

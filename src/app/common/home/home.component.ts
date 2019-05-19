@@ -20,11 +20,14 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private commonService: CommonService
   ) {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
   }
 
   ngOnInit() {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (this.currentUser != null) {
       this.commonService.checkAuthToken();
+    }
   }
 
   loadAllUsers() {

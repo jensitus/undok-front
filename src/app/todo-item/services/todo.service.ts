@@ -56,7 +56,7 @@ export class TodoService {
   }
 
   updateTodo(todo_id, todo: Todo) {
-    return this.http.put(`${this.apiUrl}/todos/${todo_id}`, todo);
+    return this.http.put(this.apiUrl + '/todos/' + todo_id, todo);
   }
 
   deleteTodo(todo_id) {
