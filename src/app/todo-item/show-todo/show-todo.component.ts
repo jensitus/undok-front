@@ -29,6 +29,11 @@ export class ShowTodoComponent implements OnInit {
   todo_users: User[];
   selectedUser: User;
   data: any;
+  e: any;
+  display = false;
+  description_id: number;
+
+  descriptionForm: FormGroup;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -41,6 +46,7 @@ export class ShowTodoComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('ngOnInit');
     // this.commonService.checkAuthToken();
     this.activatedRoute.params.subscribe(params => {
       this.todo_id = params['id'];
@@ -58,38 +64,47 @@ export class ShowTodoComponent implements OnInit {
     });
     this.getItemForm();
     this.getAddUserForm();
+    this.getDescriptionForm();
   }
 
   get f() {
     return this.itemForm.controls;
   }
 
-  get sortedItems() {
-    return this.items.sort((a, b) => {
-      return <any>new Date(b.created_at) - <any>new Date(a.created_at);
-    });
+  get d() {
+    return this.descriptionForm.controls;
   }
 
-  onSubmit() {
-    this.submitted = true;
-    if (this.itemForm.invalid) {
-      return;
+  onSubmit(type) {
+    if (type === 'item') {
+      this.submitted = true;
+      if (this.itemForm.invalid) {
+        return;
+      }
+      this.loading = true;
+      this.item = {
+        name: this.itemForm.value.name,
+        done: false
+      };
+      this.todoService.createTodoItem(this.todo_id, this.item).subscribe(data => {
+        this.data = JSON.stringify({data});
+        this.alertService.success('yes, you did it', false);
+        this.getTodoItems();
+        this.itemForm.reset();
+        this.loading = false;
+        this.data = data;
+      }, error => {
+        // this.alertService.error(error, true);
+      });
+    } else if (type === 'descriptio') {
+      this.submitted = true;
+      if (this.descriptionForm.invalid) {
+        return;
+      }
+      console.log('descriptionForm', this.descriptionForm);
+      this.loading = true;
     }
-    this.loading = true;
-    this.item = {
-      name: this.itemForm.value.name,
-      done: false
-    };
-    this.todoService.createTodoItem(this.todo_id, this.item).subscribe(data => {
-      this.data = JSON.stringify({data});
-      this.alertService.success('yes, you did it', false);
-      this.getTodoItems();
-      this.itemForm.reset();
-      this.loading = false;
-      this.data = data;
-    }, error => {
-      // this.alertService.error(error, true);
-    });
+
   }
 
   get u() {
@@ -115,6 +130,7 @@ export class ShowTodoComponent implements OnInit {
   }
 
   updateTodoItem(item_id) {
+    console.log('updateTodoItem');
     this.loading = true;
     this.item = {
       id: item_id
@@ -128,6 +144,7 @@ export class ShowTodoComponent implements OnInit {
       }
       this.getTodoItems();
       this.loading = false;
+      this.display = false;
     }, error => {
       // this.alertService.error(error);
     });
@@ -140,6 +157,12 @@ export class ShowTodoComponent implements OnInit {
     //   console.log('updatedItem: ', this.updatedItem);
     // });
 
+  }
+
+  addDescription(description_id) {
+    console.log('showDialog');
+    this.display = !this.display;
+    this.description_id = description_id;
   }
 
   deleteItem(item_id) {
@@ -167,6 +190,12 @@ export class ShowTodoComponent implements OnInit {
   private getItemForm() {
     this.itemForm = this.formBuilder.group({
       name: ['', Validators.required]
+    });
+  }
+
+  private getDescriptionForm() {
+    this.descriptionForm = this.formBuilder.group({
+      description: ['', Validators.required]
     });
   }
 
