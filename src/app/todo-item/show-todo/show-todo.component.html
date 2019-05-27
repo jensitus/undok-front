@@ -28,8 +28,11 @@
               <a (click)="deleteItem(i.id)" title="delete"><i class="fa fa-trash" *ngIf="i.done == true"></i></a>
             </div>
             <div id="{{i.name}}" *ngIf="display && description_id == i.id">
+              <div class="mb-2" *ngFor="let description of itemDescriptions">
+                {{description.text}}
+              </div>
               <div class="mb-2">
-                <form [formGroup]="descriptionForm" (ngSubmit)="onSubmit('descriptio')">
+                <form [formGroup]="descriptionForm" (ngSubmit)="onDescriptionSubmit(i.id)">
                   <div class="ui-inputgroup">
                     <input type="text" pInputText formControlName="description" placeholder="description"
                            [ngClass]="{ 'is-invalid': submitted && d.description.errors }"/>

@@ -4,6 +4,7 @@ import {Todo} from '../model/todo';
 import {Item} from '../model/item';
 import {User} from '../../auth/model/user';
 import {environment} from '../../../environments/environment';
+import {Description} from '../model/description';
 
 @Injectable({
   providedIn: 'root'
@@ -63,8 +64,12 @@ export class TodoService {
     return this.http.delete(`${this.apiUrl}/todos/${todo_id}`);
   }
 
-  createItemDescription() {
+  createItemDescription(description: Description, todo_id, item_id) {
+    return this.http.post(`${this.apiUrl}/todos/${todo_id}/items/${item_id}/descriptions/create`, description);
+  }
 
+  getItemDescriptions(todo_id, item_id) {
+    return this.http.get<Description[]>(`${this.apiUrl}/todos/${todo_id}/items/${item_id}/descriptions`);
   }
 
 }

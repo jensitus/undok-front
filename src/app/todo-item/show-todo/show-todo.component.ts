@@ -7,6 +7,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {User} from '../../auth/model/user';
 import {UserService} from '../../auth/services/user.service';
 import {CommonService} from '../../common/common.service';
+import {Description} from '../model/description';
 
 @Component({
   selector: 'app-show-todo',
@@ -31,9 +32,11 @@ export class ShowTodoComponent implements OnInit {
   data: any;
   e: any;
   display = false;
-  description_id: number;
 
+  description_id: number;
+  description: any;
   descriptionForm: FormGroup;
+  itemDescriptions: Description[];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -97,14 +100,24 @@ export class ShowTodoComponent implements OnInit {
         // this.alertService.error(error, true);
       });
     } else if (type === 'descriptio') {
-      this.submitted = true;
-      if (this.descriptionForm.invalid) {
-        return;
-      }
-      console.log('descriptionForm', this.descriptionForm);
-      this.loading = true;
-    }
 
+    }
+  }
+
+  onDescriptionSubmit(item_id) {
+    this.submitted = true;
+    if (this.descriptionForm.invalid) {
+      return;
+    }
+    this.loading = true;
+    console.log('descriptionForm', this.descriptionForm);
+    this.description = {
+      text: this.descriptionForm.value.description
+    };
+    this.todoService.createItemDescription(this.description, this.todo_id, item_id).subscribe(data => {
+      this.data = JSON.stringify({data});
+      console.log('description data', this.data);
+    });
   }
 
   get u() {
@@ -163,6 +176,7 @@ export class ShowTodoComponent implements OnInit {
     console.log('showDialog');
     this.display = !this.display;
     this.description_id = description_id;
+    this.getItemDescriptions(description_id);
   }
 
   deleteItem(item_id) {
@@ -195,7 +209,8 @@ export class ShowTodoComponent implements OnInit {
 
   private getDescriptionForm() {
     this.descriptionForm = this.formBuilder.group({
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      item_id: []
     });
   }
 
@@ -224,6 +239,14 @@ export class ShowTodoComponent implements OnInit {
   loadUser() {
     console.log('loadUser()');
     this.getUsers();
+  }
+
+  getItemDescriptions(item_id) {
+    this.todoService.getItemDescriptions(this.todo_id, item_id).subscribe(data => {
+      this.itemDescriptions = data;
+      console.log('Item Descriptions', this.itemDescriptions);
+    });
+
   }
 
 }
