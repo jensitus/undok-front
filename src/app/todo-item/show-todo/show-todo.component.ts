@@ -31,7 +31,14 @@ export class ShowTodoComponent implements OnInit {
   selectedUser: User;
   data: any;
   e: any;
-  display = false;
+
+  valDescription: any;
+  displayDescription = false;
+  displayUpdateDescription = false;
+  displayItem = false;
+  display_item_id: number;
+  update_description_id: number;
+  descriptionUpdateForm: FormGroup;
 
   description_id: number;
   description: any;
@@ -120,6 +127,28 @@ export class ShowTodoComponent implements OnInit {
     });
   }
 
+  onDescriptionUpdateSubmit(item_id) {
+    this.submitted = true;
+    if (this.descriptionUpdateForm.invalid) {
+      return;
+    }
+    this.loading = true;
+    console.log('descriptionUpdateForm', this.descriptionUpdateForm);
+    this.description = {
+      id: this.descriptionUpdateForm.value.id,
+      text: this.descriptionUpdateForm.value.text
+    };
+    console.log('description', this.description);
+    this.todoService.updateItemDescription(this.todo_id, item_id, this.description).subscribe(data => {
+      this.data = data;
+      console.log('this.data', this.data);
+      console.log('data', data);
+      this.loading = false;
+      this.addEditDescription(this.description.id);
+      this.getItemDescriptions(item_id);
+    });
+  }
+
   get u() {
     return this.addUserForm.controls;
   }
@@ -157,7 +186,7 @@ export class ShowTodoComponent implements OnInit {
       }
       this.getTodoItems();
       this.loading = false;
-      this.display = false;
+      this.displayDescription = false;
     }, error => {
       // this.alertService.error(error);
     });
@@ -172,11 +201,35 @@ export class ShowTodoComponent implements OnInit {
 
   }
 
+  openItem(item_id) {
+    this.displayItem = !this.displayItem;
+    this.display_item_id = item_id;
+    this.getItemDescriptions(item_id);
+  }
+
   addDescription(description_id) {
     console.log('showDialog');
-    this.display = !this.display;
+    this.displayDescription = !this.displayDescription;
     this.description_id = description_id;
-    this.getItemDescriptions(description_id);
+  }
+
+  addEditDescription(description_id) {
+    this.displayUpdateDescription = !this.displayUpdateDescription;
+    this.update_description_id = description_id;
+  }
+
+  editDescription(description) {
+    this.submitted = true;
+    this.descriptionUpdateForm = this.formBuilder.group({
+      id: [],
+      text: ['', Validators.required]
+    });
+    this.valDescription = {
+      id: description.id,
+      text: description.text
+    };
+    this.descriptionUpdateForm.setValue(this.valDescription);
+    this.addEditDescription(description.id);
   }
 
   deleteItem(item_id) {

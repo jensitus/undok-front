@@ -72,4 +72,8 @@ export class TodoService {
     return this.http.get<Description[]>(`${this.apiUrl}/todos/${todo_id}/items/${item_id}/descriptions`);
   }
 
+  updateItemDescription(todo_id, item_id, description: Description) {
+    return this.http.put(this.apiUrl + '/todos/' + todo_id + '/items/' + item_id + '/descriptions/' + description.id + '/update', description);
+  }
+
 }
