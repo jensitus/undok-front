@@ -19,10 +19,10 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
       console.log('error:', err);
-      if (err.status === 401) {
-        // auto logout if 401 response returned from api
+      if (err.status === 401 || err.status === 403) {
+        // auto logout if 401 or 403 response returned from api
         this.authenticationService.logout();
-        // location.reload(true);
+        this.alertService.success('successfully logged out after 401 or 403', true);
         this.router.navigate(['/login']);
       } else if (err.status === 409) {
         //   this.alertService.error('409');

@@ -117,13 +117,15 @@ export class ShowTodoComponent implements OnInit {
       return;
     }
     this.loading = true;
-    console.log('descriptionForm', this.descriptionForm);
     this.description = {
       text: this.descriptionForm.value.description
     };
     this.todoService.createItemDescription(this.description, this.todo_id, item_id).subscribe(data => {
-      this.data = JSON.stringify({data});
-      console.log('description data', this.data);
+      this.data = data;
+      this.descriptionForm.reset();
+      this.loading = false;
+      this.addDescription(this.data.id);
+      this.getItemDescriptions(item_id);
     });
   }
 
@@ -133,16 +135,12 @@ export class ShowTodoComponent implements OnInit {
       return;
     }
     this.loading = true;
-    console.log('descriptionUpdateForm', this.descriptionUpdateForm);
     this.description = {
       id: this.descriptionUpdateForm.value.id,
       text: this.descriptionUpdateForm.value.text
     };
-    console.log('description', this.description);
     this.todoService.updateItemDescription(this.todo_id, item_id, this.description).subscribe(data => {
       this.data = data;
-      console.log('this.data', this.data);
-      console.log('data', data);
       this.loading = false;
       this.addEditDescription(this.description.id);
       this.getItemDescriptions(item_id);
@@ -172,7 +170,6 @@ export class ShowTodoComponent implements OnInit {
   }
 
   updateTodoItem(item_id) {
-    console.log('updateTodoItem');
     this.loading = true;
     this.item = {
       id: item_id
@@ -187,28 +184,18 @@ export class ShowTodoComponent implements OnInit {
       this.getTodoItems();
       this.loading = false;
       this.displayDescription = false;
-    }, error => {
-      // this.alertService.error(error);
+      this.displayItem = false;
     });
-
-    // this.todoService.getTodoItem(this.todo_id, item_id).pipe(
-    //   tap(data1 => this.item = data1),
-    //   concatMap(data1 => this.todoService.updateTodoItem(this.todo_id, this.item.id, this.item)),
-    // ).subscribe(data2 => {
-    //   this.updatedItem = data2;
-    //   console.log('updatedItem: ', this.updatedItem);
-    // });
-
   }
 
   openItem(item_id) {
     this.displayItem = !this.displayItem;
     this.display_item_id = item_id;
+    this.displayUpdateDescription = false;
     this.getItemDescriptions(item_id);
   }
 
   addDescription(description_id) {
-    console.log('showDialog');
     this.displayDescription = !this.displayDescription;
     this.description_id = description_id;
   }
@@ -240,7 +227,6 @@ export class ShowTodoComponent implements OnInit {
       this.getTodoItems();
       this.loading = false;
     }, error => {
-      // this.alertService.error(error, true);
       this.loading = false;
     });
   }
@@ -297,7 +283,6 @@ export class ShowTodoComponent implements OnInit {
   getItemDescriptions(item_id) {
     this.todoService.getItemDescriptions(this.todo_id, item_id).subscribe(data => {
       this.itemDescriptions = data;
-      console.log('Item Descriptions', this.itemDescriptions);
     });
 
   }

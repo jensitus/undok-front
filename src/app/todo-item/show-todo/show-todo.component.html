@@ -9,12 +9,11 @@
         <div class="p-grid itemlist">
 
           <div class="p-col-8">
-              <span *ngIf="i.done == false"><b>{{i.id}}</b>
-                  <a (click)="openItem(i.id)">{{i.name}}</a>
-
+              <span *ngIf="i.done == false">
+                <a (click)="openItem(i.id)">{{i.name}}</a>
               </span>
-            <span *ngIf="i.done == true">{{i.id}}
-              <a (click)="updateTodoItem(i.id)"><s>{{i.name}}</s></a>
+              <span *ngIf="i.done == true">
+                <a (click)="updateTodoItem(i.id)"><s>{{i.name}}</s></a>
               </span>
           </div>
           <div class="p-col-1">
@@ -26,31 +25,30 @@
           </div>
 
           <div id="{{i.name}}" *ngIf="displayItem && display_item_id == i.id">
-            <span *ngIf="i.done == false">
+            <span class="ml-2" *ngIf="i.done == false">
               <small><a (click)='updateTodoItem(i.id)'>done</a></small>
             </span>
-            <span *ngIf="i.done == true">
+            <span class="ml-2" *ngIf="i.done == true">
               <small><a (click)='updateTodoItem(i.id)'>undo</a></small>
             </span>
             <span class="ml-2">
-              <small><a (click)="addDescription(i.id)">add new description</a></small>
+              <small *ngIf="itemDescriptions < 1"><a (click)="addDescription(i.id)">add new description</a></small>
             </span>
-            <div class="mb-2" *ngFor="let description of itemDescriptions">
+            <div class="mb-1 mt-1 ml-1" *ngFor="let description of itemDescriptions">
               <div *ngIf="!displayUpdateDescription">
                 <div>
-                  {{description.text}}
+                  <div [innerHtml]="description.text"></div>
                 </div>
                 <div>
                   <small>
-                    <button pButton [disabled]="loading" class="ui-button-danger" (click)="editDescription(description)"
-                            label="edit"></button>
+                    <a (click)="editDescription(description)">edit</a>
                   </small>
                 </div>
               </div>
               <div *ngIf="displayUpdateDescription && update_description_id == description.id">
                 <form [formGroup]="descriptionUpdateForm" (ngSubmit)="onDescriptionUpdateSubmit(i.id)">
                   <div class="ui-inputgroup">
-                  <textarea pInputTextarea formControlName="text" autoResize="autoResize"
+                  <textarea pInputTextarea formControlName="text" cols="40" autoResize="autoResize"
                             placeholder="description"
                             [ngClass]="{ 'is-invalid': submitted && d.description.errors }"></textarea>
                     <img *ngIf="loading"
@@ -66,11 +64,11 @@
               </div>
             </div>
 
-            <div *ngIf="displayDescription && description_id == i.id">
+            <div class="mb-2" *ngIf="displayDescription && description_id == i.id">
               <form [formGroup]="descriptionForm" (ngSubmit)="onDescriptionSubmit(i.id)">
                 <div class="ui-inputgroup">
-                  <textarea pInputTextarea formControlName="description" autoResize="autoResize"
-                            placeholder="description"
+                  <textarea pInputTextarea formControlName="description" cols="40" autoResize="autoResize"
+                            placeholder="new description"
                             [ngClass]="{ 'is-invalid': submitted && d.description.errors }"></textarea>
                   <img *ngIf="loading"
                        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
@@ -83,11 +81,10 @@
                 </div>
               </form>
             </div>
+
           </div>
         </div>
-        <div id="{{i.id}}" class="p-grid">
 
-        </div>
       </div>
       <div class="mt-3">
         <form [formGroup]="itemForm" (ngSubmit)="onSubmit('item')">
