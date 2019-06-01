@@ -45,6 +45,10 @@ import {EditUserComponent} from './auth/edit-user/edit-user.component';
 import {MessageService} from 'primeng/api';
 import {SidebarModule} from 'primeng/sidebar';
 import {OrderModule} from 'ngx-order-pipe';
+import { DescriptionComponent } from './todo-item/description/add/description.component';
+import { EditDescriptionComponent } from './todo-item/description/edit/edit-description.component';
+import {DialogModule} from 'primeng/dialog';
+import {AccordionModule} from 'primeng/accordion';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -82,7 +86,9 @@ const app_routes: Routes = [
     AddDiaryComponent,
     EditDiaryComponent,
     UserComponent,
-    EditUserComponent
+    EditUserComponent,
+    DescriptionComponent,
+    EditDescriptionComponent
   ],
   imports: [
     BrowserModule,
@@ -104,7 +110,9 @@ const app_routes: Routes = [
     RouterModule.forRoot(app_routes, {enableTracing: true}),
     HttpClientModule,
     ReactiveFormsModule,
-    AngularFontAwesomeModule
+    AngularFontAwesomeModule,
+    DialogModule,
+    AccordionModule
   ],
   providers: [
     AuthGuard,

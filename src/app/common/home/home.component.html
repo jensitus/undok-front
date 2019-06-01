@@ -4,7 +4,7 @@
   <div class="p-grid">
     <div class="p-col-12 p-md-4">
       <div *ngIf="currentUser != null">
-        <h1>Hi {{currentUser.name}}!</h1>
+        <h1>Hi <span [innerHTML]="currentUser.username"></span>!</h1>
         <p>You're logged in with Angular 6!!</p>
         <div class="p-grid">
           <div class="p-col-6">
@@ -19,7 +19,7 @@
           <ul>
             <li *ngFor="let user of users">
               <a [routerLink]="['/users', user.id]">
-                {{user.name}} ({{user.email}})
+                {{user.username}} ({{user.email}})
               </a>
               - <!--<a (click)="deleteUser(user.id)" class="text-danger">Delete</a> -->
             </li>

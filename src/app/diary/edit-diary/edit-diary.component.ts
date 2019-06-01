@@ -5,7 +5,6 @@ import {Diary} from '../model/diary';
 import {AlertService} from '../../common/alert/services/alert.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {first} from 'rxjs/operators';
-import {routerNgProbeToken} from '@angular/router/src/router_module';
 
 @Component({
   selector: 'app-edit-diary',

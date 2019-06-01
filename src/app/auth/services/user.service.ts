@@ -33,7 +33,6 @@ export class UserService {
   }
 
   checkAuthToken(token: string) {
-    console.log('token ' + token);
     return this.http.post(this.apiUrl + '/users/auth/check_auth_token', token);
   }
 
