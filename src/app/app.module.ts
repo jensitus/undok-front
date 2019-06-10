@@ -49,6 +49,8 @@ import { DescriptionComponent } from './todo-item/description/add/description.co
 import { EditDescriptionComponent } from './todo-item/description/edit/edit-description.component';
 import {DialogModule} from 'primeng/dialog';
 import {AccordionModule} from 'primeng/accordion';
+import {PanelModule} from 'primeng/panel';
+import { TodoComponent } from './todo-item/todo/todo.component';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -59,7 +61,7 @@ const app_routes: Routes = [
   {path: 'auth/reset_password/:token/edit', component: ResetPasswordComponent},
   {path: 'users/:id', component: UserComponent},
   {path: 'users/:id/edit', component: EditUserComponent},
-  {path: 'todos', component: ListTodoComponent},
+  {path: 'todos', component: TodoComponent},
   {path: 'todos/:id', component: ShowTodoComponent},
   {path: 'diaries', component: DiaryListComponent},
   {path: 'diaries/:id', component: DiaryComponent},
@@ -88,7 +90,8 @@ const app_routes: Routes = [
     UserComponent,
     EditUserComponent,
     DescriptionComponent,
-    EditDescriptionComponent
+    EditDescriptionComponent,
+    TodoComponent
   ],
   imports: [
     BrowserModule,
@@ -112,7 +115,8 @@ const app_routes: Routes = [
     ReactiveFormsModule,
     AngularFontAwesomeModule,
     DialogModule,
-    AccordionModule
+    AccordionModule,
+    PanelModule
   ],
   providers: [
     AuthGuard,

@@ -162,7 +162,7 @@ export class ShowTodoComponent implements OnInit {
       this.getUserForTodo();
       this.data = data;
       this.loading = false;
-      this.alertService.success(this.data.message);
+      this.alertService.success('user successfully added');
     }, error => {
       // this.alertService.error(error);
       this.loading = false;

@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  api_url: 'https://birgittwagner.de'
+  api_url: 'https://donner.service-b.org'
 };

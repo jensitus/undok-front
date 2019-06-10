@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<app-navbar xmlns="http://www.w3.org/1999/html"></app-navbar>
 <div class="container">
   <div class="mb-2 mt-2">
     <b>{{todo_title}}</b>
@@ -9,11 +9,12 @@
         <div class="p-grid itemlist">
 
           <div class="p-col-8">
+            <b>-</b> &nbsp;
               <span *ngIf="i.done == false">
-                <a (click)="openItem(i.id)">{{i.name}}</a>
+                <a (click)="openItem(i.id)" [innerHTML]="i.name"></a>
               </span>
               <span *ngIf="i.done == true">
-                <a (click)="updateTodoItem(i.id)"><s>{{i.name}}</s></a>
+                <a (click)="updateTodoItem(i.id)"><s [innerHTML]="i.name"></s></a>
               </span>
           </div>
           <div class="p-col-1">
@@ -24,7 +25,7 @@
             <a (click)="deleteItem(i.id)" title="delete"><i class="fa fa-trash" *ngIf="i.done == true"></i></a>
           </div>
 
-          <div id="{{i.name}}" *ngIf="displayItem && display_item_id == i.id">
+          <div class="mb-2" id="{{i.name}}" *ngIf="displayItem && display_item_id == i.id">
             <span class="ml-2" *ngIf="i.done == false">
               <small><a (click)='updateTodoItem(i.id)'>done</a></small>
             </span>
@@ -32,9 +33,9 @@
               <small><a (click)='updateTodoItem(i.id)'>undo</a></small>
             </span>
             <span class="ml-2">
-              <small *ngIf="itemDescriptions < 1"><a (click)="addDescription(i.id)">add new description</a></small>
+              <small *ngIf="itemDescriptions < 1"><a (click)="addDescription(i.id)">description</a></small>
             </span>
-            <div class="mb-1 mt-1 ml-1" *ngFor="let description of itemDescriptions">
+            <div class="mb-1 mt-1 ml-2" *ngFor="let description of itemDescriptions">
               <div *ngIf="!displayUpdateDescription">
                 <div>
                   <div [innerHtml]="description.text"></div>
@@ -54,7 +55,7 @@
                     <img *ngIf="loading"
                          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
                   </div>
-                  <button pButton [disabled]="loading" class="ui-button-secondary" label="Hopp {{i.id}}"></button>
+                  <button pButton [disabled]="loading" class="ui-button-secondary" label="update"></button>
                   <div *ngIf="submitted && d.description.errors" class="invalid-feedback">
                     <div *ngIf="d.description.errors.required">
                       <small> description is required</small>
@@ -64,7 +65,7 @@
               </div>
             </div>
 
-            <div class="mb-2" *ngIf="displayDescription && description_id == i.id">
+            <div class="mb-1 ml-2" *ngIf="displayDescription && description_id == i.id">
               <form [formGroup]="descriptionForm" (ngSubmit)="onDescriptionSubmit(i.id)">
                 <div class="ui-inputgroup">
                   <textarea pInputTextarea formControlName="description" cols="40" autoResize="autoResize"
@@ -73,12 +74,12 @@
                   <img *ngIf="loading"
                        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
                 </div>
-                <button pButton [disabled]="loading" class="ui-button-secondary" label="Hopp {{i.id}}"></button>
                 <div *ngIf="submitted && d.description.errors" class="invalid-feedback">
                   <div *ngIf="d.description.errors.required">
                     <small> description is required</small>
                   </div>
                 </div>
+                <button pButton [disabled]="loading" class="ui-button-secondary" label="Hopp"></button>
               </form>
             </div>
 
@@ -105,8 +106,18 @@
       </div>
     </div>
     <div class="p-col-12 p-md-6 mt-2">
+      <div class="p-grid mb-2">
+        <div class="p-col-12 p-md-4"></div>
+        <div class="p-col-12 p-md-6">
+          responsible user for <b><span [innerHTML]="todo_title"></span></b><br>
+          <div *ngFor="let u of todo_users">
+            <small [innerHTML]="u.username"></small>
+          </div>
+        </div>
+      </div>
       <div class="p-grid">
-        <div class="p-col-6">
+        <div class="p-col-12 p-md-4"></div>
+        <div class="p-col-12 p-md-6">
           <form [formGroup]="addUserForm" (ngSubmit)="addUserToTodo()">
             <div class="ui-inputgroup">
               <p-dropdown [options]="users" [style]="{'width':'150px'}" formControlName="selectedUser"
@@ -119,11 +130,6 @@
           <div class="mt-2 ml-2">
             <img *ngIf="loading"
                  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
-          </div>
-        </div>
-        <div class="p-col-6">
-          <div *ngFor="let u of todo_users">
-            <small>{{u.username}}</small>
           </div>
         </div>
       </div>

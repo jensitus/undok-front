@@ -2,10 +2,10 @@
 <div class="container">
 
   <div class="p-grid">
-    <div class="p-col-12 p-md-4">
+    <div class="p-col-12 p-md-6">
       <div *ngIf="currentUser != null">
-        <h1>Hi <span [innerHTML]="currentUser.username"></span>!</h1>
-        <p>You're logged in with Angular 6!!</p>
+        <h3>Hi <span [innerHTML]="currentUser.username"></span>!</h3>
+        <p>Here you can organize your daily stuff</p>
         <div class="p-grid">
           <div class="p-col-6">
             <button pButton class="ui-button-danger" (click)="loadAllUsers()" label="load Users"></button>
@@ -32,6 +32,11 @@
         <p><a [routerLink]="['/login']">Login</a></p>
         <p><a [routerLink]="['/register']">Register</a></p>
       </div>
+    </div>
+    <div class="p-col-12 p-md-6">
+      <p-panel header="todos">
+        <app-list-todo></app-list-todo>
+      </p-panel>
     </div>
   </div>
 </div>
