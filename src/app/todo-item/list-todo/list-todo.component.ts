@@ -31,7 +31,6 @@ export class ListTodoComponent implements OnInit {
     this.commonService.checkAuthToken();
     this.getTodos();
     this.getReloadFromCommenService();
-    this.alertService.success('your Todo List');
   }
 
   private getTodos() {

@@ -17,11 +17,11 @@
                 <a (click)="updateTodoItem(i.id)"><s [innerHTML]="i.name"></s></a>
               </span>
           </div>
-          <div class="p-col-1">
+          <div class="p-col-2">
             <small *ngIf="i.done == false">open</small>
             <small *ngIf="i.done == true">done</small>
           </div>
-          <div class="p-col-1">
+          <div class="p-col-2">
             <a (click)="deleteItem(i.id)" title="delete"><i class="fa fa-trash" *ngIf="i.done == true"></i></a>
           </div>
 

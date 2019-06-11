@@ -27,9 +27,9 @@ export class TodoComponent implements OnInit {
 
   ngOnInit() {
     this.commonService.checkAuthToken();
-    this.getTodos();
-    this.getReloadFromCommonService();
-    this.alertService.success('your Todo List');
+    // this.getTodos();
+    // this.getReloadFromCommonService();
+    this.getAlertMessage();
   }
 
   private getTodos() {
@@ -47,39 +47,39 @@ export class TodoComponent implements OnInit {
     );
   }
 
-  updateTodo(todo_id) {
-    this.loading = true;
-    this.todo = {
-      id: todo_id
-    };
-    this.todoService.updateTodo(todo_id, this.todo).subscribe(data => {
-      this.todo = data;
-      if (this.todo.done === true) {
-        this.alertService.success('Todo is really done');
-      } else if (this.todo.done === false) {
-        this.alertService.success('this todo is not done yet');
-      }
-      this.loading = false;
-      this.getTodos();
-    }, error => {
-      console.log('update todo', error);
-    });
-  }
+  // updateTodo(todo_id) {
+  //   this.loading = true;
+  //   this.todo = {
+  //     id: todo_id
+  //   };
+  //   this.todoService.updateTodo(todo_id, this.todo).subscribe(data => {
+  //     this.todo = data;
+  //     if (this.todo.done === true) {
+  //       this.alertService.success('Todo is really done');
+  //     } else if (this.todo.done === false) {
+  //       this.alertService.success('this todo is not done yet');
+  //     }
+  //     this.loading = false;
+  //     this.getTodos();
+  //   }, error => {
+  //     console.log('update todo', error);
+  //   });
+  // }
 
-  deleteTodo(todo_id) {
-    this.loading = true;
-    this.todoService.deleteTodo(todo_id).subscribe(data => {
-      this.data = data;
-      console.log('delete todo success', this.data, data);
-      this.alertService.success(this.data.text, true);
-      this.getTodos();
-      this.loading = false;
-    }, error => {
-      this.error = error;
-      // this.alertService.error(error);
-    });
-
-  }
+  // deleteTodo(todo_id) {
+  //   this.loading = true;
+  //   this.todoService.deleteTodo(todo_id).subscribe(data => {
+  //     this.data = data;
+  //     console.log('delete todo success', this.data, data);
+  //     this.alertService.success(this.data.text, true);
+  //     this.getTodos();
+  //     this.loading = false;
+  //   }, error => {
+  //     this.error = error;
+  //     // this.alertService.error(error);
+  //   });
+  //
+  // }
 
   private getReloadFromCommonService() {
     this.commonService.todoSubject.subscribe(res => {
@@ -88,6 +88,10 @@ export class TodoComponent implements OnInit {
         this.getTodos();
       }
     });
+  }
+
+  private getAlertMessage() {
+    this.alertService.success('your Todo List', true);
   }
 
 }
