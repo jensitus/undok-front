@@ -12,7 +12,7 @@ import {User} from '../model/user';
 export class UserComponent implements OnInit {
 
   currentUser: User;
-  user_id: number;
+  username: string;
   user: any;
 
   constructor(
@@ -25,9 +25,9 @@ export class UserComponent implements OnInit {
   ngOnInit() {
     this.getCurrentUser();
     this.activatedRoute.params.subscribe(params => {
-      this.user_id = params['id'];
+      this.username = params['username'];
     });
-    this.userService.getById(this.user_id).subscribe(data => {
+    this.userService.getByUsername(this.username).subscribe(data => {
       this.user = data;
       console.log(this.user);
     }, error => {

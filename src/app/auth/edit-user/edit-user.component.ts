@@ -13,7 +13,7 @@ import {environment} from '../../../environments/environment';
 })
 export class EditUserComponent implements OnInit {
 
-  user_id: number;
+  username: string;
   userForm: FormGroup;
   user: any;
   data: any;
@@ -34,14 +34,14 @@ export class EditUserComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
-      this.user_id = params['id'];
+      this.username = params['username'];
     });
     this.userForm = this.formBuilder.group({
       id: [],
       name: ['', Validators.required],
       email: ['', Validators.required]
     });
-    this.userService.getById(this.user_id).subscribe(data => {
+    this.userService.getByUsername(this.username).subscribe(data => {
       this.data = data;
       console.log(this.data);
       if (this.data.avatar === null) {
@@ -58,7 +58,7 @@ export class EditUserComponent implements OnInit {
     }, error => {
       this.alertService.error(error);
     });
-    this.avatar_upload_url = this.apiUrl + '/users/' + this.user_id + '/updateavatar';
+    this.avatar_upload_url = this.apiUrl + '/users/' + this.username + '/updateavatar';
   }
 
   get f() {
@@ -74,8 +74,8 @@ export class EditUserComponent implements OnInit {
     this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: 'aber hallo'});
     for (this.file of event.files) {
       console.log(this.file);
-      console.log(this.user_id);
-      this.userService.uploadAvatar(this.file, this.user_id).subscribe(data => {
+      console.log(this.username);
+      this.userService.uploadAvatar(this.file, this.username).subscribe(data => {
         console.log(data);
       }, error => {
         console.log(error);

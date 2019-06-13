@@ -60,8 +60,8 @@
     <a [routerLink]="['/']"> service - b . org </a>
   </span>
     <span *ngIf="currentUser != null" class="nav-user-man">
-<!--      <small><a [routerLink]="['/users', currentUser.id]">{{currentUser.username}} </a></small>-->
-      <small [innerHTML]="currentUser.username"></small>
+      <small><a [routerLink]="['/users', currentUser.username]" [innerHTML]="currentUser.username"></a></small>
+<!--      <small [innerHTML]="currentUser.username"></small>-->
        |
       <small><a [routerLink]="['/login']"> logout</a></small>
   </span>

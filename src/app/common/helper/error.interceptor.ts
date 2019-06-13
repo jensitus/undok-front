@@ -24,8 +24,8 @@ export class ErrorInterceptor implements HttpInterceptor {
         this.authenticationService.logout();
         this.router.navigate(['/login']);
         this.alertService.success('successfully logged out after 401 or 403', true);
-      } else if (err.status === 404) {
-        this.alertService.error(err.error.text);
+      } else if (err.error.status === 404) {
+        this.alertService.error(err.error.message);
       } else if (err.status === 409) {
         //   this.alertService.error('409');
         // } else if (err.error.message === 'Error -> Unauthorized') {

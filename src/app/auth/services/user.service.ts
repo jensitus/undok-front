@@ -16,8 +16,8 @@ export class UserService {
     return this.http.get<User[]>(this.apiUrl + '/users/all');
   }
 
-  getById(id: number) {
-    return this.http.get(this.apiUrl + '/users/' + id);
+  getByUsername(username: string) {
+    return this.http.get(this.apiUrl + '/users/principle/' + username);
   }
 
   forgotPassword(email: string) {
@@ -36,10 +36,10 @@ export class UserService {
     return this.http.post(this.apiUrl + '/users/auth/check_auth_token', token);
   }
 
-  uploadAvatar(avatar: any, user_id: number) {
+  uploadAvatar(avatar: any, username: string) {
     const formData = new FormData();
     formData.append('avatar', avatar)
-    return this.http.post(`${this.apiUrl}/users/${user_id}/updateavatar`, formData);
+    return this.http.post(`${this.apiUrl}/users/${username}/updateavatar`, formData);
   }
 
 }
