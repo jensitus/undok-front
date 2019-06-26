@@ -51,6 +51,7 @@ import {DialogModule} from 'primeng/dialog';
 import {AccordionModule} from 'primeng/accordion';
 import {PanelModule} from 'primeng/panel';
 import { TodoComponent } from './todo-item/todo/todo.component';
+import { TaskComponent } from './common/task/task.component';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -65,7 +66,8 @@ const app_routes: Routes = [
   {path: 'todos/:id', component: ShowTodoComponent},
   {path: 'diaries', component: DiaryListComponent},
   {path: 'diaries/:id', component: DiaryComponent},
-  {path: 'diaries/:id/edit', component: EditDiaryComponent}
+  {path: 'diaries/:id/edit', component: EditDiaryComponent},
+  {path: 'tasks/:formKey/:taskId', component: TaskComponent}
 ];
 
 @NgModule({
@@ -91,7 +93,8 @@ const app_routes: Routes = [
     EditUserComponent,
     DescriptionComponent,
     EditDescriptionComponent,
-    TodoComponent
+    TodoComponent,
+    TaskComponent
   ],
   imports: [
     BrowserModule,
