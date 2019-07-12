@@ -1,3 +1,4 @@
-<p>
-  task-list works!
-</p>
+<app-navbar></app-navbar>
+<div *ngFor="let t of taskList">
+  <a [routerLink]="['/tasks/ut-todo/', t.id]" [innerHTML]="t.name"></a>
+</div>
