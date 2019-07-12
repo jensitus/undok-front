@@ -19,4 +19,8 @@ export class TaskService {
     return this.http.get(`${this.apiUrl}/service/app/task/${taskId}`);
   }
 
+  getTaskList(user_id) {
+    return this.http.get(`${this.apiUrl}/service/app/task/list/${user_id}`);
+  }
+
 }
