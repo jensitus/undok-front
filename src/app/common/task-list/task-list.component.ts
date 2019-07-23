@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TaskService} from '../task.service';
 import {User} from '../../auth/model/user';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-task-list',
@@ -13,7 +14,8 @@ export class TaskListComponent implements OnInit {
   taskList: any;
 
   constructor(
-    private taskService: TaskService
+    private taskService: TaskService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -22,6 +24,10 @@ export class TaskListComponent implements OnInit {
       this.taskList = data;
       console.log('taskList:', this.taskList);
     });
+  }
+
+  passTheTask(t) {
+    this.router.navigate(['tasks/ut-todo/', t.id]);
   }
 
 }

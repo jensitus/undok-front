@@ -23,4 +23,8 @@ export class TaskService {
     return this.http.get(`${this.apiUrl}/service/app/task/list/${user_id}`);
   }
 
+  getVariable(executionId, variableName) {
+    return this.http.get(`${this.apiUrl}/service/app/${executionId}/variable?name=${variableName}`);
+  }
+
 }
