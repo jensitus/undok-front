@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {TodoService} from '../services/todo.service';
 import {AlertService} from '../../common/alert/services/alert.service';
@@ -16,8 +16,8 @@ import {Description} from '../model/description';
 })
 export class ShowTodoComponent implements OnInit {
 
+  @Input() public todo_id: string;
   itemForm: FormGroup;
-  todo_id: string;
   items: Item[];
   todo: any;
   todo_title: string;
@@ -58,9 +58,10 @@ export class ShowTodoComponent implements OnInit {
   ngOnInit() {
     console.log('ngOnInit');
     // this.commonService.checkAuthToken();
-    this.activatedRoute.params.subscribe(params => {
-      this.todo_id = params['id'];
-    });
+    // this.activatedRoute.params.subscribe(params => {
+    //   this.todo_id = params['id'];
+    // }
+    console.log('donner die todo_id', this.todo_id);
     this.todoService.getTodo(this.todo_id).subscribe(data => {
       this.todo = data;
       this.todo_title = this.todo.title;

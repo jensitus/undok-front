@@ -27,4 +27,13 @@ export class TaskService {
     return this.http.get(`${this.apiUrl}/service/app/${executionId}/variable?name=${variableName}`);
   }
 
+  completeTask(task_id) {
+    console.log('completeTask', task_id);
+    return this.http.post(`${this.apiUrl}/service/app/task/complete`, task_id);
+  }
+
+  checkOpenItems(task_id) {
+    return this.http.get(this.apiUrl + '/service/app/check/items/' + task_id);
+  }
+
 }

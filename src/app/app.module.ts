@@ -53,6 +53,7 @@ import {PanelModule} from 'primeng/panel';
 import { TodoComponent } from './todo-item/todo/todo.component';
 import { TaskComponent } from './common/task/task.component';
 import { TaskListComponent } from './common/task-list/task-list.component';
+import { CompleteTaskComponent } from './common/complete-task/complete-task.component';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -97,7 +98,8 @@ const app_routes: Routes = [
     EditDescriptionComponent,
     TodoComponent,
     TaskComponent,
-    TaskListComponent
+    TaskListComponent,
+    CompleteTaskComponent
   ],
   imports: [
     BrowserModule,

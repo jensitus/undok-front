@@ -25,6 +25,7 @@ export class TodoService {
   }
 
   getTodo(todo_id) {
+    console.log('service todo', todo_id);
     return this.http.get(`${this.apiUrl}/service/todos/${todo_id}`);
   }
 

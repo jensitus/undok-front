@@ -1,0 +1,49 @@
+import {Component, Input, OnInit} from '@angular/core';
+import {TaskService} from '../task.service';
+import {AlertService} from '../alert/services/alert.service';
+
+@Component({
+  selector: 'app-complete-task',
+  templateUrl: './complete-task.component.html',
+  styleUrls: ['./complete-task.component.css']
+})
+export class CompleteTaskComponent implements OnInit {
+
+  @Input() task_id: string;
+  @Input() execution_id: string;
+  @Input() type: string;
+  data: any;
+  itemsOpen: any;
+
+  constructor(
+    private taskService: TaskService,
+    private alertService: AlertService
+  ) {
+  }
+
+  ngOnInit() {
+    console.log('complete-task-this.task', this.task_id);
+    console.log('the fucking task', this.execution_id);
+  }
+
+  submit(task) {
+    if (this.type === 'todo') {
+      this.taskService.checkOpenItems(this.task_id).subscribe(data => {
+        this.itemsOpen = data;
+        if (this.itemsOpen === true) {
+          this.alertService.error('there are still things to do', true);
+        } else {
+          console.log('this.itemsOpen', this.itemsOpen);
+          this.taskService.completeTask(this.task_id).subscribe(resdata => {
+            console.log('resdata', resdata);
+          });
+        }
+      });
+    }
+    // this.taskService.completeTask(task_id).subscribe(data => {
+    //   this.data = data;
+    //   console.log('data complete task:', this.data);
+    // });
+  }
+
+}

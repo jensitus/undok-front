@@ -22,12 +22,11 @@ export class TaskListComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.taskService.getTaskList(this.currentUser.id.toString()).subscribe(data => {
       this.taskList = data;
-      console.log('taskList:', this.taskList);
     });
   }
 
   passTheTask(t) {
-    this.router.navigate(['tasks/ut-todo/', t.id]);
+    this.router.navigate(['tasks/', t.formKey, t.id]);
   }
 
 }
