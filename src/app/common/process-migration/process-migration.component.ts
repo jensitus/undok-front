@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MigrationService} from '../services/migration.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AlertService} from '../alert/services/alert.service';
@@ -19,7 +19,8 @@ export class ProcessMigrationComponent implements OnInit {
     private migrationService: MigrationService,
     private formBuilder: FormBuilder,
     private alertService: AlertService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.migrationForm = this.formBuilder.group({
@@ -36,20 +37,21 @@ export class ProcessMigrationComponent implements OnInit {
   }
 
   onSubmit() {
-
-  }
-
-  private migrateProcess(processInstanceId, sourceVersion, targetVersion, sourceAct, targetAct) {
-    this.theMigrateVersionAndTargetObject = {
-      'processInstanceId': processInstanceId,
-      'sourceVersion': sourceVersion,
-      'targetVersion': targetVersion,
-      'sourceAct': sourceAct,
-      'targetAct': targetAct
-    };
-    this.migrationService.migrateProcessInstance(this.theMigrateVersionAndTargetObject).subscribe(data => {
+    // this.theMigrateVersionAndTargetObject = {
+    //   'processInstanceId': processInstanceId,
+    //   'sourceVersion': sourceVersion,
+    //   'targetVersion': targetVersion,
+    //   'sourceAct': sourceAct,
+    //   'targetAct': targetAct
+    // };
+    this.migrationService.migrateProcessInstance(this.migrationForm.value).subscribe(data => {
       console.log('migrate', data);
     });
+  }
+
+  private migrateProcess() {
+
+
   }
 
 
