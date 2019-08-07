@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TaskService} from '../task.service';
+import {TaskService} from '../services/task.service';
 import {AlertService} from '../alert/services/alert.service';
 
 @Component({
@@ -40,10 +40,6 @@ export class CompleteTaskComponent implements OnInit {
         }
       });
     }
-    // this.taskService.completeTask(task_id).subscribe(data => {
-    //   this.data = data;
-    //   console.log('data complete task:', this.data);
-    // });
   }
 
 }

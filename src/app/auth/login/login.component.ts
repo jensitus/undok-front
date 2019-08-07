@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../services/authentication.service';
 import {AlertService} from '../../common/alert/services/alert.service';
 import {first} from 'rxjs/operators';
-import {CommonService} from '../../common/common.service';
+import {CommonService} from '../../common/services/common.service';
 
 @Component({
   selector: 'app-login',

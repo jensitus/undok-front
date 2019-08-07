@@ -6,7 +6,7 @@ import {Item} from '../model/item';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {User} from '../../auth/model/user';
 import {UserService} from '../../auth/services/user.service';
-import {CommonService} from '../../common/common.service';
+import {CommonService} from '../../common/services/common.service';
 import {Description} from '../model/description';
 
 @Component({

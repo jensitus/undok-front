@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AlertService} from '../../common/alert/services/alert.service';
 import {TodoService} from '../services/todo.service';
-import {CommonService} from '../../common/common.service';
+import {CommonService} from '../../common/services/common.service';
 import {Todo} from '../model/todo';
 
 @Component({

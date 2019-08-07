@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {DiaryService} from '../services/diary.service';
 import {Diary} from '../model/diary';
 import {AlertService} from '../../common/alert/services/alert.service';
-import {CommonService} from '../../common/common.service';
+import {CommonService} from '../../common/services/common.service';
 
 @Component({
   selector: 'app-diary-list',

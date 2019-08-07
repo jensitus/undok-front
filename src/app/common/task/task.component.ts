@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {TaskService} from '../task.service';
+import {TaskService} from '../services/task.service';
 import {ActivatedRoute} from '@angular/router';
 import {TodoService} from '../../todo-item/services/todo.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';

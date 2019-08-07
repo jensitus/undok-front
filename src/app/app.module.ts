@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {ReactiveFormsModule, FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AppComponent} from './app.component';
 import {HomeComponent} from './common/home/home.component';
@@ -45,15 +45,16 @@ import {EditUserComponent} from './auth/edit-user/edit-user.component';
 import {MessageService} from 'primeng/api';
 import {SidebarModule} from 'primeng/sidebar';
 import {OrderModule} from 'ngx-order-pipe';
-import { DescriptionComponent } from './todo-item/description/add/description.component';
-import { EditDescriptionComponent } from './todo-item/description/edit/edit-description.component';
+import {DescriptionComponent} from './todo-item/description/add/description.component';
+import {EditDescriptionComponent} from './todo-item/description/edit/edit-description.component';
 import {DialogModule} from 'primeng/dialog';
 import {AccordionModule} from 'primeng/accordion';
 import {PanelModule} from 'primeng/panel';
-import { TodoComponent } from './todo-item/todo/todo.component';
-import { TaskComponent } from './common/task/task.component';
-import { TaskListComponent } from './common/task-list/task-list.component';
-import { CompleteTaskComponent } from './common/complete-task/complete-task.component';
+import {TodoComponent} from './todo-item/todo/todo.component';
+import {TaskComponent} from './common/task/task.component';
+import {TaskListComponent} from './common/task-list/task-list.component';
+import {CompleteTaskComponent} from './common/complete-task/complete-task.component';
+import {ProcessMigrationComponent} from './common/process-migration/process-migration.component';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -70,7 +71,8 @@ const app_routes: Routes = [
   {path: 'diaries/:id', component: DiaryComponent},
   {path: 'diaries/:id/edit', component: EditDiaryComponent},
   {path: 'tasks/:formKey/:taskId', component: TaskComponent},
-  {path: 'tasks/list', component: TaskListComponent}
+  {path: 'tasks/list', component: TaskListComponent},
+  {path: 'migrate/process', component: ProcessMigrationComponent}
 ];
 
 @NgModule({
@@ -99,7 +101,8 @@ const app_routes: Routes = [
     TodoComponent,
     TaskComponent,
     TaskListComponent,
-    CompleteTaskComponent
+    CompleteTaskComponent,
+    ProcessMigrationComponent
   ],
   imports: [
     BrowserModule,
