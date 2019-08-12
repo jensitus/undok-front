@@ -22,6 +22,7 @@ export class TaskListComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.taskService.getTaskList(this.currentUser.id.toString()).subscribe(data => {
       this.taskList = data;
+      console.log(this.taskList);
     });
   }
 

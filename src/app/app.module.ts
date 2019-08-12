@@ -55,6 +55,8 @@ import {TaskComponent} from './common/task/task.component';
 import {TaskListComponent} from './common/task-list/task-list.component';
 import {CompleteTaskComponent} from './common/complete-task/complete-task.component';
 import {ProcessMigrationComponent} from './common/process-migration/process-migration.component';
+import { TodotaskComponent } from './common/todotask/todotask.component';
+import { ConftodoComponent } from './common/conftodo/conftodo.component';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -102,7 +104,9 @@ const app_routes: Routes = [
     TaskComponent,
     TaskListComponent,
     CompleteTaskComponent,
-    ProcessMigrationComponent
+    ProcessMigrationComponent,
+    TodotaskComponent,
+    ConftodoComponent
   ],
   imports: [
     BrowserModule,

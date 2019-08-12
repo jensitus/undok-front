@@ -37,22 +37,10 @@ export class ProcessMigrationComponent implements OnInit {
   }
 
   onSubmit() {
-    // this.theMigrateVersionAndTargetObject = {
-    //   'processInstanceId': processInstanceId,
-    //   'sourceVersion': sourceVersion,
-    //   'targetVersion': targetVersion,
-    //   'sourceAct': sourceAct,
-    //   'targetAct': targetAct
-    // };
     this.migrationService.migrateProcessInstance(this.migrationForm.value).subscribe(data => {
       console.log('migrate', data);
+
     });
   }
-
-  private migrateProcess() {
-
-
-  }
-
 
 }

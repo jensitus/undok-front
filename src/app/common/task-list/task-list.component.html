@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 <div class="container">
   <div *ngFor="let t of taskList">
-    <!--<a [routerLink]="['/tasks/ut-todo/', t.id]" [innerHTML]="t.name"></a>-->
-    <a (click)="passTheTask(t)" [innerHTML]="t.name"></a>
+    <a [routerLink]="['/tasks/',t.formKey, t.id]" [innerHTML]="t.name"></a>
+    <!--<a (click)="passTheTask(t)" [innerHTML]="t.name"></a>-->
   </div>
 </div>
