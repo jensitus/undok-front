@@ -23,7 +23,6 @@ export class TodotaskComponent implements OnInit {
   loading = false;
   submitted = false;
   item: any;
-  addUserForm: FormGroup;
   users: User[];
   user_id: string;
   todo_users: User[];
@@ -70,7 +69,6 @@ export class TodotaskComponent implements OnInit {
       this.getTheTodoForThisTask(this.task.executionId);
     });
     this.getItemForm();
-    this.getAddUserForm();
     this.getDescriptionForm();
   }
 
@@ -163,28 +161,6 @@ export class TodotaskComponent implements OnInit {
     });
   }
 
-  get u() {
-    return this.addUserForm.controls;
-  }
-
-  addUserToTodo() {
-    this.submitted = true;
-    if (this.addUserForm.invalid) {
-      return;
-    }
-    this.loading = true;
-    this.user_id = this.addUserForm.value['selectedUser'].id;
-    this.todoService.addUserToTodo(this.todo.id, this.user_id).subscribe(data => {
-      this.getUserForTodo();
-      this.data = data;
-      this.loading = false;
-      this.alertService.success('user successfully added');
-    }, error => {
-      // this.alertService.error(error);
-      this.loading = false;
-    });
-  }
-
   updateTodoItem(item_id) {
     this.loading = true;
     this.item = {
@@ -267,33 +243,6 @@ export class TodotaskComponent implements OnInit {
       description: ['', Validators.required],
       item_id: []
     });
-  }
-
-  private getAddUserForm() {
-    this.addUserForm = this.formBuilder.group({
-      user_id: [],
-      selectedUser: this.selectedUser
-    });
-  }
-
-  private getUsers() {
-    this.userService.getAll().subscribe(data => {
-      this.users = data;
-    }, error => {
-    });
-  }
-
-  private getUserForTodo() {
-    this.todoService.getTodoUsers(this.todo_id).subscribe(data => {
-      this.todo_users = data;
-    }, error => {
-      // this.alertService.error(error);
-    });
-  }
-
-  loadUser() {
-    console.log('loadUser()');
-    this.getUsers();
   }
 
   getItemDescriptions(item_id) {

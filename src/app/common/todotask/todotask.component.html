@@ -112,10 +112,8 @@
       <div class="p-grid mb-2">
         <div class="p-col-12 p-md-4"></div>
         <div class="p-col-12 p-md-6">
-          responsible user for <br>
-          <b><span [innerHTML]="todo_title"></span></b><br>
-          <div *ngFor="let u of todo_users">
-            <small [innerHTML]="u.username"></small>
+          <div *ngIf="todo_id != null">
+            <app-add-user [todo_id]="todo_id" [user_id]="user_id" [todo_title]="todo_title"></app-add-user>
           </div>
         </div>
       </div>
@@ -131,15 +129,6 @@
       <div class="p-grid">
         <div class="p-col-12 p-md-4"></div>
         <div class="p-col-12 p-md-6">
-          <form [formGroup]="addUserForm" (ngSubmit)="addUserToTodo()">
-            <div class="ui-inputgroup">
-              <p-dropdown [options]="users" [style]="{'width':'150px'}" formControlName="selectedUser"
-                          optionLabel="username" placeholder="Select a user" (onShow)="loadUser()"></p-dropdown>
-            </div>
-            <div class="ui-inputgroup mt-1">
-              <button pButton [disabled]="loading" class="ui-button-warning" label="add user"></button>
-            </div>
-          </form>
           <div class="mt-2 ml-2">
             <img *ngIf="loading"
                  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
