@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {TaskService} from '../services/task.service';
+import {TaskService} from '../../common/services/task.service';
 import {ActivatedRoute} from '@angular/router';
 import {TodoService} from '../../todo-item/services/todo.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Item} from '../../todo-item/model/item';
 import {User} from '../../auth/model/user';
 import {Description} from '../../todo-item/model/description';
-import {AlertService} from '../alert/services/alert.service';
+import {AlertService} from '../../common/alert/services/alert.service';
 import {UserService} from '../../auth/services/user.service';
 
 @Component({

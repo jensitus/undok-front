@@ -51,13 +51,15 @@ import {DialogModule} from 'primeng/dialog';
 import {AccordionModule} from 'primeng/accordion';
 import {PanelModule} from 'primeng/panel';
 import {TodoComponent} from './todo-item/todo/todo.component';
-import {TaskComponent} from './common/task/task.component';
+import {TaskComponent} from './process/task/task.component';
 import {TaskListComponent} from './process/task-list/task-list.component';
-import {CompleteTaskComponent} from './common/complete-task/complete-task.component';
+import {CompleteTaskComponent} from './process/complete-task/complete-task.component';
 import {ProcessMigrationComponent} from './common/process-migration/process-migration.component';
 import { TodotaskComponent } from './process/todotask/todotask.component';
 import { ConftodoComponent } from './process/conftodo/conftodo.component';
 import { AddUserComponent } from './common/add-user/add-user.component';
+import { CheckVariableComponent } from './process/check-variable/check-variable.component';
+import {CheckboxModule} from 'primeng/checkbox';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -108,7 +110,8 @@ const app_routes: Routes = [
     ProcessMigrationComponent,
     TodotaskComponent,
     ConftodoComponent,
-    AddUserComponent
+    AddUserComponent,
+    CheckVariableComponent
   ],
   imports: [
     BrowserModule,
@@ -133,7 +136,8 @@ const app_routes: Routes = [
     AngularFontAwesomeModule,
     DialogModule,
     AccordionModule,
-    PanelModule
+    PanelModule,
+    CheckboxModule
   ],
   providers: [
     AuthGuard,

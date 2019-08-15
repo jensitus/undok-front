@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TaskService} from '../services/task.service';
-import {AlertService} from '../alert/services/alert.service';
+import {TaskService} from '../../common/services/task.service';
+import {AlertService} from '../../common/alert/services/alert.service';
 
 @Component({
   selector: 'app-complete-task',
