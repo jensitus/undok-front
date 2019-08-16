@@ -60,6 +60,7 @@ import { ConftodoComponent } from './process/conftodo/conftodo.component';
 import { AddUserComponent } from './common/add-user/add-user.component';
 import { CheckVariableComponent } from './process/check-variable/check-variable.component';
 import {CheckboxModule} from 'primeng/checkbox';
+import { FinishTodoComponent } from './process/finish-todo/finish-todo.component';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -111,7 +112,8 @@ const app_routes: Routes = [
     TodotaskComponent,
     ConftodoComponent,
     AddUserComponent,
-    CheckVariableComponent
+    CheckVariableComponent,
+    FinishTodoComponent
   ],
   imports: [
     BrowserModule,

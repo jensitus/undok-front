@@ -1,20 +1,15 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TaskService} from '../../common/services/task.service';
-import {ActivatedRoute} from '@angular/router';
-import {TodoService} from '../../todo-item/services/todo.service';
-import {AlertService} from '../../common/alert/services/alert.service';
-import {FormBuilder} from '@angular/forms';
-import {UserService} from '../../auth/services/user.service';
 import {User} from '../../auth/model/user';
 import {Item} from '../../todo-item/model/item';
-import {TodoTaskService} from '../services/todo-task.service';
+import {TaskService} from '../../common/services/task.service';
+import {TodoService} from '../../todo-item/services/todo.service';
 
 @Component({
-  selector: 'app-conftodo',
-  templateUrl: './conftodo.component.html',
-  styleUrls: ['./conftodo.component.css']
+  selector: 'app-finish-todo',
+  templateUrl: './finish-todo.component.html',
+  styleUrls: ['./finish-todo.component.css']
 })
-export class ConftodoComponent implements OnInit {
+export class FinishTodoComponent implements OnInit {
 
   @Input() taskId: string;
   simple: boolean;
@@ -26,16 +21,10 @@ export class ConftodoComponent implements OnInit {
   item: any;
   items: Item[];
   executionId: string;
-  todoFinished: boolean;
 
   constructor(
     private taskService: TaskService,
-    private activatedRoute: ActivatedRoute,
-    private todoService: TodoService,
-    private alertService: AlertService,
-    private todoTaskService: TodoTaskService,
-    private formBuilder: FormBuilder,
-    private userService: UserService,
+    private todoService: TodoService
   ) { }
 
   ngOnInit() {

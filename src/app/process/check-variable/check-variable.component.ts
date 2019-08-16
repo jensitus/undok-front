@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ProcessService} from '../services/process.service';
+import {AlertService} from '../../common/alert/services/alert.service';
 
 @Component({
   selector: 'app-check-variable',
@@ -10,22 +11,37 @@ export class CheckVariableComponent implements OnInit {
 
   @Input() executionId: string;
   @Input() name: string;
+  data: any;
+  c: any;
+  checked: string;
+  @Input() t: string;
+  @Input() f: string;
 
   constructor(
-    private processService: ProcessService
+    private processService: ProcessService,
+    private alertService: AlertService
   ) { }
 
   ngOnInit() {
-    console.log(this.executionId);
-    console.log(this.name);
+    this.getVar();
   }
 
   onCheckSubmit(value) {
-    console.log('yeah hell');
-    console.log(value);
-    console.log(this.name);
     this.processService.setVariable(this.executionId, this.name, value).subscribe(data => {
-      console.log(data);
+      this.data = data;
+      this.alertService.success(this.data.text, true);
+      this.getVar();
+    });
+  }
+
+  private getVar() {
+    this.processService.getVariable(this.executionId, this.name).subscribe(c => {
+      console.log('check', c);
+      if (c === true) {
+        this.checked = this.t;
+      } else {
+        this.checked = this.f;
+      }
     });
   }
 

@@ -20,4 +20,8 @@ export class ProcessService {
     return this.http.post(this.apiUrl + '/service/app/setvariable/' + executionId + '/?name=' + name, value.toString());
   }
 
+  getVariable(executionId, variableName) {
+    return this.http.get(`${this.apiUrl}/service/app/${executionId}/variable?name=${variableName}`);
+  }
+
 }

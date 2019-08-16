@@ -5,13 +5,10 @@
   </div>
   <div class="p-grid">
     <div class="p-col-12 p-md-6 mb-2">
-      Should this Todo be a simple one?
       <div *ngIf="executionId != null">
-        <app-check-variable [executionId]="executionId" name="simple" t="simple" f="complex"></app-check-variable>
+        <app-check-variable [executionId]="executionId" name="todoFinished" t="todo is finished" f="todo is not finished"></app-check-variable>
       </div>
-      If this box is unchecked this Todo will be complex and offer more options
     </div>
-
     <div class="p-col-12 p-md-6">
       <div *ngIf="executionId != null">
         <app-complete-task [task_id]="taskId" [execution_id]="executionId" type="todo"></app-complete-task>
