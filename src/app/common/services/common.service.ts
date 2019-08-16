@@ -24,6 +24,7 @@ export class CommonService {
   public todoSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public diarySubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public taskSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public itemSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   setSubject(value) {
     if (value) {
@@ -73,5 +74,12 @@ export class CommonService {
     }
   }
 
+  setItemSubject(value) {
+    if (value) {
+      this.itemSubject.next(value);
+    } else {
+      this.itemSubject.next(null);
+    }
+  }
 
 }

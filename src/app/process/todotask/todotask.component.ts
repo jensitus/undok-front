@@ -8,6 +8,7 @@ import {ActivatedRoute} from '@angular/router';
 import {TodoService} from '../../todo-item/services/todo.service';
 import {AlertService} from '../../common/alert/services/alert.service';
 import {UserService} from '../../auth/services/user.service';
+import {CommonService} from '../../common/services/common.service';
 
 @Component({
   selector: 'app-todotask',
@@ -29,19 +30,10 @@ export class TodotaskComponent implements OnInit {
   selectedUser: User;
   data: any;
   e: any;
+  reload = false;
 
-  valDescription: any;
-  displayDescription = false;
-  displayUpdateDescription = false;
-  displayItem = false;
-  display_item_id: number;
-  update_description_id: number;
-  descriptionUpdateForm: FormGroup;
-
-  description_id: number;
   description: any;
-  descriptionForm: FormGroup;
-  itemDescriptions: Description[];
+
 
   @Input() taskId: string;
   formKey: string;
@@ -55,6 +47,7 @@ export class TodotaskComponent implements OnInit {
     private alertService: AlertService,
     private formBuilder: FormBuilder,
     private userService: UserService,
+    private commonService: CommonService
   ) { }
 
   ngOnInit() {
@@ -69,7 +62,7 @@ export class TodotaskComponent implements OnInit {
       this.getTheTodoForThisTask(this.task.executionId);
     });
     this.getItemForm();
-    this.getDescriptionForm();
+    this.reloadIfItemIsDeleted();
   }
 
   private getTheTodoForThisTask(executionId) {
@@ -93,10 +86,6 @@ export class TodotaskComponent implements OnInit {
 
   get f() {
     return this.itemForm.controls;
-  }
-
-  get d() {
-    return this.descriptionForm.controls;
   }
 
   onSubmit(type) {
@@ -125,104 +114,6 @@ export class TodotaskComponent implements OnInit {
     }
   }
 
-  onDescriptionSubmit(item_id) {
-    this.submitted = true;
-    if (this.descriptionForm.invalid) {
-      return;
-    }
-    this.loading = true;
-    this.description = {
-      text: this.descriptionForm.value.description
-    };
-    this.todoService.createItemDescription(this.description, this.todo_id, item_id).subscribe(data => {
-      this.data = data;
-      this.descriptionForm.reset();
-      this.loading = false;
-      this.addDescription(this.data.id);
-      this.getItemDescriptions(item_id);
-    });
-  }
-
-  onDescriptionUpdateSubmit(item_id) {
-    this.submitted = true;
-    if (this.descriptionUpdateForm.invalid) {
-      return;
-    }
-    this.loading = true;
-    this.description = {
-      id: this.descriptionUpdateForm.value.id,
-      text: this.descriptionUpdateForm.value.text
-    };
-    this.todoService.updateItemDescription(this.todo_id, item_id, this.description).subscribe(data => {
-      this.data = data;
-      this.loading = false;
-      this.addEditDescription(this.description.id);
-      this.getItemDescriptions(item_id);
-    });
-  }
-
-  updateTodoItem(item_id) {
-    this.loading = true;
-    this.item = {
-      id: item_id
-    };
-    this.todoService.updateTodoItem(this.todo_id, item_id, this.item).subscribe(data => {
-      this.item = data;
-      if (this.item.done === true) {
-        this.alertService.success('item successfully done', false);
-      } else if (this.item.done === false) {
-        this.alertService.success('item is still open', false);
-      }
-      this.getTodoItems();
-      this.loading = false;
-      this.displayDescription = false;
-      this.displayItem = false;
-    });
-  }
-
-  openItem(item_id) {
-    this.displayItem = !this.displayItem;
-    this.display_item_id = item_id;
-    this.displayUpdateDescription = false;
-    this.getItemDescriptions(item_id);
-  }
-
-  addDescription(description_id) {
-    this.displayDescription = !this.displayDescription;
-    this.description_id = description_id;
-  }
-
-  addEditDescription(description_id) {
-    this.displayUpdateDescription = !this.displayUpdateDescription;
-    this.update_description_id = description_id;
-  }
-
-  editDescription(description) {
-    this.submitted = true;
-    this.descriptionUpdateForm = this.formBuilder.group({
-      id: [],
-      text: ['', Validators.required]
-    });
-    this.valDescription = {
-      id: description.id,
-      text: description.text
-    };
-    this.descriptionUpdateForm.setValue(this.valDescription);
-    this.addEditDescription(description.id);
-  }
-
-  deleteItem(item_id) {
-    this.loading = true;
-    this.todoService.deleteTodoItem(this.todo_id, item_id).subscribe(data => {
-      this.data = data;
-      this.alertService.success(this.data.text, true);
-      this.getTodoItems();
-      this.loading = false;
-    }, error => {
-      this.loading = false;
-    });
-  }
-
   private getTodoItems() {
     this.todoService.getTodoItems(this.todo_id).subscribe(data => {
       this.items = data;
@@ -238,18 +129,13 @@ export class TodotaskComponent implements OnInit {
     });
   }
 
-  private getDescriptionForm() {
-    this.descriptionForm = this.formBuilder.group({
-      description: ['', Validators.required],
-      item_id: []
+  private reloadIfItemIsDeleted() {
+    this.commonService.itemSubject.subscribe(res => {
+      this.reload = res;
+      if (this.reload) {
+        this.getTodoItems();
+      }
     });
-  }
-
-  getItemDescriptions(item_id) {
-    this.todoService.getItemDescriptions(this.todo_id, item_id).subscribe(data => {
-      this.itemDescriptions = data;
-    });
-
   }
 
 }
