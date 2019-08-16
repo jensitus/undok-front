@@ -31,6 +31,7 @@ export class TodotaskComponent implements OnInit {
   data: any;
   e: any;
   reload = false;
+  simple: boolean;
 
   description: any;
 
@@ -51,18 +52,17 @@ export class TodotaskComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.activatedRoute.params.subscribe(params => {
-    //   this.task_id = params['taskId'];
-    //   this.formKey = params['formKey'];
-    // });
     this.taskService.getTask(this.taskId).toPromise().then(data => {
       this.task = data;
       console.log('this.task', this.task);
     }).then(response => {
       this.getTheTodoForThisTask(this.task.executionId);
+    }).then(s => {
+      this.getSimpleOrComplex();
     });
     this.getItemForm();
     this.reloadIfItemIsDeleted();
+    console.log('Donner TODO Herrgott');
   }
 
   private getTheTodoForThisTask(executionId) {
@@ -135,6 +135,13 @@ export class TodotaskComponent implements OnInit {
       if (this.reload) {
         this.getTodoItems();
       }
+    });
+  }
+
+  private getSimpleOrComplex() {
+    this.taskService.getVariable(this.task.executionId, 'simple').subscribe(data => {
+      console.log('simple', data);
+      this.simple = Boolean(data);
     });
   }
 

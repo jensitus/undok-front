@@ -8,10 +8,13 @@
     <div class="p-col-12 p-md-6">
       <!-- item section -->
       <div *ngFor="let i of items">
-
-<!--          here is the place for complex or the simple component-->
+        <!-- differentiate between simple or complex -->
+        <div *ngIf="simple">
+          <app-simple-todo [item]="i" [todo_id]="todo_id"></app-simple-todo>
+        </div>
+        <div *ngIf="!simple">
           <app-complex-todo [item]="i" [todo_id]="todo_id"></app-complex-todo>
-
+        </div>
       </div>
       <div class="mt-3">
         <form [formGroup]="itemForm" (ngSubmit)="onSubmit('item')">

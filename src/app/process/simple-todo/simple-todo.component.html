@@ -1,3 +1,18 @@
-<p>
-  simple-todo works!
-</p>
+<div class="p-grid">
+  <div class="p-col-8">
+    <b>-</b> &nbsp;
+    <span *ngIf="item.done == false">
+                <a (click)="updateTodoItem(item.id)" [innerHTML]="item.name"></a>
+              </span>
+    <span *ngIf="item.done == true">
+                <a (click)="updateTodoItem(item.id)"><s [innerHTML]="item.name"></s></a>
+              </span>
+  </div>
+  <div class="p-col-2">
+    <small *ngIf="item.done == false">open</small>
+    <small *ngIf="item.done == true">done</small>
+  </div>
+  <div class="p-col-2">
+    <a (click)="deleteItem(item.id)" title="delete"><i class="fa fa-trash" *ngIf="item.done == true"></i></a>
+  </div>
+</div>
