@@ -10,27 +10,9 @@ import {Router} from '@angular/router';
 })
 export class TaskListComponent implements OnInit {
 
-  currentUser: User;
-  taskList: any;
-
-  constructor(
-    private taskService: TaskService,
-    private router: Router
-  ) { }
+  constructor() { }
 
   ngOnInit() {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.taskService.getTaskList(this.currentUser.id.toString()).subscribe(data => {
-      this.taskList = data;
-      console.log(this.taskList);
-      if ( this.taskList.length === 0) {
-        this.taskList = null;
-      }
-    });
-  }
-
-  passTheTask(t) {
-    this.router.navigate(['tasks/', t.formKey, t.id]);
   }
 
 }

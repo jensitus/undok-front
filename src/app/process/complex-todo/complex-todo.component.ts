@@ -100,9 +100,9 @@ export class ComplexTodoComponent implements OnInit {
     this.display_item_id = item_id;
     this.displayUpdateDescription = false;
     this.getItemDescriptions(item_id);
-    console.log('displayItem', this.displayItem);
-    console.log('display_item_id', this.display_item_id);
-    console.log('displayUpdateDescription', this.displayUpdateDescription);
+    // console.log('displayItem', this.displayItem);
+    // console.log('display_item_id', this.display_item_id);
+    // console.log('displayUpdateDescription', this.displayUpdateDescription);
   }
 
   updateTodoItem(item_id) {

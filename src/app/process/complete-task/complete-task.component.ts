@@ -28,7 +28,7 @@ export class CompleteTaskComponent implements OnInit {
     console.log('the fucking task', this.execution_id);
   }
 
-  submit(task) {
+  submit() {
     if (this.type === 'todo') {
       this.taskService.checkOpenItems(this.task_id).subscribe(data => {
         this.itemsOpen = data;
