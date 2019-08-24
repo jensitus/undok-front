@@ -54,7 +54,6 @@ export class TodotaskComponent implements OnInit {
   ngOnInit() {
     this.taskService.getTask(this.taskId).toPromise().then(data => {
       this.task = data;
-      console.log('this.task', this.task);
     }).then(response => {
       this.getTheTodoForThisTask(this.task.executionId);
     }).then(s => {
@@ -62,16 +61,14 @@ export class TodotaskComponent implements OnInit {
     });
     this.getItemForm();
     this.reloadIfItemIsDeleted();
-    console.log('Donner TODO Herrgott');
+    this.reloadIfDescriptionIsUpdated();
   }
 
   private getTheTodoForThisTask(executionId) {
     this.taskService.getVariable(executionId, 'entityId').toPromise().then(data => {
       this.todo_id = data.toString();
-      console.log('todo_id', this.todo_id);
       this.todoService.getTodo(this.todo_id).subscribe(todo => {
         this.todo = todo;
-        console.log('task.this.todo', this.todo);
         this.todo_title = this.todo.title;
         this.todo_users = this.todo.users;
         this.items = this.todo.items;
@@ -140,8 +137,18 @@ export class TodotaskComponent implements OnInit {
 
   private getSimpleOrComplex() {
     this.taskService.getVariable(this.task.executionId, 'simple').subscribe(data => {
-      console.log('simple', data);
       this.simple = Boolean(data);
+    });
+  }
+
+  private reloadIfDescriptionIsUpdated() {
+    this.commonService.descriptionUpdateSubject.subscribe(res => {
+      this.reload = res;
+      if (this.reload) {
+        this.getTodoItems();
+        // this.getItemDescriptions(item_id);
+        // this.showUpdateDescription();
+      }
     });
   }
 

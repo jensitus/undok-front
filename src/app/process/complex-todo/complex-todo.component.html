@@ -15,17 +15,16 @@
   <div class="p-col-2">
     <a (click)="deleteItem(item.id)" title="delete"><i class="fa fa-trash" *ngIf="item.done == true"></i></a>
   </div>
-
   <div class="mb-2" id="{{item.name}}" *ngIf="displayItem && display_item_id == item.id">
-            <span class="ml-2" *ngIf="item.done == false">
-              <small><a (click)='updateTodoItem(item.id)'>done</a></small>
-            </span>
+    <span class="ml-2" *ngIf="item.done == false">
+      <small><a (click)='updateTodoItem(item.id)'>done</a></small>
+    </span>
     <span class="ml-2" *ngIf="item.done == true">
-              <small><a (click)='updateTodoItem(item.id)'>undo</a></small>
-            </span>
+      <small><a (click)='updateTodoItem(item.id)'>undo</a></small>
+    </span>
     <span class="ml-2">
-              <small *ngIf="itemDescriptions < 1"><a (click)="addDescription(item.id)">description</a></small>
-            </span>
+      <small *ngIf="itemDescriptions < 1"><a (click)="addDescription(item.id)">description</a></small>
+    </span>
     <div class="mb-1 mt-1 ml-2" *ngFor="let description of itemDescriptions">
       <div *ngIf="!displayUpdateDescription">
         <div>
@@ -33,41 +32,26 @@
         </div>
         <div>
           <small>
-            <a (click)="editDescription(description)">edit</a>
+            <a (click)="editDescription(description, item.id)">edit</a>
           </small>
         </div>
       </div>
       <div *ngIf="displayUpdateDescription && update_description_id == description.id">
-        <form [formGroup]="descriptionUpdateForm" (ngSubmit)="onDescriptionUpdateSubmit(item.id)">
-          <div class="ui-inputgroup">
-                  <textarea pInputTextarea formControlName="text" cols="40" autoResize="autoResize"
-                            placeholder="description"
-                            [ngClass]="{ 'is-invalid': submitted && d.description.errors }"></textarea>
-            <img *ngIf="loading"
-                 src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
-          </div>
-          <button pButton [disabled]="loading" class="ui-button-secondary" label="update"></button>
-          <div *ngIf="submitted && d.description.errors" class="invalid-feedback">
-            <div *ngIf="d.description.errors.required">
-              <small> description is required</small>
-            </div>
-          </div>
-        </form>
+        <app-edit-description [todo_id]="todo_id" [item]="item" [description]="description"></app-edit-description>
       </div>
     </div>
-
     <div class="mb-1 ml-2" *ngIf="displayDescription && description_id == item.id">
       <form [formGroup]="descriptionForm" (ngSubmit)="onDescriptionSubmit(item.id)">
         <div class="ui-inputgroup">
                   <textarea pInputTextarea formControlName="description" cols="40" autoResize="autoResize"
                             placeholder="new description"
-                            [ngClass]="{ 'is-invalid': submitted && d.description.errors }"></textarea>
-          <img *ngIf="loading"
-               src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                            [ngClass]="{ 'is-invalid': submitted && d.description.errors }">
+                  </textarea>
+          <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
         </div>
         <div *ngIf="submitted && d.description.errors" class="invalid-feedback">
           <div *ngIf="d.description.errors.required">
-            <small> description is required</small>
+            <small>description is required</small>
           </div>
         </div>
         <button pButton [disabled]="loading" class="ui-button-secondary" label="Hopp"></button>

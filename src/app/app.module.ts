@@ -19,7 +19,7 @@ import {NavbarComponent} from './common/navbar/navbar.component';
 import {ResetPasswordComponent} from './auth/reset-password/reset-password.component';
 import {ForgotPasswordComponent} from './auth/forgot-password/forgot-password.component';
 import {ListTodoComponent} from './todo-item/list-todo/list-todo.component';
-import {ItemsComponent} from './todo-item/items/items.component';
+// import {ItemsComponent} from './todo-item/items/items.component';
 import {ShowTodoComponent} from './todo-item/show-todo/show-todo.component';
 import {AddTodoComponent} from './todo-item/add-todo/add-todo.component';
 import {EditTodoComponent} from './todo-item/edit-todo/edit-todo.component';
@@ -58,7 +58,7 @@ import {ProcessMigrationComponent} from './common/process-migration/process-migr
 import { TodotaskComponent } from './process/todotask/todotask.component';
 import { ConftodoComponent } from './process/conftodo/conftodo.component';
 import { AddUserComponent } from './common/add-user/add-user.component';
-import { CheckVariableComponent } from './process/check-variable/check-variable.component';
+import { SetVariableCheckBoxComponent } from './process/set-variable-checkbox/set-variable-check-box.component';
 import {CheckboxModule} from 'primeng/checkbox';
 import { FinishTodoComponent } from './process/finish-todo/finish-todo.component';
 import { ComplexTodoComponent } from './process/complex-todo/complex-todo.component';
@@ -94,7 +94,7 @@ const app_routes: Routes = [
     ResetPasswordComponent,
     ForgotPasswordComponent,
     ListTodoComponent,
-    ItemsComponent,
+    // ItemsComponent,
     ShowTodoComponent,
     AddTodoComponent,
     EditTodoComponent,
@@ -114,7 +114,7 @@ const app_routes: Routes = [
     TodotaskComponent,
     ConftodoComponent,
     AddUserComponent,
-    CheckVariableComponent,
+    SetVariableCheckBoxComponent,
     FinishTodoComponent,
     ComplexTodoComponent,
     SimpleTodoComponent

@@ -11,6 +11,7 @@ import {Description} from '../model/description';
 })
 export class TodoService {
 
+  urle: string;
   apiUrl = environment.api_url;
 
   constructor(private http: HttpClient) {
@@ -65,16 +66,17 @@ export class TodoService {
     return this.http.delete(`${this.apiUrl}/service/todos/${todo_id}`);
   }
 
-  createItemDescription(description: Description, todo_id, item_id) {
-    return this.http.post(`${this.apiUrl}/service/todos/${todo_id}/items/${item_id}/descriptions/create`, description);
+  createItemDescription(description: Description, todo_id, item_id, entity) {
+    return this.http.post(`${this.apiUrl}/service/todos/${todo_id}/items/${item_id}/descriptions/create/?entity=${entity}`, description);
   }
 
   getItemDescriptions(todo_id, item_id) {
     return this.http.get<Description[]>(`${this.apiUrl}/service/todos/${todo_id}/items/${item_id}/descriptions`);
   }
 
-  updateItemDescription(todo_id, item_id, description: Description) {
-    return this.http.put(this.apiUrl + '/service/todos/' + todo_id + '/items/' + item_id + '/descriptions/' + description.id + '/update', description);
+  updateItemDescription(todo_id, item_id, description: Description, entity) {
+    this.urle = `${this.apiUrl}/service/todos/${todo_id}/items/${item_id}/descriptions/${description.id}/update/?entity=${entity}`;
+    return this.http.put(this.urle, description);
   }
 
 }

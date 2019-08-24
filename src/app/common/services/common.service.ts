@@ -25,6 +25,7 @@ export class CommonService {
   public diarySubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public taskSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public itemSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public descriptionUpdateSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   setSubject(value) {
     if (value) {
@@ -79,6 +80,14 @@ export class CommonService {
       this.itemSubject.next(value);
     } else {
       this.itemSubject.next(null);
+    }
+  }
+
+  setDescriptionUpdateSubject(value) {
+    if (value) {
+      this.descriptionUpdateSubject.next(value);
+    } else {
+      this.descriptionUpdateSubject.next(null);
     }
   }
 

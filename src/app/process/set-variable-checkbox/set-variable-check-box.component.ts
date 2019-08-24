@@ -3,11 +3,11 @@ import {ProcessService} from '../services/process.service';
 import {AlertService} from '../../common/alert/services/alert.service';
 
 @Component({
-  selector: 'app-check-variable',
-  templateUrl: './check-variable.component.html',
-  styleUrls: ['./check-variable.component.css']
+  selector: 'app-set-variable-check-box',
+  templateUrl: './set-variable-check-box.component.html',
+  styleUrls: ['./set-variable-check-box.component.css']
 })
-export class CheckVariableComponent implements OnInit {
+export class SetVariableCheckBoxComponent implements OnInit {
 
   @Input() executionId: string;
   @Input() name: string;
@@ -36,7 +36,7 @@ export class CheckVariableComponent implements OnInit {
 
   private getVar() {
     this.processService.getVariable(this.executionId, this.name).subscribe(c => {
-      console.log('check', c);
+      // console.log('check', c);
       if (c === true) {
         this.checked = this.t;
       } else {

@@ -21,11 +21,7 @@ export class TaskComponent implements OnInit {
 
   constructor(
     private taskService: TaskService,
-    private activatedRoute: ActivatedRoute,
-    private todoService: TodoService,
-    private alertService: AlertService,
-    private formBuilder: FormBuilder,
-    private userService: UserService,
+    private activatedRoute: ActivatedRoute
   ) {
   }
 
@@ -33,7 +29,6 @@ export class TaskComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.formKey = params['formKey'];
       this.taskId = params['taskId'];
-      console.log('this.formKey', this.formKey);
     });
   }
 

@@ -12,6 +12,7 @@ export class DescriptionComponent implements OnInit {
   loading = false;
   submitted = false;
 
+
   @Input() public item_id: number;
 
   constructor(private formBuilder: FormBuilder) { }
@@ -34,5 +35,7 @@ export class DescriptionComponent implements OnInit {
     }
     this.loading = true;
   }
+
+
 
 }

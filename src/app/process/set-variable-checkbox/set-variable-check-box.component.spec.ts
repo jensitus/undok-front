@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CheckVariableComponent } from './check-variable.component';
+import { SetVariableCheckBoxComponent } from './set-variable-check-box.component';
 
 describe('CheckVariableComponent', () => {
-  let component: CheckVariableComponent;
-  let fixture: ComponentFixture<CheckVariableComponent>;
+  let component: SetVariableCheckBoxComponent;
+  let fixture: ComponentFixture<SetVariableCheckBoxComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CheckVariableComponent ]
+      declarations: [ SetVariableCheckBoxComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CheckVariableComponent);
+    fixture = TestBed.createComponent(SetVariableCheckBoxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

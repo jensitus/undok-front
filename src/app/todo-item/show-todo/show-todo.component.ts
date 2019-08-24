@@ -113,39 +113,39 @@ export class ShowTodoComponent implements OnInit {
   }
 
   onDescriptionSubmit(item_id) {
-    this.submitted = true;
-    if (this.descriptionForm.invalid) {
-      return;
-    }
-    this.loading = true;
-    this.description = {
-      text: this.descriptionForm.value.description
-    };
-    this.todoService.createItemDescription(this.description, this.todo_id, item_id).subscribe(data => {
-      this.data = data;
-      this.descriptionForm.reset();
-      this.loading = false;
-      this.addDescription(this.data.id);
-      this.getItemDescriptions(item_id);
-    });
+    // this.submitted = true;
+    // if (this.descriptionForm.invalid) {
+    //   return;
+    // }
+    // this.loading = true;
+    // this.description = {
+    //   text: this.descriptionForm.value.description
+    // };
+    // this.todoService.createItemDescription(this.description, this.todo_id, item_id).subscribe(data => {
+    //   this.data = data;
+    //   this.descriptionForm.reset();
+    //   this.loading = false;
+    //   this.addDescription(this.data.id);
+    //   this.getItemDescriptions(item_id);
+    // });
   }
 
   onDescriptionUpdateSubmit(item_id) {
-    this.submitted = true;
-    if (this.descriptionUpdateForm.invalid) {
-      return;
-    }
-    this.loading = true;
-    this.description = {
-      id: this.descriptionUpdateForm.value.id,
-      text: this.descriptionUpdateForm.value.text
-    };
-    this.todoService.updateItemDescription(this.todo_id, item_id, this.description).subscribe(data => {
-      this.data = data;
-      this.loading = false;
-      this.addEditDescription(this.description.id);
-      this.getItemDescriptions(item_id);
-    });
+    // this.submitted = true;
+    // if (this.descriptionUpdateForm.invalid) {
+    //   return;
+    // }
+    // this.loading = true;
+    // this.description = {
+    //   id: this.descriptionUpdateForm.value.id,
+    //   text: this.descriptionUpdateForm.value.text
+    // };
+    // this.todoService.updateItemDescription(this.todo_id, item_id, this.description).subscribe(data => {
+    //   this.data = data;
+    //   this.loading = false;
+    //   this.addEditDescription(this.description.id);
+    //   this.getItemDescriptions(item_id);
+    // });
   }
 
   get u() {

@@ -23,6 +23,9 @@ export class TaskListComponent implements OnInit {
     this.taskService.getTaskList(this.currentUser.id.toString()).subscribe(data => {
       this.taskList = data;
       console.log(this.taskList);
+      if ( this.taskList.length === 0) {
+        this.taskList = null;
+      }
     });
   }
 

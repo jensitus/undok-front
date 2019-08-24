@@ -19,7 +19,7 @@ export class ComplexTodoComponent implements OnInit {
   description_id: number;
   descriptionForm: FormGroup;
   update_description_id: number;
-  descriptionUpdateForm: FormGroup;
+
   valDescription: any;
   itemDescriptions: Description[];
   data: any;
@@ -28,6 +28,7 @@ export class ComplexTodoComponent implements OnInit {
   display_item_id: number;
   loading = false;
   submitted = false;
+  reload = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,22 +47,17 @@ export class ComplexTodoComponent implements OnInit {
   }
 
   addEditDescription(description_id) {
-    this.displayUpdateDescription = !this.displayUpdateDescription;
     this.update_description_id = description_id;
   }
 
-  editDescription(description) {
+  showUpdateDescription() {
+    this.displayUpdateDescription = !this.displayUpdateDescription;
+  }
+
+  editDescription(description, item_id) {
     this.submitted = true;
-    this.descriptionUpdateForm = this.formBuilder.group({
-      id: [],
-      text: ['', Validators.required]
-    });
-    this.valDescription = {
-      id: description.id,
-      text: description.text
-    };
-    this.descriptionUpdateForm.setValue(this.valDescription);
     this.addEditDescription(description.id);
+    this.showUpdateDescription();
   }
 
   get d() {
@@ -77,29 +73,11 @@ export class ComplexTodoComponent implements OnInit {
     this.description = {
       text: this.descriptionForm.value.description
     };
-    this.todoService.createItemDescription(this.description, this.todo_id, item_id).subscribe(data => {
+    this.todoService.createItemDescription(this.description, this.todo_id, item_id, 'item').subscribe(data => {
       this.data = data;
       this.descriptionForm.reset();
       this.loading = false;
       this.addDescription(this.data.id);
-      this.getItemDescriptions(item_id);
-    });
-  }
-
-  onDescriptionUpdateSubmit(item_id) {
-    this.submitted = true;
-    if (this.descriptionUpdateForm.invalid) {
-      return;
-    }
-    this.loading = true;
-    this.description = {
-      id: this.descriptionUpdateForm.value.id,
-      text: this.descriptionUpdateForm.value.text
-    };
-    this.todoService.updateItemDescription(this.todo_id, item_id, this.description).subscribe(data => {
-      this.data = data;
-      this.loading = false;
-      this.addEditDescription(this.description.id);
       this.getItemDescriptions(item_id);
     });
   }
@@ -122,6 +100,9 @@ export class ComplexTodoComponent implements OnInit {
     this.display_item_id = item_id;
     this.displayUpdateDescription = false;
     this.getItemDescriptions(item_id);
+    console.log('displayItem', this.displayItem);
+    console.log('display_item_id', this.display_item_id);
+    console.log('displayUpdateDescription', this.displayUpdateDescription);
   }
 
   updateTodoItem(item_id) {
@@ -136,9 +117,7 @@ export class ComplexTodoComponent implements OnInit {
       } else if (this.item.done === false) {
         this.alertService.success('item is still open', false);
       }
-      // this.getTodoItems();
       this.loading = false;
-      // this.displayDescription = false;
       this.displayItem = false;
     });
   }
