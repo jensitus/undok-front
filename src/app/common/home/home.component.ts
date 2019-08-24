@@ -3,7 +3,7 @@ import {User} from '../../auth/model/user';
 import {UserService} from '../../auth/services/user.service';
 import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {CommonService} from '../common.service';
+import {CommonService} from '../services/common.service';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (this.currentUser != null) {
-      this.commonService.checkAuthToken();
+      // this.commonService.checkAuthToken();
     }
   }
 

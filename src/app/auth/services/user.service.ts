@@ -13,33 +13,33 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getAll() {
-    return this.http.get<User[]>(this.apiUrl + '/users/all');
+    return this.http.get<User[]>(this.apiUrl + '/service/users/all');
   }
 
   getByUsername(username: string) {
-    return this.http.get(this.apiUrl + '/users/principle/' + username);
+    return this.http.get(this.apiUrl + '/service/users/principle/' + username);
   }
 
   forgotPassword(email: string) {
-    return this.http.post(this.apiUrl + '/auth/reset_password', email);
+    return this.http.post(this.apiUrl + '/service/auth/reset_password', email);
   }
 
   checkTokenExpired(token: string, email: string) {
-    return this.http.get(`${this.apiUrl}/auth/reset_password/${token}/edit?email=` + email);
+    return this.http.get(`${this.apiUrl}/service/auth/reset_password/${token}/edit?email=` + email);
   }
 
   resetPassword(user: User, token: string, email: string) {
-    return this.http.put(this.apiUrl + '/auth/reset_password/' + token + '?email=' + email, user);
+    return this.http.put(this.apiUrl + '/service/auth/reset_password/' + token + '?email=' + email, user);
   }
 
   checkAuthToken(token: string) {
-    return this.http.post(this.apiUrl + '/users/auth/check_auth_token', token);
+    return this.http.post(this.apiUrl + '/service/users/auth/check_auth_token', token);
   }
 
   uploadAvatar(avatar: any, username: string) {
     const formData = new FormData();
     formData.append('avatar', avatar)
-    return this.http.post(`${this.apiUrl}/users/${username}/updateavatar`, formData);
+    return this.http.post(`${this.apiUrl}/service/users/${username}/updateavatar`, formData);
   }
 
 }

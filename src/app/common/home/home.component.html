@@ -1,40 +1,50 @@
 <app-navbar></app-navbar>
 <div class="container">
-
   <div class="p-grid">
     <div class="p-col-12 p-md-6">
       <div *ngIf="currentUser != null">
         <h3>Hi <span [innerHTML]="currentUser.username"></span>!</h3>
         <p>Here you can organize your daily stuff</p>
         <div class="p-grid">
-          <div class="p-col-6">
+          <div class="p-col">
             <button pButton class="ui-button-danger" (click)="loadAllUsers()" label="load Users"></button>
           </div>
-          <div class="p-col-6">
+          <div class="p-col">
             <a [routerLink]="['/todos']" class="ui-button-success">todos</a>
           </div>
+          <div class="p-col">
+            <a [routerLink]="['/tasks/list']">tasks</a>
+          </div>
         </div>
-        <div *ngIf="users.length > 0">
-          <h3>All registered users:</h3>
-          <ul>
-            <li *ngFor="let user of users">
-              <a [routerLink]="['/users', user.username]">
-                {{user.username}} ({{user.email}})
-              </a>
-              - <!--<a (click)="deleteUser(user.id)" class="text-danger">Delete</a> -->
-            </li>
-          </ul>
+        <div class="p-grid">
+          <div *ngIf="users.length > 0">
+            <h3>All registered users:</h3>
+            <ul>
+              <li *ngFor="let user of users">
+                <a [routerLink]="['/users', user.username]">
+                  {{user.username}} ({{user.email}})
+                </a>
+                - <!--<a (click)="deleteUser(user.id)" class="text-danger">Delete</a> -->
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-grid">
+          <span class="mt-2">powered by <a href="https://camunda.com/" target="_blank">camunda</a></span>
         </div>
       </div>
       <div *ngIf="currentUser == null">
         <h3>Welcome to Service B</h3>
         <p><a [routerLink]="['/login']">Login</a></p>
         <p><a [routerLink]="['/register']">Register</a></p>
+        <p>
+          <span class="mt-2">powered by <a href="https://camunda.com/" target="_blank">camunda</a></span>
+        </p>
       </div>
     </div>
-    <div class="p-col-12 p-md-6">
+    <div class="p-col-12 p-md-6" *ngIf="currentUser != null">
       <p-panel header="todos">
-        <app-list-todo></app-list-todo>
+        <app-list-tasks></app-list-tasks>
       </p-panel>
     </div>
   </div>

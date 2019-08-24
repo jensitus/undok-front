@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {ReactiveFormsModule, FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AppComponent} from './app.component';
 import {HomeComponent} from './common/home/home.component';
@@ -19,7 +19,7 @@ import {NavbarComponent} from './common/navbar/navbar.component';
 import {ResetPasswordComponent} from './auth/reset-password/reset-password.component';
 import {ForgotPasswordComponent} from './auth/forgot-password/forgot-password.component';
 import {ListTodoComponent} from './todo-item/list-todo/list-todo.component';
-import {ItemsComponent} from './todo-item/items/items.component';
+// import {ItemsComponent} from './todo-item/items/items.component';
 import {ShowTodoComponent} from './todo-item/show-todo/show-todo.component';
 import {AddTodoComponent} from './todo-item/add-todo/add-todo.component';
 import {EditTodoComponent} from './todo-item/edit-todo/edit-todo.component';
@@ -45,12 +45,25 @@ import {EditUserComponent} from './auth/edit-user/edit-user.component';
 import {MessageService} from 'primeng/api';
 import {SidebarModule} from 'primeng/sidebar';
 import {OrderModule} from 'ngx-order-pipe';
-import { DescriptionComponent } from './todo-item/description/add/description.component';
-import { EditDescriptionComponent } from './todo-item/description/edit/edit-description.component';
+import {DescriptionComponent} from './todo-item/description/add/description.component';
+import {EditDescriptionComponent} from './todo-item/description/edit/edit-description.component';
 import {DialogModule} from 'primeng/dialog';
 import {AccordionModule} from 'primeng/accordion';
 import {PanelModule} from 'primeng/panel';
-import { TodoComponent } from './todo-item/todo/todo.component';
+import {TodoComponent} from './todo-item/todo/todo.component';
+import {TaskComponent} from './process/task/task.component';
+import {TaskListComponent} from './process/task-list/task-list.component';
+import {CompleteTaskComponent} from './process/complete-task/complete-task.component';
+import {ProcessMigrationComponent} from './common/process-migration/process-migration.component';
+import { TodotaskComponent } from './process/todotask/todotask.component';
+import { ConftodoComponent } from './process/conftodo/conftodo.component';
+import { AddUserComponent } from './common/add-user/add-user.component';
+import { SetVariableCheckBoxComponent } from './process/set-variable-checkbox/set-variable-check-box.component';
+import {CheckboxModule} from 'primeng/checkbox';
+import { FinishTodoComponent } from './process/finish-todo/finish-todo.component';
+import { ComplexTodoComponent } from './process/complex-todo/complex-todo.component';
+import { SimpleTodoComponent } from './process/simple-todo/simple-todo.component';
+import { ListTasksComponent } from './process/list-tasks/list-tasks.component';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -65,7 +78,10 @@ const app_routes: Routes = [
   {path: 'todos/:id', component: ShowTodoComponent},
   {path: 'diaries', component: DiaryListComponent},
   {path: 'diaries/:id', component: DiaryComponent},
-  {path: 'diaries/:id/edit', component: EditDiaryComponent}
+  {path: 'diaries/:id/edit', component: EditDiaryComponent},
+  {path: 'tasks/:formKey/:taskId', component: TaskComponent},
+  {path: 'tasks/list', component: TaskListComponent},
+  {path: 'migrate/process', component: ProcessMigrationComponent}
 ];
 
 @NgModule({
@@ -79,7 +95,7 @@ const app_routes: Routes = [
     ResetPasswordComponent,
     ForgotPasswordComponent,
     ListTodoComponent,
-    ItemsComponent,
+    // ItemsComponent,
     ShowTodoComponent,
     AddTodoComponent,
     EditTodoComponent,
@@ -91,7 +107,19 @@ const app_routes: Routes = [
     EditUserComponent,
     DescriptionComponent,
     EditDescriptionComponent,
-    TodoComponent
+    TodoComponent,
+    TaskComponent,
+    TaskListComponent,
+    CompleteTaskComponent,
+    ProcessMigrationComponent,
+    TodotaskComponent,
+    ConftodoComponent,
+    AddUserComponent,
+    SetVariableCheckBoxComponent,
+    FinishTodoComponent,
+    ComplexTodoComponent,
+    SimpleTodoComponent,
+    ListTasksComponent
   ],
   imports: [
     BrowserModule,
@@ -116,7 +144,8 @@ const app_routes: Routes = [
     AngularFontAwesomeModule,
     DialogModule,
     AccordionModule,
-    PanelModule
+    PanelModule,
+    CheckboxModule
   ],
   providers: [
     AuthGuard,

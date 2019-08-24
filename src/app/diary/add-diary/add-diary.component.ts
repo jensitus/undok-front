@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {AlertService} from '../../common/alert/services/alert.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CommonService} from '../../common/common.service';
+import {CommonService} from '../../common/services/common.service';
 import {DiaryService} from '../services/diary.service';
 import {Diary} from '../model/diary';
 

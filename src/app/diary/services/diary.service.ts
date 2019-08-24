@@ -13,19 +13,19 @@ export class DiaryService {
   constructor(private http: HttpClient) { }
 
   createDiary(diary: Diary) {
-    return this.http.post(`${this.apiUrl}/diaries`, diary);
+    return this.http.post(`${this.apiUrl}/service/diaries`, diary);
   }
 
   getDiaries() {
-    return this.http.get<Diary[]>(`${this.apiUrl}/diaries`);
+    return this.http.get<Diary[]>(`${this.apiUrl}/service/diaries`);
   }
 
   getDiary(diary_id) {
-    return this.http.get<Diary>(`${this.apiUrl}/diaries/${diary_id}`);
+    return this.http.get<Diary>(`${this.apiUrl}/service/diaries/${diary_id}`);
   }
 
   updateDiary(diary: Diary) {
-    return this.http.put(`${this.apiUrl}/diaries/${diary.id}`, diary);
+    return this.http.put(`${this.apiUrl}/service/diaries/${diary.id}`, diary);
   }
 
 }

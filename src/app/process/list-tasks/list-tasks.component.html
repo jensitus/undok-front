@@ -1,0 +1,11 @@
+<div *ngIf="taskList">
+  <div *ngFor="let t of taskList">
+    <a [routerLink]="['/tasks/',t.formKey, t.id]" [innerHTML]="t.name"></a>
+    <!--<a (click)="passTheTask(t)" [innerHTML]="t.name"></a>-->
+  </div>
+</div>
+<div *ngIf="!taskList">
+  Oh, currently there is nothin' really important to do<br>
+  What about starting a process?
+  <app-add-todo></app-add-todo>
+</div>

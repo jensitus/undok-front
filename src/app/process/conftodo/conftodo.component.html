@@ -1,0 +1,21 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="mb-2 mt-2">
+    <b>{{todo_title}}</b>
+  </div>
+  <div class="p-grid">
+    <div class="p-col-12 p-md-6 mb-2">
+      Should this Todo be a simple one?
+      <div *ngIf="executionId != null">
+        <app-set-variable-check-box [executionId]="executionId" name="simple" t="simple" f="complex"></app-set-variable-check-box>
+      </div>
+      If this box is unchecked this Todo will be complex and offer more options
+    </div>
+
+    <div class="p-col-12 p-md-6">
+      <div *ngIf="executionId != null">
+        <app-complete-task [task_id]="taskId" [execution_id]="executionId" type="todo"></app-complete-task>
+      </div>
+    </div>
+  </div>
+</div>

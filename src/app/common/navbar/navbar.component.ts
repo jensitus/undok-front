@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {User} from '../../auth/model/user';
 import {UserService} from '../../auth/services/user.service';
-import {CommonService} from '../common.service';
+import {CommonService} from '../services/common.service';
 import {MenuItem} from 'primeng/api';
 
 @Component({

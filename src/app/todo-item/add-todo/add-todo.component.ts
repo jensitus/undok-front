@@ -4,7 +4,7 @@ import {Todo} from '../model/todo';
 import {ActivatedRoute} from '@angular/router';
 import {TodoService} from '../services/todo.service';
 import {AlertService} from '../../common/alert/services/alert.service';
-import {CommonService} from '../../common/common.service';
+import {CommonService} from '../../common/services/common.service';
 
 @Component({
   selector: 'app-add-todo',
@@ -43,6 +43,7 @@ export class AddTodoComponent implements OnInit {
     }
     this.loading = true;
     this.todoService.createTodo(this.todoForm.value).subscribe(data => {
+      console.log('the new todo', data);
       this.commonService.setNewTodoSubject(true);
       this.loading = false;
       this.todoForm.reset();
@@ -50,5 +51,7 @@ export class AddTodoComponent implements OnInit {
       // this.alertService.error(error);
     });
   }
+
+
 
 }

@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {UserService} from '../auth/services/user.service';
+import {UserService} from '../../auth/services/user.service';
 import {Router} from '@angular/router';
-import {User} from '../auth/model/user';
-import {AlertService} from './alert/services/alert.service';
+import {User} from '../../auth/model/user';
+import {AlertService} from '../alert/services/alert.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +23,9 @@ export class CommonService {
   public demoSubject: BehaviorSubject<any> = new BehaviorSubject(null);
   public todoSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public diarySubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
+  public taskSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public itemSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public descriptionUpdateSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   setSubject(value) {
     if (value) {
@@ -61,6 +64,30 @@ export class CommonService {
       this.diarySubject.next(value);
     } else {
       this.diarySubject.next(null);
+    }
+  }
+
+  setTaskSubject(value) {
+    if (value) {
+      this.taskSubject.next(value);
+    } else {
+      this.taskSubject.next(null);
+    }
+  }
+
+  setItemSubject(value) {
+    if (value) {
+      this.itemSubject.next(value);
+    } else {
+      this.itemSubject.next(null);
+    }
+  }
+
+  setDescriptionUpdateSubject(value) {
+    if (value) {
+      this.descriptionUpdateSubject.next(value);
+    } else {
+      this.descriptionUpdateSubject.next(null);
     }
   }
 
