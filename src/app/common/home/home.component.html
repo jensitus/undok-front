@@ -10,7 +10,7 @@
             <button pButton class="ui-button-danger" (click)="loadAllUsers()" label="load Users"></button>
           </div>
           <div class="p-col">
-            <a [routerLink]="['/todos']" class="ui-button-success">todos</a>
+<!--            <a [routerLink]="['/todos']" class="ui-button-success">todos</a>-->
           </div>
           <div class="p-col">
             <a [routerLink]="['/tasks/list']">tasks</a>
@@ -30,7 +30,10 @@
           </div>
         </div>
         <div class="p-grid">
-          <span class="mt-2">powered by <a href="https://camunda.com/" target="_blank">camunda</a></span>
+          <app-add-todo></app-add-todo>
+        </div>
+        <div class="p-grid">
+          <span class="mt-2"><small>powered by <a href="https://camunda.com/" target="_blank">camunda</a></small></span>
         </div>
       </div>
       <div *ngIf="currentUser == null">
