@@ -46,11 +46,12 @@ export class CommonService {
   checkAuthToken() {
     this.getCurrentUser();
     if (this.currentUser == null) {
-      this.router.navigate(['/login']);
+      // this.router.navigate(['/login']);
       return;
     }
     this.userService.checkAuthToken(this.currentUser.auth_token).subscribe(data => {
       this.data = data;
+      console.log('authToken', this.data);
     }, error => {
     });
   }

@@ -5,15 +5,21 @@
   </div>
   <div class="p-grid">
     <div class="p-col-12 p-md-6 mb-2">
-      Should this Todo be a simple one?
-      <div *ngIf="executionId != null">
-        <app-set-variable-check-box [executionId]="executionId" name="simple" t="simple" f="complex" message="your todo is "></app-set-variable-check-box>
+      <div class="mb-1">
+        Should this Todo be a simple one?
+      </div>
+      <div *ngIf="executionId != null" class="mb-1">
+        <app-set-variable-check-box [executionId]="executionId" name="simple" t="simple" f="complex"
+                                    message="your todo is "></app-set-variable-check-box>
       </div>
       If this box is unchecked this Todo will be complex and offer more options
     </div>
 
     <div class="p-col-12 p-md-6">
-      <div *ngIf="executionId != null">
+      <div *ngIf="todo_id != null">
+        <app-add-user [todo_id]="todo_id" [todo_title]="todo_title"></app-add-user>
+      </div>
+      <div *ngIf="executionId != null" class="mt-1">
         <app-complete-task [task_id]="taskId" [execution_id]="executionId" type="todo"></app-complete-task>
       </div>
     </div>
