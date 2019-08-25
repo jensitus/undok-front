@@ -7,7 +7,7 @@
     <div class="p-col-12 p-md-6 mb-2">
       Should this Todo be a simple one?
       <div *ngIf="executionId != null">
-        <app-set-variable-check-box [executionId]="executionId" name="simple" t="simple" f="complex"></app-set-variable-check-box>
+        <app-set-variable-check-box [executionId]="executionId" name="simple" t="simple" f="complex" message="your todo is "></app-set-variable-check-box>
       </div>
       If this box is unchecked this Todo will be complex and offer more options
     </div>

@@ -30,7 +30,6 @@ export class FinishTodoComponent implements OnInit {
   ngOnInit() {
     this.taskService.getTask(this.taskId).toPromise().then(data => {
       this.task = data;
-      console.log('this.task', this.task);
       this.executionId = this.task.executionId;
       this.getTheTodoForThis(this.task.executionId);
     });

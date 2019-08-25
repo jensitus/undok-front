@@ -16,6 +16,7 @@ export class SetVariableCheckBoxComponent implements OnInit {
   checked: string;
   @Input() t: string;
   @Input() f: string;
+  @Input() message: string;
 
   constructor(
     private processService: ProcessService,
@@ -29,19 +30,18 @@ export class SetVariableCheckBoxComponent implements OnInit {
   onCheckSubmit(value) {
     this.processService.setVariable(this.executionId, this.name, value).subscribe(data => {
       this.data = data;
-      this.alertService.success(this.data.text, true);
       this.getVar();
     });
   }
 
   private getVar() {
     this.processService.getVariable(this.executionId, this.name).subscribe(c => {
-      // console.log('check', c);
       if (c === true) {
         this.checked = this.t;
       } else {
         this.checked = this.f;
       }
+      this.alertService.success(this.message + this.checked, true);
     });
   }
 

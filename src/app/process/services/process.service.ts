@@ -13,9 +13,6 @@ export class ProcessService {
   constructor(private http: HttpClient) { }
 
   setVariable(executionId, name, value) {
-    console.log(executionId);
-    console.log(name);
-    console.log(value);
     this.value = value;
     return this.http.post(this.apiUrl + '/service/app/setvariable/' + executionId + '/?name=' + name, value.toString());
   }

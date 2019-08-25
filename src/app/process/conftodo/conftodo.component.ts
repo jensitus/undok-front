@@ -43,6 +43,7 @@ export class ConftodoComponent implements OnInit {
       this.task = data;
       this.executionId = this.task.executionId;
       this.getTheTodoForThis(this.task.executionId);
+      this.alertService.success('check if Todo is simple or complex');
     });
   }
 
