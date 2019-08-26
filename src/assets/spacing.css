@@ -4,6 +4,14 @@
 
 /* spacing margin top */
 
+.pa-02 {
+  padding: 0.2em;
+}
+
+.mt-05 {
+  margin-top: 0.5em;
+}
+
 .mt-1 {
   margin-top: 1em;
 }

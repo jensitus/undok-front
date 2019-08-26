@@ -1,12 +1,12 @@
 <div>
   responsible user for <br>
   <b><span [innerHTML]="todo_title"></span></b><br>
-  <div *ngFor="let u of todo_users">
+  <div *ngFor="let u of todo_users" class="pa-02">
     <small [innerHTML]="u.username"></small>
   </div>
 </div>
 <div>
-  <form [formGroup]="addUserForm" (ngSubmit)="addUserToTodo()">
+  <form [formGroup]="addUserForm" (ngSubmit)="addUserToTodo()" class="mt-1">
     <div class="ui-inputgroup">
       <p-dropdown [options]="users" [style]="{'width':'150px'}" formControlName="selectedUser"
                   optionLabel="username" placeholder="Select a user" (onShow)="loadUser()"></p-dropdown>
