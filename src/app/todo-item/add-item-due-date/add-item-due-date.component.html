@@ -1,0 +1,7 @@
+<span class="ml-1">
+  <small><a (click)="showSetDueDate()">setDueDate</a></small>
+</span>
+<div *ngIf="show_set_due_date">
+  <p-calendar [(ngModel)]="dueDate" (ngModelChange)="setTheDueDate()" dateFormat="dd.mm.yy"></p-calendar>
+</div>
+

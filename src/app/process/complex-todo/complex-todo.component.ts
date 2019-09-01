@@ -29,6 +29,7 @@ export class ComplexTodoComponent implements OnInit {
   loading = false;
   submitted = false;
   reload = false;
+  dueDate: Date;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,6 +40,7 @@ export class ComplexTodoComponent implements OnInit {
 
   ngOnInit() {
     this.getDescriptionForm();
+    this.dueDate = this.item.dueDate;
   }
 
   addDescription(description_id) {

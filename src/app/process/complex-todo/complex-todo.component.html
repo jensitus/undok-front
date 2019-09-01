@@ -25,6 +25,10 @@
     <span class="ml-2">
       <small *ngIf="itemDescriptions < 1"><a (click)="addDescription(item.id)">description</a></small>
     </span>
+    <app-add-item-due-date [todo_id]="todo_id" [item]="item"></app-add-item-due-date>
+    <div *ngIf="dueDate != null" class="mb-1 mt-1 ml-2">
+      <small><b>dueDate:</b> {{dueDate | date: 'dd.MM.yyyy'}}</small>
+    </div>
     <div class="mb-1 mt-1 ml-2" *ngFor="let description of itemDescriptions">
       <div *ngIf="!displayUpdateDescription">
         <div>
