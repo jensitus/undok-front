@@ -32,7 +32,7 @@
     <div class="mb-1 mt-1 ml-2" *ngFor="let description of itemDescriptions">
       <div *ngIf="!displayUpdateDescription">
         <div>
-          <div [innerHtml]="description.text"></div>
+          <div [innerHtml]="description.text" style="white-space:pre-wrap;"></div>
         </div>
         <div>
           <small>
