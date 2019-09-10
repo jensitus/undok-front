@@ -34,11 +34,21 @@ export class AddItemDueDateComponent implements OnInit {
   }
 
   setTheDueDate() {
+    const options = {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric'
+    };
     console.log(this.dueDate);
-    this.todoService.setItemDueDate(this.todo_id, this.item.id, this.dueDate).subscribe( result => {
-      console.log(result);
-      // this.commonService.setDueDateSubject(true);
-    });
+    console.log(this.dueDate.getDay());
+    console.log(this.dueDate.getMonth());
+    console.log(this.dueDate.getFullYear());
+    console.log(this.dueDate.toDateString());
+    console.log(this.dueDate.toLocaleDateString('de-DE', options));
+    // this.todoService.setItemDueDate(this.todo_id, this.item.id, this.dueDate.toLocaleDateString('de-DE', options)).subscribe( result => {
+    //   console.log(result);
+    //   // this.commonService.setDueDateSubject(true);
+    // });
   }
 
 }
