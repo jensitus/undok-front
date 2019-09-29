@@ -39,7 +39,7 @@ export class TodoService {
   }
 
   addUserToTodo(todo_id, user_id) {
-    return this.http.post(`${this.apiUrl}/service/todos/${todo_id}/add_user`, {user_id: user_id});
+    return this.http.post(`${this.apiUrl}/service/todos/${todo_id}/add_user`, {userId: user_id});
   }
 
   getTodoUsers(todo_id) {

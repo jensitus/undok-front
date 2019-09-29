@@ -1,13 +1,14 @@
-<div class="container mt-1">
-  <div class="p-grid">
-    <div class="p-col-12">
-      <div *ngIf="messagetype == 'success'">
-        <p-message severity="success" text="{{message.text}}"></p-message>
+<div class="container">
+  <div class="row">
+    <div class="col-4">
+      <div *ngIf="messagetype == 'success'" class="alert alert-success">
+        {{message.text}}
       </div>
-      <div *ngIf="messagetype== 'error'">
-        <p-message severity="error" text="{{message.text}}"></p-message>
+      <div *ngIf="messagetype == 'error'" class="alert alert-danger">
+        {{message.text}}
       </div>
     </div>
   </div>
 </div>
+
 

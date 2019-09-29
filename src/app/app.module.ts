@@ -22,34 +22,21 @@ import {ListTodoComponent} from './todo-item/list-todo/list-todo.component';
 // import {ItemsComponent} from './todo-item/items/items.component';
 import {ShowTodoComponent} from './todo-item/show-todo/show-todo.component';
 import {AddTodoComponent} from './todo-item/add-todo/add-todo.component';
-import {EditTodoComponent} from './todo-item/edit-todo/edit-todo.component';
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
 import {DiaryComponent} from './diary/diary/diary.component';
 import {DiaryListComponent} from './diary/diary-list/diary-list.component';
 import {AddDiaryComponent} from './diary/add-diary/add-diary.component';
 import {EditDiaryComponent} from './diary/edit-diary/edit-diary.component';
-import {MenubarModule} from 'primeng/menubar';
-import {ContextMenuModule} from 'primeng/contextmenu';
-import {ButtonModule} from 'primeng/button';
-import {DropdownModule} from 'primeng/dropdown';
-import {SplitButtonModule} from 'primeng/splitbutton';
-import {MenuModule} from 'primeng/menu';
+
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {InputTextModule} from 'primeng/inputtext';
-import {MessagesModule} from 'primeng/messages';
-import {MessageModule} from 'primeng/message';
-import {InputTextareaModule} from 'primeng/inputtextarea';
-import {FileUploadModule} from 'primeng/fileupload';
+
 import {UserComponent} from './auth/user/user.component';
 import {EditUserComponent} from './auth/edit-user/edit-user.component';
-import {MessageService} from 'primeng/api';
-import {SidebarModule} from 'primeng/sidebar';
+
 import {OrderModule} from 'ngx-order-pipe';
 import {DescriptionComponent} from './todo-item/description/add/description.component';
 import {EditDescriptionComponent} from './todo-item/description/edit/edit-description.component';
-import {DialogModule} from 'primeng/dialog';
-import {AccordionModule} from 'primeng/accordion';
-import {PanelModule} from 'primeng/panel';
+
 import {TodoComponent} from './todo-item/todo/todo.component';
 import {TaskComponent} from './process/task/task.component';
 import {TaskListComponent} from './process/task-list/task-list.component';
@@ -59,11 +46,12 @@ import { TodotaskComponent } from './process/todotask/todotask.component';
 import { ConftodoComponent } from './process/conftodo/conftodo.component';
 import { AddUserComponent } from './common/add-user/add-user.component';
 import { SetVariableCheckBoxComponent } from './process/set-variable-checkbox/set-variable-check-box.component';
-import {CheckboxModule} from 'primeng/checkbox';
+
 import { FinishTodoComponent } from './process/finish-todo/finish-todo.component';
 import { ComplexTodoComponent } from './process/complex-todo/complex-todo.component';
 import { SimpleTodoComponent } from './process/simple-todo/simple-todo.component';
 import { ListTasksComponent } from './process/list-tasks/list-tasks.component';
+
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -98,7 +86,6 @@ const app_routes: Routes = [
     // ItemsComponent,
     ShowTodoComponent,
     AddTodoComponent,
-    EditTodoComponent,
     DiaryComponent,
     DiaryListComponent,
     AddDiaryComponent,
@@ -125,34 +112,19 @@ const app_routes: Routes = [
     BrowserModule,
     OrderModule,
     FormsModule,
-    MenubarModule,
-    ContextMenuModule,
-    ButtonModule,
-    SplitButtonModule,
-    MenuModule,
+
     BrowserAnimationsModule,
-    InputTextModule,
-    DropdownModule,
-    MessagesModule,
-    MessageModule,
-    InputTextareaModule,
-    FileUploadModule,
-    SidebarModule,
+
     RouterModule.forRoot(app_routes, {enableTracing: true}),
     HttpClientModule,
     ReactiveFormsModule,
-    AngularFontAwesomeModule,
-    DialogModule,
-    AccordionModule,
-    PanelModule,
-    CheckboxModule
+    AngularFontAwesomeModule
   ],
   providers: [
     AuthGuard,
     UserService,
     AlertService,
     AuthenticationService,
-    MessageService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ],

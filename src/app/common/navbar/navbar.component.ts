@@ -3,7 +3,6 @@ import {FormGroup} from '@angular/forms';
 import {User} from '../../auth/model/user';
 import {UserService} from '../../auth/services/user.service';
 import {CommonService} from '../services/common.service';
-import {MenuItem} from 'primeng/api';
 
 @Component({
   selector: 'app-navbar',

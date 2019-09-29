@@ -1,22 +1,22 @@
 <app-navbar></app-navbar>
 <div class="container">
-  <div class="p-grid">
-    <div class="p-col-12 p-md-6">
+  <div class="row">
+    <div class="col-6">
       <div *ngIf="currentUser != null">
         <h3>Hi <span [innerHTML]="currentUser.username"></span>!</h3>
         <p>Here you can organize your daily stuff</p>
-        <div class="p-grid">
-          <div class="p-col">
-            <button pButton class="ui-button-danger" (click)="loadAllUsers()" label="load Users"></button>
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-outline-danger" (click)="loadAllUsers()">load Users</button>
           </div>
-          <div class="p-col">
+          <div class="col">
             <!--            <a [routerLink]="['/todos']" class="ui-button-success">todos</a>-->
           </div>
-          <div class="p-col">
+          <div class="col">
             <a [routerLink]="['/tasks/list']">tasks</a>
           </div>
         </div>
-        <div class="p-grid">
+        <div class="row">
           <div *ngIf="users.length > 0">
             <h3>All registered users:</h3>
             <ul>
@@ -29,22 +29,26 @@
             </ul>
           </div>
         </div>
-        <div class="p-grid">
+        <div class="row">
           <span class="mt-2"><small>powered by <a href="https://camunda.com/" target="_blank">camunda</a></small></span>
         </div>
       </div>
     </div>
-    <div class="p-col-12 p-md-6" *ngIf="currentUser != null">
-      <p-panel header="todos">
-        <app-list-tasks></app-list-tasks>
-      </p-panel>
-      <div class="p-grid">
-        <app-add-todo></app-add-todo>
+    <div class="col-6" *ngIf="currentUser != null">
+      <div class="card">
+        <div class="card-body">
+          <app-list-tasks></app-list-tasks>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <app-add-todo></app-add-todo>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="p-grid">
+  <div class="row">
     <div *ngIf="currentUser == null">
       <div class="mt-2 mb-5">
         <img src="assets/images/todo.png" width="80%">
