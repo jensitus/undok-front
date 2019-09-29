@@ -1,27 +1,28 @@
 <app-navbar></app-navbar>
 <div class="container">
-  <div class="p-grid">
-    <div class="p-col">
+  <div class="row">
+    <div class="col">
       <img src="{{avatar}}" class="img-avatar">
     </div>
-    <div class="p-col">
+    <div class="col">
       <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-        <div class="ui-inputgroup mt-1">
-          <input pInputText type="text" formControlName="name" placeholder="name"
+        <div class="form-group mt-1">
+          <input type="text" class="form-control" formControlName="name" placeholder="name"
                  [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
         </div>
-        <div class="ui-inputgroup mt-1">
-          <input pInputText type="email" formControlName="email" placeholder="email"
+        <div class="form-group mt-1">
+          <input type="email" class="form-control" formControlName="email" placeholder="email"
                  [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
         </div>
-        <div class="ui-inputgroup mt-1">
-          <button pButton class="ui-button-danger" label="Zack"></button>
+        <div class="form-group mt-1">
+          <button class="btn btn-outline-success">Zack</button>
         </div>
       </form>
     </div>
-    <div class="p-col">
-      <div class="ui-inputgroup mt-1">
-        <p-fileUpload name="avatar" accept="image/*" url="{{avatar_upload_url}}" maxFileSize="1000000"></p-fileUpload>
+    <div class="col">
+      <div class="form-group mt-1">
+        <span>// here we have to find a solution for file updload</span>
+        <!-- <p-fileUpload name="avatar" accept="image/*" url="{{avatar_upload_url}}" maxFileSize="1000000"></p-fileUpload>-->
       </div>
     </div>
   </div>

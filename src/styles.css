@@ -1,6 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
-@import "assets/spacing.css";
-@import "assets/container.css";
+@import "assets/css/bootstrap.min.css";
 
 body {
   margin: 0;
@@ -9,5 +7,20 @@ body {
 }
 
 a {
+  cursor: pointer;
+  color: #007bff;
+}
+
+.custom-a {
+  color: #007bff;
+  cursor: pointer;
+}
+
+.custom-click {
+  cursor: pointer;
+}
+
+.custom-done {
+  color: #999999;
   cursor: pointer;
 }

@@ -1,22 +1,22 @@
-<div class="p-grid">
-  <div class="p-col-8">
+<div class="row">
+  <div class="col-8">
     <b>-</b> &nbsp;
     <span *ngIf="item.done == false">
-                <a (click)="openItem(item.id)" [innerHTML]="item.name"></a>
+                <span name="item" class="custom-a" (click)="openItem(item.id)">{{item.name}}</span>
               </span>
     <span *ngIf="item.done == true">
-                <a (click)="updateTodoItem(item.id)"><s [innerHTML]="item.name"></s></a>
+                <span name="item" class="custom-done" (click)="updateTodoItem(item.id)"><s [innerHTML]="item.name"></s></span>
               </span>
   </div>
-  <div class="p-col-2">
+  <div class="col-2">
     <small *ngIf="item.done == false">open</small>
     <small *ngIf="item.done == true">done</small>
   </div>
-  <div class="p-col-2">
-    <a (click)="deleteItem(item.id)" title="delete"><i class="fa fa-trash" *ngIf="item.done == true"></i></a>
+  <div class="col-2">
+    <span (click)="deleteItem(item.id)" title="delete"><i class="fa fa-trash" *ngIf="item.done == true"></i></span>
   </div>
   <div class="mb-2" id="{{item.name}}" *ngIf="displayItem && display_item_id == item.id">
-    <span class="ml-2" *ngIf="item.done == false">
+    <span class="ml-lg-5" *ngIf="item.done == false">
       <small><a (click)='updateTodoItem(item.id)'>done</a></small>
     </span>
     <span class="ml-2" *ngIf="item.done == true">
@@ -25,7 +25,7 @@
     <span class="ml-2">
       <small *ngIf="itemDescriptions < 1"><a (click)="addDescription(item.id)">description</a></small>
     </span>
-    <div class="mb-1 mt-1 ml-2" *ngFor="let description of itemDescriptions">
+    <div class="mb-1 mt-1 ml-lg-5" *ngFor="let description of itemDescriptions">
       <div *ngIf="!displayUpdateDescription">
         <div>
           <div [innerHtml]="description.text" style="white-space:pre-wrap;"></div>
@@ -42,8 +42,8 @@
     </div>
     <div class="mb-1 ml-2" *ngIf="displayDescription && description_id == item.id">
       <form [formGroup]="descriptionForm" (ngSubmit)="onDescriptionSubmit(item.id)">
-        <div class="ui-inputgroup">
-                  <textarea pInputTextarea formControlName="description" cols="40" autoResize="autoResize"
+        <div class="form-group">
+                  <textarea class="form-control" formControlName="description" cols="40" autoResize="autoResize"
                             placeholder="new description"
                             [ngClass]="{ 'is-invalid': submitted && d.description.errors }">
                   </textarea>
@@ -54,7 +54,7 @@
             <small>description is required</small>
           </div>
         </div>
-        <button pButton [disabled]="loading" class="ui-button-secondary" label="Hopp"></button>
+        <button [disabled]="loading" class="btn btn-outline-info">Hopp</button>
       </form>
     </div>
 
