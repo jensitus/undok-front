@@ -1,5 +1,5 @@
 <div *ngIf="taskList">
-  <div *ngFor="let t of taskList" class="pa-02">
+  <div *ngFor="let t of taskList" class="p-1">
     <a [routerLink]="['/tasks/',t.formKey, t.id]" [innerHTML]="t.name"></a>
     <!--<a (click)="passTheTask(t)" [innerHTML]="t.name"></a>-->
   </div>
