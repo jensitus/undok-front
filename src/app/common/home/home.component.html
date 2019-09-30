@@ -30,19 +30,27 @@
           </div>
         </div>
         <div class="row">
-          <span class="mt-2"><small>powered by <a href="https://camunda.com/" target="_blank">camunda</a></small></span>
+          <span class="mt-4"><small>powered by <a href="https://camunda.com/" target="_blank">camunda</a></small></span>
         </div>
       </div>
     </div>
     <div class="col-6" *ngIf="currentUser != null">
-      <div class="card">
-        <div class="card-body">
-          <app-list-tasks></app-list-tasks>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <app-list-tasks></app-list-tasks>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <app-add-todo></app-add-todo>
+          <div class="card mt-3">
+            <div class="card-body">
+              <app-add-todo></app-add-todo>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -55,7 +63,7 @@
       </div>
       <h3>Welcome to service - b . org</h3>
       <div>This is the place where you can organize your business</div>
-      <p><a [routerLink]="['/login']">Login</a></p>
+      <p class="mt-3"><a [routerLink]="['/login']">Login</a></p>
       <p><a [routerLink]="['/register']">Register</a></p>
       <p>
         <span class="mt-2"><small>powered by <a href="https://camunda.com/" target="_blank">camunda</a></small></span>
