@@ -2,7 +2,7 @@
 <!-- this has to be removed when we know how to pass parameters to this component -->
 <div class="container">
   <div class="row">
-    <div class="col-6">
+    <div class="col-md-6">
       <div class="mt-2 mb-4">
         <h5>{{todo_title}}</h5>
       </div>
@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-6">
+        <div class="col-sm-6">
           <div class="mt-4">
             <form [formGroup]="itemForm" (ngSubmit)="onSubmit('item')">
               <div class="form-group">
@@ -38,10 +38,10 @@
       </div>
       <!-- item section end -->
     </div>
-    <div class="col-6">
-      <div class="row mb-2">
-        <div class="col-4"></div>
-        <div class="col-6">
+    <div class="col-md-6">
+      <div class="row mb-3">
+        <div class="col-xl-4"></div>
+        <div class="col-xl-6">
           <div *ngIf="todo_id != null">
             <app-add-user [todo_id]="todo_id" [user_id]="user_id" [todo_title]="todo_title"></app-add-user>
           </div>
@@ -49,8 +49,8 @@
       </div>
 
       <div class="row mb-2">
-        <div class="col-4"></div>
-        <div class="col-6">
+        <div class="col-xl-4"></div>
+        <div class="col-xl-6">
           <div *ngIf="task != null">
             <app-complete-task task_id="{{taskId}}" execution_id="{{task.executionId}}" type="todo"></app-complete-task>
           </div>
