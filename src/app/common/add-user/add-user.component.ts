@@ -23,6 +23,7 @@ export class AddUserComponent implements OnInit {
   @Input() todo_id: string;
   selectedUser: User;
   @Input() todo_title: string;
+  showAF = false;
 
   constructor(
     private todoService: TodoService,
@@ -36,13 +37,24 @@ export class AddUserComponent implements OnInit {
     this.getAddUserForm();
   }
 
+  showAddUserForm() {
+    this.showAF = !this.showAF;
+    if (this.showAF) {
+      this.loadUser();
+    } else {
+      this.users = [];
+    }
+  }
+
   addUserToTodo() {
     this.submitted = true;
     if (this.addUserForm.invalid) {
       return;
     }
     this.loading = true;
-    this.user_id = this.addUserForm.value['selectedUser'].id;
+    console.log('addUserForm', this.addUserForm);
+    this.user_id = this.addUserForm.value['selectedUser'];
+    console.log('this.user_id', this.user_id);
     this.todoService.addUserToTodo(this.todo_id, this.user_id).subscribe(data => {
       this.getUserForTodo();
       this.data = data;

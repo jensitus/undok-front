@@ -1,3 +1,4 @@
 <div>
-  <p-checkbox name="simple" value="yes" [label]="checked" (onChange)="onCheckSubmit(this.$event)"></p-checkbox>
+  <input type="checkbox" name="simple" class="form-check-input" (change)="onCheckSubmit()" />
+  <label>{{checked}}</label>
 </div>

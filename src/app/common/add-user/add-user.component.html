@@ -1,18 +1,28 @@
-<div>
-  responsible user for <br>
-  <b><span [innerHTML]="todo_title"></span></b><br>
-  <div *ngFor="let u of todo_users" class="pa-02">
-    <small [innerHTML]="u.username"></small>
+<div class="card">
+  <div class="card-body">
+    <div>
+      <small>responsible user for </small>
+      <b>
+        <span [innerHTML]="todo_title"></span>
+      </b>
+    </div>
+    <div *ngFor="let u of todo_users" class="pa-02">
+      <small [innerHTML]="u.username"></small>
+    </div>
+    <div>
+      <a (click)="showAddUserForm()" style="color: #007bff;">add user</a>
+    </div>
+    <div *ngIf="showAF">
+      <form [formGroup]="addUserForm" (ngSubmit)="addUserToTodo()" class="mt-1">
+        <div class="input-group">
+          <select class="custom-select" formControlName="selectedUser">
+            <option *ngFor="let u of users; let i = index" [value]="users[i].id">{{u.username}}</option>
+          </select>
+        </div>
+        <div class="form-group mt-1">
+          <button [disabled]="loading" class="btn btn-outline-warning">add user</button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
-<div>
-  <form [formGroup]="addUserForm" (ngSubmit)="addUserToTodo()" class="mt-1">
-    <div class="ui-inputgroup">
-      <p-dropdown [options]="users" [style]="{'width':'150px'}" formControlName="selectedUser"
-                  optionLabel="username" placeholder="Select a user" (onShow)="loadUser()"></p-dropdown>
-    </div>
-    <div class="ui-inputgroup mt-1">
-      <button pButton [disabled]="loading" class="ui-button-warning" label="add user"></button>
-    </div>
-  </form>
 </div>

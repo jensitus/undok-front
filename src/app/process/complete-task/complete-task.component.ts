@@ -33,6 +33,7 @@ export class CompleteTaskComponent implements OnInit {
       this.taskService.checkOpenItems(this.task_id).subscribe(data => {
         this.itemsOpen = data;
         if (this.itemsOpen === true) {
+          console.log('no open items', this.itemsOpen);
           this.alertService.error('there are still things to do', true);
         } else {
           console.log('this.itemsOpen', this.itemsOpen);

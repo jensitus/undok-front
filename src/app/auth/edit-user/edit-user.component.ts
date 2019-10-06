@@ -3,7 +3,6 @@ import {ActivatedRoute} from '@angular/router';
 import {UserService} from '../services/user.service';
 import {AlertService} from '../../common/alert/services/alert.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MessageService} from 'primeng/api';
 import {environment} from '../../../environments/environment';
 
 @Component({
@@ -27,8 +26,7 @@ export class EditUserComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
     private alertService: AlertService,
-    private formBuilder: FormBuilder,
-    private messageService: MessageService
+    private formBuilder: FormBuilder
   ) {
   }
 
@@ -71,7 +69,7 @@ export class EditUserComponent implements OnInit {
 
   onUpload(event) {
     console.log(event.files);
-    this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: 'aber hallo'});
+    // this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: 'aber hallo'});
     for (this.file of event.files) {
       console.log(this.file);
       console.log(this.username);

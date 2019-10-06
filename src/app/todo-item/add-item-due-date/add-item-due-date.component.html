@@ -1,5 +1,5 @@
 <div *ngIf="show_set_due_date">
-  <p-calendar [(ngModel)]="dueDate" (ngModelChange)="setTheDueDate()" dateFormat="dd.MM.yyyy"></p-calendar>
+  < [(ngModel)]="dueDate" (ngModelChange)="setTheDueDate()" dateFormat="dd.MM.yyyy"></>
 </div>
 <div *ngIf="dueDate != null" class="mt-1 ml-2">
   <small><b>dueDate:</b> {{dueDate | date: 'dd.MM.yyyy'}}</small>
