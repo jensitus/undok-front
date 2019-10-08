@@ -62,7 +62,7 @@ export class TodotaskComponent implements OnInit {
     this.getItemForm();
     this.reloadIfItemIsDeleted();
     this.reloadIfDescriptionIsUpdated();
-    // this.reloadIfDueDateIsSet();
+    this.reloadIfDueDateIsSet();
   }
 
   private getTheTodoForThisTask(executionId) {

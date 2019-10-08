@@ -52,6 +52,7 @@ import { ComplexTodoComponent } from './process/complex-todo/complex-todo.compon
 import { SimpleTodoComponent } from './process/simple-todo/simple-todo.component';
 import { ListTasksComponent } from './process/list-tasks/list-tasks.component';
 import { AddItemDueDateComponent } from './todo-item/add-item-due-date/add-item-due-date.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -119,7 +120,8 @@ const app_routes: Routes = [
     RouterModule.forRoot(app_routes, {enableTracing: true}),
     HttpClientModule,
     ReactiveFormsModule,
-    AngularFontAwesomeModule
+    AngularFontAwesomeModule,
+    NgbModule
   ],
   providers: [
     AuthGuard,
