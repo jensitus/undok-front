@@ -15,7 +15,7 @@ export class AddItemDueDateComponent implements OnInit {
   @Input() todo_id: string;
   @Input() item: Item;
   show_set_due_date: boolean;
-  dueDate: NgbDateStruct;
+  dueDate: any;
   dueDatePlaceholder: string;
   closeResult: string;
 
@@ -30,15 +30,15 @@ export class AddItemDueDateComponent implements OnInit {
   ngOnInit() {
     this.show_set_due_date = false;
     console.log(this.item);
-    this.dueDate = this.item.dueDate;
+    if (this.item.dueDate === null) {
+      this.dueDate = 'yyyy-mm-dd';
+    } else {
+      this.dueDate = this.item.dueDate;
+    }
     this.setDueDatePlaceholder();
     // this.todoService.getTodoItem(this.todo_id, this.item_id).subscribe(result => {
     //   console.log(result);
     // });
-  }
-
-  showSetDueDate() {
-    this.show_set_due_date = !this.show_set_due_date;
   }
 
   setTheDueDate() {
@@ -50,8 +50,6 @@ export class AddItemDueDateComponent implements OnInit {
   }
 
   open(content) {
-    console.log(content);
-    console.log(content._parentView.context.item.dueDate);
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
       this.setTheDueDate();
@@ -68,10 +66,6 @@ export class AddItemDueDateComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
-  }
-
-  changeTheModel(value) {
-    console.log('changeTheModel', value);
   }
 
   private setDueDatePlaceholder () {

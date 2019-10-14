@@ -19,7 +19,7 @@
       <div class="form-group">
         <label for="dueDate">Due Date</label>
         <div class="input-group">
-          <input id="dueDate" class="form-control" [(ngModel)]="dueDate" [placeholder]="{dueDate : dueDate}" name="dp" ngbDatepicker #dp="ngbDatepicker">
+          <input id="dueDate" class="form-control" [(ngModel)]="dueDate" [placeholder]="dueDate" name="dp" ngbDatepicker #dp="ngbDatepicker">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
           </div>
@@ -35,7 +35,7 @@
 <button class="btn btn-sm btn-outline-primary" (click)="open(content)">add Due Date</button>
 
 <hr>
-<div *ngIf="dueDate != null" class="mt-1 ml-2">
+<div *ngIf="dueDate != 'yyyy-mm-dd'" class="mt-1 ml-2">
   <small><b>dueDate:</b> {{dueDate}}</small> <!--| date: 'dd.MM.yyyy'}}</small-->
 </div>
 <pre>{{closeResult}}</pre>
