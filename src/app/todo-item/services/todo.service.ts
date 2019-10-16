@@ -79,4 +79,9 @@ export class TodoService {
     return this.http.put(this.urle, description);
   }
 
+  setItemDueDate(todo_id, item_id, dueDate) {
+    console.log(dueDate);
+    return this.http.put(`${this.apiUrl}/service/todos/${todo_id}/items/${item_id}/due_date`, dueDate);
+  }
+
 }

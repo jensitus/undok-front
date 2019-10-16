@@ -62,6 +62,7 @@ export class TodotaskComponent implements OnInit {
     this.getItemForm();
     this.reloadIfItemIsDeleted();
     this.reloadIfDescriptionIsUpdated();
+    this.reloadIfDueDateIsSet();
   }
 
   private getTheTodoForThisTask(executionId) {
@@ -148,6 +149,15 @@ export class TodotaskComponent implements OnInit {
         this.getTodoItems();
         // this.getItemDescriptions(item_id);
         // this.showUpdateDescription();
+      }
+    });
+  }
+
+  private reloadIfDueDateIsSet() {
+    this.commonService.dueDateSubject.subscribe(res => {
+      this.reload = res;
+      if (this.reload) {
+        this.getTodoItems();
       }
     });
   }

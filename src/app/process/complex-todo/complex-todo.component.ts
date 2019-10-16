@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Description} from '../../todo-item/model/description';
 import {TodoService} from '../../todo-item/services/todo.service';
 import {AlertService} from '../../common/alert/services/alert.service';
 import {CommonService} from '../../common/services/common.service';
@@ -14,14 +13,8 @@ export class ComplexTodoComponent implements OnInit {
 
   @Input() item: any;
   @Input() todo_id: string;
-  displayDescription = false;
   displayUpdateDescription = false;
-  description_id: number;
   descriptionForm: FormGroup;
-  update_description_id: number;
-
-  valDescription: any;
-  itemDescriptions: Description[];
   data: any;
   description: any;
   displayItem = false;
@@ -29,6 +22,7 @@ export class ComplexTodoComponent implements OnInit {
   loading = false;
   submitted = false;
   reload = false;
+  dueDate: Date;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,71 +32,17 @@ export class ComplexTodoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getDescriptionForm();
-  }
-
-  addDescription(description_id) {
-    this.displayDescription = !this.displayDescription;
-    this.description_id = description_id;
-  }
-
-  addEditDescription(description_id) {
-    this.update_description_id = description_id;
-  }
-
-  showUpdateDescription() {
-    this.displayUpdateDescription = !this.displayUpdateDescription;
-  }
-
-  editDescription(description, item_id) {
-    this.submitted = true;
-    this.addEditDescription(description.id);
-    this.showUpdateDescription();
+    this.dueDate = this.item.dueDate;
   }
 
   get d() {
     return this.descriptionForm.controls;
   }
 
-  onDescriptionSubmit(item_id) {
-    this.submitted = true;
-    if (this.descriptionForm.invalid) {
-      return;
-    }
-    this.loading = true;
-    this.description = {
-      text: this.descriptionForm.value.description
-    };
-    this.todoService.createItemDescription(this.description, this.todo_id, item_id, 'item').subscribe(data => {
-      this.data = data;
-      this.descriptionForm.reset();
-      this.loading = false;
-      this.addDescription(this.data.id);
-      this.getItemDescriptions(item_id);
-    });
-  }
-
-  getItemDescriptions(item_id) {
-    this.todoService.getItemDescriptions(this.todo_id, item_id).subscribe(data => {
-      this.itemDescriptions = data;
-    });
-  }
-
-  private getDescriptionForm() {
-    this.descriptionForm = this.formBuilder.group({
-      description: ['', Validators.required],
-      item_id: []
-    });
-  }
-
   openItem(item_id) {
     this.displayItem = !this.displayItem;
     this.display_item_id = item_id;
     this.displayUpdateDescription = false;
-    this.getItemDescriptions(item_id);
-    // console.log('displayItem', this.displayItem);
-    // console.log('display_item_id', this.display_item_id);
-    // console.log('displayUpdateDescription', this.displayUpdateDescription);
   }
 
   updateTodoItem(item_id) {
