@@ -9,7 +9,7 @@
               </span>
     <div class="mb-2 ml-4" id="{{item.name}}" *ngIf="displayItem && display_item_id == item.id">
       <span class="" *ngIf="item.done == false">
-        <small><a (click)='updateTodoItem(item.id)'>done</a></small>
+        <small><a class="text-danger" (click)='updateTodoItem(item.id)'>done</a></small>
       </span>
         <span class="ml-2" *ngIf="item.done == true">
         <small><a (click)='updateTodoItem(item.id)'>undo</a></small>

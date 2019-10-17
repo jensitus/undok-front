@@ -1,5 +1,5 @@
-<span class="ml-2">
-  <small *ngIf="itemDescriptions < 1"><a (click)="open(content)">description</a></small>
+<span class="ml-2 mr-2">
+  <small *ngIf="itemDescriptions.length < 1"><a class="text-success" (click)="open(content)">description</a></small>
 </span>
 <ng-template #content let-modal>
   <div class="modal-header">
@@ -37,7 +37,7 @@
     </div>
     <div>
       <small>
-        <a (click)="openEditModal(editdescription)">edit</a>
+        <a class="text-success" (click)="openEditModal(editdescription)">edit</a>
       </small>
     </div>
   </div>
