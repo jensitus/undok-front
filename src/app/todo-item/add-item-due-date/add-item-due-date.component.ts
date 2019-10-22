@@ -29,20 +29,16 @@ export class AddItemDueDateComponent implements OnInit {
 
   ngOnInit() {
     this.show_set_due_date = false;
-    console.log(this.item);
     if (this.item.dueDate === null) {
       this.dueDate = 'yyyy-mm-dd';
     } else {
       this.dueDate = this.item.dueDate;
+      console.log(this.dueDate);
     }
     this.setDueDatePlaceholder();
-    // this.todoService.getTodoItem(this.todo_id, this.item_id).subscribe(result => {
-    //   console.log(result);
-    // });
   }
 
   setTheDueDate() {
-    console.log(this.ngbFormatterService.format(this.dueDate));
     this.todoService.setItemDueDate(this.todo_id, this.item.id, this.ngbFormatterService.format(this.dueDate)).subscribe(result => {
       console.log(result);
       this.commonService.setDueDateSubject(true);
