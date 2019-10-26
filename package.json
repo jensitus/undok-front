@@ -21,6 +21,8 @@
     "@angular/platform-browser-dynamic": "^8.2.8",
     "@angular/router": "^8.2.8",
     "@ng-bootstrap/ng-bootstrap": "^5.1.1",
+    "@ngx-translate/core": "^11.0.1",
+    "@ngx-translate/http-loader": "^4.0.0",
     "angular-font-awesome": "^3.1.2",
     "core-js": "^2.6.9",
     "font-awesome": "^4.7.0",
