@@ -21,7 +21,6 @@ import {ForgotPasswordComponent} from './auth/forgot-password/forgot-password.co
 import {ListTodoComponent} from './todo-item/list-todo/list-todo.component';
 // import {ItemsComponent} from './todo-item/items/items.component';
 import {ShowTodoComponent} from './todo-item/show-todo/show-todo.component';
-import {AddTodoComponent} from './todo-item/add-todo/add-todo.component';
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
 import {DiaryComponent} from './diary/diary/diary.component';
 import {DiaryListComponent} from './diary/diary-list/diary-list.component';
@@ -50,17 +49,18 @@ import { SetVariableCheckBoxComponent } from './process/set-variable-checkbox/se
 import { FinishTodoComponent } from './process/finish-todo/finish-todo.component';
 import { ComplexTodoComponent } from './process/complex-todo/complex-todo.component';
 import { SimpleTodoComponent } from './process/simple-todo/simple-todo.component';
-import { ListTasksComponent } from './process/list-tasks/list-tasks.component';
 import { AddItemDueDateComponent } from './todo-item/add-item-due-date/add-item-due-date.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {LayoutModule} from './admin-template/layout/layout.module';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
+  { path: '', loadChildren: () => import('./admin-template/layout/layout.module').then(m => m.LayoutModule), canActivate: [AuthGuard] },
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'forgot', component: ForgotPasswordComponent},
-  {path: 'auth/reset_password/:token/edit', component: ResetPasswordComponent},
+/*  {path: 'auth/reset_password/:token/edit', component: ResetPasswordComponent},
   {path: 'users/:username', component: UserComponent},
   {path: 'users/:username/edit', component: EditUserComponent},
   {path: 'todos', component: TodoComponent},
@@ -70,7 +70,7 @@ const app_routes: Routes = [
   {path: 'diaries/:id/edit', component: EditDiaryComponent},
   {path: 'tasks/:formKey/:taskId', component: TaskComponent},
   {path: 'tasks/list', component: TaskListComponent},
-  {path: 'migrate/process', component: ProcessMigrationComponent}
+  {path: 'migrate/process', component: ProcessMigrationComponent}*/
 ];
 
 @NgModule({
@@ -86,7 +86,6 @@ const app_routes: Routes = [
     ListTodoComponent,
     // ItemsComponent,
     ShowTodoComponent,
-    AddTodoComponent,
     DiaryComponent,
     DiaryListComponent,
     AddDiaryComponent,
@@ -107,7 +106,6 @@ const app_routes: Routes = [
     FinishTodoComponent,
     ComplexTodoComponent,
     SimpleTodoComponent,
-    ListTasksComponent,
     AddItemDueDateComponent,
   ],
   imports: [
@@ -121,7 +119,8 @@ const app_routes: Routes = [
     HttpClientModule,
     ReactiveFormsModule,
     AngularFontAwesomeModule,
-    NgbModule
+    NgbModule,
+    LayoutModule
   ],
   providers: [
     AuthGuard,

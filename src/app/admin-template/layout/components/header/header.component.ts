@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import {User} from '../../../../auth/model/user';
 
 @Component({
     selector: 'app-header',
@@ -9,8 +10,12 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HeaderComponent implements OnInit {
     public pushRightClass: string;
+    currentUser: User;
 
-    constructor(private translate: TranslateService, public router: Router) {
+    constructor(
+      /*private translate: TranslateService,*/
+      public router: Router
+    ) {
 
         this.router.events.subscribe(val => {
             if (
@@ -25,6 +30,7 @@ export class HeaderComponent implements OnInit {
 
     ngOnInit() {
         this.pushRightClass = 'push-right';
+        this.getCurrentUser();
     }
 
     isToggled(): boolean {
@@ -46,7 +52,11 @@ export class HeaderComponent implements OnInit {
         localStorage.removeItem('isLoggedin');
     }
 
-    changeLang(language: string) {
+  getCurrentUser() {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  }
+
+    /*changeLang(language: string) {
         this.translate.use(language);
-    }
+    }*/
 }

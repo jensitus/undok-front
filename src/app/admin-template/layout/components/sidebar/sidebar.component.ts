@@ -15,7 +15,10 @@ export class SidebarComponent implements OnInit {
 
     @Output() collapsedEvent = new EventEmitter<boolean>();
 
-    constructor(private translate: TranslateService, public router: Router) {
+    constructor(
+      /*private translate: TranslateService,*/
+      public router: Router
+    ) {
         this.router.events.subscribe(val => {
             if (
                 val instanceof NavigationEnd &&
@@ -67,9 +70,9 @@ export class SidebarComponent implements OnInit {
         dom.classList.toggle('rtl');
     }
 
-    changeLang(language: string) {
-        this.translate.use(language);
-    }
+    // changeLang(language: string) {
+    //     this.translate.use(language);
+    // }
 
     onLoggedout() {
         localStorage.removeItem('isLoggedin');
