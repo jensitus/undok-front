@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MigrationService} from '../services/migration.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AlertService} from '../alert/services/alert.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 
 @Component({
   selector: 'app-process-migration',

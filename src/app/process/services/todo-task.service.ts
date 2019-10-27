@@ -3,7 +3,7 @@ import {TaskService} from '../../common/services/task.service';
 import {TodoService} from '../../todo-item/services/todo.service';
 import {User} from '../../auth/model/user';
 import {Item} from '../../todo-item/model/item';
-import {AlertService} from '../../common/alert/services/alert.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 
 @Injectable({
   providedIn: 'root'

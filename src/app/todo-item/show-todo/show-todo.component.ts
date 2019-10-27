@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {TodoService} from '../services/todo.service';
-import {AlertService} from '../../common/alert/services/alert.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {Item} from '../model/item';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {User} from '../../auth/model/user';

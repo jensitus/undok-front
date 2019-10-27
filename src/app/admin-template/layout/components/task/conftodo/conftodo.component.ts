@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {TaskService} from '../../../../../common/services/task.service';
 import {ActivatedRoute} from '@angular/router';
 import {TodoService} from '../../../../../todo-item/services/todo.service';
-import {AlertService} from '../../../../../common/alert/services/alert.service';
+import {AlertService} from '../../alert/services/alert.service';
 import {FormBuilder} from '@angular/forms';
 import {UserService} from '../../../../../auth/services/user.service';
 import {User} from '../../../../../auth/model/user';

@@ -6,7 +6,7 @@ import {Description} from '../../../../../todo-item/model/description';
 import {TaskService} from '../../../../../common/services/task.service';
 import {ActivatedRoute} from '@angular/router';
 import {TodoService} from '../../../../../todo-item/services/todo.service';
-import {AlertService} from '../../../../../common/alert/services/alert.service';
+import {AlertService} from '../../alert/services/alert.service';
 import {UserService} from '../../../../../auth/services/user.service';
 import {CommonService} from '../../../../../common/services/common.service';
 

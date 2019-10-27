@@ -9,8 +9,6 @@ import {UserService} from './auth/services/user.service';
 import {LoginComponent} from './auth/login/login.component';
 import {RegisterComponent} from './auth/register/register.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {AlertService} from './common/alert/services/alert.service';
-import {AlertComponent} from './common/alert/alert.component';
 import {AuthenticationService} from './auth/services/authentication.service';
 import {JwtInterceptor} from './auth/helpers/jwt.interceptor';
 import {ErrorInterceptor} from './common/helper/error.interceptor';
@@ -66,7 +64,6 @@ const app_routes: Routes = [
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    AlertComponent,
     NavbarComponent,
     ResetPasswordComponent,
     ForgotPasswordComponent,
@@ -100,7 +97,6 @@ const app_routes: Routes = [
   providers: [
     AuthGuard,
     UserService,
-    AlertService,
     AuthenticationService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}

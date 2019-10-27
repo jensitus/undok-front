@@ -14,6 +14,8 @@ import {TaskModule} from './components/task/task-module/task.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AddUserComponent} from '../../common/add-user/add-user.component';
 import {SetVariableCheckBoxComponent} from '../../process/set-variable-checkbox/set-variable-check-box.component';
+import {AlertModule} from './components/alert/alert.module';
+
 
 @NgModule({
   imports: [
@@ -22,18 +24,19 @@ import {SetVariableCheckBoxComponent} from '../../process/set-variable-checkbox/
     NgbDropdownModule,
     TaskModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    AlertModule
   ],
-    declarations: [
-      LayoutComponent,
-      SidebarComponent,
-      HeaderComponent,
-      TaskComponent,
-      TodotaskComponent,
-      ConftodoComponent,
-      FinishTodoComponent,
-      AddUserComponent,
-      SetVariableCheckBoxComponent
-    ]
+  declarations: [
+    LayoutComponent,
+    SidebarComponent,
+    HeaderComponent,
+    TaskComponent,
+    TodotaskComponent,
+    ConftodoComponent,
+    FinishTodoComponent,
+    AddUserComponent,
+    SetVariableCheckBoxComponent
+  ]
 })
 export class LayoutModule {}

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TaskService} from '../../common/services/task.service';
-import {AlertService} from '../../common/alert/services/alert.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {Router} from '@angular/router';
 
 @Component({

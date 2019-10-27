@@ -9,8 +9,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {CompleteTaskComponent} from '../../../../../process/complete-task/complete-task.component';
 
-
-
 @NgModule({
   declarations: [
     ComplexTodoComponent,
