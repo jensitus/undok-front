@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {User} from '../../auth/model/user';
-import {Item} from '../../todo-item/model/item';
-import {TaskService} from '../../common/services/task.service';
-import {TodoService} from '../../todo-item/services/todo.service';
+import {User} from '../../../../../auth/model/user';
+import {Item} from '../../../../../todo-item/model/item';
+import {TaskService} from '../../../../../common/services/task.service';
+import {TodoService} from '../../../../../todo-item/services/todo.service';
 
 @Component({
   selector: 'app-finish-todo',

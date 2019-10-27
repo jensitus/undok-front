@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   currentUser: User;
   users: User[] = [];
   public sliders: Array<any> = [];
+  processImagePath: string;
 
   constructor(
     private userService: UserService,
@@ -23,9 +24,6 @@ export class HomeComponent implements OnInit {
     private commonService: CommonService
   ) {
     this.sliders.push(
-      {
-        imagePath: 'assets/images/todo.png'
-      },
       {
         imagePath: 'assets/images/slider1.jpg'
       },
@@ -36,6 +34,7 @@ export class HomeComponent implements OnInit {
         imagePath: 'assets/images/slider3.jpg'
       }
     );
+    this.processImagePath = 'assets/images/todo.png';
   }
 
   ngOnInit() {

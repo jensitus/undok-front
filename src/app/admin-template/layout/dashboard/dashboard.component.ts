@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../../router.animations';
+import {User} from '../../../auth/model/user';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-dashboard',
@@ -9,8 +11,11 @@ import { routerTransition } from '../../../router.animations';
 })
 export class DashboardComponent implements OnInit {
     public alerts: Array<any> = [];
+    currentUser: User;
 
-    constructor() {
+    constructor(
+      private router: Router
+    ) {
         this.alerts.push(
             {
                 id: 1,
@@ -31,10 +36,19 @@ export class DashboardComponent implements OnInit {
         );
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+      this.getCurrentUser();
+      if (this.currentUser == null) {
+        this.router.navigate(['/home']);
+      }
+    }
 
     public closeAlert(alert: any) {
         const index: number = this.alerts.indexOf(alert);
         this.alerts.splice(index, 1);
     }
+
+  private getCurrentUser() {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  }
 }

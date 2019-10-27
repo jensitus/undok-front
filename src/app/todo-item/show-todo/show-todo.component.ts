@@ -62,7 +62,7 @@ export class ShowTodoComponent implements OnInit {
     //   this.todo_id = params['id'];
     // }
     console.log('donner die todo_id', this.todo_id);
-    this.todoService.getTodo(this.todo_id).subscribe(data => {
+    /*this.todoService.getTodo(this.todo_id).subscribe(data => {
       this.todo = data;
       this.todo_title = this.todo.title;
       this.todo_users = this.todo.users;
@@ -72,7 +72,7 @@ export class ShowTodoComponent implements OnInit {
       this.alertService.success('here you can manage your business', true);
     }, error => {
       this.alertService.error(error);
-    });
+    });*/
     this.getItemForm();
     this.getAddUserForm();
     this.getDescriptionForm();
@@ -86,31 +86,31 @@ export class ShowTodoComponent implements OnInit {
     return this.descriptionForm.controls;
   }
 
-  onSubmit(type) {
-    if (type === 'item') {
-      this.submitted = true;
-      if (this.itemForm.invalid) {
-        return;
-      }
-      this.loading = true;
-      this.item = {
-        name: this.itemForm.value.name,
-        done: false
-      };
-      this.todoService.createTodoItem(this.todo_id, this.item).subscribe(data => {
-        this.data = JSON.stringify({data});
-        this.alertService.success('yes, you did it', false);
-        this.getTodoItems();
-        this.itemForm.reset();
-        this.loading = false;
-        this.data = data;
-      }, error => {
-        // this.alertService.error(error, true);
-      });
-    } else if (type === 'descriptio') {
-
-    }
-  }
+  // onSubmit(type) {
+  //   if (type === 'item') {
+  //     this.submitted = true;
+  //     if (this.itemForm.invalid) {
+  //       return;
+  //     }
+  //     this.loading = true;
+  //     this.item = {
+  //       name: this.itemForm.value.name,
+  //       done: false
+  //     };
+  //     this.todoService.createTodoItem(this.todo_id, this.item).subscribe(data => {
+  //       this.data = JSON.stringify({data});
+  //       this.alertService.success('yes, you did it', false);
+  //       this.getTodoItems();
+  //       this.itemForm.reset();
+  //       this.loading = false;
+  //       this.data = data;
+  //     }, error => {
+  //       // this.alertService.error(error, true);
+  //     });
+  //   } else if (type === 'descriptio') {
+  //
+  //   }
+  // }
 
   onDescriptionSubmit(item_id) {
     // this.submitted = true;

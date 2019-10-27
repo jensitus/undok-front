@@ -33,30 +33,17 @@ import {UserComponent} from './auth/user/user.component';
 import {EditUserComponent} from './auth/edit-user/edit-user.component';
 
 import {OrderModule} from 'ngx-order-pipe';
-import {DescriptionComponent} from './todo-item/description/add/description.component';
-import {EditDescriptionComponent} from './todo-item/description/edit/edit-description.component';
 
 import {TodoComponent} from './todo-item/todo/todo.component';
-import {TaskComponent} from './process/task/task.component';
 import {TaskListComponent} from './process/task-list/task-list.component';
-import {CompleteTaskComponent} from './process/complete-task/complete-task.component';
 import {ProcessMigrationComponent} from './common/process-migration/process-migration.component';
-import { TodotaskComponent } from './process/todotask/todotask.component';
-import { ConftodoComponent } from './process/conftodo/conftodo.component';
-import { AddUserComponent } from './common/add-user/add-user.component';
-import { SetVariableCheckBoxComponent } from './process/set-variable-checkbox/set-variable-check-box.component';
-
-import { FinishTodoComponent } from './process/finish-todo/finish-todo.component';
-import { ComplexTodoComponent } from './process/complex-todo/complex-todo.component';
-import { SimpleTodoComponent } from './process/simple-todo/simple-todo.component';
-import { AddItemDueDateComponent } from './todo-item/add-item-due-date/add-item-due-date.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {LayoutModule} from './admin-template/layout/layout.module';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
-  { path: '', loadChildren: () => import('./admin-template/layout/layout.module').then(m => m.LayoutModule), canActivate: [AuthGuard] },
+  // { path: '', loadChildren: () => import('./admin-template/layout/layout.module').then(m => m.LayoutModule), canActivate: [AuthGuard] },
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'forgot', component: ForgotPasswordComponent},
@@ -92,21 +79,9 @@ const app_routes: Routes = [
     EditDiaryComponent,
     UserComponent,
     EditUserComponent,
-    DescriptionComponent,
-    EditDescriptionComponent,
     TodoComponent,
-    TaskComponent,
     TaskListComponent,
-    CompleteTaskComponent,
     ProcessMigrationComponent,
-    TodotaskComponent,
-    ConftodoComponent,
-    AddUserComponent,
-    SetVariableCheckBoxComponent,
-    FinishTodoComponent,
-    ComplexTodoComponent,
-    SimpleTodoComponent,
-    AddItemDueDateComponent,
   ],
   imports: [
     BrowserModule,
@@ -129,6 +104,8 @@ const app_routes: Routes = [
     AuthenticationService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+  ],
+  exports: [
   ],
   bootstrap: [AppComponent]
 })

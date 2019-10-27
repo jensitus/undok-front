@@ -1,14 +1,14 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Item} from '../../todo-item/model/item';
-import {User} from '../../auth/model/user';
-import {Description} from '../../todo-item/model/description';
-import {TaskService} from '../../common/services/task.service';
+import {Item} from '../../../../../todo-item/model/item';
+import {User} from '../../../../../auth/model/user';
+import {Description} from '../../../../../todo-item/model/description';
+import {TaskService} from '../../../../../common/services/task.service';
 import {ActivatedRoute} from '@angular/router';
-import {TodoService} from '../../todo-item/services/todo.service';
-import {AlertService} from '../../common/alert/services/alert.service';
-import {UserService} from '../../auth/services/user.service';
-import {CommonService} from '../../common/services/common.service';
+import {TodoService} from '../../../../../todo-item/services/todo.service';
+import {AlertService} from '../../../../../common/alert/services/alert.service';
+import {UserService} from '../../../../../auth/services/user.service';
+import {CommonService} from '../../../../../common/services/common.service';
 
 @Component({
   selector: 'app-todotask',
