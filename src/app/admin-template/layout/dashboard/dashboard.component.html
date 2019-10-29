@@ -1,7 +1,7 @@
 <div [@routerTransition]>
     <h2 class="text-muted">Dashboard <small>Statistics Overview</small></h2>
 
-    <div class="row">
+<!--    <div class="row">
         <div class="col-xl-3 col-lg-6">
             <app-stat [bgClass]="'primary'" [icon]="'fa-comments'" [count]="26" [label]="'New Comments!'" ></app-stat>
         </div>
@@ -15,17 +15,15 @@
             <app-stat [bgClass]="'danger'" [icon]="'fa-support'" [count]="13" [label]="'New Tickets!'"></app-stat>
         </div>
     </div>
-    <hr />
-    <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}</ngb-alert>
-    <hr />
+    <hr />-->
     <div class="row">
         <div class="col-lg-8">
             <div class="card card-default">
                 <div class="card-header">
-                    <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline
+                    <i class="fa fa-clock-o fa-fw"></i> Urgent Matter
                 </div>
                 <!-- /.card-header -->
-                <app-timeline></app-timeline>
+                <app-timeline [user_id]="currentUser.id"></app-timeline>
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->

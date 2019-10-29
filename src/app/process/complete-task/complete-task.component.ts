@@ -39,7 +39,7 @@ export class CompleteTaskComponent implements OnInit {
           console.log('this.itemsOpen', this.itemsOpen);
           this.taskService.completeTask(this.task_id).subscribe(resdata => {
             console.log('resdata', resdata);
-            this.router.navigate(['tasks/list']);
+            // this.router.navigate(['dashboard']);
           });
         }
       });

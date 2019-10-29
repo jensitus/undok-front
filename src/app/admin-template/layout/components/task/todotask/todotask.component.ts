@@ -54,6 +54,9 @@ export class TodotaskComponent implements OnInit {
   ngOnInit() {
     this.taskService.getTask(this.taskId).toPromise().then(data => {
       this.task = data;
+      if (this.task === null) {
+        this.alertService.error('this task isn\'t there anymore');
+      }
     }).then(response => {
       this.getTheTodoForThisTask(this.task.executionId);
     }).then(s => {
