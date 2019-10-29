@@ -1,4 +1,4 @@
-$topnav-background-color: #f5f9ff;
+$topnav-background-color: #f8f9fa;
 .sidebar {
     border-radius: 0;
     position: fixed;
@@ -34,12 +34,12 @@ $topnav-background-color: #f5f9ff;
             }
         }
         a:hover {
-            background: darken($topnav-background-color, 5%);
+            background: darken($topnav-background-color, 3%);
             color: #333;
         }
         a.router-link-active {
-            background: darken($topnav-background-color, 5%);
-            color: #fff;
+            background: darken($topnav-background-color, 3%);
+            color: #111;
         }
         .header-fields {
             padding-top: 10px;

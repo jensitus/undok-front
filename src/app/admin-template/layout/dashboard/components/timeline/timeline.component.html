@@ -9,7 +9,7 @@
             <small class="text-muted"><i class="fa fa-clock-o"></i> active since: {{item.createdAt | date:'longDate'}}</small>
           </div>
           <div>
-            <span [innerHTML]="item.name"></span>
+            <b><span [innerHTML]="item.name"></span></b>
           </div>
           <div>
             <small>in Todo: <a [routerLink]="['/tasks/todo', item.taskId]" [innerHTML]="item.todoTitle"></a></small>
@@ -18,7 +18,7 @@
       </div>
     </li>
     <li *ngIf="(i % 2 == 0) && !(i % 3 == 1)">
-      <div class="timeline-badge secondary"><i class="fa fa-graduation-cap"></i>
+      <div class="timeline-badge warning"><i class="fa fa-graduation-cap"></i>
       </div>
       <div class="timeline-panel">
         <div class="timeline-body">
@@ -26,7 +26,7 @@
             <small class="text-muted"><i class="fa fa-clock-o"></i> active since: {{item.createdAt | date:'longDate'}}</small>
           </div>
           <div>
-            <span [innerHTML]="item.name"></span>
+            <b><span [innerHTML]="item.name"></span></b>
           </div>
           <div>
             <small>in Todo: <a [routerLink]="['/tasks/todo', item.taskId]" [innerHTML]="item.todoTitle"></a></small>
@@ -43,7 +43,7 @@
             <small class="text-muted"><i class="fa fa-clock-o"></i> active since: {{item.createdAt | date:'longDate'}}</small>
           </div>
           <div>
-            <span [innerHTML]="item.name"></span>
+            <b><span [innerHTML]="item.name"></span></b>
           </div>
           <div>
             <small>in Todo: <a [routerLink]="['/tasks/todo', item.taskId]" [innerHTML]="item.todoTitle"></a></small>
@@ -60,7 +60,7 @@
             <small class="text-muted"><i class="fa fa-clock-o"></i> active since: {{item.createdAt | date:'longDate'}}</small>
           </div>
           <div>
-            <span [innerHTML]="item.name"></span>
+            <b><span [innerHTML]="item.name"></span></b>
           </div>
           <div>
             <small>in Todo: <a [routerLink]="['/tasks/todo', item.taskId]" [innerHTML]="item.todoTitle"></a></small>
