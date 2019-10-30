@@ -45,9 +45,8 @@ const app_routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'forgot', component: ForgotPasswordComponent},
-/*  {path: 'auth/reset_password/:token/edit', component: ResetPasswordComponent},
-  {path: 'users/:username', component: UserComponent},
-  {path: 'users/:username/edit', component: EditUserComponent},
+  {path: 'auth/reset_password/:token/edit', component: ResetPasswordComponent},
+/*
   {path: 'todos', component: TodoComponent},
   {path: 'todos/:id', component: ShowTodoComponent},
   {path: 'diaries', component: DiaryListComponent},

@@ -3,6 +3,8 @@ import {Routes, RouterModule} from '@angular/router';
 import {LayoutComponent} from './layout.component';
 import {HomeComponent} from '../../common/home/home.component';
 import {TaskComponent} from './components/task/task.component';
+import {UserComponent} from '../../auth/user/user.component';
+import {EditUserComponent} from '../../auth/edit-user/edit-user.component';
 
 const routes: Routes = [
   {
@@ -13,9 +15,11 @@ const routes: Routes = [
       // {path: 'home', component: HomeComponent},
       // {path: '', redirectTo: 'home', pathMatch: 'full'}
       {path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)},
-      {path: 'tasks/:formKey/:taskId', component: TaskComponent}
-      /*            { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartsModule) },
-                  { path: 'tables', loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule) },
+      {path: 'tasks/:formKey/:taskId', component: TaskComponent},
+      {path: 'users/:username', component: UserComponent},
+      {path: 'users/:username/edit', component: EditUserComponent},
+      { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartsModule) },
+      /*            { path: 'tables', loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule) },
                   { path: 'forms', loadChildren: () => import('./form/form.module').then(m => m.FormModule) },
                   { path: 'bs-element', loadChildren: () => import('./bs-element/bs-element.module').then(m => m.BsElementModule) },
                   { path: 'grid', loadChildren: () => import('./grid/grid.module').then(m => m.GridModule) },

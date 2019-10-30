@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import {User} from '../../../../auth/model/user';
 
 @Component({
     selector: 'app-sidebar',
@@ -12,6 +13,7 @@ export class SidebarComponent implements OnInit {
     collapsed: boolean;
     showMenu: string;
     pushRightClass: string;
+  currentUser: User;
 
     @Output() collapsedEvent = new EventEmitter<boolean>();
 
@@ -35,6 +37,7 @@ export class SidebarComponent implements OnInit {
         this.collapsed = false;
         this.showMenu = '';
         this.pushRightClass = 'push-right';
+        this.getCurrentUser();
     }
 
 
@@ -77,4 +80,8 @@ export class SidebarComponent implements OnInit {
     onLoggedout() {
         localStorage.removeItem('isLoggedin');
     }
+
+  getCurrentUser() {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  }
 }

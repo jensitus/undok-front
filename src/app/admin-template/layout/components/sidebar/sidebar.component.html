@@ -1,5 +1,9 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
     <div class="list-group">
+        <a [routerLink]="['/users', currentUser.username]" [routerLinkActive]="['router-link-active']" class="list-group-item">
+          <i class="fa fa-fw fa-user"></i>
+          <span>{{ currentUser.username }}</span>
+        </a>
         <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-dashboard"></i>&nbsp;
             <span>{{ 'Dashboard' }}</span>
@@ -8,6 +12,11 @@
             <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
             <span>{{ 'Charts' }}</span>
         </a>
+      <a [routerLink]="['/login']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <i class="fa fa-fw fa-power-off"></i>
+        <span>{{ 'Log Out' }}</span>
+      </a>
+      <!--
         <a [routerLink]="['/tables']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-table"></i>&nbsp;
             <span>{{ 'Tables' }}</span>
@@ -59,7 +68,7 @@
         <a [routerLink]="['/blank-page']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-file-o"></i>&nbsp;
             <span>{{ 'Blank Page' }}</span>
-        </a>
+        </a>-->
 
         <div class="header-fields">
             <a (click)="rltAndLtr()" class="list-group-item">
@@ -109,7 +118,7 @@
                     </ul>
                 </li>-->
             </div>
-            <div class="nested-menu">
+            <!--<div class="nested-menu">
                 <a class="list-group-item" (click)="addExpandClass('profile')">
                     <span><i class="fa fa-user"></i>&nbsp; John Smith</span>
                 </a>
@@ -137,7 +146,7 @@
                         </li>
                     </ul>
                 </li>
-            </div>
+            </div>-->
         </div>
     </div>
     <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">
