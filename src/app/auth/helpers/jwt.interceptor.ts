@@ -7,7 +7,7 @@ import {logger} from 'codelyzer/util/logger';
 export class JwtInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // add authorization header with jwt token if available
-    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser && currentUser.auth_token) {
       req = req.clone({
         setHeaders: {

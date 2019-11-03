@@ -1,11 +1,23 @@
-<div *ngIf="taskList">
-  <div *ngFor="let t of taskList" class="p-1">
-    <a [routerLink]="['/tasks/',t.formKey, t.id]" [innerHTML]="t.name"></a>
-    <!--<a (click)="passTheTask(t)" [innerHTML]="t.name"></a>-->
+<div class="card">
+  <div class="card-header">
+    <i class="fa fa-tasks fw"></i> Tasks
+  </div>
+  <div *ngIf="taskList">
+    <ul class="list-group list-group-flush" *ngFor="let t of taskList">
+      <li class="list-group-item"><a [routerLink]="['/tasks/',t.formKey, t.id]" [innerHTML]="t.name"></a></li>
+    </ul>
+  </div>
+  <div *ngIf="!taskList">
+    Oh, currently there is nothin' really important to do<br>
+    What about starting a process?
   </div>
 </div>
-<div *ngIf="!taskList">
-  Oh, currently there is nothin' really important to do<br>
-  What about starting a process?
-<!--  <app-add-todo></app-add-todo>-->
+
+<div class="card mt-3">
+  <div class="card-header">
+    <i class="fa fa-fw fa-wrench"></i> new Todo
+  </div>
+  <div class="card-body">
+    <app-add-todo></app-add-todo>
+  </div>
 </div>

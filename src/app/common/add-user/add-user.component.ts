@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {TodoService} from '../../todo-item/services/todo.service';
 import {UserService} from '../../auth/services/user.service';
 import {User} from '../../auth/model/user';
-import {AlertService} from '../alert/services/alert.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 
 @Component({
   selector: 'app-add-user',

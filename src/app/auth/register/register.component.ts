@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {UserService} from '../services/user.service';
-import {AlertService} from '../../common/alert/services/alert.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {first} from 'rxjs/operators';
 import {AuthenticationService} from '../services/authentication.service';
 

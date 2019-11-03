@@ -5,7 +5,7 @@ import {catchError} from 'rxjs/operators';
 
 import {AuthenticationService} from '../../auth/services/authentication.service';
 import {Router} from '@angular/router';
-import {AlertService} from '../alert/services/alert.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {

@@ -80,8 +80,11 @@ export class TodoService {
   }
 
   setItemDueDate(todo_id, item_id, dueDate) {
-    console.log(dueDate);
     return this.http.put(`${this.apiUrl}/service/todos/${todo_id}/items/${item_id}/due_date`, dueDate);
+  }
+
+  getItemsByUser(user_id) {
+    return this.http.get(`${this.apiUrl}/timeline/${user_id}/items`);
   }
 
 }

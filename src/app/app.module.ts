@@ -9,8 +9,6 @@ import {UserService} from './auth/services/user.service';
 import {LoginComponent} from './auth/login/login.component';
 import {RegisterComponent} from './auth/register/register.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {AlertService} from './common/alert/services/alert.service';
-import {AlertComponent} from './common/alert/alert.component';
 import {AuthenticationService} from './auth/services/authentication.service';
 import {JwtInterceptor} from './auth/helpers/jwt.interceptor';
 import {ErrorInterceptor} from './common/helper/error.interceptor';
@@ -21,7 +19,6 @@ import {ForgotPasswordComponent} from './auth/forgot-password/forgot-password.co
 import {ListTodoComponent} from './todo-item/list-todo/list-todo.component';
 // import {ItemsComponent} from './todo-item/items/items.component';
 import {ShowTodoComponent} from './todo-item/show-todo/show-todo.component';
-import {AddTodoComponent} from './todo-item/add-todo/add-todo.component';
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
 import {DiaryComponent} from './diary/diary/diary.component';
 import {DiaryListComponent} from './diary/diary-list/diary-list.component';
@@ -34,35 +31,22 @@ import {UserComponent} from './auth/user/user.component';
 import {EditUserComponent} from './auth/edit-user/edit-user.component';
 
 import {OrderModule} from 'ngx-order-pipe';
-import {DescriptionComponent} from './todo-item/description/add/description.component';
-import {EditDescriptionComponent} from './todo-item/description/edit/edit-description.component';
 
 import {TodoComponent} from './todo-item/todo/todo.component';
-import {TaskComponent} from './process/task/task.component';
 import {TaskListComponent} from './process/task-list/task-list.component';
-import {CompleteTaskComponent} from './process/complete-task/complete-task.component';
 import {ProcessMigrationComponent} from './common/process-migration/process-migration.component';
-import { TodotaskComponent } from './process/todotask/todotask.component';
-import { ConftodoComponent } from './process/conftodo/conftodo.component';
-import { AddUserComponent } from './common/add-user/add-user.component';
-import { SetVariableCheckBoxComponent } from './process/set-variable-checkbox/set-variable-check-box.component';
-
-import { FinishTodoComponent } from './process/finish-todo/finish-todo.component';
-import { ComplexTodoComponent } from './process/complex-todo/complex-todo.component';
-import { SimpleTodoComponent } from './process/simple-todo/simple-todo.component';
-import { ListTasksComponent } from './process/list-tasks/list-tasks.component';
-import { AddItemDueDateComponent } from './todo-item/add-item-due-date/add-item-due-date.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {LayoutModule} from './admin-template/layout/layout.module';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
+  // { path: '', loadChildren: () => import('./admin-template/layout/layout.module').then(m => m.LayoutModule), canActivate: [AuthGuard] },
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'forgot', component: ForgotPasswordComponent},
   {path: 'auth/reset_password/:token/edit', component: ResetPasswordComponent},
-  {path: 'users/:username', component: UserComponent},
-  {path: 'users/:username/edit', component: EditUserComponent},
+/*
   {path: 'todos', component: TodoComponent},
   {path: 'todos/:id', component: ShowTodoComponent},
   {path: 'diaries', component: DiaryListComponent},
@@ -70,7 +54,7 @@ const app_routes: Routes = [
   {path: 'diaries/:id/edit', component: EditDiaryComponent},
   {path: 'tasks/:formKey/:taskId', component: TaskComponent},
   {path: 'tasks/list', component: TaskListComponent},
-  {path: 'migrate/process', component: ProcessMigrationComponent}
+  {path: 'migrate/process', component: ProcessMigrationComponent}*/
 ];
 
 @NgModule({
@@ -79,36 +63,21 @@ const app_routes: Routes = [
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    AlertComponent,
     NavbarComponent,
     ResetPasswordComponent,
     ForgotPasswordComponent,
     ListTodoComponent,
     // ItemsComponent,
     ShowTodoComponent,
-    AddTodoComponent,
     DiaryComponent,
     DiaryListComponent,
     AddDiaryComponent,
     EditDiaryComponent,
     UserComponent,
     EditUserComponent,
-    DescriptionComponent,
-    EditDescriptionComponent,
     TodoComponent,
-    TaskComponent,
     TaskListComponent,
-    CompleteTaskComponent,
     ProcessMigrationComponent,
-    TodotaskComponent,
-    ConftodoComponent,
-    AddUserComponent,
-    SetVariableCheckBoxComponent,
-    FinishTodoComponent,
-    ComplexTodoComponent,
-    SimpleTodoComponent,
-    ListTasksComponent,
-    AddItemDueDateComponent,
   ],
   imports: [
     BrowserModule,
@@ -121,15 +90,17 @@ const app_routes: Routes = [
     HttpClientModule,
     ReactiveFormsModule,
     AngularFontAwesomeModule,
-    NgbModule
+    NgbModule,
+    LayoutModule
   ],
   providers: [
     AuthGuard,
     UserService,
-    AlertService,
     AuthenticationService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+  ],
+  exports: [
   ],
   bootstrap: [AppComponent]
 })

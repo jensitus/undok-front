@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TaskService} from '../../common/services/task.service';
-import {AlertService} from '../../common/alert/services/alert.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -39,7 +39,7 @@ export class CompleteTaskComponent implements OnInit {
           console.log('this.itemsOpen', this.itemsOpen);
           this.taskService.completeTask(this.task_id).subscribe(resdata => {
             console.log('resdata', resdata);
-            this.router.navigate(['tasks/list']);
+            this.router.navigate(['dashboard']);
           });
         }
       });

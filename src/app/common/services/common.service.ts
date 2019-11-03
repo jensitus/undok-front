@@ -3,7 +3,7 @@ import {BehaviorSubject} from 'rxjs';
 import {UserService} from '../../auth/services/user.service';
 import {Router} from '@angular/router';
 import {User} from '../../auth/model/user';
-import {AlertService} from '../alert/services/alert.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ProcessService} from '../services/process.service';
-import {AlertService} from '../../common/alert/services/alert.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 
 @Component({
   selector: 'app-set-variable-check-box',

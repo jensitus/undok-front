@@ -1,0 +1,13 @@
+<app-alert></app-alert>
+<div *ngIf="formKey == 'ut-todo'">
+  <app-todotask [taskId]="taskId"></app-todotask>
+</div>
+<div *ngIf="formKey == 'todo'">
+  <app-todotask [taskId]="taskId"></app-todotask>
+</div>
+<div *ngIf="formKey == 'conf-todo'">
+  <app-conftodo [taskId]="taskId"></app-conftodo>
+</div>
+<div *ngIf="formKey == 'finish-todo'">
+  <app-finish-todo [taskId]="taskId"></app-finish-todo>
+</div>
