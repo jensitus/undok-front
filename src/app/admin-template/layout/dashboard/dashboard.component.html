@@ -1,48 +1,48 @@
 <div [@routerTransition]>
-    <!--<h3 class="text-muted mb-4"><small>Statistics Overview</small></h3>-->
+  <!--<h3 class="text-muted mb-4"><small>Statistics Overview</small></h3>-->
 
-<!--    <div class="row">
-        <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'primary'" [icon]="'fa-comments'" [count]="26" [label]="'New Comments!'" ></app-stat>
-        </div>
-        <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="12" [label]="'New task!'" ></app-stat>
-        </div>
-        <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'success'" [icon]="'fa-shopping-cart'" [count]="124" [label]="'New Orders!'" ></app-stat>
-        </div>
-        <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'danger'" [icon]="'fa-support'" [count]="13" [label]="'New Tickets!'"></app-stat>
-        </div>
-    </div>
-    <hr />-->
-    <div class="row">
-      <div class="col-lg-6">
-        <app-list-tasks></app-list-tasks>
-        <!--            <div class="card card-default mb-3">-->
-        <!--                <div class="card-header">-->
-        <!--                    <i class="fa fa-bell fa-fw"></i> Notifications card-->
-        <!--                </div>-->
-        <!--                &lt;!&ndash; /.card-header &ndash;&gt;-->
-        <!--                <app-notification></app-notification>-->
-        <!--                &lt;!&ndash; /.card-body &ndash;&gt;-->
-        <!--            </div>-->
-        <!--            &lt;!&ndash; /.card &ndash;&gt;-->
-        <!--            <app-chat></app-chat>-->
-        <!-- /.card .chat-card -->
+  <!--    <div class="row">
+          <div class="col-xl-3 col-lg-6">
+              <app-stat [bgClass]="'primary'" [icon]="'fa-comments'" [count]="26" [label]="'New Comments!'" ></app-stat>
+          </div>
+          <div class="col-xl-3 col-lg-6">
+              <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="12" [label]="'New task!'" ></app-stat>
+          </div>
+          <div class="col-xl-3 col-lg-6">
+              <app-stat [bgClass]="'success'" [icon]="'fa-shopping-cart'" [count]="124" [label]="'New Orders!'" ></app-stat>
+          </div>
+          <div class="col-xl-3 col-lg-6">
+              <app-stat [bgClass]="'danger'" [icon]="'fa-support'" [count]="13" [label]="'New Tickets!'"></app-stat>
+          </div>
       </div>
-        <div class="col-lg-6">
-            <div class="card card-default">
-                <div class="card-header">
-                    <i class="fa fa-clock-o fa-fw"></i> Urgent Matter
-                </div>
-                <!-- /.card-header -->
-                <app-timeline [user_id]="currentUser.id"></app-timeline>
-                <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-        </div>
-        <!-- /.col-lg-8 -->
-        <!-- /.col-lg-4 -->
+      <hr />-->
+  <div class="row">
+    <div class="col-lg-5">
+      <app-list-tasks></app-list-tasks>
+      <!--            <div class="card card-default mb-3">-->
+      <!--                <div class="card-header">-->
+      <!--                    <i class="fa fa-bell fa-fw"></i> Notifications card-->
+      <!--                </div>-->
+      <!--                &lt;!&ndash; /.card-header &ndash;&gt;-->
+      <!--                <app-notification></app-notification>-->
+      <!--                &lt;!&ndash; /.card-body &ndash;&gt;-->
+      <!--            </div>-->
+      <!--            &lt;!&ndash; /.card &ndash;&gt;-->
+      <!--            <app-chat></app-chat>-->
+      <!-- /.card .chat-card -->
     </div>
+    <div class="col-lg-7">
+      <div class="card card-default">
+        <div class="card-header">
+          <i class="fa fa-clock-o fa-fw"></i> Urgent Matter
+        </div>
+        <!-- /.card-header -->
+        <app-timeline [user_id]="currentUser.id"></app-timeline>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+    <!-- /.col-lg-8 -->
+    <!-- /.col-lg-4 -->
+  </div>
 </div>
