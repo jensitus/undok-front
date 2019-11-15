@@ -10,18 +10,10 @@
           <!-- differentiate between simple or complex -->
 
           <div *ngIf="simple" class="p-1">
-<!--            <div class="card">-->
-<!--              <div class="card-body">-->
-                <app-simple-todo [item]="i" [todo_id]="todo_id"></app-simple-todo>
-<!--              </div>-->
-<!--            </div>-->
+            <app-simple-todo [item]="i" [todo_id]="todo_id"></app-simple-todo>
           </div>
-          <div *ngIf="!simple">
-            <div class="card">
-              <div class="card-body">
-                <app-complex-todo [item]="i" [todo_id]="todo_id"></app-complex-todo>
-              </div>
-            </div>
+          <div *ngIf="!simple" class="p-1">
+            <app-complex-todo [item]="i" [todo_id]="todo_id"></app-complex-todo>
           </div>
         </div>
         <div class="row">
