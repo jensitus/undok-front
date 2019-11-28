@@ -37,6 +37,8 @@ import {TaskListComponent} from './process/task-list/task-list.component';
 import {ProcessMigrationComponent} from './common/process-migration/process-migration.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {LayoutModule} from './admin-template/layout/layout.module';
+import { ConfirmAccountComponent } from './auth/confirm-account/confirm-account.component';
+import {AlertModule} from './admin-template/layout/components/alert/alert.module';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -46,6 +48,7 @@ const app_routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'forgot', component: ForgotPasswordComponent},
   {path: 'auth/reset_password/:token/edit', component: ResetPasswordComponent},
+  {path: 'auth/:token/confirm', component: ConfirmAccountComponent}
 /*
   {path: 'todos', component: TodoComponent},
   {path: 'todos/:id', component: ShowTodoComponent},
@@ -78,6 +81,7 @@ const app_routes: Routes = [
     TodoComponent,
     TaskListComponent,
     ProcessMigrationComponent,
+    ConfirmAccountComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,7 +95,8 @@ const app_routes: Routes = [
     ReactiveFormsModule,
     AngularFontAwesomeModule,
     NgbModule,
-    LayoutModule
+    LayoutModule,
+    AlertModule
   ],
   providers: [
     AuthGuard,
