@@ -18,7 +18,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
-      console.log('error:', err);
+      console.log('errorInterceptor:', err);
       if (err.status === 401 || err.status === 403) {
         // auto logout if 401 or 403 response returned from api
         this.authenticationService.logout();
@@ -31,7 +31,6 @@ export class ErrorInterceptor implements HttpInterceptor {
         // } else if (err.error.message === 'Error -> Unauthorized') {
         //   this.router.navigate(['/login']);
       } else if (err.status === 406) {
-        console.log('406', err.error.text);
         this.alertService.error(err.error.text);
         //   this.router.navigate(['/login']);
         // } else if (err.error.message === 'Missing token' || 'Signature has expired') {
@@ -41,6 +40,8 @@ export class ErrorInterceptor implements HttpInterceptor {
       } else if (err.status === 422) {
         this.alertService.error('reset is expired', true);
         this.router.navigate(['/login']);
+      } else if (err.status === 400) {
+        this.alertService.error(err.error.errors[0].defaultMessage);
       }
 
       const error = err.error.message || err.statusText;

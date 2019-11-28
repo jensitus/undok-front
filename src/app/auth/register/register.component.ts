@@ -15,6 +15,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   loading = false;
   submitted = false;
+  error: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,9 +53,11 @@ export class RegisterComponent implements OnInit {
         this.alertService.success('Registration successful', true);
         this.loading = false;
         this.router.navigate(['/login']);
-      }, error => {
-        this.alertService.error(error);
-        this.loading = false;
+      // }, error => {
+      //   this.error = error;
+      //   console.log('registerComponent', this.error);
+      //   this.alertService.error('registerComponent');
+      //   this.loading = false;
       });
   }
 
