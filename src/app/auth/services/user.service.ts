@@ -42,4 +42,8 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/service/users/${username}/updateavatar`, formData);
   }
 
+  confirmAccount(token: string, email: string) {
+    return this.http.get(this.apiUrl + '/service/auth/' + token + '/confirm?email=' + email);
+  }
+
 }
