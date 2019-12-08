@@ -23,8 +23,10 @@ export class ErrorInterceptor implements HttpInterceptor {
         // auto logout if 401 or 403 response returned from api
         this.authenticationService.logout();
         this.router.navigate(['/login']);
-        this.alertService.success('successfully logged out after 401 or 403', true);
-      } else if (err.error.status === 404) {
+        this.alertService.error(err.error.message, true);
+      } else if(err.status === 451) {
+        this.alertService.warning(err.error.text);
+      } else if (err.status === 404) {
         this.alertService.error(err.error.message);
       } else if (err.status === 409) {
         //   this.alertService.error('409');
@@ -38,8 +40,11 @@ export class ErrorInterceptor implements HttpInterceptor {
         //   this.alertService.error('you need to login', true);
         //   // this.router.navigate(['/login']);
       } else if (err.status === 422) {
-        this.alertService.error('reset is expired', true);
-        this.router.navigate(['/login']);
+        if (err.error.redirect === true) {
+          this.router.navigate(['/login']);
+        } else {
+          this.alertService.error(err.error.text, true);
+        }
       } else if (err.status === 400) {
         this.alertService.error(err.error.errors[0].defaultMessage);
       }

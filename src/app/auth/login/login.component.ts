@@ -57,14 +57,11 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login(this.f.username.value, this.f.password.value).pipe(first()).subscribe(
-      data => {
+    this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(data => {
         this.loading = false;
         this.commonService.setSubject(true);
-        this.alertService.success('successfully logged, how did you do that?', true);
         this.router.navigate([this.returnUrl]);
-      }, error => {
-        this.alertService.error(error, true);
+        this.alertService.success('successfully logged, how did you do that?', true);
       }
     );
   }

@@ -27,10 +27,9 @@ export class ConfirmAccountComponent implements OnInit {
     this.email = this.activatedRoute.snapshot.queryParamMap.get('email');
     this.userService.confirmAccount(this.token, this.email).subscribe(data => {
       this.data = data;
-      console.log('this.data', this.data);
-      this.alertService.info(this.data.message, true);
-    }, error => {
-      this.alertService.error(error);
+      this.alertService.info(this.data.text, true);
+    // }, error => {
+    //   this.alertService.error(error, true);
     });
   }
 
