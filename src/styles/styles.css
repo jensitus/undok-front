@@ -24,3 +24,10 @@ a {
   color: #999999;
   cursor: pointer;
 }
+
+@media screen and (max-width: 992px) {
+  .card-for-phone {
+    margin-left: -35px;
+    margin-right: -35px;
+  }
+}
