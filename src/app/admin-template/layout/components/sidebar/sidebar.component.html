@@ -1,5 +1,5 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
-    <div class="list-group">
+    <div class="list-group mt-4">
         <a [routerLink]="['/users', currentUser.username]" [routerLinkActive]="['router-link-active']" class="list-group-item">
           <i class="fa fa-fw fa-user"></i>
           <span>{{ currentUser.username }}</span>
