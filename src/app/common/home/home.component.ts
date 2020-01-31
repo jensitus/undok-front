@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
         imagePath: 'assets/images/slider3.jpg'
       }
     );
-    this.processImagePath = 'assets/images/todo.png';
+    this.processImagePath = 'assets/images/todo_trans.png';
   }
 
   ngOnInit() {
