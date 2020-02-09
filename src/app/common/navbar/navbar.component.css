@@ -6,6 +6,10 @@ a {
   color: black;
 }
 
+.navbar-link {
+  color: black;
+}
+
 .link {
   cursor: pointer;
 }
@@ -61,7 +65,8 @@ a {
 }
 
 .nav a {
-  color: #007bff;
+  /* color: #007bff; */
+  color: #000000;
 }
 
 .brand {
