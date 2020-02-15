@@ -41,7 +41,7 @@ export class EditUserComponent implements OnInit {
     });
     this.userService.getByUsername(this.username).subscribe(data => {
       this.data = data;
-      console.log(this.data);
+      console.log('this.data', this.data);
       if (this.data.avatar === null) {
         this.avatar = '';
       } else {
@@ -49,7 +49,7 @@ export class EditUserComponent implements OnInit {
       }
       this.user = {
         id: this.data.id,
-        name: this.data.name,
+        name: this.data.username,
         email: this.data.email
       };
       this.userForm.setValue(this.user);

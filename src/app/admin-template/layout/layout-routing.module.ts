@@ -5,6 +5,7 @@ import {HomeComponent} from '../../common/home/home.component';
 import {TaskComponent} from './components/task/task.component';
 import {UserComponent} from '../../auth/user/user.component';
 import {EditUserComponent} from '../../auth/edit-user/edit-user.component';
+import {ChangePasswordComponent} from '../../auth/change-password/change-password.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
       {path: 'tasks/:formKey/:taskId', component: TaskComponent},
       {path: 'users/:username', component: UserComponent},
       {path: 'users/:username/edit', component: EditUserComponent},
+      {path: 'users/:username/changepw', component: ChangePasswordComponent},
       { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartsModule) },
       /*            { path: 'tables', loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule) },
                   { path: 'forms', loadChildren: () => import('./form/form.module').then(m => m.FormModule) },

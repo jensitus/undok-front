@@ -19,6 +19,9 @@
       </form>
     </div>
     <div class="col">
+      <a [routerLink]="['/users', user.name, 'changepw']">change pw</a>
+    </div>
+    <div class="col">
       <div class="form-group mt-1">
         <span>// here we have to find a solution for file updload</span>
         <!-- <p-fileUpload name="avatar" accept="image/*" url="{{avatar_upload_url}}" maxFileSize="1000000"></p-fileUpload>-->

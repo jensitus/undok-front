@@ -39,6 +39,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {LayoutModule} from './admin-template/layout/layout.module';
 import { ConfirmAccountComponent } from './auth/confirm-account/confirm-account.component';
 import {AlertModule} from './admin-template/layout/components/alert/alert.module';
+import { ChangePasswordComponent } from './auth/change-password/change-password.component';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -82,6 +83,7 @@ const app_routes: Routes = [
     TaskListComponent,
     ProcessMigrationComponent,
     ConfirmAccountComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,
