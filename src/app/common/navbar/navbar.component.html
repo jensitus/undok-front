@@ -4,12 +4,12 @@
       <a [routerLink]="['/']"> service - b . org </a>
     </span>
     <span *ngIf="currentUser != null" class="nav-user-man">
-      <a [routerLink]="['/users', currentUser.username]" [innerHTML]="currentUser.username"></a>
+      <a [routerLink]="['/users', currentUser.username]" [innerHTML]="currentUser.username" class="navbar-link"></a>
        |
       <a [routerLink]="['/login']"> logout</a>
     </span>
     <span *ngIf="currentUser == null" class="nav-user-man">
-      <a [routerLink]="['/login']">Login </a>
+      <a [routerLink]="['/login']" class="navbar-link">Login </a>
       |
       <a [routerLink]="['/register']"> Register</a>
     </span>
