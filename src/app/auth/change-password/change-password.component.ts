@@ -5,6 +5,7 @@ import {UserService} from '../services/user.service';
 import {User} from '../model/user';
 import {ChangePwDto} from '../model/change-pw-dto';
 import {Location} from '@angular/common';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 
 @Component({
   selector: 'app-change-password',
@@ -20,13 +21,15 @@ export class ChangePasswordComponent implements OnInit {
   user_id: number;
   data: any;
   changePwDto: ChangePwDto;
+  himmel: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private alertService: AlertService
   ) {
   }
 
@@ -50,6 +53,11 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   onSubmit() {
+    this.submitted = true;
+    if (this.changePWForm.invalid) {
+      return;
+    }
+    this.loading = true;
     this.changePwDto = {
       userId: this.user_id,
       newPassword: this.changePWForm.value.new_password,
@@ -58,8 +66,11 @@ export class ChangePasswordComponent implements OnInit {
     };
     console.log(this.changePwDto);
     this.userService.changePassword(this.changePwDto).subscribe(data => {
-      console.log(data); //
-      this.router.navigate([]);
+      this.himmel = data;
+      console.log('data', this.himmel);
+      this.alertService.success('this.donner.wetter');
+      // this.router.navigate([]);
+      this.loading = false;
     });
   }
 

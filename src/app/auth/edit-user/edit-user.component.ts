@@ -65,6 +65,7 @@ export class EditUserComponent implements OnInit {
 
   onSubmit() {
     console.log(this.userForm.value);
+    this.alertService.success('Donner The Wetter is disgusting');
   }
 
   onUpload(event) {
