@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {User} from '../model/user';
 import {environment} from '../../../environments/environment';
+import {Validators} from '@angular/forms';
+import {ChangePwDto} from '../model/change-pw-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -38,12 +40,16 @@ export class UserService {
 
   uploadAvatar(avatar: any, username: string) {
     const formData = new FormData();
-    formData.append('avatar', avatar)
+    formData.append('avatar', avatar);
     return this.http.post(`${this.apiUrl}/service/users/${username}/updateavatar`, formData);
   }
 
   confirmAccount(token: string, email: string) {
     return this.http.get(this.apiUrl + '/service/auth/' + token + '/confirm?email=' + email);
+  }
+
+  changePassword(changePwDto: ChangePwDto) {
+    return this.http.post(this.apiUrl + '/service/users/changepw', changePwDto);
   }
 
 }

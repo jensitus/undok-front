@@ -22,16 +22,17 @@ export class ErrorInterceptor implements HttpInterceptor {
       if (err.status === 401 || err.status === 403) {
         // auto logout if 401 or 403 response returned from api
         this.authenticationService.logout();
-        this.router.navigate(['/login']);
         this.alertService.error(err.error.message, true);
-      } else if(err.status === 451) {
-        this.alertService.warning(err.error.text);
+        this.router.navigate(['/login']);
+      } else if (err.status === 451) {
+        this.alertService.error(err.error.text);
       } else if (err.status === 404) {
         this.alertService.error(err.error.message);
       } else if (err.status === 409) {
-        //   this.alertService.error('409');
-        // } else if (err.error.message === 'Error -> Unauthorized') {
-        //   this.router.navigate(['/login']);
+        console.log('H A L L O');
+        this.alertService.error('err', true); // das pbuli
+      // } else if (err.error.message === 'Error -> Unauthorized') {
+      //   this.router.navigate(['/login']);
       } else if (err.status === 406) {
         this.alertService.error(err.error.text);
         //   this.router.navigate(['/login']);
@@ -43,14 +44,15 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (err.error.redirect === true) {
           this.router.navigate(['/login']);
         } else {
+          console.log('err.error.text', err.error.text);
           this.alertService.error(err.error.text, true);
         }
       } else if (err.status === 400) {
         this.alertService.error(err.error.errors[0].defaultMessage);
       }
 
-      const error = err.error.message || err.statusText;
-      return throwError(error);
+      // const error = err.text || err.statusText;
+      return throwError(err);
     }));
   }
 }

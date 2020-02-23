@@ -30,6 +30,7 @@ export class UserComponent implements OnInit {
     this.userService.getByUsername(this.username).subscribe(data => {
       this.user = data;
       console.log(this.user);
+      this.alertService.success('hi');
     }, error => {
       this.alertService.error(error);
     });
