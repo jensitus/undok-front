@@ -20,6 +20,11 @@ export class PageHeaderComponent implements OnInit {
     constructor() {}
 
     ngOnInit() {
-      this.routerlink = '/' + this.firstLink;
+      console.log(this.firstLink, 'this.firstLink');
+      if (this.firstLink == null) {
+        this.routerlink = null;
+      } else {
+        this.routerlink = '/' + this.firstLink;
+      }
     }
 }
