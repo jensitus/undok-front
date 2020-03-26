@@ -42,8 +42,8 @@ export class ChangePasswordComponent implements OnInit {
       this.user_id = this.data.id;
     });
     this.changePWForm = this.formBuilder.group({
-      new_password: ['', [Validators.required, Validators.minLength(6)]],
-      confirm_password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      passwordConfirmation: ['', Validators.required],
       old_password: ['', Validators.required]
     });
   }
@@ -60,15 +60,14 @@ export class ChangePasswordComponent implements OnInit {
     this.loading = true;
     this.changePwDto = {
       userId: this.user_id,
-      newPassword: this.changePWForm.value.new_password,
-      confirmPassword: this.changePWForm.value.confirm_password,
+      password: this.changePWForm.value.password,
+      passwordConfirmation: this.changePWForm.value.passwordConfirmation,
       oldPassword: this.changePWForm.value.old_password
     };
     console.log(this.changePwDto);
     this.userService.changePassword(this.changePwDto).subscribe(data => {
       this.himmel = data;
-      console.log('data', this.himmel);
-      this.alertService.success('this.donner.wetter');
+      this.alertService.success(this.himmel.text);
       // this.router.navigate([]);
       this.loading = false;
     });
