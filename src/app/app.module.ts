@@ -40,6 +40,7 @@ import {LayoutModule} from './admin-template/layout/layout.module';
 import { ConfirmAccountComponent } from './auth/confirm-account/confirm-account.component';
 import {AlertModule} from './admin-template/layout/components/alert/alert.module';
 import { ChangePasswordComponent } from './auth/change-password/change-password.component';
+import {PageHeaderModule} from './admin-template/shared/modules';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -98,7 +99,8 @@ const app_routes: Routes = [
     AngularFontAwesomeModule,
     NgbModule,
     LayoutModule,
-    AlertModule
+    AlertModule,
+    PageHeaderModule
   ],
   providers: [
     AuthGuard,

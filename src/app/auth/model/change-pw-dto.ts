@@ -1,8 +1,8 @@
 export interface ChangePwDto {
 
   userId: number;
-  newPassword: string;
-  confirmPassword: string;
+  password: string;
+  passwordConfirmation: string;
   oldPassword: string;
 
 }

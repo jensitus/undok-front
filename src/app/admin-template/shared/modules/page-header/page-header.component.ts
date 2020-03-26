@@ -7,9 +7,19 @@ import { RouterModule } from '@angular/router';
     styleUrls: ['./page-header.component.scss']
 })
 export class PageHeaderComponent implements OnInit {
+
+  @Input() firstPoint: string;
+  @Input() firstIcon: string;
+  @Input() firstLink: string;
+
     @Input() heading: string;
     @Input() icon: string;
+
+    routerlink: string;
+
     constructor() {}
 
-    ngOnInit() {}
+    ngOnInit() {
+      this.routerlink = '/' + this.firstLink;
+    }
 }
