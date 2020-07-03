@@ -4,7 +4,7 @@ import {Item} from '../../../../../todo-item/model/item';
 import {User} from '../../../../../auth/model/user';
 import {Description} from '../../../../../todo-item/model/description';
 import {TaskService} from '../../../../../common/services/task.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {TodoService} from '../../../../../todo-item/services/todo.service';
 import {AlertService} from '../../alert/services/alert.service';
 import {UserService} from '../../../../../auth/services/user.service';
@@ -40,6 +40,7 @@ export class TodotaskComponent implements OnInit {
   formKey: string;
   task: any;
   todo_id: string;
+  currentUser: User;
 
   constructor(
     private taskService: TaskService,
@@ -48,10 +49,15 @@ export class TodotaskComponent implements OnInit {
     private alertService: AlertService,
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private router: Router
   ) { }
 
   ngOnInit() {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (this.currentUser != null) {
+      this.commonService.checkAuthToken();
+    }
     this.taskService.getTask(this.taskId).toPromise().then(data => {
       this.task = data;
       if (this.task === null) {
