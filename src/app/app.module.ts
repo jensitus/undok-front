@@ -37,10 +37,13 @@ import {TaskListComponent} from './process/task-list/task-list.component';
 import {ProcessMigrationComponent} from './common/process-migration/process-migration.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {LayoutModule} from './admin-template/layout/layout.module';
-import { ConfirmAccountComponent } from './auth/confirm-account/confirm-account.component';
+import {ConfirmAccountComponent} from './auth/confirm-account/confirm-account.component';
 import {AlertModule} from './admin-template/layout/components/alert/alert.module';
-import { ChangePasswordComponent } from './auth/change-password/change-password.component';
+import {ChangePasswordComponent} from './auth/change-password/change-password.component';
 import {PageHeaderModule} from './admin-template/shared/modules';
+import {UploadComponent} from './common/upload/upload.component';
+import {AngularFileUploaderModule} from 'angular-file-uploader';
+import {FileUploadModule} from 'ng2-file-upload';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -50,7 +53,8 @@ const app_routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'forgot', component: ForgotPasswordComponent},
   {path: 'auth/reset_password/:token/edit', component: ResetPasswordComponent},
-  {path: 'auth/:token/confirm', component: ConfirmAccountComponent}
+  {path: 'auth/:token/confirm', component: ConfirmAccountComponent},
+  {path: 'upload', component: UploadComponent}
 /*
   {path: 'todos', component: TodoComponent},
   {path: 'todos/:id', component: ShowTodoComponent},
@@ -85,14 +89,13 @@ const app_routes: Routes = [
     ProcessMigrationComponent,
     ConfirmAccountComponent,
     ChangePasswordComponent,
+    UploadComponent,
   ],
   imports: [
     BrowserModule,
     OrderModule,
     FormsModule,
-
     BrowserAnimationsModule,
-
     RouterModule.forRoot(app_routes, {enableTracing: true}),
     HttpClientModule,
     ReactiveFormsModule,
@@ -100,7 +103,8 @@ const app_routes: Routes = [
     NgbModule,
     LayoutModule,
     AlertModule,
-    PageHeaderModule
+    PageHeaderModule,
+    FileUploadModule
   ],
   providers: [
     AuthGuard,
