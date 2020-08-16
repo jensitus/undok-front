@@ -7,7 +7,10 @@ class ImageSnippet {
   pending = false;
   status = 'init';
 
-  constructor(public src: string, public file: File) {
+  constructor(
+    public src: string,
+    public file: File
+  ) {
   }
 }
 
@@ -23,6 +26,8 @@ export class UploadComponent implements OnInit {
   selectedFile: ImageSnippet;
   uploadForm: FormGroup;
   isDropOver: boolean;
+  videoFiles: string[] = [];
+  sMsg = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -75,11 +80,21 @@ export class UploadComponent implements OnInit {
   //   });
   // }
 
-  onFileChange(event) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.uploadForm.get('file').setValue(file);
+  getFileDetails(e) {
+    console.log(e.target.files);
+    for (let i = 0; i < e.target.files.length; i++) {
+      this.videoFiles.push(e.target.files[i]);
     }
+  }
+
+  upTheVideo() {
+    this.uploadService.schickTheVideo(this.videoFiles).subscribe(
+      data => {
+        // SHOW A MESSAGE RECEIVED FROM THE WEB API.
+        this.sMsg = data as string;
+        console.log(this.sMsg);
+      }
+    );
   }
 
 }
