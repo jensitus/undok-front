@@ -44,6 +44,10 @@ import {PageHeaderModule} from './admin-template/shared/modules';
 import {UploadComponent} from './common/upload/upload.component';
 import {AngularFileUploaderModule} from 'angular-file-uploader';
 import {FileUploadModule} from 'ng2-file-upload';
+import { FilelistComponent } from './common/upload/filelist/filelist.component';
+import { TheaterComponent } from './cinephilia/theater/theater.component';
+import { MoviesComponent } from './cinephilia/movies/movies.component';
+import { TheatersComponent } from './cinephilia/theaters/theaters.component';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -54,7 +58,9 @@ const app_routes: Routes = [
   {path: 'forgot', component: ForgotPasswordComponent},
   {path: 'auth/reset_password/:token/edit', component: ResetPasswordComponent},
   {path: 'auth/:token/confirm', component: ConfirmAccountComponent},
-  {path: 'upload', component: UploadComponent}
+  {path: 'upload', component: UploadComponent},
+  {path: 'filelist', component: FilelistComponent},
+  {path: 'cinephilia/theaters', component: TheatersComponent }
 /*
   {path: 'todos', component: TodoComponent},
   {path: 'todos/:id', component: ShowTodoComponent},
@@ -90,6 +96,10 @@ const app_routes: Routes = [
     ConfirmAccountComponent,
     ChangePasswordComponent,
     UploadComponent,
+    FilelistComponent,
+    TheaterComponent,
+    MoviesComponent,
+    TheatersComponent,
   ],
   imports: [
     BrowserModule,

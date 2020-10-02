@@ -22,30 +22,33 @@ import {ErrorInterceptor} from '../../common/helper/error.interceptor';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    LayoutRoutingModule,
-    NgbDropdownModule,
-    TaskModule,
-    ReactiveFormsModule,
-    FormsModule,
-    AlertModule
-  ],
-  declarations: [
-    LayoutComponent,
-    SidebarComponent,
-    HeaderComponent,
-    TaskComponent,
-    TodotaskComponent,
-    ConftodoComponent,
-    FinishTodoComponent,
-    AddUserComponent,
-    SetVariableCheckBoxComponent
-  ],
-  providers: [
-    AuthGuard,
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
-  ]
+    imports: [
+        CommonModule,
+        LayoutRoutingModule,
+        NgbDropdownModule,
+        TaskModule,
+        ReactiveFormsModule,
+        FormsModule,
+        AlertModule
+    ],
+    declarations: [
+        LayoutComponent,
+        SidebarComponent,
+        HeaderComponent,
+        TaskComponent,
+        TodotaskComponent,
+        ConftodoComponent,
+        FinishTodoComponent,
+        AddUserComponent,
+        SetVariableCheckBoxComponent
+    ],
+    exports: [
+        HeaderComponent
+    ],
+    providers: [
+        AuthGuard,
+        {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+    ]
 })
 export class LayoutModule {}
