@@ -60,7 +60,8 @@ const app_routes: Routes = [
   {path: 'auth/:token/confirm', component: ConfirmAccountComponent},
   {path: 'upload', component: UploadComponent},
   {path: 'filelist', component: FilelistComponent},
-  {path: 'cinephilia/theaters', component: TheatersComponent }
+  {path: 'cinephilia/theaters', component: TheatersComponent },
+  {path: 'cinephilia/theaters/:id/movies', component: TheaterComponent  }
 /*
   {path: 'todos', component: TodoComponent},
   {path: 'todos/:id', component: ShowTodoComponent},

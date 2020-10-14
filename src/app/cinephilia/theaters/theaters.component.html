@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-md-4">
       <div *ngFor="let t of theaterList">
-        {{t.name}}
+        <a [routerLink]="['/cinephilia/theaters/', t.id, 'movies']"> {{t.name}}</a>
       </div>
     </div>
   </div>
