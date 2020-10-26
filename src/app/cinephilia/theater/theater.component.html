@@ -1,13 +1,34 @@
 <app-navbar></app-navbar>
 <div class="container">
   <div class="row">
-    <div class="col-md-4">
-      <div>
-        <h3>Donner Wetter</h3>
-      </div>
-      <div>
-        {{theater.name}}
+    <div class="col-xl-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">{{theaterName}}</h4>
+          <div>
+            {{theaterAddress}}<br>
+            <a [href]="theaterUrl" target="_blank">{{theaterUrl}}</a>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+    <div class="col-xl-6">
+      <div *ngFor="let firstLevel of schedules | keyvalue">
+        <div class="card">
+          <div class="card-header">
+            <b>{{firstLevel.value[0]}}</b>
+          </div>
+        </div>
+            <div *ngFor="let movie of firstLevel.value">
+              <div *ngFor="let m of movie | keyvalue">
+                {{m.key}}
+                <div *ngFor="let s of m.value">
+                  <small>{{s.time.toString() | slice : 11:16}}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
