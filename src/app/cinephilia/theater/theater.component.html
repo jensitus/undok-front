@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<app-navbar [titlePrefix]="navBarTitlePrefix"></app-navbar>
 <div class="container">
   <div class="row">
     <div class="col-xl-6">
@@ -13,22 +13,26 @@
       </div>
     </div>
     <div class="col-xl-6">
-      <div *ngFor="let firstLevel of schedules | keyvalue">
+      <div *ngFor="let firstLevel of movieForTheaterWithSchedules | keyvalue">
         <div class="card">
           <div class="card-header">
             <b>{{firstLevel.value[0]}}</b>
           </div>
-        </div>
-            <div *ngFor="let movie of firstLevel.value">
-              <div *ngFor="let m of movie | keyvalue">
-                {{m.key}}
-                <div *ngFor="let s of m.value">
+          <div *ngFor="let m of firstLevel.value[1] | keyvalue">
+            <div *ngFor="let s of m.value">
+              <a [routerLink]="['/cinephilia/movies/', s.movie_id]">
+                <div class="singleMovie">
+                  <b>{{m.key}}</b><br>
                   <small>{{s.time.toString() | slice : 11:16}}</small>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
+          <!--<p><small>{{schedule.time.toString() | slice : 11:16}}</small></p>-->
         </div>
       </div>
     </div>
+  </div>
+</div>
+
 

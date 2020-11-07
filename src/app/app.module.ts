@@ -48,6 +48,7 @@ import { FilelistComponent } from './common/upload/filelist/filelist.component';
 import { TheaterComponent } from './cinephilia/theater/theater.component';
 import { MoviesComponent } from './cinephilia/movies/movies.component';
 import { TheatersComponent } from './cinephilia/theaters/theaters.component';
+import { MovieComponent } from './cinephilia/movie/movie.component';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -61,7 +62,8 @@ const app_routes: Routes = [
   {path: 'upload', component: UploadComponent},
   {path: 'filelist', component: FilelistComponent},
   {path: 'cinephilia/theaters', component: TheatersComponent },
-  {path: 'cinephilia/theaters/:id/movies', component: TheaterComponent  }
+  {path: 'cinephilia/theaters/:id/movies', component: TheaterComponent },
+  {path: 'cinephilia/movies/:id', component: MovieComponent}
 /*
   {path: 'todos', component: TodoComponent},
   {path: 'todos/:id', component: ShowTodoComponent},
@@ -101,6 +103,7 @@ const app_routes: Routes = [
     TheaterComponent,
     MoviesComponent,
     TheatersComponent,
+    MovieComponent,
   ],
   imports: [
     BrowserModule,

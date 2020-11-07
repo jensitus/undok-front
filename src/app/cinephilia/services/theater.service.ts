@@ -14,6 +14,7 @@ import {Movie} from '../model/movie';
 export class TheaterService {
 
   cineApiUrl = environment.cine_api_url;
+  apiUrl = environment.api_url;
 
   constructor(
     private http: HttpClient
@@ -29,12 +30,12 @@ export class TheaterService {
     return this.http.get<Theater>(this.cineApiUrl + '/theaters/' + id);
   }
 
-  public getTheaterSchedules(id: number): Observable<Map<string, Map<string, Schedule[]>>> {
-    return this.http.get<Map<string, Map<string, Schedule[]>>>(this.cineApiUrl + '/theaters/' + id + '/schedules/');
+  public getTheaterSchedules(id: number): Observable<Map<string, Schedule[]>> {
+    return this.http.get<Map<string, Schedule[]>>(this.cineApiUrl + '/theaters/' + id + '/schedules/');
   }
 
-  public getTheaterSchedulesMovies(id: number): Observable<Movie[]> {
-    return this.http.get<Movie[]>(this.cineApiUrl + '/theaters/' + id + '/schedules/movies/');
+  public getTheaterSchedulesMovies(id: number): Observable<Map<string, Map<string, Schedule[]>>> {
+    return this.http.get<Map<string, Map<string, Schedule[]>>>(this.cineApiUrl + '/theaters/' + id + '/schedules/movies/');
   }
 
 }
