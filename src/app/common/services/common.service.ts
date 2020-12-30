@@ -54,6 +54,7 @@ export class CommonService {
       this.data = data;
       console.log('authToken', this.data);
     }, error => {
+      console.log('error token check', error.message);
     });
   }
 
