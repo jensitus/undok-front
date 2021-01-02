@@ -19,7 +19,6 @@ import {ForgotPasswordComponent} from './auth/forgot-password/forgot-password.co
 import {ListTodoComponent} from './todo-item/list-todo/list-todo.component';
 // import {ItemsComponent} from './todo-item/items/items.component';
 import {ShowTodoComponent} from './todo-item/show-todo/show-todo.component';
-import {AngularFontAwesomeModule} from 'angular-font-awesome';
 import {DiaryComponent} from './diary/diary/diary.component';
 import {DiaryListComponent} from './diary/diary-list/diary-list.component';
 import {AddDiaryComponent} from './diary/add-diary/add-diary.component';
@@ -37,10 +36,18 @@ import {TaskListComponent} from './process/task-list/task-list.component';
 import {ProcessMigrationComponent} from './common/process-migration/process-migration.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {LayoutModule} from './admin-template/layout/layout.module';
-import { ConfirmAccountComponent } from './auth/confirm-account/confirm-account.component';
+import {ConfirmAccountComponent} from './auth/confirm-account/confirm-account.component';
 import {AlertModule} from './admin-template/layout/components/alert/alert.module';
-import { ChangePasswordComponent } from './auth/change-password/change-password.component';
+import {ChangePasswordComponent} from './auth/change-password/change-password.component';
 import {PageHeaderModule} from './admin-template/shared/modules';
+import {UploadComponent} from './common/upload/upload.component';
+import {FileUploadModule} from 'ng2-file-upload';
+import { FilelistComponent } from './common/upload/filelist/filelist.component';
+import { TheaterComponent } from './cinephilia/theater/theater.component';
+import { MoviesComponent } from './cinephilia/movies/movies.component';
+import { TheatersComponent } from './cinephilia/theaters/theaters.component';
+import { MovieComponent } from './cinephilia/movie/movie.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -50,7 +57,12 @@ const app_routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'forgot', component: ForgotPasswordComponent},
   {path: 'auth/reset_password/:token/edit', component: ResetPasswordComponent},
-  {path: 'auth/:token/confirm', component: ConfirmAccountComponent}
+  {path: 'auth/:token/confirm', component: ConfirmAccountComponent},
+  {path: 'upload', component: UploadComponent},
+  {path: 'filelist', component: FilelistComponent},
+  {path: 'cinephilia/theaters', component: TheatersComponent },
+  {path: 'cinephilia/theaters/:id/movies', component: TheaterComponent },
+  {path: 'cinephilia/movies/:id', component: MovieComponent}
 /*
   {path: 'todos', component: TodoComponent},
   {path: 'todos/:id', component: ShowTodoComponent},
@@ -85,22 +97,27 @@ const app_routes: Routes = [
     ProcessMigrationComponent,
     ConfirmAccountComponent,
     ChangePasswordComponent,
+    UploadComponent,
+    FilelistComponent,
+    TheaterComponent,
+    MoviesComponent,
+    TheatersComponent,
+    MovieComponent,
   ],
   imports: [
     BrowserModule,
     OrderModule,
     FormsModule,
-
     BrowserAnimationsModule,
-
     RouterModule.forRoot(app_routes, {enableTracing: true}),
     HttpClientModule,
     ReactiveFormsModule,
-    AngularFontAwesomeModule,
     NgbModule,
     LayoutModule,
     AlertModule,
-    PageHeaderModule
+    PageHeaderModule,
+    FileUploadModule,
+    FontAwesomeModule
   ],
   providers: [
     AuthGuard,

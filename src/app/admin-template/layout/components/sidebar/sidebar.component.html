@@ -1,19 +1,19 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
     <div class="list-group mt-5">
         <a [routerLink]="['/users', currentUser.username]" [routerLinkActive]="['router-link-active']" class="list-group-item">
-          <i class="fa fa-fw fa-user"></i>
+          <fa-icon [icon]="faUser"></fa-icon>&nbsp;
           <span>{{ currentUser.username }}</span>
         </a>
         <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-dashboard"></i>&nbsp;
-            <span>{{ 'Dashboard' }}</span>
+          <fa-icon [icon]="faTachometerAlt"></fa-icon>&nbsp;
+          <span>{{ 'Dashboard' }}</span>
         </a>
         <a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
+            <fa-icon [icon]="faBars"></fa-icon>&nbsp;
             <span>{{ 'Charts' }}</span>
         </a>
       <a [routerLink]="['/login']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-        <i class="fa fa-fw fa-power-off"></i>
+        <fa-icon [icon]="faPowerOff"></fa-icon>&nbsp;
         <span>{{ 'Log Out' }}</span>
       </a>
       <!--

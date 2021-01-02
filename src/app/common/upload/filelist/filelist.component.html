@@ -1,0 +1,17 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div *ngFor="let f of fileList">
+    <div>
+      {{f.originalFilename}}
+    </div>
+    <div *ngIf="f.url != null">
+      <!--img src="{{f.url}}" height="100%"-->
+    </div>
+    <div>
+      {{f.url}}
+    </div>
+    <div>
+      <img src="http://localhost:8080/service/app/get-images/single-file">
+    </div>
+  </div>
+</div>

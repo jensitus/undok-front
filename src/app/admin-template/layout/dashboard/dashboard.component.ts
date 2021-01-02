@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
       this.getCurrentUser();
-      if (this.currentUser == null) {
+      if (this.currentUser === null) {
         this.router.navigate(['/home']);
       }
     }
