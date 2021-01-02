@@ -19,6 +19,7 @@ import {AuthGuard} from '../../auth/guards/auth.guard';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {JwtInterceptor} from '../../auth/helpers/jwt.interceptor';
 import {ErrorInterceptor} from '../../common/helper/error.interceptor';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import {ErrorInterceptor} from '../../common/helper/error.interceptor';
         TaskModule,
         ReactiveFormsModule,
         FormsModule,
-        AlertModule
+        AlertModule,
+        FontAwesomeModule
     ],
     declarations: [
         LayoutComponent,

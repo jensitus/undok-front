@@ -13,6 +13,7 @@ import { StatModule } from '../../shared';
 import {ListTasksComponent} from '../../../process/list-tasks/list-tasks.component';
 import {AddTodoComponent} from '../../../todo-item/add-todo/add-todo.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     NgbAlertModule,
     DashboardRoutingModule,
     StatModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FontAwesomeModule
   ],
     declarations: [
         DashboardComponent,
