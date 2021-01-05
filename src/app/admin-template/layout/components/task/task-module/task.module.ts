@@ -8,6 +8,7 @@ import {EditDescriptionComponent} from '../../../../../todo-item/description/edi
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {CompleteTaskComponent} from '../../../../../process/complete-task/complete-task.component';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -23,11 +24,12 @@ import {CompleteTaskComponent} from '../../../../../process/complete-task/comple
     SimpleTodoComponent,
     ComplexTodoComponent
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    NgbModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        NgbModule,
+        ReactiveFormsModule,
+        FontAwesomeModule
+    ]
 })
 export class TaskModule { }

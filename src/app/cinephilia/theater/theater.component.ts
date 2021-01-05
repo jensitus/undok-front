@@ -9,6 +9,7 @@ import {Schedule} from '../model/schedule';
 import {Movie} from '../model/movie';
 import {DatePipe} from '@angular/common';
 import {entryPointKeyFor} from '@angular/compiler-cli/src/ngtsc/routing';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-theater',
@@ -30,8 +31,7 @@ export class TheaterComponent implements OnInit {
   movieForTheaterWithSchedules = new Map<string, Map<string, Schedule[]>>();
   schedules = new Map<string, Schedule[]>();
   movies: Movie[];
-  scheduleMovieMap = new Map;
-  moviesSortedByDateMap = new Map;
+  cineApiUrl = environment.cine_api_url;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -42,6 +42,9 @@ export class TheaterComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.cineApiUrl === null) {
+      return;
+    }
     this.activatedRoute.params.subscribe(params => {
       this.id = params['id'];
     });

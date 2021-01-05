@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {TodoService} from '../../todo-item/services/todo.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {CommonService} from '../../common/services/common.service';
+import {faTrash} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-simple-todo',
@@ -14,6 +15,7 @@ export class SimpleTodoComponent implements OnInit {
   @Input() todo_id: string;
   loading: boolean;
   data: any;
+  faTrash = faTrash;
 
   constructor(
     private todoService: TodoService,

@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Movie} from '../model/movie';
 import {MovieService} from '../services/movie.service';
 import {Schedule} from '../model/schedule';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-movie',
@@ -16,6 +17,7 @@ export class MovieComponent implements OnInit {
   navBarPrefix = 'cinephilia';
   movieTheaters: Map<string, Map<string, Schedule[]>>;
   loading: boolean;
+  cineApiUrl = environment.cine_api_url;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -24,6 +26,9 @@ export class MovieComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.cineApiUrl === null) {
+      return;
+    }
     this.loading = true;
     this.activatedRoute.params.subscribe(params => {
       this.id = params['id'];

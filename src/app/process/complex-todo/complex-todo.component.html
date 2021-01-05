@@ -24,6 +24,6 @@
     <small *ngIf="item.done == true">done</small>
   </div>
   <div class="col-2">
-    <a (click)="deleteItem(item.id)" title="delete"><i class="fa fa-trash" *ngIf="item.done == true"></i></a>
+    <a (click)="deleteItem(item.id)" title="delete"><fa-icon [icon]="faTrash" *ngIf="item.done == true"></fa-icon></a>
   </div>
 </div>
