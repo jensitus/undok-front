@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {TodoService} from '../../todo-item/services/todo.service';
 import {UserService} from '../../auth/services/user.service';
 import {User} from '../../auth/model/user';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
@@ -26,7 +25,6 @@ export class AddUserComponent implements OnInit {
   showAF = false;
 
   constructor(
-    private todoService: TodoService,
     private formBuilder: FormBuilder,
     private userService: UserService,
     private alertService: AlertService
@@ -55,15 +53,6 @@ export class AddUserComponent implements OnInit {
     console.log('addUserForm', this.addUserForm);
     this.user_id = this.addUserForm.value['selectedUser'];
     console.log('this.user_id', this.user_id);
-    this.todoService.addUserToTodo(this.todo_id, this.user_id).subscribe(data => {
-      this.getUserForTodo();
-      this.data = data;
-      this.loading = false;
-      this.alertService.success('user successfully added');
-    }, error => {
-      // this.alertService.error(error);
-      this.loading = false;
-    });
   }
 
   get u() {
@@ -90,12 +79,7 @@ export class AddUserComponent implements OnInit {
   }
 
   private getUserForTodo() {
-    this.todoService.getTodoUsers(this.todo_id).subscribe(data => {
-      this.todo_users = data;
-      console.log('todousers', this.todo_users);
-    }, error => {
-      // this.alertService.error(error);
-    });
+
   }
 
 }

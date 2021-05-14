@@ -16,13 +16,6 @@ import {AuthGuard} from './auth/guards/auth.guard';
 import {NavbarComponent} from './common/navbar/navbar.component';
 import {ResetPasswordComponent} from './auth/reset-password/reset-password.component';
 import {ForgotPasswordComponent} from './auth/forgot-password/forgot-password.component';
-import {ListTodoComponent} from './todo-item/list-todo/list-todo.component';
-// import {ItemsComponent} from './todo-item/items/items.component';
-import {ShowTodoComponent} from './todo-item/show-todo/show-todo.component';
-import {DiaryComponent} from './diary/diary/diary.component';
-import {DiaryListComponent} from './diary/diary-list/diary-list.component';
-import {AddDiaryComponent} from './diary/add-diary/add-diary.component';
-import {EditDiaryComponent} from './diary/edit-diary/edit-diary.component';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -31,9 +24,6 @@ import {EditUserComponent} from './auth/edit-user/edit-user.component';
 
 import {OrderModule} from 'ngx-order-pipe';
 
-import {TodoComponent} from './todo-item/todo/todo.component';
-import {TaskListComponent} from './process/task-list/task-list.component';
-import {ProcessMigrationComponent} from './common/process-migration/process-migration.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {LayoutModule} from './admin-template/layout/layout.module';
 import {ConfirmAccountComponent} from './auth/confirm-account/confirm-account.component';
@@ -43,10 +33,6 @@ import {PageHeaderModule} from './admin-template/shared/modules';
 import {UploadComponent} from './common/upload/upload.component';
 import {FileUploadModule} from 'ng2-file-upload';
 import { FilelistComponent } from './common/upload/filelist/filelist.component';
-import { TheaterComponent } from './cinephilia/theater/theater.component';
-import { MoviesComponent } from './cinephilia/movies/movies.component';
-import { TheatersComponent } from './cinephilia/theaters/theaters.component';
-import { MovieComponent } from './cinephilia/movie/movie.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const app_routes: Routes = [
@@ -60,18 +46,6 @@ const app_routes: Routes = [
   {path: 'auth/:token/confirm', component: ConfirmAccountComponent},
   {path: 'upload', component: UploadComponent},
   {path: 'filelist', component: FilelistComponent},
-  {path: 'cinephilia/theaters', component: TheatersComponent },
-  {path: 'cinephilia/theaters/:id/movies', component: TheaterComponent },
-  {path: 'cinephilia/movies/:id', component: MovieComponent}
-/*
-  {path: 'todos', component: TodoComponent},
-  {path: 'todos/:id', component: ShowTodoComponent},
-  {path: 'diaries', component: DiaryListComponent},
-  {path: 'diaries/:id', component: DiaryComponent},
-  {path: 'diaries/:id/edit', component: EditDiaryComponent},
-  {path: 'tasks/:formKey/:taskId', component: TaskComponent},
-  {path: 'tasks/list', component: TaskListComponent},
-  {path: 'migrate/process', component: ProcessMigrationComponent}*/
 ];
 
 @NgModule({
@@ -83,26 +57,12 @@ const app_routes: Routes = [
     NavbarComponent,
     ResetPasswordComponent,
     ForgotPasswordComponent,
-    ListTodoComponent,
-    // ItemsComponent,
-    ShowTodoComponent,
-    DiaryComponent,
-    DiaryListComponent,
-    AddDiaryComponent,
-    EditDiaryComponent,
     UserComponent,
     EditUserComponent,
-    TodoComponent,
-    TaskListComponent,
-    ProcessMigrationComponent,
     ConfirmAccountComponent,
     ChangePasswordComponent,
     UploadComponent,
     FilelistComponent,
-    TheaterComponent,
-    MoviesComponent,
-    TheatersComponent,
-    MovieComponent,
   ],
   imports: [
     BrowserModule,

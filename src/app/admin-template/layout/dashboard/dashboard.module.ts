@@ -10,8 +10,6 @@ import {
     ChatComponent
 } from './components';
 import { StatModule } from '../../shared';
-import {ListTasksComponent} from '../../../process/list-tasks/list-tasks.component';
-import {AddTodoComponent} from '../../../todo-item/add-todo/add-todo.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
@@ -29,9 +27,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
         DashboardComponent,
         TimelineComponent,
         NotificationComponent,
-        ChatComponent,
-      ListTasksComponent,
-      AddTodoComponent
+        ChatComponent
     ]
 })
 export class DashboardModule {}
