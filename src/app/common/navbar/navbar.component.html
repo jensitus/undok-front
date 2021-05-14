@@ -4,7 +4,7 @@
       <a [routerLink]="['/']"> service undok.at </a>
     </span>
     <span class="brand" *ngIf="titlePrefix">
-      <a [routerLink]="['/']"> {{titlePrefix}} @ service - b . org </a>
+      <a [routerLink]="['/']"> {{titlePrefix}} @ undok </a>
     </span>
     <span *ngIf="currentUser != null" class="nav-user-man">
       <a [routerLink]="['/users', currentUser.username]" [innerHTML]="currentUser.username" class="navbar-link"></a>
