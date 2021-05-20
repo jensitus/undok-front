@@ -10,8 +10,9 @@ import {
     ChatComponent
 } from './components';
 import { StatModule } from '../../shared';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {CreateUserComponent} from './components/create-user/create-user.component';
 
 @NgModule({
   imports: [
@@ -21,13 +22,15 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
     DashboardRoutingModule,
     StatModule,
     ReactiveFormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    FormsModule
   ],
-    declarations: [
-        DashboardComponent,
-        TimelineComponent,
-        NotificationComponent,
-        ChatComponent
-    ]
+  declarations: [
+    DashboardComponent,
+    TimelineComponent,
+    NotificationComponent,
+    ChatComponent,
+    CreateUserComponent
+  ]
 })
 export class DashboardModule {}

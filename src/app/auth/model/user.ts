@@ -1,8 +1,10 @@
 export class User {
-  id: number;
+  id?: number;
   username: string;
   email: string;
-  password: string;
-  auth_token: string;
-  avatar: string;
+  password?: string;
+  passwordConfirmation?: string;
+  auth_token?: string;
+  avatar?: string;
+  admin?: boolean;
 }
