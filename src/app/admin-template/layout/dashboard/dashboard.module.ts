@@ -12,7 +12,6 @@ import {
 import { StatModule } from '../../shared';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {CreateUserComponent} from './components/create-user/create-user.component';
 
 @NgModule({
   imports: [
@@ -29,8 +28,7 @@ import {CreateUserComponent} from './components/create-user/create-user.componen
     DashboardComponent,
     TimelineComponent,
     NotificationComponent,
-    ChatComponent,
-    CreateUserComponent
+    ChatComponent
   ]
 })
 export class DashboardModule {}

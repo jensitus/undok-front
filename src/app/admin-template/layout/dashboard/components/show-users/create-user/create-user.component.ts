@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {UserService} from '../../../../../auth/services/user.service';
-import {AlertService} from '../../../components/alert/services/alert.service';
-import {AuthenticationService} from '../../../../../auth/services/authentication.service';
+import {UserService} from '../../../../../../auth/services/user.service';
+import {AlertService} from '../../../../components/alert/services/alert.service';
+import {AuthenticationService} from '../../../../../../auth/services/authentication.service';
 import {first} from 'rxjs/operators';
-import {User} from '../../../../../auth/model/user';
+import {User} from '../../../../../../auth/model/user';
 
 @Component({
   selector: 'app-create-user',
@@ -41,27 +41,15 @@ export class CreateUserComponent implements OnInit {
     this.user = {
       username: this.username,
       email: this.email,
-      password: this.generatePw(),
       admin: this.admin
     };
     this.loading = true;
     console.log('this.user', this.user);
     this.authService.register(this.user).pipe(first()).subscribe(
       data => {
-        console.log(data);
         this.alertService.success('Registration successful', true);
         this.loading = false;
-        // this.router.navigate(['/login']);
-        // }, error => {
-        //   this.error = error;
-        //   console.log('registerComponent', this.error);
-        //   this.alertService.error('registerComponent');
-        //   this.loading = false;
       });
-  }
-
-  generatePw() {
-    return Math.random().toString(36).slice(-8);
   }
 
 }

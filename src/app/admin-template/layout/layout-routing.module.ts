@@ -4,6 +4,7 @@ import {LayoutComponent} from './layout.component';
 import {UserComponent} from '../../auth/user/user.component';
 import {EditUserComponent} from '../../auth/edit-user/edit-user.component';
 import {ChangePasswordComponent} from '../../auth/change-password/change-password.component';
+import {CreateUserComponent} from './dashboard/components/show-users/create-user/create-user.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
       {path: 'users/:username', component: UserComponent},
       {path: 'users/:username/edit', component: EditUserComponent},
       {path: 'users/:username/changepw', component: ChangePasswordComponent},
+      {path: 'list-users', loadChildren: () => import('./dashboard/components/show-users/create-user.module').then(m => m.CreateUserModule)},
       { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartsModule) },
       /*            { path: 'tables', loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule) },
                   { path: 'forms', loadChildren: () => import('./form/form.module').then(m => m.FormModule) },

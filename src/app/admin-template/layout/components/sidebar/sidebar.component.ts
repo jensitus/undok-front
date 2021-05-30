@@ -2,7 +2,7 @@ import {Component, Output, EventEmitter, OnInit} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {User} from '../../../../auth/model/user';
-import {faCoffee, faUser, faBars, faPowerOff, faTachometerAlt} from '@fortawesome/free-solid-svg-icons';
+import {faCoffee, faUser, faBars, faPowerOff, faTachometerAlt, faCampground} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,11 +15,13 @@ export class SidebarComponent implements OnInit {
   showMenu: string;
   pushRightClass: string;
   currentUser: User;
+  admin = false;
   faCoffee = faCoffee;
   faUser = faUser;
   faBars = faBars;
   faPowerOff = faPowerOff;
   faTachometerAlt = faTachometerAlt;
+  faCampground = faCampground;
 
   @Output() collapsedEvent = new EventEmitter<boolean>();
 
@@ -44,6 +46,7 @@ export class SidebarComponent implements OnInit {
     this.showMenu = '';
     this.pushRightClass = 'push-right';
     this.getCurrentUser();
+    this.checkAdmin();
   }
 
 
@@ -89,5 +92,15 @@ export class SidebarComponent implements OnInit {
 
   getCurrentUser() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  }
+
+  checkAdmin() {
+    console.log('this.currentUser.roles', this.currentUser.roles);
+    for (const r of this.currentUser.roles) {
+      if (r.name === 'ADMIN') {
+        console.log('ADMIN');
+        this.admin = true;
+      }
+    }
   }
 }

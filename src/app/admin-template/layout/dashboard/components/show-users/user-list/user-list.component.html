@@ -1,0 +1,14 @@
+<div *ngFor="let u of userList">
+  <div class="row mt-2">
+    <div class="col-md">
+      {{u.username}}
+    </div>
+    <div class="col-md">
+      {{u.email}}
+    </div>
+    <div class="col-md">
+      <input type="checkbox" (click)="setAdmin(u.id, u.admin)">
+      {{u.admin}}
+    </div>
+  </div>
+</div>

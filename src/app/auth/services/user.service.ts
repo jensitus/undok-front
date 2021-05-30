@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {User} from '../model/user';
 import {environment} from '../../../environments/environment';
-import {Validators} from '@angular/forms';
 import {ChangePwDto} from '../model/change-pw-dto';
+import {Observable} from 'rxjs';
+import {SetAdminDto} from '../../admin-template/layout/dashboard/components/show-users/model/set-admin-dto';
+import {ResponseMessage} from '../../common/helper/response-message';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getAll() {
+  getAll(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl + '/service/users/all');
   }
 
@@ -50,6 +52,10 @@ export class UserService {
 
   changePassword(changePwDto: ChangePwDto) {
     return this.http.post(this.apiUrl + '/service/users/changepw', changePwDto);
+  }
+
+  setAdmin(user_id: string, setAdminDto: SetAdminDto): Observable<ResponseMessage> {
+    return this.http.post<ResponseMessage>(this.apiUrl + '/service/users/set-admin/' + user_id, setAdminDto);
   }
 
 }

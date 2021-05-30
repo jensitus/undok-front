@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
         this.loading = false;
         this.commonService.setSubject(true);
         this.router.navigate([this.returnUrl]);
-        this.alertService.success('successfully logged, how did you do that?', true);
+        this.alertService.success('successfully logged in, how did you do that?', true);
       }
     );
   }

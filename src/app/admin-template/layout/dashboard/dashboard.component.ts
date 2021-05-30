@@ -3,6 +3,7 @@ import { routerTransition } from '../../../router.animations';
 import {User} from '../../../auth/model/user';
 import {Router} from '@angular/router';
 import {CommonService} from '../../../common/services/common.service';
+import {RoleName} from '../../../auth/model/role-name.enum';
 
 @Component({
     selector: 'app-dashboard',
@@ -13,6 +14,7 @@ import {CommonService} from '../../../common/services/common.service';
 export class DashboardComponent implements OnInit {
     public alerts: Array<any> = [];
     currentUser: User;
+    admin = false;
 
     constructor(
       private router: Router,
@@ -55,4 +57,5 @@ export class DashboardComponent implements OnInit {
   private getCurrentUser() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
+
 }

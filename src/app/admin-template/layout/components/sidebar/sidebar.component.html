@@ -12,6 +12,11 @@
             <fa-icon [icon]="faBars"></fa-icon>&nbsp;
             <span>{{ 'Charts' }}</span>
         </a>
+        <a [routerLink]="['/list-users']" *ngIf="admin" [routerLinkActive]="['router-link-active']" class="list-group-item">
+          <fa-icon [icon]="faCampground"></fa-icon>&nbsp;
+          <span>{{ 'list users' }}</span>
+        </a>
+
       <a [routerLink]="['/login']" [routerLinkActive]="['router-link-active']" class="list-group-item">
         <fa-icon [icon]="faPowerOff"></fa-icon>&nbsp;
         <span>{{ 'Log Out' }}</span>

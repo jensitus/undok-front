@@ -1,3 +1,5 @@
+import {Role} from './role';
+
 export class User {
   id?: number;
   username: string;
@@ -7,4 +9,5 @@ export class User {
   auth_token?: string;
   avatar?: string;
   admin?: boolean;
+  roles?: Role[];
 }
