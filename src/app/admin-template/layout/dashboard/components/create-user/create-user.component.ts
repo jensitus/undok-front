@@ -20,9 +20,9 @@ export class CreateUserComponent implements OnInit {
   username: string;
   password: string;
   email: string;
-  passwordConfirmation: string;
   admin = false;
   user: User;
+  randomstring: string;
 
   constructor(
     private router: Router,
@@ -41,8 +41,7 @@ export class CreateUserComponent implements OnInit {
     this.user = {
       username: this.username,
       email: this.email,
-      password: this.password,
-      passwordConfirmation: this.passwordConfirmation,
+      password: this.generatePw(),
       admin: this.admin
     };
     this.loading = true;
@@ -59,6 +58,10 @@ export class CreateUserComponent implements OnInit {
         //   this.alertService.error('registerComponent');
         //   this.loading = false;
       });
+  }
+
+  generatePw() {
+    return Math.random().toString(36).slice(-8);
   }
 
 }

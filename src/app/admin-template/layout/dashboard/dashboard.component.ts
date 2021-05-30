@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../../router.animations';
 import {User} from '../../../auth/model/user';
 import {Router} from '@angular/router';
+import {CommonService} from '../../../common/services/common.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -14,7 +15,8 @@ export class DashboardComponent implements OnInit {
     currentUser: User;
 
     constructor(
-      private router: Router
+      private router: Router,
+      private commonService: CommonService
     ) {
         this.alerts.push(
             {
@@ -40,6 +42,8 @@ export class DashboardComponent implements OnInit {
       this.getCurrentUser();
       if (this.currentUser === null) {
         this.router.navigate(['/home']);
+      } else {
+        this.commonService.checkAuthToken();
       }
     }
 

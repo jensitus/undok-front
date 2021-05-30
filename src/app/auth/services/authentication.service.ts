@@ -3,6 +3,9 @@ import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {User} from '../model/user';
 import {environment} from '../../../environments/environment';
+import {ConfirmAccountDto} from '../model/confirm-account-dto';
+import {Observable} from 'rxjs';
+import {ResponseMessage} from '../../common/helper/response-message';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +43,10 @@ export class AuthenticationService {
 
   register(user: User) {
     return this.http.post(this.apiUrl + '/service/auth/signup', user);
+  }
+
+  confirmAccountAndSetNewPassword(confirmAccountDto: ConfirmAccountDto): Observable<ResponseMessage> {
+    return this.http.post<ResponseMessage>(this.apiUrl + '/service/auth/' + confirmAccountDto.confirmationToken + '/set_new_password', confirmAccountDto);
   }
 
 }
