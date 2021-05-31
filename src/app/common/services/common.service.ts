@@ -22,7 +22,7 @@ export class CommonService {
 
   public demoSubject: BehaviorSubject<any> = new BehaviorSubject(null);
   public todoSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
-  public diarySubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
+  public createUserSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public taskSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public itemSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public descriptionUpdateSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -62,11 +62,11 @@ export class CommonService {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
-  setDiarySubject(value) {
+  setCreateUserSubject(value) {
     if (value) {
-      this.diarySubject.next(value);
+      this.createUserSubject.next(value);
     } else {
-      this.diarySubject.next(null);
+      this.createUserSubject.next(null);
     }
   }
 

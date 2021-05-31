@@ -6,6 +6,7 @@ import {environment} from '../../../environments/environment';
 import {ConfirmAccountDto} from '../model/confirm-account-dto';
 import {Observable} from 'rxjs';
 import {ResponseMessage} from '../../common/helper/response-message';
+import {CreateUserForm} from '../model/create-user-form';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,10 @@ export class AuthenticationService {
 
   register(user: User) {
     return this.http.post(this.apiUrl + '/service/auth/signup', user);
+  }
+
+  createUserViaAdmin(createUserForm: CreateUserForm) {
+    return this.http.post(this.apiUrl + '/service/auth/create-user-via-admin', createUserForm);
   }
 
   confirmAccountAndSetNewPassword(confirmAccountDto: ConfirmAccountDto): Observable<ResponseMessage> {
