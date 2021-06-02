@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../services/user.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
-import {ConfirmAccountDto} from '../model/confirm-account-dto';
+import {ConfirmAccountForm} from '../model/confirm-account-form';
 import {AuthenticationService} from '../services/authentication.service';
 import {Subscription} from 'rxjs';
 import {ResponseMessage} from '../../common/helper/response-message';
@@ -21,7 +21,7 @@ export class ConfirmAccountComponent implements OnInit, OnDestroy {
   password: string;
   passwordConfirmation: string;
   username: string;
-  confirmAccountDto: ConfirmAccountDto;
+  confirmAccountDto: ConfirmAccountForm;
   subscriptions: Subscription[] | undefined;
   responseMessage: ResponseMessage;
 

@@ -1,4 +1,4 @@
-export interface ConfirmAccountDto {
+export interface ConfirmAccountForm {
   confirmationToken: string;
   email: string;
   username: string;

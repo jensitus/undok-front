@@ -21,7 +21,9 @@
       {{u.email}}
     </div>
     <div class="col-md-2 text-center">
-      <span *ngIf="u.admin"><fa-icon [icon]="faCheck"></fa-icon></span>
+      <span *ngIf="u.admin">
+        <fa-icon class="text-danger" [icon]="faCheck"></fa-icon>
+      </span>
     </div>
     <div class="col-md-2 text-right">
       <input type="checkbox" (click)="setAdmin(u.id, u.admin)">

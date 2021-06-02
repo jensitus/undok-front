@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {User} from '../model/user';
 import {environment} from '../../../environments/environment';
-import {ConfirmAccountDto} from '../model/confirm-account-dto';
+import {ConfirmAccountForm} from '../model/confirm-account-form';
 import {Observable} from 'rxjs';
 import {ResponseMessage} from '../../common/helper/response-message';
 import {CreateUserForm} from '../model/create-user-form';
@@ -54,7 +54,7 @@ export class AuthenticationService {
     return this.http.post(this.apiUrl + '/service/auth/create-user-via-admin', createUserForm);
   }
 
-  confirmAccountAndSetNewPassword(confirmAccountDto: ConfirmAccountDto): Observable<ResponseMessage> {
+  confirmAccountAndSetNewPassword(confirmAccountDto: ConfirmAccountForm): Observable<ResponseMessage> {
     return this.http.post<ResponseMessage>(this.apiUrl + '/service/auth/' + confirmAccountDto.confirmationToken + '/set_new_password', confirmAccountDto);
   }
 
