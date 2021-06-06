@@ -1,4 +1,4 @@
-<form #registerForm="ngForm" (ngSubmit)="onSubmit()">
+<form #registerForm="ngForm" (ngSubmit)="onSubmit()" class="mb-2">
   <div class="form-group">
     <input type="text" class="form-control" placeholder="Name" name="username" [(ngModel)]="username" required/>
   </div>
@@ -10,13 +10,31 @@
     <label>admin: {{admin}}</label>
   </div>
   <div>
-    <button [disabled]="loading" class="btn btn-outline-success">Register</button>
+    <button [disabled]="loading" class="btn btn-sm btn-outline-success">Create User</button>
     <img *ngIf="loading"
          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
 
   </div>
 </form>
 
-<div class="mt-2">
-  {{password}}
+<ng-template #confUrl let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirmation Url</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Copy the url below and send it to the created user for completing the creation:
+    <br>
+    <p style="color: #2e6da4">{{responseMessage.text}}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+  </div>
+</ng-template>
+
+<div *ngIf="this.responseMessage.text" class="mt-2">
+  <button class="btn btn-sm btn-outline-primary" (click)="openLg(this.confUrl)">show conf url</button>
 </div>
+

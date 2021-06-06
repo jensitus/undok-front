@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from '../../../../../../auth/services/user.service';
 import {AlertService} from '../../../../components/alert/services/alert.service';
 import {AuthenticationService} from '../../../../../../auth/services/authentication.service';
 import {first} from 'rxjs/operators';
-import {User} from '../../../../../../auth/model/user';
 import {CommonService} from '../../../../../../common/services/common.service';
 import {CreateUserForm} from '../../../../../../auth/model/create-user-form';
+import {ResponseMessage} from '../../../../../../common/helper/response-message';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-create-user',
@@ -25,13 +25,16 @@ export class CreateUserComponent implements OnInit {
   admin = false;
   createUserForm: CreateUserForm;
   randomstring: string;
+  responseMessage: ResponseMessage;
+  confUrl: string;
 
   constructor(
     private router: Router,
     private userService: UserService,
     private alertService: AlertService,
     private authService: AuthenticationService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -54,7 +57,14 @@ export class CreateUserComponent implements OnInit {
         this.commonService.setCreateUserSubject(true);
         this.username = null;
         this.email = null;
+        this.responseMessage = data;
+        this.confUrl = this.responseMessage.text;
+        console.log(this.confUrl);
       });
+  }
+
+  openLg(content) {
+    this.modalService.open(content, { size: 'lg' });
   }
 
 }

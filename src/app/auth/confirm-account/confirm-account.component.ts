@@ -38,7 +38,10 @@ export class ConfirmAccountComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe(params => {
       this.token = params['token'];
     });
-    this.email = this.activatedRoute.snapshot.queryParamMap.get('email');
+    this.activatedRoute.params.subscribe(params => {
+      this.email = params['email'];
+    });
+    console.log(this.token, this.email);
     this.userService.confirmAccount(this.token, this.email).subscribe(data => {
       this.data = data;
       if (this.data.text === 'token valid') {

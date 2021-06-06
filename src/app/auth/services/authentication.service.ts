@@ -50,8 +50,8 @@ export class AuthenticationService {
     return this.http.post(this.apiUrl + '/service/auth/signup', user);
   }
 
-  createUserViaAdmin(createUserForm: CreateUserForm) {
-    return this.http.post(this.apiUrl + '/service/auth/create-user-via-admin', createUserForm);
+  createUserViaAdmin(createUserForm: CreateUserForm): Observable<ResponseMessage> {
+    return this.http.post<ResponseMessage>(this.apiUrl + '/service/users/create-user-via-admin', createUserForm);
   }
 
   confirmAccountAndSetNewPassword(confirmAccountDto: ConfirmAccountForm): Observable<ResponseMessage> {

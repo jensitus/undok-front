@@ -47,7 +47,9 @@ export class UserService {
   }
 
   confirmAccount(token: string, email: string) {
-    return this.http.get(this.apiUrl + '/service/auth/' + token + '/confirm?email=' + email);
+    const url = this.apiUrl + '/service/auth/' + token + '/confirm/' + email;
+    console.log('URL: ', url);
+    return this.http.get(this.apiUrl + '/service/auth/' + token + '/confirm/' + email);
   }
 
   changePassword(changePwDto: ChangePwDto) {

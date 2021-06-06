@@ -43,7 +43,7 @@ const app_routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'forgot', component: ForgotPasswordComponent},
   {path: 'auth/reset_password/:token/edit', component: ResetPasswordComponent},
-  {path: 'auth/:token/confirm', component: ConfirmAccountComponent},
+  {path: 'auth/:token/confirm/:email', component: ConfirmAccountComponent},
   {path: 'upload', component: UploadComponent},
   {path: 'filelist', component: FilelistComponent},
 ];
