@@ -3,7 +3,6 @@ import {User} from '../../../../../../auth/model/user';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {UserService} from '../../../../../../auth/services/user.service';
-import {SetAdminDto} from '../model/set-admin-dto';
 import {ResponseMessage} from '../../../../../../common/helper/response-message';
 import {CommonService} from '../../../../../../common/services/common.service';
 import {faCheck} from '@fortawesome/free-solid-svg-icons';
@@ -17,7 +16,6 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   faCheck = faCheck;
   userList: User[];
-  setAdminDto: SetAdminDto;
   responseMessage: ResponseMessage;
   private unsubscribe$ = new Subject();
 
@@ -34,19 +32,6 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
-  }
-
-  setAdmin(user_id, admin) {
-    admin = !admin;
-    this.setAdminDto = {
-      admin: admin
-    };
-    this.userService.setAdmin(user_id, this.setAdminDto).pipe(takeUntil(this.unsubscribe$)).subscribe(message => {
-      this.responseMessage = message;
-      if (this.responseMessage.text === 'successfully changed' ) {
-        this.getUserList();
-      }
-    });
   }
 
   private getUserList(): void {

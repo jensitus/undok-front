@@ -1,17 +1,36 @@
 <div class="container">
   <app-page-header [firstIcon]="'fa-user'" [firstPoint]="username" [firstLink]="null"></app-page-header>
   <div class="row">
-    <div class="col-md-4">
-      <div>
-        <!--        <img src="{{user.avatar}}" class="img-avatar">-->
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-4">
+          <b>username</b>
+        </div>
+        <div class="col-md-4">
+          <b>email</b>
+        </div>
+        <div class="col-md-2">
+          <b>admin</b>
+        </div>
+        <div class="col-md-2">
+
+        </div>
       </div>
-    </div>
-    <div class="col-md-4 mt-3">
-      <div>
-        {{user.username}}
-      </div>
-      <div>
-        {{user.email}}
+      <div class="row">
+        <div class="col-md-4">
+          {{user.username}}
+        </div>
+        <div class="col-md-4">
+          {{user.email}}
+        </div>
+        <div class="col-md-2 text-center">
+      <span *ngIf="user.admin">
+        <fa-icon class="text-danger" [icon]="faCheck"></fa-icon>
+      </span>
+        </div>
+        <div class="col-md-2 text-right">
+          <input type="checkbox" (click)="setAdmin(user.id, user.admin)">
+        </div>
       </div>
     </div>
     <div class="col-md-4 mt-3">

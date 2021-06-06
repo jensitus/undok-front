@@ -59,9 +59,9 @@ export class AuthenticationService {
   }
 
   private setAdminFlag(user: User): void {
+    console.log('user.roles', user.roles);
     for (const r of user.roles) {
-      if (r.name === 'ADMIN') {
-        console.log('ADMIN');
+      if (r.name === 'ROLE_ADMIN') {
         this.u.admin = true;
       }
     }

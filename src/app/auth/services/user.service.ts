@@ -20,8 +20,8 @@ export class UserService {
     return this.http.get<User[]>(this.apiUrl + '/service/users/all');
   }
 
-  getByUsername(username: string) {
-    return this.http.get(this.apiUrl + '/service/users/principle/' + username);
+  getByUsername(username: string): Observable<User> {
+    return this.http.get<User>(this.apiUrl + '/service/users/by_username/' + username);
   }
 
   forgotPassword(email: string) {

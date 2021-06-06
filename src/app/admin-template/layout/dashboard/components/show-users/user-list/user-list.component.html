@@ -15,7 +15,9 @@
 <div *ngFor="let u of userList">
   <div class="row mt-2">
     <div class="col-md-3">
-      {{u.username}}
+      <a [routerLink]="['/users', u.username]" [routerLinkActive]="['router-link-active']">
+        <span>{{ u.username }}</span>
+      </a>
     </div>
     <div class="col-md-5">
       {{u.email}}
@@ -25,8 +27,6 @@
         <fa-icon class="text-danger" [icon]="faCheck"></fa-icon>
       </span>
     </div>
-    <div class="col-md-2 text-right">
-      <input type="checkbox" (click)="setAdmin(u.id, u.admin)">
-    </div>
+
   </div>
 </div>

@@ -15,7 +15,7 @@ export class SidebarComponent implements OnInit {
   showMenu: string;
   pushRightClass: string;
   currentUser: User;
-  admin = false;
+//  admin = false;
   faCoffee = faCoffee;
   faUser = faUser;
   faBars = faBars;
@@ -46,7 +46,7 @@ export class SidebarComponent implements OnInit {
     this.showMenu = '';
     this.pushRightClass = 'push-right';
     this.getCurrentUser();
-    this.checkAdmin();
+    // this.checkAdmin();
   }
 
 
@@ -94,13 +94,13 @@ export class SidebarComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
-  checkAdmin() {
-    console.log('this.currentUser.roles', this.currentUser.roles);
-    for (const r of this.currentUser.roles) {
-      if (r.name === 'ADMIN') {
-        console.log('ADMIN');
-        this.admin = true;
-      }
-    }
-  }
+  // checkAdmin() {
+  //   console.log('this.currentUser.roles', this.currentUser.roles);
+  //   for (const r of this.currentUser.roles) {
+  //     if (r.name === 'ROLE_ADMIN') {
+  //       console.log('ADMIN');
+  //       this.admin = true;
+  //     }
+  //   }
+  // }
 }

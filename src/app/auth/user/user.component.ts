@@ -1,19 +1,29 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {UserService} from '../services/user.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {User} from '../model/user';
+import {takeUntil} from 'rxjs/operators';
+import {SetAdminDto} from '../../admin-template/layout/dashboard/components/show-users/model/set-admin-dto';
+import {ResponseMessage} from '../../common/helper/response-message';
+import {Subject} from 'rxjs';
+import {faCheck} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnDestroy {
 
   currentUser: User;
   username: string;
-  user: any;
+  user: User;
+  setAdminDto: SetAdminDto;
+  responseMessage: ResponseMessage;
+  userList: User[];
+  faCheck = faCheck;
+  private unsubscribe$ = new Subject();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -24,20 +34,43 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.getCurrentUser();
+    this.getUser();
+  }
+
+  ngOnDestroy(): void {
+    if (this.unsubscribe$) {
+      this.unsubscribe$.next();
+    }
+  }
+
+  private getCurrentUser() {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  }
+
+  setAdmin(user_id, admin) {
+    console.log(user_id, admin);
+    admin = !admin;
+    this.setAdminDto = {
+      admin: admin
+    };
+    this.userService.setAdmin(user_id, this.setAdminDto).pipe(takeUntil(this.unsubscribe$)).subscribe(message => {
+      this.responseMessage = message;
+      this.alertService.success(message.text, true);
+      this.getUser();
+    });
+  }
+
+  getUser() {
     this.activatedRoute.params.subscribe(params => {
       this.username = params['username'];
     });
     this.userService.getByUsername(this.username).subscribe(data => {
       this.user = data;
-      console.log(this.user);
+      console.log('user: ', this.user);
       this.alertService.success('hi');
     }, error => {
       this.alertService.error(error);
     });
-  }
-
-  private getCurrentUser() {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
 }
