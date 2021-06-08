@@ -1,47 +1,46 @@
-<div class="container">
-  <app-page-header [firstIcon]="'fa-user'" [firstPoint]="username" [firstLink]="null"></app-page-header>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="row">
-        <div class="col-md-4">
-          <b>username</b>
+<app-page-header [firstIcon]="'fa-user'" [firstPoint]="username" [firstLink]="null"></app-page-header>
+<div class="card">
+  <div class="card-body">
+      <div class="row mb-2">
+        <div class="col-4">
+          <b class="text-info">username</b>
         </div>
-        <div class="col-md-4">
-          <b>email</b>
+        <div class="col-4">
+          <b class="text-info">email</b>
         </div>
-        <div class="col-md-2">
-          <b>admin</b>
+        <div class="col-2">
+          <b class="text-secondary">admin</b>
         </div>
-        <div class="col-md-2">
+        <div class="col-2">
 
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-4">
+      <div class="row mt-2">
+        <div class="col-4">
           {{user.username}}
         </div>
-        <div class="col-md-4">
+        <div class="col-4">
           {{user.email}}
         </div>
-        <div class="col-md-2 text-center">
-      <span *ngIf="user.admin">
-        <fa-icon class="text-danger" [icon]="faCheck"></fa-icon>
-      </span>
+        <div class="col-3 text-center">
+              <span *ngIf="user.admin">
+                <fa-icon class="text-danger" [icon]="faCheck"></fa-icon>
+              </span>
         </div>
-        <div class="col-md-2 text-right">
+        <div class="col-1 text-right">
           <input type="checkbox" (click)="setAdmin(user.id, user.admin)">
         </div>
       </div>
     </div>
-    <div class="col-md-4 mt-3">
-      <div *ngIf="user">
-        <div *ngIf="currentUser.email == user.email">
-          <ul class="list-group">
-            <li class="list-group-item"><a [routerLink]="['/users', user.username, 'edit']">change email</a></li>
-            <li class="list-group-item"><a [routerLink]="['/users', user.username, 'changepw']">change pw</a></li>
-          </ul>
-        </div>
-      </div>
+  </div>
+
+<div class="col-md-4 mt-3">
+  <div *ngIf="user">
+    <div *ngIf="currentUser.email == user.email">
+      <ul class="list-group">
+        <li class="list-group-item"><a [routerLink]="['/users', user.username, 'edit']">change email</a></li>
+        <li class="list-group-item"><a [routerLink]="['/users', user.username, 'changepw']">change pw</a></li>
+      </ul>
     </div>
   </div>
 </div>
