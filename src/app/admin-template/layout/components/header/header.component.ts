@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import {User} from '../../../../auth/model/user';
+import {faBars} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-header',
@@ -8,6 +9,8 @@ import {User} from '../../../../auth/model/user';
     styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+
+  faBars = faBars;
     public pushRightClass: string;
     currentUser: User;
 
