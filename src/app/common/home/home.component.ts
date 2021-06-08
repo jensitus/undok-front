@@ -45,10 +45,4 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  loadAllUsers() {
-    this.userService.getAll().pipe(first()).subscribe(users => {
-      this.users = users;
-    });
-  }
-
 }

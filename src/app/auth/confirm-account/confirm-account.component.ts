@@ -16,7 +16,7 @@ export class ConfirmAccountComponent implements OnInit, OnDestroy {
 
   token: string;
   email: string;
-  data: any;
+  data: ResponseMessage;
   oldPassword: string;
   password: string;
   passwordConfirmation: string;
@@ -46,6 +46,8 @@ export class ConfirmAccountComponent implements OnInit, OnDestroy {
       this.data = data;
       if (this.data.text === 'token valid') {
         this.alertService.success('please change your password', true);
+      } else if (this.data.text === 'token valid and password has not to be changed' && this.data.redirect === true) {
+        this.alertService.success('account successfully confirmed');
       } else {
         this.alertService.error('too late, contact your administrator', true);
         this.router.navigate(['/home']);

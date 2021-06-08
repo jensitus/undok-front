@@ -46,10 +46,10 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/service/users/${username}/updateavatar`, formData);
   }
 
-  confirmAccount(token: string, email: string) {
+  confirmAccount(token: string, email: string): Observable<ResponseMessage> {
     const url = this.apiUrl + '/service/auth/' + token + '/confirm/' + email;
     console.log('URL: ', url);
-    return this.http.get(this.apiUrl + '/service/auth/' + token + '/confirm/' + email);
+    return this.http.get<ResponseMessage>(this.apiUrl + '/service/auth/' + token + '/confirm/' + email);
   }
 
   changePassword(changePwDto: ChangePwDto) {

@@ -10,4 +10,5 @@ export class User {
   avatar?: string;
   admin?: boolean;
   roles?: Role[];
+  changePassword?: boolean;
 }
