@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from '../../auth/model/user';
 import {UserService} from '../../auth/services/user.service';
-import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {CommonService} from '../services/common.service';
-import {routerTransition} from '../../router.animations';
 
 @Component({
   selector: 'app-home',
