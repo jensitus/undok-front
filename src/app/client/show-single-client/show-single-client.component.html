@@ -1,0 +1,40 @@
+<div>
+  <div *ngIf="person">
+    <div>
+      <!--{{person | json}}-->
+    </div>
+    <div class="mt-2">
+      <label class="text-secondary">Name:</label>
+      {{person.firstName}} {{person.lastName}}
+    </div>
+    <div>
+      <label class="text-secondary">Familienstand:</label>
+      {{person.client.maritalStatus}}
+    </div>
+    <div>
+      <label class="text-secondary">Geburtstag:</label>
+      {{person.dateOfBirth}}
+    </div>
+    <div>
+      <label class="text-secondary">Bildung:</label>
+      {{person.client.education}}
+    </div>
+    <div>
+      <label class="text-secondary">Woher kennt uns die Person:</label>
+      {{person.client.howHasThePersonHeardFromUs}}
+    </div>
+    <div>
+      <label class="text-secondary">gefährdet bei Geltendmachung:</label>
+      <span *ngIf="person.client.vulnerableWhenAssertingRights">
+        yes
+      </span>
+      <span *ngIf="!person.client.vulnerableWhenAssertingRights">
+        nope
+      </span>
+    </div>
+    <div>
+      <label class="text-secondary">Dolmetch erforderlich:</label>
+      {{person.client.interpreterNecessary}}
+    </div>
+  </div>
+</div>

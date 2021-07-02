@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-4">
+    <form #createClientForm="ngForm" (ngSubmit)="submit()" class="mt-1">
+      <div class="form-group">
+        <input type="text" class="form-control" name="firstName" [(ngModel)]="firstName" placeholder="firstName" />
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" name="lastName" [(ngModel)]="lastName" placeholder="lastName" />
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" name="keyword" [(ngModel)]="keyword" placeholder="keyword" />
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" name="education" [(ngModel)]="education" placeholder="education" />
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" name="howHasThePersonHeardFromUS" [(ngModel)]="howHasThePersonHeardFromUs" placeholder="how has the person heard from us" />
+      </div>
+      <div class="form-group">
+        <input type="checkbox" class="form-check" [(ngModel)]="vulnerableWhenAssertingRights" name="vulnerableWhenAssertingRights">
+        <label>vulnerableWhenAssertingRights</label>
+      </div>
+      <div class="form-group">
+        <input type="checkbox" class="form-check" [(ngModel)]="interpreterNecessary" name="interpreterNecessary">
+        <label>interpreterNecessary</label>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <input class="form-control" placeholder="yyyy-mm-dd"
+                 name="dp" [(ngModel)]="dateOfBirth" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><fa-icon class="text-info" [icon]="faBars"></fa-icon></button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <select class="form-control">
+          <option *ngFor="let marital of maStatus" [value]="marital" (click)="onMaritalChange(marital)">{{marital}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-sm btn-outline-dark">klick halt</button>
+      </div>
+    </form>
+  </div>
+</div>
