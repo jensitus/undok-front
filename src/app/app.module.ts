@@ -34,6 +34,7 @@ import {UploadComponent} from './common/upload/upload.component';
 import {FileUploadModule} from 'ng2-file-upload';
 import { FilelistComponent } from './common/upload/filelist/filelist.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ShowSingleClientComponent } from './client/show-single-client/show-single-client.component';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -45,7 +46,7 @@ const app_routes: Routes = [
   {path: 'auth/reset_password/:token/edit', component: ResetPasswordComponent},
   {path: 'auth/:token/confirm/:email', component: ConfirmAccountComponent},
   {path: 'upload', component: UploadComponent},
-  {path: 'filelist', component: FilelistComponent},
+  {path: 'filelist', component: FilelistComponent}
 ];
 
 @NgModule({

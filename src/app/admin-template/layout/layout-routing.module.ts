@@ -5,6 +5,7 @@ import {UserComponent} from '../../auth/user/user.component';
 import {EditUserComponent} from '../../auth/edit-user/edit-user.component';
 import {ChangePasswordComponent} from '../../auth/change-password/change-password.component';
 import {CreateUserComponent} from './dashboard/components/show-users/create-user/create-user.component';
+import {AuthGuard} from '../../auth/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -28,6 +29,7 @@ const routes: Routes = [
                   { path: 'blank-page', loadChildren: () => import('./blank-page/blank-page.module').then(m => m.BlankPageModule) }
 
        */
+      {path: 'client', loadChildren: () => import('../../client/client.module').then(c => c.ClientModule)}
     ]
   }
 ];

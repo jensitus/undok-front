@@ -39,4 +39,5 @@ export class UploadService {
     return this.http.get(this.apiUrl + '/service/app/get-images/single-file');
   }
 
+
 }

@@ -18,9 +18,18 @@
       <hr />-->
   <div class="row">
     <div class="col-lg-5">
-      <div *ngIf="admin">
-        <a [routerLink]="['/create-user']">create new user</a>
+      <div *ngIf="currentUser.admin">
+        <div>
+          <a [routerLink]="['/create-user']">create new user</a>
+        </div>
+        <div>
+          <a [routerLink]="['/client/create']">create client</a>
+        </div>
       </div>
+      <div>
+        <a  [routerLink]="['/client/client-list']">client list</a>
+      </div>
+
 
       <!--            <div class="card card-default mb-3">-->
       <!--                <div class="card-header">-->

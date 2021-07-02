@@ -1,8 +1,7 @@
-import {Component, Output, EventEmitter, OnInit} from '@angular/core';
-import {Router, NavigationEnd} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {NavigationEnd, Router} from '@angular/router';
 import {User} from '../../../../auth/model/user';
-import {faCoffee, faUser, faBars, faPowerOff, faTachometerAlt, faCampground} from '@fortawesome/free-solid-svg-icons';
+import {faBars, faCampground, faCoffee, faPowerOff, faTachometerAlt, faUser} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar',
