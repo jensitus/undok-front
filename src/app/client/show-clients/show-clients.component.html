@@ -1,5 +1,5 @@
 <div>
-  <ngb-pagination [collectionSize]="count" [(page)]="page" (pageChange)="getThePageNumber()"></ngb-pagination>
+  <ngb-pagination [collectionSize]="count" [(page)]="page" [pageSize]="pageSize" (pageChange)="getThePageNumber()"></ngb-pagination>
 </div>
 <div>
   <pre>Current page: {{page}}</pre>

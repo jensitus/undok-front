@@ -16,7 +16,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   count: number;
   page = 1;
   offset = 0;
-  size = 10;
+  pageSize = 3;
   MULTIPLYING_FACTOR = 2;
   loading = false;
   resultMap: any;
@@ -26,7 +26,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.getClientList(this.offset, this.size);
+    this.getClientList(this.offset, this.pageSize);
   }
 
   ngOnDestroy(): void {
@@ -40,7 +40,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
       this.offset = this.page - 1;  // (this.page - 1 ) * this.MULTIPLYING_FACTOR;
       console.log(this.offset);
     }
-    this.getClientList(this.offset, this.size);
+    this.getClientList(this.offset, this.pageSize);
   }
 
   getClientList(page, size) {
