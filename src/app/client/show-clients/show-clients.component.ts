@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ClientService} from '../service/client.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {Client} from '../model/client';
+import {Person} from '../model/person';
 
 @Component({
   selector: 'app-show-clients',
@@ -11,21 +11,22 @@ import {Client} from '../model/client';
 })
 export class ShowClientsComponent implements OnInit, OnDestroy {
 
-  clients: Client[];
+  clients: Person[];
   private unsubscribe$ = new Subject();
   count: number;
   page = 1;
   offset = 0;
-  size = 3;
-  MULTIPLYING_FACTOR = 3;
+  size = 10;
+  MULTIPLYING_FACTOR = 2;
   loading = false;
+  resultMap: any;
 
   constructor(
     private clientService: ClientService
   ) { }
 
   ngOnInit(): void {
-    this.getClientList(this.page, this.size);
+    this.getClientList(this.offset, this.size);
   }
 
   ngOnDestroy(): void {
@@ -33,18 +34,21 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   }
 
   getThePageNumber() {
-    if (this.page === 1) {
+    if (this.page === 0) {
       this.offset = 0;
-    } else if (this.page >= 2 ) {
-      this.offset = (this.page - 1 ) * this.MULTIPLYING_FACTOR;
+    } else if (this.page >= 1 ) {
+      this.offset = this.page - 1;  // (this.page - 1 ) * this.MULTIPLYING_FACTOR;
+      console.log(this.offset);
     }
-    this.getClientList(this.page, this.size);
+    this.getClientList(this.offset, this.size);
   }
 
   getClientList(page, size) {
     this.clientService.getAllClients(page, size).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       console.log('result', result);
-      this.clients = result;
+      this.resultMap = result;
+      this.clients = this.resultMap.personMap.personList;
+      this.count = this.resultMap.countMap.count;
     });
   }
 

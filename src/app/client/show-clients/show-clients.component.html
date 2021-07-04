@@ -1,6 +1,5 @@
 <div>
-  <ngb-pagination [collectionSize]="count" [(page)]="page" [maxSize]="2"
-                  (pageChange)="getThePageNumber()"></ngb-pagination>
+  <ngb-pagination [collectionSize]="count" [(page)]="page" (pageChange)="getThePageNumber()"></ngb-pagination>
 </div>
 <div>
   <pre>Current page: {{page}}</pre>
@@ -11,7 +10,7 @@
       <div *ngFor="let client of clients">
         <div>
           <div>
-            <b>{{client.firstName}} {{client.lastName}}</b> <a [routerLink]="['/client', client.id]"><small>link</small></a>
+            <b>{{client.firstName}} {{client.lastName}}</b> &nbsp; <a [routerLink]="['/client', client.id]"><small>link</small></a>
           </div>
         </div>
       </div>

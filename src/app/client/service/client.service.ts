@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {Client} from '../model/client';
 import {Person} from '../model/person';
+import {ClientsCount} from '../model/clients-count';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,8 @@ export class ClientService {
     return this.http.post<ClientForm>(this.apiUrl + '/service/undok/clients/create', client);
   }
 
-  getAllClients(page: number, size: number): Observable<Client[]> {
-    return this.http.get<Client[]>(this.apiUrl + '/service/undok/clients/all/' + page + '/' + size);
+  getAllClients(page: number, size: number): Observable<any> {
+    return this.http.get<any>(this.apiUrl + '/service/undok/clients/all/' + page + '/' + size);
   }
 
   getSingleClient(id: string): Observable<any> {
