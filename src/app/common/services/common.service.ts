@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {UserService} from '../../auth/services/user.service';
 import {Router} from '@angular/router';
 import {User} from '../../auth/model/user';
@@ -27,6 +27,7 @@ export class CommonService {
   public itemSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public descriptionUpdateSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public dueDateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  public createCounselingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   setSubject(value) {
     if (value) {
@@ -99,6 +100,14 @@ export class CommonService {
       this.dueDateSubject.next(value);
     } else {
       this.dueDateSubject.next(null);
+    }
+  }
+
+  setCreateCounselingSubject(value) {
+    if (value) {
+      this.createCounselingSubject.next(value);
+    } else {
+      this.createCounselingSubject.next(null);
     }
   }
 

@@ -5,6 +5,9 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {Client} from '../model/client';
 import {Person} from '../model/person';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {CreateCounselingComponent} from '../create-counseling/create-counseling.component';
+import {CommonService} from '../../common/services/common.service';
 
 @Component({
   selector: 'app-show-single-client',
@@ -17,16 +20,20 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject();
   person: Person;
   client: Client;
+  private closeResult = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private clientService: ClientService
+    private clientService: ClientService,
+    private modalService: NgbModal,
+    private commonService: CommonService
   ) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
       this.id = params['id'];
       this.getClient();
+      this.getCreateCounselingSubject();
     });
   }
 
@@ -34,9 +41,39 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
   }
 
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+    // const modalRef = this.modalService.open(CreateCounselingComponent);
+    // modalRef.componentInstance.name = 'Counseling';
+  }
+
   getClient() {
     this.clientService.getSingleClient(this.id).pipe(takeUntil(this.unsubscribe$)).subscribe( res => {
       this.person = res;
+      console.log(this.person);
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+  getCreateCounselingSubject()   {
+    this.commonService.createCounselingSubject.pipe(takeUntil(this.unsubscribe$)).subscribe( rel => {
+      if (rel) {
+        this.getClient();
+        this.modalService.dismissAll();
+      }
     });
   }
 

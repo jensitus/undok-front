@@ -1,40 +1,64 @@
-<div>
-  <div *ngIf="person">
-    <div>
-      <!--{{person | json}}-->
-    </div>
-    <div class="mt-2">
-      <label class="text-secondary">Name:</label>
-      {{person.firstName}} {{person.lastName}}
-    </div>
-    <div>
-      <label class="text-secondary">Familienstand:</label>
-      {{person.client.maritalStatus}}
-    </div>
-    <div>
-      <label class="text-secondary">Geburtstag:</label>
-      {{person.dateOfBirth}}
-    </div>
-    <div>
-      <label class="text-secondary">Bildung:</label>
-      {{person.client.education}}
-    </div>
-    <div>
-      <label class="text-secondary">Woher kennt uns die Person:</label>
-      {{person.client.howHasThePersonHeardFromUs}}
-    </div>
-    <div>
-      <label class="text-secondary">gefährdet bei Geltendmachung:</label>
-      <span *ngIf="person.client.vulnerableWhenAssertingRights">
+<div class="row">
+  <div class="col-md-5">
+    <h4>Klient:in</h4>
+    <div *ngIf="person">
+      <div class="mt-2">
+        <label class="text-secondary">Name:</label>
+        {{person.firstName}} {{person.lastName}}
+      </div>
+      <div>
+        <label class="text-secondary">Familienstand:</label>
+        {{person.client.maritalStatus}}
+      </div>
+      <div>
+        <label class="text-secondary">Geburtstag:</label>
+        {{person.dateOfBirth}}
+      </div>
+      <div>
+        <label class="text-secondary">Bildung:</label>
+        {{person.client.education}}
+      </div>
+      <div>
+        <label class="text-secondary">Woher kennt uns die Person:</label>
+        {{person.client.howHasThePersonHeardFromUs}}
+      </div>
+      <div>
+        <label class="text-secondary">gefährdet bei Geltendmachung:</label>
+        <span *ngIf="person.client.vulnerableWhenAssertingRights">
         yes
       </span>
-      <span *ngIf="!person.client.vulnerableWhenAssertingRights">
+        <span *ngIf="!person.client.vulnerableWhenAssertingRights">
         nope
       </span>
-    </div>
-    <div>
-      <label class="text-secondary">Dolmetch erforderlich:</label>
-      {{person.client.interpreterNecessary}}
+      </div>
+      <div>
+        <label class="text-secondary">Dolmetch erforderlich:</label>
+        {{person.client.interpreterNecessary}}
+      </div>
+      <div class="mt-2">
+        <button class="btn btn-sm btn-outline-primary" (click)="open(content)">Neue Beratung anlegen</button>
+      </div>
     </div>
   </div>
+  <div class="col-md-7" *ngIf="person">
+    <app-show-counselings-per-client [counselings]="person.client.counselings"></app-show-counselings-per-client>
+  </div>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Create Client</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-create-counseling [clientId]="person.client.id"></app-create-counseling>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </ng-template>
+
 </div>

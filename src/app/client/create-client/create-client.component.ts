@@ -9,6 +9,7 @@ import {NgbDateAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
 import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
+import {Country} from '../model/country.enum';
 
 @Component({
   selector: 'app-create-client',
@@ -34,6 +35,11 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   education: string;
   readonly DELIMITER = '-';
   enumKeys = [];
+  street: string;
+  zipCode: string;
+  city: string;
+  country: string;
+  countries = Object.keys(Country);
 
   constructor(
     private clientService: ClientService,
@@ -66,7 +72,11 @@ export class CreateClientComponent implements OnInit, OnDestroy {
       interpreterNecessary: this.interpreterNecessary,
       vulnerableWhenAssertingRights: this.vulnerableWhenAssertingRights,
       keyword: this.keyword,
-      education: this.education
+      education: this.education,
+      street: this.street,
+      zipCode: this.zipCode,
+      city: this.city,
+      country: this.country
     };
     console.log(this.clientForm);
     this.clientService.createClient(this.clientForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
@@ -109,6 +119,18 @@ export class CreateClientComponent implements OnInit, OnDestroy {
         break;
       default:
         this.m = MaritalStatus.UNKNOWN;
+    }
+    console.log(this.m);
+  }
+
+  onCountryChange(country) {
+    console.log(country);
+    switch (country) {
+      case 'Countries':
+        this.country = 'Unknown';
+        break;
+      default:
+        this.country = country;
     }
   }
 

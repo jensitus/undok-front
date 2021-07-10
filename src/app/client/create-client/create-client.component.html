@@ -8,6 +8,20 @@
         <input type="text" class="form-control" name="lastName" [(ngModel)]="lastName" placeholder="lastName" />
       </div>
       <div class="form-group">
+        <input type="text" class="form-control" name="street" [(ngModel)]="street" placeholder="street" />
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" name="zipCode" [(ngModel)]="zipCode" placeholder="zip code" />
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" name="city" [(ngModel)]="city" placeholder="city" />
+      </div>
+      <div class="form-group">
+        <select class="form-control">
+          <option *ngFor="let c of countries" [value]="c" (click)="onCountryChange(c)">{{c}}</option>
+        </select>
+      </div>
+      <div class="form-group">
         <input type="text" class="form-control" name="keyword" [(ngModel)]="keyword" placeholder="keyword" />
       </div>
       <div class="form-group">
@@ -26,7 +40,7 @@
       </div>
       <div class="form-group">
         <div class="input-group">
-          <input class="form-control" placeholder="yyyy-mm-dd"
+          <input class="form-control" placeholder="Date of birth"
                  name="dp" [(ngModel)]="dateOfBirth" ngbDatepicker #d="ngbDatepicker">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><fa-icon class="text-info" [icon]="faBars"></fa-icon></button>
@@ -35,6 +49,7 @@
       </div>
       <div class="form-group">
         <select class="form-control">
+          <option (click)="onMaritalChange('unknown')">Marital Status</option>
           <option *ngFor="let marital of maStatus" [value]="marital" (click)="onMaritalChange(marital)">{{marital}}</option>
         </select>
       </div>

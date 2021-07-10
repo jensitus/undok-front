@@ -4,6 +4,7 @@ import {ClientForm} from '../model/clientForm';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {Person} from '../model/person';
+import {CounselingForm} from '../model/counseling-form';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,10 @@ export class ClientService {
 
   getSingleClient(id: string): Observable<any> {
     return this.http.get<Person>(this.apiUrl + '/service/undok/clients/' + id);
+  }
+
+  createCounseling(clientId: string, counselingForm: CounselingForm): Observable<any> {
+    return this.http.post(this.apiUrl + '/service/undok/clients/' + clientId + '/counseling', counselingForm );
   }
 
 }

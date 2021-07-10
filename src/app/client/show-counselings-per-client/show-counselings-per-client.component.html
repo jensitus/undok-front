@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col">
+    <div>
+      <h4>Beratungen:</h4>
+    </div>
+    <div *ngFor="let counseling of counselings">
+      <div class="card mt-2">
+        <div class="card-body">
+          <div>
+            <label class="text-secondary">Datum:</label>
+            {{counseling.entryDate}}
+          </div>
+          <div>
+            <label class="text-secondary">Aktivität:</label>
+            {{counseling.activity}}
+          </div>
+          <div>
+            <label class="text-secondary">Aktivitätskategorie:</label>
+            {{counseling.activityCategory}}
+          </div>
+          <div>
+            <label class="text-secondary">Anliegen:</label>
+            {{counseling.concern}}
+          </div>
+          <div>
+            <label class="text-secondary">Kategorie:</label>
+            {{counseling.concernCategory}}
+          </div>
+          <div>
+            <label class="text-secondary">status</label>
+            {{counseling.counselingStatus}}
+          </div>
+          <div>
+            <label class="text-secondary">Registriert von:</label>
+            {{counseling.registeredBy}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

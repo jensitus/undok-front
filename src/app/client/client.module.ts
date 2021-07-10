@@ -7,6 +7,9 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ShowClientsComponent} from './show-clients/show-clients.component';
 import {ShowSingleClientComponent} from './show-single-client/show-single-client.component';
+import { CreateCounselingComponent } from './create-counseling/create-counseling.component';
+import { ShowCounselingsComponent } from './show-counselings/show-counselings.component';
+import { ShowCounselingsPerClientComponent } from './show-counselings-per-client/show-counselings-per-client.component';
 
 const appRoutes: Routes = [
   {path: 'create', component: CreateClientComponent},
@@ -19,6 +22,9 @@ const appRoutes: Routes = [
     CreateClientComponent,
     ShowClientsComponent,
     ShowSingleClientComponent,
+    CreateCounselingComponent,
+    ShowCounselingsComponent,
+    ShowCounselingsPerClientComponent,
   ],
   imports: [
     CommonModule,
