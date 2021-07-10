@@ -4,6 +4,7 @@ import {User} from '../../../auth/model/user';
 import {Router} from '@angular/router';
 import {CommonService} from '../../../common/services/common.service';
 import {RoleName} from '../../../auth/model/role-name.enum';
+import {ClientService} from '../../../client/service/client.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -12,13 +13,17 @@ import {RoleName} from '../../../auth/model/role-name.enum';
     animations: [routerTransition()]
 })
 export class DashboardComponent implements OnInit {
+
     public alerts: Array<any> = [];
     currentUser: User;
     admin = false;
+    counselingCount: number;
 
     constructor(
       private router: Router,
-      private commonService: CommonService
+      private commonService: CommonService,
+      private clientService: ClientService
+
     ) {
         this.alerts.push(
             {
@@ -47,6 +52,7 @@ export class DashboardComponent implements OnInit {
       } else {
         this.commonService.checkAuthToken();
       }
+      this.getNumberOfCounselings();
     }
 
     public closeAlert(alert: any) {
@@ -56,6 +62,12 @@ export class DashboardComponent implements OnInit {
 
   private getCurrentUser() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  }
+
+  getNumberOfCounselings() {
+      this.clientService.numberOfCounselings().subscribe(res => {
+        this.counselingCount = res;
+    });
   }
 
 }

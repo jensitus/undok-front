@@ -1,12 +1,12 @@
 <div [@routerTransition]>
-  <!--<h3 class="text-muted mb-4"><small>Statistics Overview</small></h3>-->
+  <h3 class="text-muted mb-4"><small>Statistics Overview</small></h3>
 
-  <!--    <div class="row">
+      <div class="row">
           <div class="col-xl-3 col-lg-6">
               <app-stat [bgClass]="'primary'" [icon]="'fa-comments'" [count]="26" [label]="'New Comments!'" ></app-stat>
           </div>
           <div class="col-xl-3 col-lg-6">
-              <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="12" [label]="'New task!'" ></app-stat>
+              <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="counselingCount" [label]="'Beratungen'" ></app-stat>
           </div>
           <div class="col-xl-3 col-lg-6">
               <app-stat [bgClass]="'success'" [icon]="'fa-shopping-cart'" [count]="124" [label]="'New Orders!'" ></app-stat>
@@ -15,7 +15,7 @@
               <app-stat [bgClass]="'danger'" [icon]="'fa-support'" [count]="13" [label]="'New Tickets!'"></app-stat>
           </div>
       </div>
-      <hr />-->
+      <hr />
   <div class="row">
     <div class="col-lg-5">
       <div *ngIf="currentUser.admin">
