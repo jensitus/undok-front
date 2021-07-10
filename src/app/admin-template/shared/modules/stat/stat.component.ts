@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {IconDefinition} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-stat',
@@ -7,7 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class StatComponent implements OnInit {
     @Input() bgClass: string;
-    @Input() icon: string;
+    @Input() icon: IconDefinition;
     @Input() count: number;
     @Input() label: string;
     @Input() data: number;

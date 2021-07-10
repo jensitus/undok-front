@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {CommonService} from '../../../common/services/common.service';
 import {RoleName} from '../../../auth/model/role-name.enum';
 import {ClientService} from '../../../client/service/client.service';
+import {faCampground, faCoffee, faComments, faPowerOff, faTachometerAlt, faUser, faTasks, faShoppingCart, faComment, faSurprise} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-dashboard',
@@ -18,6 +19,12 @@ export class DashboardComponent implements OnInit {
     currentUser: User;
     admin = false;
     counselingCount: number;
+    clientCount: number;
+    faComments = faComments;
+    faTasks = faTasks;
+    faShoppingCard = faShoppingCart;
+    faComment = faComment;
+    faSurprise = faSurprise;
 
     constructor(
       private router: Router,
@@ -53,6 +60,7 @@ export class DashboardComponent implements OnInit {
         this.commonService.checkAuthToken();
       }
       this.getNumberOfCounselings();
+      this.getNumberOfClients();
     }
 
     public closeAlert(alert: any) {
@@ -68,6 +76,12 @@ export class DashboardComponent implements OnInit {
       this.clientService.numberOfCounselings().subscribe(res => {
         this.counselingCount = res;
     });
+  }
+
+  getNumberOfClients() {
+      this.clientService.numberOfClients().subscribe(clientCount => {
+        this.clientCount = clientCount;
+      });
   }
 
 }

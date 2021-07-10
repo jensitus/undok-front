@@ -6,7 +6,6 @@ import {takeUntil} from 'rxjs/operators';
 import {Client} from '../model/client';
 import {Person} from '../model/person';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {CreateCounselingComponent} from '../create-counseling/create-counseling.component';
 import {CommonService} from '../../common/services/common.service';
 
 @Component({

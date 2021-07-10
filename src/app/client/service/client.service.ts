@@ -37,4 +37,8 @@ export class ClientService {
     return this.http.get<number>(this.apiUrl + '/service/undok/counselings/count');
   }
 
+  numberOfClients(): Observable<number> {
+    return this.http.get<number>(this.apiUrl + '/service/undok/clients/count');
+  }
+
 }
