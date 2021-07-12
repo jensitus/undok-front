@@ -3,11 +3,18 @@
     <input type="text" name="counselingStatus" [(ngModel)]="counselingStatus" placeholder="counselingStatus" class="form-control" />
   </div>
   <div class="form-group">
-    <div class="input-group">
-      <input class="form-control" placeholder="entry Date"
-             name="dp" [(ngModel)]="entryDate" ngbDatepicker #d="ngbDatepicker">
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><fa-icon class="text-info" [icon]="faBars"></fa-icon></button>
+    <div class="row">
+      <div class="col">
+        <div class="input-group">
+          <input class="form-control" placeholder="Beratungstermin"
+                 name="dp" [(ngModel)]="dateObject" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><fa-icon class="text-info" [icon]="faBars"></fa-icon></button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <ngb-timepicker [(ngModel)]="time" name="time" (change)="mergeDateAndTime()"></ngb-timepicker>
       </div>
     </div>
   </div>
@@ -27,7 +34,7 @@
     <input type="text" name="registeredBy" [(ngModel)]="registeredBy" placeholder="registeredBy" class="form-control" />
   </div>
   <div class="form-group">
-    <button class="btn btn-sm btn-outline-dark">submit</button>
+    <button class="btn btn-outline-danger" [disabled]="loading">submit</button>
   </div>
 </form>
 <div class="spinner-border text-primary" role="status" *ngIf="loading">

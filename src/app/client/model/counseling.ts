@@ -7,4 +7,5 @@ export interface Counseling {
   activity: string;
   activityCategory: string;
   registeredBy: string;
+  counselingDate: string;
 }

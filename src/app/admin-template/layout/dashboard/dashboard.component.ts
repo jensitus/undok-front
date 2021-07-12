@@ -5,7 +5,7 @@ import {Router} from '@angular/router';
 import {CommonService} from '../../../common/services/common.service';
 import {RoleName} from '../../../auth/model/role-name.enum';
 import {ClientService} from '../../../client/service/client.service';
-import {faCampground, faCoffee, faComments, faPowerOff, faTachometerAlt, faUser, faTasks, faShoppingCart, faComment, faSurprise} from '@fortawesome/free-solid-svg-icons';
+import {faCampground, faCoffee, faComments, faPowerOff, faTachometerAlt, faUsers, faTasks, faShoppingCart, faComment, faSurprise} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-dashboard',
@@ -23,8 +23,9 @@ export class DashboardComponent implements OnInit {
     faComments = faComments;
     faTasks = faTasks;
     faShoppingCard = faShoppingCart;
-    faComment = faComment;
     faSurprise = faSurprise;
+    faUser = faUsers;
+
 
     constructor(
       private router: Router,
