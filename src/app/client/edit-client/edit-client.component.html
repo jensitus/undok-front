@@ -1,0 +1,60 @@
+<div class="spinner-border text-success" role="status" *ngIf="loading">
+  <span class="sr-only">Loading...</span>
+</div>
+<form #createClientForm="ngForm" (ngSubmit)="submit()" class="mt-1">
+  <div class="form-group">
+    <input type="text" class="form-control" name="firstName" [(ngModel)]="person.firstName" placeholder="firstName" />
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" name="lastName" [(ngModel)]="person.lastName" placeholder="lastName" />
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" name="street" [(ngModel)]="person.address.street" placeholder="street" />
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" name="zipCode" [(ngModel)]="person.address.zipCode" placeholder="zip code" />
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" name="city" [(ngModel)]="person.address.city" placeholder="city" />
+  </div>
+  <div class="form-group">
+    <select class="form-control">
+      <option *ngFor="let c of countries" [value]="c" (click)="onCountryChange(c)">{{c}}</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" name="keyword" [(ngModel)]="person.client.keyword" placeholder="keyword" />
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" name="education" [(ngModel)]="person.client.education" placeholder="education" />
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" name="howHasThePersonHeardFromUS" [(ngModel)]="person.client.howHasThePersonHeardFromUs" placeholder="how has the person heard from us" />
+  </div>
+  <div class="form-group">
+    <input type="checkbox" class="form-check" [(ngModel)]="person.client.vulnerableWhenAssertingRights" name="vulnerableWhenAssertingRights">
+    <label>vulnerableWhenAssertingRights</label>
+  </div>
+  <div class="form-group">
+    <input type="checkbox" class="form-check" [(ngModel)]="person.client.interpreterNecessary" name="interpreterNecessary">
+    <label>interpreterNecessary</label>
+  </div>
+  <div class="form-group">
+    <div class="input-group">
+      <input class="form-control" placeholder="Date of birth"
+             name="dp" [(ngModel)]="person.dateOfBirth" ngbDatepicker #d="ngbDatepicker">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><fa-icon class="text-info" [icon]="faBars"></fa-icon></button>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <select class="form-control">
+      <option (click)="onMaritalChange('unknown')">Marital Status</option>
+      <option *ngFor="let marital of maStatus" [value]="marital" (click)="onMaritalChange(marital)">{{marital}}</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-sm btn-outline-dark">klick halt</button>
+  </div>
+</form>
