@@ -10,6 +10,8 @@ import {ShowSingleClientComponent} from './show-single-client/show-single-client
 import { CreateCounselingComponent } from './create-counseling/create-counseling.component';
 import { ShowCounselingsComponent } from './show-counselings/show-counselings.component';
 import { ShowCounselingsPerClientComponent } from './show-counselings-per-client/show-counselings-per-client.component';
+import { EditClientComponent } from './edit-client/edit-client.component';
+import { ClientFormComponent } from './client-form/client-form.component';
 
 const appRoutes: Routes = [
   {path: 'create', component: CreateClientComponent},
@@ -25,6 +27,8 @@ const appRoutes: Routes = [
     CreateCounselingComponent,
     ShowCounselingsComponent,
     ShowCounselingsPerClientComponent,
+    EditClientComponent,
+    ClientFormComponent,
   ],
   imports: [
     CommonModule,

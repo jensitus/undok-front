@@ -21,6 +21,10 @@ export class ClientService {
     return this.http.post<ClientForm>(this.apiUrl + '/service/undok/clients/create', client);
   }
 
+  updateClient(clientId: string, person: Person): Observable<Person> {
+    return this.http.put<Person>(this.apiUrl + '/service/undok/clients/' + clientId + '/update', person);
+  }
+
   getAllClients(page: number, size: number): Observable<any> {
     return this.http.get<any>(this.apiUrl + '/service/undok/clients/all/' + page + '/' + size);
   }

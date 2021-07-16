@@ -20,7 +20,7 @@ export class CommonService {
   ) {
   }
 
-  public demoSubject: BehaviorSubject<any> = new BehaviorSubject(null);
+  public demoSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public todoSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public createUserSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public taskSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -29,7 +29,7 @@ export class CommonService {
   public dueDateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public createCounselingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
-  setSubject(value) {
+  setDemoSubject(value) {
     if (value) {
       this.demoSubject.next(value);
     } else {

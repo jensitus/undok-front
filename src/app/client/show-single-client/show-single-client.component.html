@@ -40,8 +40,13 @@
         </div>
       </div>
 
-      <div class="mt-2">
-        <button class="btn btn-sm btn-outline-primary" (click)="open(content)">Neue Beratung anlegen</button>
+      <div class="row mt-2">
+        <div class="col">
+          <button class="btn btn-sm btn-outline-primary" (click)="openNewCounseling(content)">Neue Beratung anlegen</button>
+        </div>
+        <div class="col">
+          <button class="btn btn-sm btn-outline-warning" (click)="openEditModal(edit_client)">Edit Client</button>
+        </div>
       </div>
     </div>
   </div>
@@ -58,6 +63,23 @@
     </div>
     <div class="modal-body">
       <app-create-counseling [clientId]="person.client.id"></app-create-counseling>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #edit_client let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Edit Client</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-edit-client [person]="person"></app-edit-client>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">

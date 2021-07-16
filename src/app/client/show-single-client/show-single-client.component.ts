@@ -33,6 +33,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
       this.id = params['id'];
       this.getClient();
       this.getCreateCounselingSubject();
+      this.getDemoSubject();
     });
   }
 
@@ -40,7 +41,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
   }
 
-  open(content) {
+  openNewCounseling(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -48,6 +49,14 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     });
     // const modalRef = this.modalService.open(CreateCounselingComponent);
     // modalRef.componentInstance.name = 'Counseling';
+  }
+
+  openEditModal(edit_client) {
+    this.modalService.open(edit_client, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 
   getClient() {
@@ -74,6 +83,15 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
         this.modalService.dismissAll();
       }
     });
+  }
+
+  getDemoSubject() {
+    this.commonService.demoSubject.pipe(takeUntil(this.unsubscribe$)).subscribe( reload => {
+      if (reload === true) {
+        this.getClient();
+        this.modalService.dismissAll();
+      }
+    })
   }
 
 }

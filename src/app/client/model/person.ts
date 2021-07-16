@@ -1,4 +1,5 @@
 import {Client} from './client';
+import {Address} from './address';
 
 export interface Person {
   id: string;
@@ -7,6 +8,6 @@ export interface Person {
   dateOfBirth?: string;
   lastName?: string;
   firstName: string;
-  address: string;
+  address: Address;
   client: Client;
 }
