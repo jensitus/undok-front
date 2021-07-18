@@ -107,6 +107,10 @@ export class EditClientComponent implements OnInit, OnDestroy {
 
   submit(): void {
     const theRealDate = this.dateAdapter.fromModel(this.dateOfBirth);
+    console.log('the real date', theRealDate);
+    const dateOfBirth = this.ngbFormatterService.format(theRealDate);
+    console.log('date of birth', dateOfBirth);
+    this.person.dateOfBirth = dateOfBirth;
     console.log('this.person', this.person);
     // this.clientForm = {
     //   firstName: this.firstName,
@@ -123,6 +127,7 @@ export class EditClientComponent implements OnInit, OnDestroy {
     //   city: this.city,
     //   country: this.country
     // };
+    console.log('this.person', this.person);
     this.clientService.updateClient(this.person.client.id, this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       this.loading = true;
       console.log(result);

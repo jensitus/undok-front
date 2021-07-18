@@ -45,4 +45,8 @@ export class ClientService {
     return this.http.get<number>(this.apiUrl + '/service/undok/clients/count');
   }
 
+  getItemForTimeline(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + '/timeline/items');
+  }
+
 }

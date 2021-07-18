@@ -1,81 +1,91 @@
 <div class="card-body">
   <ul class="timeline" *ngFor="let item of items; let i = index">
     <li *ngIf="(i % 2 == 0) && (i % 3 == 1)">
-      <div class="timeline-badge danger"><fa-icon [icon]="faBomb"></fa-icon>
+      <div class="timeline-badge warning">
+        <fa-icon [icon]="faGraduationCap"></fa-icon>
       </div>
       <div class="timeline-panel">
         <div class="timeline-body">
           <div>
-            <small class="text-muted"><fa-icon [icon]="faClock"></fa-icon> active since: {{item.createdAt | date:'longDate'}}</small>
+            <small class="text-muted">
+              <fa-icon [icon]="faClock"></fa-icon>
+              active since: {{item.createdAt | date:'longDate'}}</small>
           </div>
           <div>
             <b><span [innerHTML]="item.name"></span></b>
           </div>
           <div>
-            <small>in Todo: <a [routerLink]="['/tasks/todo', item.taskId]" [innerHTML]="item.todoTitle"></a></small>
+            <small>Client: <a [routerLink]="['/client', item.clientId]" [innerHTML]="item.name"></a></small>
           </div>
-          <div *ngIf="item.dueDate">
-            <small>dueDate: <b>{{item.dueDate}}</b></small>
+          <div *ngIf="item.counselingDate">
+            <small>dueDate: <b>{{item.counselingDate}}</b></small>
           </div>
         </div>
       </div>
     </li>
     <li *ngIf="(i % 2 == 0) && !(i % 3 == 1)">
-      <div class="timeline-badge warning"><fa-icon [icon]="faGraduationCap"></fa-icon>
+      <div class="timeline-badge danger">
+        <fa-icon [icon]="faBomb"></fa-icon>
       </div>
       <div class="timeline-panel">
         <div class="timeline-body">
           <div>
-            <small class="text-muted"><fa-icon [icon]="faBomb"></fa-icon> active since: {{item.createdAt | date:'longDate'}}</small>
+            <small class="text-muted">
+              <fa-icon [icon]="faBomb"></fa-icon>
+              active since: {{item.createdAt | date:'longDate'}}</small>
           </div>
           <div>
             <b><span [innerHTML]="item.name"></span></b>
           </div>
           <div>
-            <small>in Todo: <a [routerLink]="['/tasks/todo', item.taskId]" [innerHTML]="item.todoTitle"></a></small>
+            <small>Client: <a [routerLink]="['/client', item.clientId]" [innerHTML]="item.name"></a></small>
           </div>
-          <div *ngIf="item.dueDate">
-            <small>dueDate: <b>{{item.dueDate}}</b></small>
+          <div *ngIf="item.counselingDate">
+            <small>dueDate: <b>{{item.counselingDate}}</b></small>
           </div>
         </div>
       </div>
     </li>
     <li class="timeline-inverted" *ngIf="!(i % 2 == 0) && (i % 3 == 1)">
-      <div class="timeline-badge success"><fa-icon [icon]="faCreditCard"></fa-icon>
+      <div class="timeline-badge success">
+        <fa-icon [icon]="faCreditCard"></fa-icon>
       </div>
       <div class="timeline-panel">
         <div class="timeline-body">
           <div>
-            <small class="text-muted"><fa-icon [icon]="faClock"></fa-icon> active since: {{item.createdAt | date:'longDate'}}</small>
+            <small class="text-muted">
+              <fa-icon [icon]="faClock"></fa-icon>
+              active since: {{item.createdAt | date:'longDate'}}</small>
           </div>
           <div>
             <b><span [innerHTML]="item.name"></span></b>
           </div>
           <div>
-            <small>in Todo: <a [routerLink]="['/tasks/todo', item.taskId]" [innerHTML]="item.todoTitle"></a></small>
+            <small>Client: <a [routerLink]="['/client', item.clientId]" [innerHTML]="item.name"></a></small>
           </div>
-          <div *ngIf="item.dueDate">
-            <small>dueDate: <b>{{item.dueDate}}</b></small>
+          <div *ngIf="item.counselingDate">
+            <small>dueDate: <b>{{item.counselingDate}}</b></small>
           </div>
         </div>
       </div>
     </li>
     <li class="timeline-inverted" *ngIf="!(i % 2 == 0) && !(i % 3 == 1)">
-      <div class="timeline-badge info"><fa-icon [icon]="faCheck"></fa-icon>
+      <div class="timeline-badge info">
+        <fa-icon [icon]="faCheck"></fa-icon>
       </div>
       <div class="timeline-panel">
         <div class="timeline-body">
           <div>
-            <small class="text-muted"><fa-icon [icon]="faClock"></fa-icon> active since: {{item.createdAt | date:'longDate'}}</small>
+            <small>Client: <a [routerLink]="['/client', item.clientId]" [innerHTML]="item.name"></a></small>
           </div>
           <div>
             <b><span [innerHTML]="item.name"></span></b>
           </div>
           <div>
-            <small>in Todo: <a [routerLink]="['/tasks/todo', item.taskId]" [innerHTML]="item.todoTitle"></a></small>
+            <small>Client: <a [routerLink]="['/client', item.clientId]" [innerHTML]="item.name"></a></small>
           </div>
-          <div *ngIf="item.dueDate">
-            <small>dueDate: <b>{{item.dueDate}}</b></small>
+          <div *ngIf="item.counselingDate">
+            <small>dueDate: <b>{{item.counselingDate}}</b></small>
           </div>
         </div>
       </div>
