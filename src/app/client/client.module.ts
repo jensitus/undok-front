@@ -16,7 +16,9 @@ import { ClientFormComponent } from './client-form/client-form.component';
 const appRoutes: Routes = [
   {path: 'create', component: CreateClientComponent},
   {path: 'client-list', component: ShowClientsComponent},
-  {path: ':id', component: ShowSingleClientComponent}
+  {path: 'counselings', component: ShowCounselingsComponent},
+  {path: ':id', component: ShowSingleClientComponent},
+
 ];
 
 @NgModule({

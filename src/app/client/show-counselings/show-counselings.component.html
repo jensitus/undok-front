@@ -1,1 +1,50 @@
-<p>show-counselings works!</p>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-2">
+        <b>Datum</b>
+      </div>
+      <div class="col-md-1">
+        <b>Status</b>
+      </div>
+      <div class="col-md-4">
+        <b>Anliegen</b>
+      </div>
+      <div class="col-md-2">
+        <b>Kategorie</b>
+      </div>
+      <div class="col-md-2">
+        <b>Aktivität</b>
+      </div>
+      <div class="col-md-1">
+        <b>Kat</b>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngFor="let counseling of counselings">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-2">
+          {{counseling.counselingDate | date}}
+        </div>
+        <div class="col-md-1">
+          {{counseling.counselingStatus}}
+        </div>
+        <div class="col-md-4">
+          {{counseling.concern}}
+        </div>
+        <div class="col-md-2">
+          {{counseling.concernCategory}}
+        </div>
+        <div class="col-md-2">
+          {{counseling.activity}}
+        </div>
+        <div class="col-md-1">
+          {{counseling.activityCategory}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

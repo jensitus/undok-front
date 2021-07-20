@@ -3,10 +3,10 @@
 
       <div class="row">
           <div class="col-xl-3 col-lg-6">
-              <app-stat [bgClass]="'danger'" [icon]="faTasks" [count]="counselingCount" [label]="'Beratungen'"></app-stat>
+              <app-stat [bgClass]="'danger'" [icon]="faTasks" [count]="counselingCount" [label]="'Beratungen'" [link]="'/clients/counselings'"></app-stat>
           </div>
           <div class="col-xl-3 col-lg-6">
-              <app-stat [bgClass]="'success'" [icon]="faUser" [count]="clientCount" [label]="'Klient:innen'" [link]="'/client/client-list'"></app-stat>
+              <app-stat [bgClass]="'success'" [icon]="faUser" [count]="clientCount" [label]="'Klient:innen'" [link]="'/clients/client-list'"></app-stat>
           </div>
           <div class="col-xl-3 col-lg-6">
               <app-stat [bgClass]="'warning'" [icon]="faSurprise" [count]="13" [label]="'New Tickets!'"></app-stat>
@@ -20,11 +20,11 @@
           <a [routerLink]="['/create-user']">create new user</a>
         </div>
         <div>
-          <a [routerLink]="['/client/create']">create client</a>
+          <a [routerLink]="['/clients/create']">create client</a>
         </div>
       </div>
       <div>
-        <a  [routerLink]="['/client/client-list']">client list</a>
+        <a  [routerLink]="['/clients/client-list']">client list</a>
       </div>
 
 

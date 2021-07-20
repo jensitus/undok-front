@@ -10,7 +10,7 @@
       <div *ngFor="let client of clients">
         <div>
           <div>
-            <b>{{client.firstName}} {{client.lastName}}</b> &nbsp; <a [routerLink]="['/client', client.id]"><small>link</small></a>
+            <b>{{client.firstName}} {{client.lastName}}</b> &nbsp; <a [routerLink]="['/clients', client.id]"><small>link</small></a>
           </div>
         </div>
       </div>

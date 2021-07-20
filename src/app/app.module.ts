@@ -32,9 +32,8 @@ import {ChangePasswordComponent} from './auth/change-password/change-password.co
 import {PageHeaderModule} from './admin-template/shared/modules';
 import {UploadComponent} from './common/upload/upload.component';
 import {FileUploadModule} from 'ng2-file-upload';
-import { FilelistComponent } from './common/upload/filelist/filelist.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ShowSingleClientComponent } from './client/show-single-client/show-single-client.component';
+import {FilelistComponent} from './common/upload/filelist/filelist.component';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 const app_routes: Routes = [
   {path: 'home', component: HomeComponent},
