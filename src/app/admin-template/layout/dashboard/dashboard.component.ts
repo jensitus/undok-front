@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { routerTransition } from '../../../router.animations';
+import {Component, OnInit} from '@angular/core';
+import {routerTransition} from '../../../router.animations';
 import {User} from '../../../auth/model/user';
 import {Router} from '@angular/router';
 import {CommonService} from '../../../common/services/common.service';
-import {RoleName} from '../../../auth/model/role-name.enum';
 import {ClientService} from '../../../client/service/client.service';
-import {faCampground, faCoffee, faComments, faPowerOff, faTachometerAlt, faUsers, faTasks, faShoppingCart, faComment, faSurprise} from '@fortawesome/free-solid-svg-icons';
+import {faComments, faShoppingCart, faSurprise, faTasks, faUsers} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-dashboard',

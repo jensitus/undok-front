@@ -3,6 +3,7 @@ import {ClientService} from '../service/client.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {Person} from '../model/person';
+import {faUsers} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-show-clients',
@@ -20,6 +21,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   MULTIPLYING_FACTOR = 2;
   loading = false;
   resultMap: any;
+  faUsers = faUsers;
 
   constructor(
     private clientService: ClientService
