@@ -28,6 +28,7 @@ export class CommonService {
   public descriptionUpdateSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public dueDateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public createCounselingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  public createEmployerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   setDemoSubject(value) {
     if (value) {
@@ -108,6 +109,14 @@ export class CommonService {
       this.createCounselingSubject.next(value);
     } else {
       this.createCounselingSubject.next(null);
+    }
+  }
+
+  setCreateEmployerSubject(value) {
+    if (value) {
+      this.createEmployerSubject.next(value);
+    } else {
+      this.createEmployerSubject.next(null);
     }
   }
 

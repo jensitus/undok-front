@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {Person} from '../model/person';
 import {CounselingForm} from '../model/counseling-form';
+import {EmployerForm} from '../model/employer-form';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +52,10 @@ export class ClientService {
 
   getCounselings(): Observable<any> {
     return this.http.get<any>(this.apiUrl + '/service/undok/counselings/all');
+  }
+
+  createEmployer(employerForm: EmployerForm): Observable<any> {
+    return this.http.post<any>(this.apiUrl + '/service/undok/employers/create', employerForm);
   }
 
 }

@@ -11,6 +11,7 @@ export interface ClientForm {
   interpreterNecessary: boolean;
   howHasThePersonHeardFromUs: string;
   vulnerableWhenAssertingRights: boolean;
+  // Adress:
   street: string;
   zipCode: string;
   city: string;

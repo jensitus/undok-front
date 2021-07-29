@@ -34,11 +34,20 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
       this.getClient();
       this.getCreateCounselingSubject();
       this.getDemoSubject();
+      this.getCreateEmployerSubject();
     });
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
+  }
+
+  openCreateEmployer(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 
   openNewCounseling(content) {
@@ -91,7 +100,16 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
         this.getClient();
         this.modalService.dismissAll();
       }
-    })
+    });
+  }
+
+  getCreateEmployerSubject() {
+    this.commonService.createEmployerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(reload => {
+      if (reload === true) {
+        this.getClient();
+        this.modalService.dismissAll();
+      }
+    });
   }
 
 }
