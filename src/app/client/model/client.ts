@@ -1,5 +1,6 @@
 import {MaritalStatus} from './marital-status.enum';
 import {Counseling} from './counseling';
+import {Person} from './person';
 
 export interface Client {
   id: string;
@@ -10,4 +11,5 @@ export interface Client {
   howHasThePersonHeardFromUs: string;
   vulnerableWhenAssertingRights: boolean;
   counselings: Counseling[];
+  person: Person;
 }

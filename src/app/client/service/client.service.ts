@@ -6,6 +6,7 @@ import {environment} from '../../../environments/environment';
 import {Person} from '../model/person';
 import {CounselingForm} from '../model/counseling-form';
 import {EmployerForm} from '../model/employer-form';
+import {Client} from '../model/client';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +23,8 @@ export class ClientService {
     return this.http.post<ClientForm>(this.apiUrl + '/service/undok/clients/create', client);
   }
 
-  updateClient(clientId: string, person: Person): Observable<Person> {
-    return this.http.put<Person>(this.apiUrl + '/service/undok/clients/' + clientId + '/update', person);
+  updateClient(clientId: string, client: Client): Observable<Person> {
+    return this.http.put<Person>(this.apiUrl + '/service/undok/clients/' + clientId + '/update', client);
   }
 
   getAllClients(page: number, size: number): Observable<any> {
@@ -56,6 +57,10 @@ export class ClientService {
 
   createEmployer(employerForm: EmployerForm): Observable<any> {
     return this.http.post<any>(this.apiUrl + '/service/undok/employers/create', employerForm);
+  }
+
+  getAllEmployers(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + '/service/undok/employers/all');
   }
 
 }

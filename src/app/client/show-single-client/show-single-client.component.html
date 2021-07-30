@@ -1,41 +1,41 @@
 <div class="row">
   <div class="col-md-5">
     <h4>Klient:in</h4>
-    <div *ngIf="person">
+    <div *ngIf="client">
       <div class="card">
         <div class="card-body">
           <div class="mt-2">
             <label class="text-secondary">Name:</label>
-            {{person.firstName}} {{person.lastName}}
+            {{client.person.firstName}} {{client.person.lastName}}
           </div>
           <div>
             <label class="text-secondary">Familienstand:</label>
-            {{person.client.maritalStatus}}
+            {{client.maritalStatus}}
           </div>
           <div>
             <label class="text-secondary">Geburtstag:</label>
-            {{person.dateOfBirth}}
+            {{client.person.dateOfBirth}}
           </div>
           <div>
             <label class="text-secondary">Bildung:</label>
-            {{person.client.education}}
+            {{client.education}}
           </div>
           <div>
             <label class="text-secondary">Woher kennt uns die Person:</label>
-            {{person.client.howHasThePersonHeardFromUs}}
+            {{client.howHasThePersonHeardFromUs}}
           </div>
           <div>
             <label class="text-secondary">gefährdet bei Geltendmachung:</label>
-            <span *ngIf="person.client.vulnerableWhenAssertingRights">
+            <span *ngIf="client.vulnerableWhenAssertingRights">
         yes
       </span>
-            <span *ngIf="!person.client.vulnerableWhenAssertingRights">
+            <span *ngIf="!client.vulnerableWhenAssertingRights">
         nope
       </span>
           </div>
           <div>
             <label class="text-secondary">Dolmetch erforderlich:</label>
-            {{person.client.interpreterNecessary}}
+            {{client.interpreterNecessary}}
           </div>
         </div>
       </div>
@@ -45,16 +45,21 @@
           <button class="btn btn-sm btn-outline-primary" (click)="openNewCounseling(content)">Neue Beratung anlegen</button>
         </div>
         <div class="col">
-          <button class="btn btn-sm btn-outline-success" (click)="openCreateEmployer(create_employer)">Neuen AG anlegen</button>
+          <button class="btn btn-sm btn-outline-success" (click)="openEmployer(create_employer)">Neuen AG anlegen</button>
         </div>
         <div class="col">
           <button class="btn btn-sm btn-outline-warning" (click)="openEditModal(edit_client)">Edit Client</button>
         </div>
       </div>
+      <div class="row mt-2">
+        <div class="col">
+          <button class="btn btn-sm btn-outline-danger" (click)="openEmployer(list_employer)">AGs anzeigen</button>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="col-md-7" *ngIf="person">
-    <app-show-counselings-per-client [counselings]="person.client.counselings"></app-show-counselings-per-client>
+  <div class="col-md-7" *ngIf="client">
+    <app-show-counselings-per-client [counselings]="client.counselings"></app-show-counselings-per-client>
   </div>
 
   <ng-template #content let-modal>
@@ -65,7 +70,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <app-create-counseling [clientId]="person.client.id"></app-create-counseling>
+      <app-create-counseling [clientId]="client.id"></app-create-counseling>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
@@ -82,7 +87,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <app-edit-client [person]="person"></app-edit-client>
+      <app-edit-client [client]="client"></app-edit-client>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
@@ -100,6 +105,23 @@
     </div>
     <div class="modal-body">
       <app-create-empoyer></app-create-empoyer>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #list_employer let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">List Employer</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-show-employers-list></app-show-employers-list>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">

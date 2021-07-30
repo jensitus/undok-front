@@ -82,7 +82,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     console.log(this.clientForm);
     this.clientService.createClient(this.clientForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       console.log('client result', result);
-      this.router.navigate(['/client/client-list']);
+      this.router.navigate(['/clients/client-list']);
     });
   }
 

@@ -42,7 +42,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
   }
 
-  openCreateEmployer(content) {
+  openEmployer(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -70,8 +70,8 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
 
   getClient() {
     this.clientService.getSingleClient(this.id).pipe(takeUntil(this.unsubscribe$)).subscribe( res => {
-      this.person = res;
-      console.log(this.person);
+      this.client = res;
+      console.log(this.client);
     });
   }
 

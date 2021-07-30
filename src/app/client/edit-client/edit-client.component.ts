@@ -20,7 +20,7 @@ import {takeUntil} from 'rxjs/operators';
 })
 export class EditClientComponent implements OnInit, OnDestroy {
 
-  @Input() person: Person;
+  @Input() client: Client;
 
   clientForm: ClientForm;
   private unsubscribe$ = new Subject();
@@ -66,41 +66,41 @@ export class EditClientComponent implements OnInit, OnDestroy {
     console.log(country);
     switch (country) {
       case 'Countries':
-        this.person.address.country = 'Unknown';
+        this.client.person.address.country = 'Unknown';
         break;
       default:
-        this.person.address.country = country;
+        this.client.person.address.country = country;
     }
   }
 
   onMaritalChange(donner): void {
     switch (donner) {
       case 'unknown':
-        this.person.client.maritalStatus = MaritalStatus.UNKNOWN;
+        this.client.maritalStatus = MaritalStatus.UNKNOWN;
         break;
       case 'Ledig':
-        this.person.client.maritalStatus = MaritalStatus.SINGLE;
+        this.client.maritalStatus = MaritalStatus.SINGLE;
         break;
       case 'Verheiratet':
-        this.person.client.maritalStatus = MaritalStatus.MARRIED;
+        this.client.maritalStatus = MaritalStatus.MARRIED;
         break;
       case 'Geschieden':
-        this.person.client.maritalStatus = MaritalStatus.DIVORCED;
+        this.client.maritalStatus = MaritalStatus.DIVORCED;
         break;
       case 'Verwitwet':
-        this.person.client.maritalStatus = MaritalStatus.WIDOWED;
+        this.client.maritalStatus = MaritalStatus.WIDOWED;
         break;
       case 'Eingetragene Partnerschaft':
-        this.person.client.maritalStatus = MaritalStatus.REGISTERED_PARTNERSHIP;
+        this.client.maritalStatus = MaritalStatus.REGISTERED_PARTNERSHIP;
         break;
       case 'Aufgelöste eingetragene Partnerschaft':
-        this.person.client.maritalStatus = MaritalStatus.DISSOLVED_REGISTERED_PARTNERSHIP;
+        this.client.maritalStatus = MaritalStatus.DISSOLVED_REGISTERED_PARTNERSHIP;
         break;
       case 'Hinterbliebener eingetragene Partnerschaft':
-        this.person.client.maritalStatus = MaritalStatus.SURVIVING_REGISTERED_PARTNERSHIP;
+        this.client.maritalStatus = MaritalStatus.SURVIVING_REGISTERED_PARTNERSHIP;
         break;
       default:
-        this.person.client.maritalStatus = MaritalStatus.UNKNOWN;
+        this.client.maritalStatus = MaritalStatus.UNKNOWN;
     }
     console.log(this.m);
   }
@@ -110,8 +110,8 @@ export class EditClientComponent implements OnInit, OnDestroy {
     console.log('the real date', theRealDate);
     const dateOfBirth = this.ngbFormatterService.format(theRealDate);
     console.log('date of birth', dateOfBirth);
-    this.person.dateOfBirth = dateOfBirth;
-    console.log('this.person', this.person);
+    this.client.person.dateOfBirth = dateOfBirth;
+    console.log('this.client', this.client);
     // this.clientForm = {
     //   firstName: this.firstName,
     //   lastName: this.lastName,
@@ -127,8 +127,7 @@ export class EditClientComponent implements OnInit, OnDestroy {
     //   city: this.city,
     //   country: this.country
     // };
-    console.log('this.person', this.person);
-    this.clientService.updateClient(this.person.client.id, this.person).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+    this.clientService.updateClient(this.client.id, this.client).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       this.loading = true;
       console.log(result);
       this.commonService.setDemoSubject(true);

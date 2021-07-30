@@ -13,6 +13,7 @@ import { ShowCounselingsPerClientComponent } from './show-counselings-per-client
 import { EditClientComponent } from './edit-client/edit-client.component';
 import { ClientFormComponent } from './client-form/client-form.component';
 import { CreateEmpoyerComponent } from './create-empoyer/create-empoyer.component';
+import { ShowEmployersListComponent } from './show-employers-list/show-employers-list.component';
 
 const appRoutes: Routes = [
   {path: 'create', component: CreateClientComponent},
@@ -33,6 +34,7 @@ const appRoutes: Routes = [
     EditClientComponent,
     ClientFormComponent,
     CreateEmpoyerComponent,
+    ShowEmployersListComponent,
   ],
   imports: [
     CommonModule,

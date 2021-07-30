@@ -5,25 +5,25 @@
   <div class="row">
     <div class="col-md-6">
       <div class="form-group">
-        <input type="text" class="form-control" name="firstName" [(ngModel)]="person.firstName"
+        <input type="text" class="form-control" name="firstName" [(ngModel)]="client.person.firstName"
                placeholder="firstName"/>
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
-        <input type="text" class="form-control" name="lastName" [(ngModel)]="person.lastName" placeholder="lastName"/>
+        <input type="text" class="form-control" name="lastName" [(ngModel)]="client.person.lastName" placeholder="lastName"/>
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col">
       <div class="form-group">
-        <input type="text" class="form-control" name="street" [(ngModel)]="person.address.street" placeholder="street"/>
+        <input type="text" class="form-control" name="street" [(ngModel)]="client.person.address.street" placeholder="street"/>
       </div>
     </div>
     <div class="col">
       <div class="form-group">
-        <input type="text" class="form-control" name="zipCode" [(ngModel)]="person.address.zipCode"
+        <input type="text" class="form-control" name="zipCode" [(ngModel)]="client.person.address.zipCode"
                placeholder="zip code"/>
       </div>
     </div>
@@ -39,7 +39,7 @@
     </div>
     <div class="col">
       <div class="form-group">
-        <input type="text" class="form-control" name="city" [(ngModel)]="person.address.city" placeholder="city"/>
+        <input type="text" class="form-control" name="city" [(ngModel)]="client.person.address.city" placeholder="city"/>
       </div>
     </div>
   </div>
@@ -47,12 +47,12 @@
   <div class="row">
     <div class="col">
       <div class="form-group">
-        <input type="text" class="form-control" name="keyword" [(ngModel)]="person.client.keyword" placeholder="keyword"/>
+        <input type="text" class="form-control" name="keyword" [(ngModel)]="client.keyword" placeholder="keyword"/>
       </div>
     </div>
     <div class="col">
       <div class="form-group">
-        <input type="text" class="form-control" name="education" [(ngModel)]="person.client.education"
+        <input type="text" class="form-control" name="education" [(ngModel)]="client.education"
                placeholder="education"/>
       </div>
     </div>
@@ -61,7 +61,7 @@
     <div class="col">
       <div class="form-group">
         <input type="text" class="form-control" name="howHasThePersonHeardFromUS"
-               [(ngModel)]="person.client.howHasThePersonHeardFromUs" placeholder="how has the person heard from us"/>
+               [(ngModel)]="client.howHasThePersonHeardFromUs" placeholder="how has the person heard from us"/>
       </div>
     </div>
     <div class="col">
@@ -82,14 +82,14 @@
   <div class="row">
     <div class="col">
       <div class="form-group">
-        <input type="checkbox" class="form-check" [(ngModel)]="person.client.interpreterNecessary"
+        <input type="checkbox" class="form-check" [(ngModel)]="client.interpreterNecessary"
                name="interpreterNecessary">
         <label>interpreterNecessary</label>
       </div>
     </div>
     <div class="col">
       <div class="form-group">
-        <input type="checkbox" class="form-check" [(ngModel)]="person.client.vulnerableWhenAssertingRights"
+        <input type="checkbox" class="form-check" [(ngModel)]="client.vulnerableWhenAssertingRights"
                name="vulnerableWhenAssertingRights">
         <label>vulnerableWhenAssertingRights</label>
       </div>

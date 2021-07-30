@@ -49,7 +49,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
     this.clientService.getAllClients(page, size).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       console.log('result', result);
       this.resultMap = result;
-      this.clients = this.resultMap.personMap.personList;
+      this.clients = this.resultMap.personMap.clientList;
       this.count = this.resultMap.countMap.count;
     });
   }
