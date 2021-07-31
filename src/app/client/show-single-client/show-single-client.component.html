@@ -40,6 +40,8 @@
         </div>
       </div>
 
+      <app-show-client-employers [clientId]="client.id"></app-show-client-employers>
+
       <div class="row mt-2">
         <div class="col">
           <button class="btn btn-sm btn-outline-primary" (click)="openNewCounseling(content)">Neue Beratung anlegen</button>
@@ -121,7 +123,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <app-show-employers-list></app-show-employers-list>
+      <app-show-employers-list [clientId]="client.id"></app-show-employers-list>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">

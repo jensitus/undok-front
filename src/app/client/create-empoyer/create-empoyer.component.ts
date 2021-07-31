@@ -1,10 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {EmployerForm} from '../model/employer-form';
 import {Subject} from 'rxjs';
-import {ClientService} from '../service/client.service';
 import {takeUntil} from 'rxjs/operators';
-import {connectableObservableDescriptor} from 'rxjs/internal/observable/ConnectableObservable';
 import {CommonService} from '../../common/services/common.service';
+import {EmployerService} from '../service/employer.service';
 
 @Component({
   selector: 'app-create-empoyer',
@@ -24,8 +23,8 @@ export class CreateEmpoyerComponent implements OnInit, OnDestroy {
 
 
   constructor(
-    private clientService: ClientService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private employerService: EmployerService
   ) { }
 
   ngOnInit(): void {
@@ -44,7 +43,7 @@ export class CreateEmpoyerComponent implements OnInit, OnDestroy {
       employerPosition: this.employerPosition,
     };
     console.log(this.employerForm);
-    this.clientService.createEmployer(this.employerForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+    this.employerService.createEmployer(this.employerForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       console.log(result);
       this.commonService.setCreateEmployerSubject(true);
     });

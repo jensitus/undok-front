@@ -1,7 +1,8 @@
 import {Person} from './person';
 
 export interface Employer {
+  id: string;
   person: Person;
-  employerCompany: string;
-  employerPosition: string;
+  company: string;
+  position: string;
 }

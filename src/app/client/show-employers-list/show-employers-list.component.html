@@ -1,1 +1,14 @@
-<p>show-employers-list works!</p>
+<div class="row mt-2" *ngFor="let e of employers">
+  <div class="col">
+    <input type="checkbox" (click)="setEmployer(e.id)">
+  </div>
+  <div class="col">
+    {{e.person.firstName}} {{e.person.lastName}}
+  </div>
+  <div class="col">
+    {{e.company}}
+  </div>
+  <div class="col">
+    {{e.position}}
+  </div>
+</div>

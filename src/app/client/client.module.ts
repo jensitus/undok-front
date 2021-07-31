@@ -14,6 +14,7 @@ import { EditClientComponent } from './edit-client/edit-client.component';
 import { ClientFormComponent } from './client-form/client-form.component';
 import { CreateEmpoyerComponent } from './create-empoyer/create-empoyer.component';
 import { ShowEmployersListComponent } from './show-employers-list/show-employers-list.component';
+import { ShowClientEmployersComponent } from './show-client-employers/show-client-employers.component';
 
 const appRoutes: Routes = [
   {path: 'create', component: CreateClientComponent},
@@ -35,6 +36,7 @@ const appRoutes: Routes = [
     ClientFormComponent,
     CreateEmpoyerComponent,
     ShowEmployersListComponent,
+    ShowClientEmployersComponent,
   ],
   imports: [
     CommonModule,

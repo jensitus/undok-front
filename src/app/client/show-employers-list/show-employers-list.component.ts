@@ -1,7 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ClientService} from '../service/client.service';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {Employer} from '../model/employer';
+import {EmployerService} from '../service/employer.service';
 
 @Component({
   selector: 'app-show-employers-list',
@@ -10,11 +11,14 @@ import {takeUntil} from 'rxjs/operators';
 })
 export class ShowEmployersListComponent implements OnInit, OnDestroy {
 
+  @Input() clientId: string;
   private unsubscribe$ = new Subject();
+  employers: Employer[];
 
   constructor(
-    private clientService: ClientService
-  ) { }
+    private employerService: EmployerService
+  ) {
+  }
 
   ngOnInit(): void {
     this.getEmployerList();
@@ -25,8 +29,32 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
   }
 
   getEmployerList(): any {
-    this.clientService.getAllEmployers().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      console.log(result);
+    this.employerService.getAllEmployers().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+      this.employers = result;
+      console.log(this.employers);
+    });
+  }
+
+  setEmployer(e_id) {
+    this.employerService.checkClientEmployer(e_id, this.clientId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      console.log(res);
+      if (res === true) {
+        this.deleteEmployer(e_id, this.clientId);
+      } else if (res === false) {
+        this.addEmployer(e_id, this.clientId);
+      }
+    });
+  }
+
+  deleteEmployer(e_id: string, clientId: string) {
+    this.employerService.deleteEmployerFromClient(e_id, this.clientId).pipe(takeUntil(this.unsubscribe$)).subscribe(r => {
+      console.log(r);
+    });
+  }
+
+  addEmployer(e_id: string, clientId: string) {
+    this.employerService.setEmployerToClient(e_id, this.clientId).pipe(takeUntil(this.unsubscribe$)).subscribe(r => {
+      console.log(r);
     });
   }
 

@@ -55,12 +55,6 @@ export class ClientService {
     return this.http.get<any>(this.apiUrl + '/service/undok/counselings/all');
   }
 
-  createEmployer(employerForm: EmployerForm): Observable<any> {
-    return this.http.post<any>(this.apiUrl + '/service/undok/employers/create', employerForm);
-  }
 
-  getAllEmployers(): Observable<any> {
-    return this.http.get<any>(this.apiUrl + '/service/undok/employers/all');
-  }
 
 }

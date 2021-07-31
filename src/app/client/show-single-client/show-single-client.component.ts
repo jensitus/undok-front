@@ -7,6 +7,7 @@ import {Client} from '../model/client';
 import {Person} from '../model/person';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
+import {Employer} from '../model/employer';
 
 @Component({
   selector: 'app-show-single-client',
