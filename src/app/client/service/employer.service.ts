@@ -39,4 +39,8 @@ export class EmployerService {
     return this.http.get<boolean>(this.apiUrl + '/service/undok/client/employers/' + employerId + '/client/' + clientId + '/present');
   }
 
+  getNumberOfEmployers(): Observable<number> {
+    return this.http.get<number>(this.apiUrl + '/service/undok/employers/count');
+  }
+
 }
