@@ -45,7 +45,7 @@ export class EditClientComponent implements OnInit, OnDestroy {
   country: string;
   countries = Object.keys(Country);
 
-  private loading = false;
+  loading = false;
 
   constructor(
     private clientService: ClientService,
