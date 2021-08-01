@@ -21,7 +21,7 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   dateObject: NgbDateStruct;
 
   private unsubscribe$ = new Subject();
-  private loading = false;
+  loading = false;
   counselingForm: CounselingForm;
 
   counselingStatus: string;
