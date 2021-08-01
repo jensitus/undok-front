@@ -29,6 +29,7 @@
     "angular-file-uploader": "^7.0.3",
     "chart.js": "^2.9.4",
     "core-js": "^2.6.12",
+    "express": "^4.17.1",
     "ng2-charts": "^2.3.0",
     "ng2-file-upload": "^1.4.0",
     "ngx-order-pipe": "^2.0.4",

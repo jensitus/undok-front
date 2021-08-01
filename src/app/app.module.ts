@@ -36,7 +36,7 @@ import {FilelistComponent} from './common/upload/filelist/filelist.component';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 const app_routes: Routes = [
-  {path: 'home', component: HomeComponent},
+  {path: 'home', redirectTo: 'login', pathMatch: 'full'},
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   // { path: '', loadChildren: () => import('./admin-template/layout/layout.module').then(m => m.LayoutModule), canActivate: [AuthGuard] },
   {path: 'login', component: LoginComponent},
