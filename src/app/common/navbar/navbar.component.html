@@ -1,7 +1,7 @@
-<div class="nav navbar-dark bg-secondary">
+<div class="nav navbar-light bg-dark">
   <div class="container">
     <span class="brand" *ngIf="!titlePrefix">
-      <a [routerLink]="['/']"> undok.at </a>
+      <a [routerLink]="['/']" class="text-danger"> undok.at </a>
     </span>
     <span class="brand" *ngIf="titlePrefix">
       <a [routerLink]="['/']"> {{titlePrefix}} @ undok </a>
@@ -9,12 +9,12 @@
     <span *ngIf="currentUser != null" class="nav-user-man">
       <a [routerLink]="['/users', currentUser.username]" [innerHTML]="currentUser.username" class="navbar-link"></a>
        |
-      <a [routerLink]="['/login']"> logout</a>
+      <a [routerLink]="['/login']" class="text-danger"> logout</a>
     </span>
     <span *ngIf="currentUser == null" class="nav-user-man">
-      <a [routerLink]="['/login']" class="navbar-link">Login </a>
+      <a [routerLink]="['/login']" class="navbar-link text-danger">Login </a>
       |
-      <a [routerLink]="['/register']"> Register</a>
+      <a [routerLink]="['/register']" class="text-danger"> Register</a>
     </span>
   </div>
 </div>
