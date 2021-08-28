@@ -5,10 +5,6 @@
   <div class="form-group">
     <input type="text" class="form-control" placeholder="Email" name="email" [(ngModel)]="email" required/>
   </div>
-  <div class="form-group">
-    <input type="checkbox" class="form-check" [(ngModel)]="admin" name="isAdmin">
-    <label>admin: {{admin}}</label>
-  </div>
   <div>
     <button [disabled]="loading" class="btn btn-sm btn-outline-success">Create User</button>
     <img *ngIf="loading"

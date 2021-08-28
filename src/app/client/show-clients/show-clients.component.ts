@@ -4,6 +4,7 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {Person} from '../model/person';
 import {faUsers} from '@fortawesome/free-solid-svg-icons';
+import {Client} from '../model/client';
 
 @Component({
   selector: 'app-show-clients',
@@ -12,7 +13,7 @@ import {faUsers} from '@fortawesome/free-solid-svg-icons';
 })
 export class ShowClientsComponent implements OnInit, OnDestroy {
 
-  clients: Person[];
+  clients: Client[];
   private unsubscribe$ = new Subject();
   count: number;
   page = 1;
@@ -49,7 +50,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
     this.clientService.getAllClients(page, size).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       console.log('result', result);
       this.resultMap = result;
-      this.clients = this.resultMap.personMap.clientList;
+      this.clients = this.resultMap.clientMap.clientList;
       this.count = this.resultMap.countMap.count;
     });
   }

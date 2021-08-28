@@ -1,21 +1,50 @@
-<h4><fa-icon [icon]="faUsers" class="text-success mr-5"></fa-icon> Klient:innen</h4>
+<h4>
+  <fa-icon [icon]="faUsers" class="text-success mr-5"></fa-icon>
+  Klient:innen
+</h4>
 
 <div class="mt-5">
-  <ngb-pagination [collectionSize]="count" [(page)]="page" [pageSize]="pageSize" (pageChange)="getThePageNumber()"></ngb-pagination>
+  <ngb-pagination [collectionSize]="count" [(page)]="page" [pageSize]="pageSize"
+                  (pageChange)="getThePageNumber()"></ngb-pagination>
 </div>
 <div>
   <pre>Current page: {{page}}</pre>
 </div>
-<div class="row">
-  <div class="col">
-    <ng-container *ngIf="clients">
-      <div *ngFor="let client of clients">
-        <div>
-          <div>
-            <b>{{client.person.firstName}} {{client.person.lastName}}</b> &nbsp; <a [routerLink]="['/clients', client.id]"><small>link</small></a>
-          </div>
-        </div>
+<ng-container *ngIf="clients">
+  <table class="table table-striped mt-5">
+    <thead>
+    <tr>
+      <th>Firstname</th>
+      <th>Lastname</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let client of clients">
+      <td>
+        {{client.person.firstName}}
+      </td>
+      <td>
+        {{client.person.lastName}}
+      </td>
+      <td>
+        <a [routerLink]="['/clients', client.id]"><small>link</small></a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div>
+    <div class="row mt-1">
+      <div class="col-md-2">
+         &nbsp;
       </div>
-    </ng-container>
+      <div class="col-md-2">
+
+      </div>
+      <div class="col-md-1">
+
+      </div>
+    </div>
   </div>
-</div>
+</ng-container>
+
