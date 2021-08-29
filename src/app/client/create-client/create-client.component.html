@@ -1,42 +1,15 @@
 <div class="row">
   <div class="col-4">
     <form #createClientForm="ngForm" (ngSubmit)="submit()" class="mt-1">
+
+      <!-- Person -->
       <div class="form-group">
+        <label>firstName</label>
         <input type="text" class="form-control" name="firstName" [(ngModel)]="firstName" placeholder="firstName" />
       </div>
       <div class="form-group">
+        <label>lastName</label>
         <input type="text" class="form-control" name="lastName" [(ngModel)]="lastName" placeholder="lastName" />
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" name="street" [(ngModel)]="street" placeholder="street" />
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" name="zipCode" [(ngModel)]="zipCode" placeholder="zip code" />
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" name="city" [(ngModel)]="city" placeholder="city" />
-      </div>
-      <div class="form-group">
-        <select class="form-control">
-          <option *ngFor="let c of countries" [value]="c" (click)="onCountryChange(c)">{{c}}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" name="keyword" [(ngModel)]="keyword" placeholder="keyword" />
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" name="education" [(ngModel)]="education" placeholder="education" />
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" name="howHasThePersonHeardFromUS" [(ngModel)]="howHasThePersonHeardFromUs" placeholder="how has the person heard from us" />
-      </div>
-      <div class="form-group">
-        <input type="checkbox" class="form-check" [(ngModel)]="vulnerableWhenAssertingRights" name="vulnerableWhenAssertingRights">
-        <label>vulnerableWhenAssertingRights</label>
-      </div>
-      <div class="form-group">
-        <input type="checkbox" class="form-check" [(ngModel)]="interpreterNecessary" name="interpreterNecessary">
-        <label>interpreterNecessary</label>
       </div>
       <div class="form-group">
         <div class="input-group">
@@ -48,14 +21,113 @@
         </div>
       </div>
       <div class="form-group">
+        <label>contactData</label>
+        <input type="text" class="form-control" name="contactData" [(ngModel)]="contactData" placeholder="contactData" />
+      </div>
+
+      <!-- Address -->
+      <div class="form-group">
+        <label>Street</label>
+        <input type="text" class="form-control" name="street" [(ngModel)]="street" placeholder="street" />
+      </div>
+      <div class="form-group">
+        <label>Zip Code</label>
+        <input type="text" class="form-control" name="zipCode" [(ngModel)]="zipCode" placeholder="zip code" />
+      </div>
+      <div class="form-group">
+        <label>City</label>
+        <input type="text" class="form-control" name="city" [(ngModel)]="city" placeholder="city" />
+      </div>
+      <div class="form-group">
+        <label>Country</label>
+        <select class="form-control">
+          <option *ngFor="let c of countries" [value]="c" (click)="onCountryChange(c)">{{c}}</option>
+        </select>
+      </div>
+
+      <!-- client: -->
+      <div class="form-group">
+        <label>Keyword</label>
+        <input type="text" class="form-control" name="keyword" [(ngModel)]="keyword" placeholder="keyword" />
+      </div>
+      <div class="form-group">
+        <label>Education</label>
+        <input type="text" class="form-control" name="education" [(ngModel)]="education" placeholder="education" />
+      </div>
+      <div class="form-group">
+        <label>How has the Person heard from us</label>
+        <input type="text" class="form-control" name="howHasThePersonHeardFromUS" [(ngModel)]="howHasThePersonHeardFromUs" placeholder="how has the person heard from us" />
+      </div>
+      <div class="form-group">
+        <label>Vulnerable</label>
+        <input type="checkbox" class="form-check" [(ngModel)]="vulnerableWhenAssertingRights" name="vulnerableWhenAssertingRights">
+        <label>vulnerableWhenAssertingRights</label>
+      </div>
+      <div class="form-group">
+        <label>Interpreter Necessary</label>
+        <input type="checkbox" class="form-check" [(ngModel)]="interpreterNecessary" name="interpreterNecessary">
+        <label>interpreterNecessary</label>
+      </div>
+      <div class="form-group">
+        <label>Marital Status</label>
         <select class="form-control">
           <option (click)="onMaritalChange('unknown')">Marital Status</option>
           <option *ngFor="let marital of maStatus" [value]="marital" (click)="onMaritalChange(marital)">{{marital}}</option>
         </select>
       </div>
+
+      <div class="form-group">
+        <label>nationality</label>
+        <input type="text" class="form-control" name="nationality" [(ngModel)]="nationality" placeholder="nationality" />
+      </div>
+      <div class="form-group">
+        <label>language</label>
+        <input type="text" class="form-control" name="language" [(ngModel)]="language" placeholder="language" />
+      </div>
+      <div class="form-group">
+        <label>Current Residentstatus</label>
+        <select class="form-control">
+          <option (click)="onMaritalChange('unknown')">Resident Status</option>
+          <option *ngFor="let status of residentStatusLOV" [value]="status" (click)="onResidentStatusChange(status)">{{status}}</option>
+        </select>
+      </div>
+      <!--
+      <div class="form-group">
+        <label>formerResidentStatus</label>
+        <input type="text" class="form-control" name="formerResidentStatus" [(ngModel)]="formerResidentStatus" placeholder="formerResidentStatus" />
+      </div>
+      -->
+      <div class="form-group">
+        <label>labourMarketAccess</label>
+        <input type="text" class="form-control" name="labourMarketAccess" [(ngModel)]="labourMarketAccess" placeholder="labourMarketAccess" />
+      </div>
+      <div class="form-group">
+        <label>position</label>
+        <input type="text" class="form-control" name="position" [(ngModel)]="position" placeholder="position" />
+      </div>
+      <div class="form-group">
+        <label>sector</label>
+        <input type="text" class="form-control" name="sector" [(ngModel)]="sector" placeholder="sector" />
+      </div>
+      <div class="form-group">
+        <label>union</label>
+        <input type="text" class="form-control" name="union" [(ngModel)]="union" placeholder="union" />
+      </div>
+      <div class="form-group">
+        <input type="checkbox" class="form-check" [(ngModel)]="membership" name="membership">
+        <label>membership</label>
+      </div>
+
+      <div class="form-group">
+        <label>organization</label>
+        <input type="text" class="form-control" name="organization" [(ngModel)]="organization" placeholder="organization" />
+      </div>
+
+
       <div class="form-group">
         <button class="btn btn-sm btn-outline-dark">klick halt</button>
       </div>
+
     </form>
   </div>
 </div>

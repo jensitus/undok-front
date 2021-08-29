@@ -10,6 +10,7 @@ import {CommonService} from '../../common/services/common.service';
 import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
 import {Country} from '../model/country.enum';
+import {ResidentStatus} from '../model/resident-status.enum';
 
 @Component({
   selector: 'app-create-client',
@@ -20,26 +21,47 @@ export class CreateClientComponent implements OnInit, OnDestroy {
 
   clientForm: ClientForm;
   private unsubscribe$ = new Subject();
+  readonly DELIMITER = '-';
+  enumKeys = [];
+
+  // Person:
   firstName: string;
   lastName: string;
   dateOfBirth: string;
+  contactData: string;
+
+  // client:
   maStatus = Object.values(MaritalStatus);
   maritalStatus: MaritalStatus;
-  m: MaritalStatus;
+  m: string;
   marital: string;
+
   faBars = faBars;
   howHasThePersonHeardFromUs: string;
   interpreterNecessary: boolean;
   vulnerableWhenAssertingRights: boolean;
   keyword: string;
   education: string;
-  readonly DELIMITER = '-';
-  enumKeys = [];
+
+
+  // Address:
   street: string;
   zipCode: string;
   city: string;
   country: string;
   countries = Object.keys(Country);
+
+  nationality: string;
+  language: string;
+  residentStatusLOV = Object.values(ResidentStatus);
+  currentResidentStatus: string;
+  formerResidentStatus: string;
+  labourMarketAccess: string;
+  position: string;
+  sector: string;
+  union: string;
+  membership: boolean;
+  organization: string;
 
 
   constructor(
@@ -77,7 +99,17 @@ export class CreateClientComponent implements OnInit, OnDestroy {
       street: this.street,
       zipCode: this.zipCode,
       city: this.city,
-      country: this.country
+      country: this.country,
+      nationality: this.nationality,
+      language: this.language,
+      currentResidentStatus: this.currentResidentStatus,
+      // formerResidentStatus: this.formerResidentStatus,
+      labourMarketAccess: this.labourMarketAccess,
+      position: this.position,
+      sector: this.sector,
+      union: this.union,
+      membership: this.membership,
+      organization: this.organization
     };
     console.log(this.clientForm);
     this.clientService.createClient(this.clientForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
@@ -122,6 +154,25 @@ export class CreateClientComponent implements OnInit, OnDestroy {
         this.m = MaritalStatus.UNKNOWN;
     }
     console.log(this.m);
+  }
+
+  onResidentStatusChange(status): void {
+    let resStatus: string;
+    switch (status) {
+      case 'asyl':
+        resStatus = ResidentStatus.ASYL;
+        break;
+      case 'eu':
+        resStatus = ResidentStatus.EU;
+        break;
+      case 'illegal':
+        resStatus = ResidentStatus.ILLEGAL;
+        break;
+      default:
+        resStatus = ResidentStatus.UNKNOWN;
+    }
+    this.currentResidentStatus = resStatus;
+    console.log(this.currentResidentStatus);
   }
 
   onCountryChange(country) {

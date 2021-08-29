@@ -2,15 +2,30 @@ import {MaritalStatus} from './marital-status.enum';
 import {Country} from './country.enum';
 
 export interface ClientForm {
+  // Person:
   firstName: string;
   lastName: string;
+  dateOfBirth?: string;
+  contactData?: string;
+
+  // client:
   keyword: string;
   education: string;
-  dateOfBirth?: string;
-  maritalStatus?: MaritalStatus;
+  maritalStatus?: string;
   interpreterNecessary: boolean;
   howHasThePersonHeardFromUs: string;
   vulnerableWhenAssertingRights: boolean;
+  nationality: string;
+  language: string;
+  currentResidentStatus: string;
+  formerResidentStatus?: string;
+  labourMarketAccess: string;
+  position: string;
+  sector: string;
+  union: string;
+  membership: boolean;
+  organization: string;
+
   // Adress:
   street: string;
   zipCode: string;
