@@ -2,15 +2,19 @@
   <div class="col-4">
     <form #createEmployerForm="ngForm" (ngSubmit)="submit()" class="mt-1">
       <div class="form-group">
+        <label>Company</label>
+        <input type="text" class="form-control" name="employerCompany" [(ngModel)]="employerCompany" placeholder="Company" />
+      </div>
+      <div class="form-group">
+        <label>First Name</label>
         <input type="text" class="form-control" name="employerFirstName" [(ngModel)]="employerFirstName" placeholder="employerFirstName" />
       </div>
       <div class="form-group">
+        <label>Last Name</label>
         <input type="text" class="form-control" name="employerLastName" [(ngModel)]="employerLastName" placeholder="employerLastName" />
       </div>
       <div class="form-group">
-        <input type="text" class="form-control" name="employerCompany" [(ngModel)]="employerCompany" placeholder="employerCompany" />
-      </div>
-      <div class="form-group">
+        <label>Position</label>
         <input type="text" class="form-control" name="employerPosition" [(ngModel)]="employerPosition" placeholder="employerPosition" />
       </div>
       <div class="form-group">

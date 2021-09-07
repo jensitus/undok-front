@@ -11,14 +11,16 @@
     </div>
     <div class="col-md-6">
       <div class="form-group">
-        <input type="text" class="form-control" name="lastName" [(ngModel)]="client.person.lastName" placeholder="lastName"/>
+        <input type="text" class="form-control" name="lastName" [(ngModel)]="client.person.lastName"
+               placeholder="lastName"/>
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col">
       <div class="form-group">
-        <input type="text" class="form-control" name="street" [(ngModel)]="client.person.address.street" placeholder="street"/>
+        <input type="text" class="form-control" name="street" [(ngModel)]="client.person.address.street"
+               placeholder="street"/>
       </div>
     </div>
     <div class="col">
@@ -39,7 +41,8 @@
     </div>
     <div class="col">
       <div class="form-group">
-        <input type="text" class="form-control" name="city" [(ngModel)]="client.person.address.city" placeholder="city"/>
+        <input type="text" class="form-control" name="city" [(ngModel)]="client.person.address.city"
+               placeholder="city"/>
       </div>
     </div>
   </div>
@@ -94,7 +97,6 @@
         <label>vulnerableWhenAssertingRights</label>
       </div>
     </div>
-
   </div>
 
   <div class="row">
@@ -102,10 +104,93 @@
       <div class="form-group">
         <select class="form-control">
           <option (click)="onMaritalChange('unknown')">Marital Status</option>
-          <option *ngFor="let marital of maStatus" [value]="marital" (click)="onMaritalChange(marital)">{{marital}}</option>
+          <option *ngFor="let marital of maStatus" [value]="marital"
+                  (click)="onMaritalChange(marital)">{{marital}}</option>
         </select>
       </div>
     </div>
+
+    <div class="col">
+      <div class="form-group">
+        <label>nationality</label>
+        <input type="text" class="form-control" name="nationality" [(ngModel)]="client.nationality"
+               placeholder="nationality"/>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label>language</label>
+        <input type="text" class="form-control" name="language" [(ngModel)]="client.language" placeholder="language"/>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label>Current Residentstatus</label>
+        <select class="form-control">
+          <option (click)="onMaritalChange('unknown')">Resident Status</option>
+          <option *ngFor="let status of residentStatusLOV" [value]="status"
+                  (click)="onResidentStatusChange(status)">{{status}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!--
+  <div class="form-group">
+    <label>formerResidentStatus</label>
+    <input type="text" class="form-control" name="formerResidentStatus" [(ngModel)]="formerResidentStatus" placeholder="formerResidentStatus" />
+  </div>
+  -->
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label>labourMarketAccess</label>
+        <input type="text" class="form-control" name="labourMarketAccess" [(ngModel)]="client.labourMarketAccess"
+               placeholder="labourMarketAccess"/>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label>position</label>
+        <input type="text" class="form-control" name="position" [(ngModel)]="client.position" placeholder="position"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label>sector</label>
+        <input type="text" class="form-control" name="sector" [(ngModel)]="client.sector" placeholder="sector"/>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label>union</label>
+        <input type="text" class="form-control" name="union" [(ngModel)]="client.union" placeholder="union"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <input type="checkbox" class="form-check" [(ngModel)]="client.membership" name="membership">
+        <label>membership</label>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label>organization</label>
+        <input type="text" class="form-control" name="organization" [(ngModel)]="client.organization"
+               placeholder="organization"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col">
       <div class="form-group">
         <button class="btn btn-sm btn-outline-dark">klick halt</button>

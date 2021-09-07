@@ -12,4 +12,16 @@ export interface Client {
   vulnerableWhenAssertingRights: boolean;
   counselings: Counseling[];
   person: Person;
+
+  nationality: string;
+  language: string;
+  currentResidentStatus: string;
+  formerResidentStatus?: string;
+  labourMarketAccess: string;
+  position: string;
+  sector: string;
+  union: string;
+  membership: boolean;
+  organization: string;
+
 }

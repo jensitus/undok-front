@@ -1,8 +1,8 @@
-<div class="row">
-  <div class="col-md-5">
-    <div *ngIf="client">
-      <div class="card">
-        <div class="card-body">
+<div *ngIf="client">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
           <div class="mb-2">
             <b class="text-success">Klient:in</b>
           </div>
@@ -29,21 +29,63 @@
           <div>
             <label class="text-secondary">gefährdet bei Geltendmachung:</label>
             <span *ngIf="client.vulnerableWhenAssertingRights">
-        yes
-      </span>
+              yes
+            </span>
             <span *ngIf="!client.vulnerableWhenAssertingRights">
-        nope
-      </span>
+              nope
+            </span>
           </div>
           <div>
             <label class="text-secondary">Dolmetch erforderlich:</label>
             {{client.interpreterNecessary}}
           </div>
         </div>
+        <div class="col-md-6">
+          <div>
+            <label class="text-secondary">Nationalität:</label>
+            {{client.nationality}}
+          </div>
+          <div>
+            <label class="text-secondary">Aufenthaltstatus:</label>
+            {{client.currentResidentStatus}}
+          </div>
+          <div>
+            <label class="text-secondary">Arbeitsmarktzugang:</label>
+            {{client.labourMarketAccess}}
+          </div>
+          <div>
+            <label class="text-secondary">Sprache:</label>
+            {{client.language}}
+          </div>
+          <div>
+            <label class="text-secondary">Branche:</label>
+            {{client.sector}}
+          </div>
+          <div>
+            <label class="text-secondary">Gewerkschaft:</label>
+            {{client.union}}
+          </div>
+          <div>
+            <label class="text-secondary">Mitgliedschaft</label>
+            {{client.membership}}
+          </div>
+          <div>
+            <label class="text-secondary">Position:</label>
+            {{client.position}}
+          </div>
+          <div>
+            <label class="text-secondary">Organisation:</label>
+            {{client.organization}}
+          </div>
+        </div>
       </div>
-
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div *ngIf="client">
       <app-show-client-employers [clientId]="client.id"></app-show-client-employers>
-
       <div class="row mt-2">
         <div class="col">
           <button class="btn btn-sm btn-outline-primary" (click)="openNewCounseling(content)">Neue Beratung anlegen

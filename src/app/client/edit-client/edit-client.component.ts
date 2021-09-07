@@ -12,6 +12,7 @@ import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {Client} from '../model/client';
 import {Person} from '../model/person';
 import {takeUntil} from 'rxjs/operators';
+import {ResidentStatus} from '../model/resident-status.enum';
 
 @Component({
   selector: 'app-edit-client',
@@ -44,6 +45,8 @@ export class EditClientComponent implements OnInit, OnDestroy {
   city: string;
   country: string;
   countries = Object.keys(Country);
+  residentStatusLOV = Object.values(ResidentStatus);
+  currentResidentStatus: string;
 
   loading = false;
 
@@ -134,4 +137,24 @@ export class EditClientComponent implements OnInit, OnDestroy {
       this.loading = false;
     });
   }
+
+  onResidentStatusChange(status): void {
+    let resStatus: string;
+    switch (status) {
+      case 'asyl':
+        resStatus = ResidentStatus.ASYL;
+        break;
+      case 'eu':
+        resStatus = ResidentStatus.EU;
+        break;
+      case 'illegal':
+        resStatus = ResidentStatus.ILLEGAL;
+        break;
+      default:
+        resStatus = ResidentStatus.UNKNOWN;
+    }
+    this.client.currentResidentStatus = resStatus;
+    console.log('residenStatus', this.client.currentResidentStatus);
+  }
+
 }
