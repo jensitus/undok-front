@@ -25,7 +25,7 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
 
   constructor(
     private clientService: ClientService,
-    private counselingService: CounselingService
+    public counselingService: CounselingService
   ) {
     this.total$ = counselingService.total$;
     this.counselings$ = counselingService.counselings$;
