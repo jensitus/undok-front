@@ -1,8 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ClientService} from '../service/client.service';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {Person} from '../model/person';
 import {faUsers} from '@fortawesome/free-solid-svg-icons';
 import {Client} from '../model/client';
 
@@ -26,10 +25,11 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
 
   constructor(
     private clientService: ClientService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
-    this.getClientList(this.offset, this.pageSize);
+    this.getClientList(this.offset, this.pageSize)
   }
 
   ngOnDestroy(): void {
@@ -54,5 +54,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
       this.count = this.resultMap.countMap.count;
     });
   }
+
+
 
 }

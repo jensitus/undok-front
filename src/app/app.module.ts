@@ -34,6 +34,7 @@ import {UploadComponent} from './common/upload/upload.component';
 import {FileUploadModule} from 'ng2-file-upload';
 import {FilelistComponent} from './common/upload/filelist/filelist.component';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {DecimalPipe} from '@angular/common';
 
 const app_routes: Routes = [
   {path: 'home', redirectTo: 'login', pathMatch: 'full'},
@@ -84,7 +85,8 @@ const app_routes: Routes = [
     UserService,
     AuthenticationService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    DecimalPipe
   ],
   exports: [
   ],
