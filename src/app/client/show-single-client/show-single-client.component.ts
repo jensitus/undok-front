@@ -29,6 +29,16 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     private commonService: CommonService
   ) { }
 
+  private static getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
   ngOnInit(): void {
     this.activatedRoute.params.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
       this.id = params['id'];
@@ -36,6 +46,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
       this.getCreateCounselingSubject();
       this.getDemoSubject();
       this.getCreateEmployerSubject();
+      this.getReloadClientSubject();
     });
   }
 
@@ -47,7 +58,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
     });
   }
 
@@ -55,7 +66,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
     });
     // const modalRef = this.modalService.open(CreateCounselingComponent);
     // modalRef.componentInstance.name = 'Counseling';
@@ -65,7 +76,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.modalService.open(edit_client, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
     });
   }
 
@@ -74,16 +85,6 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
       this.client = res;
       console.log(this.client);
     });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
   }
 
   getCreateCounselingSubject()   {
@@ -106,6 +107,15 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
 
   getCreateEmployerSubject() {
     this.commonService.createEmployerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(reload => {
+      if (reload === true) {
+        this.getClient();
+        this.modalService.dismissAll();
+      }
+    });
+  }
+
+  getReloadClientSubject() {
+    this.commonService.reloadClientSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(reload => {
       if (reload === true) {
         this.getClient();
         this.modalService.dismissAll();

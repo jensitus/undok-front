@@ -23,6 +23,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject();
   readonly DELIMITER = '-';
   enumKeys = [];
+  loading = false;
 
   // Person:
   firstName: string;
@@ -85,6 +86,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
+    this.loading = true;
     const theRealDate = this.dateAdapter.fromModel(this.dateOfBirth);
     this.clientForm = {
       firstName: this.firstName,
@@ -115,6 +117,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     this.clientService.createClient(this.clientForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       console.log('client result', result);
       this.router.navigate(['/clients/client-list']);
+      this.loading = false;
     });
   }
 

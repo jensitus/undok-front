@@ -51,10 +51,4 @@ export class ClientService {
     return this.http.get<any>(this.apiUrl + '/timeline/items');
   }
 
-  getCounselings(): Observable<any> {
-    return this.http.get<any>(this.apiUrl + '/service/undok/counselings/all');
-  }
-
-
-
 }

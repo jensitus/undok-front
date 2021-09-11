@@ -7,6 +7,7 @@ import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {NgbDateAdapter, NgbDateStruct, NgbTimepicker} from '@ng-bootstrap/ng-bootstrap';
 import {NgbFormatterService} from '../../common/services/ngb-formatter.service';
 import {CommonService} from '../../common/services/common.service';
+import {DateTimeService} from '../service/date-time.service';
 
 @Component({
   selector: 'app-create-counseling',
@@ -39,7 +40,8 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     private clientService: ClientService,
     private ngbFormatterService: NgbFormatterService,
     private dateAdapter: NgbDateAdapter<string>,
-    private commonService: CommonService
+    private commonService: CommonService,
+    public dateTimeService: DateTimeService
   ) { }
 
   ngOnInit(): void {
@@ -48,7 +50,7 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.loading = true;
     const theRealDate = this.dateAdapter.fromModel(this.entryDate);
-    this.counselingDate = this.mergeDateAndTime();
+    this.counselingDate = this.dateTimeService.mergeDateAndTime();
     this.counselingForm = {
       counselingStatus: this.counselingStatus,
       entryDate: this.ngbFormatterService.format(theRealDate),
@@ -72,22 +74,22 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
   }
 
-  mergeDateAndTime(): string {
-    let day = '';
-    let month = '';
-    if (this.dateObject.day.toString().length === 1) {
-    day = '0' + this.dateObject.day;
-    } else {
-      day = this.dateObject.day.toString();
-    }
-    if (this.dateObject.month.toString().length === 1) {
-      month = '0' + this.dateObject.month;
-    } else {
-      month = this.dateObject.month.toString();
-    }
-    const finalDateTimeDonner = day + '-' + month + '-' + this.dateObject.year + ' ' + this.time.hour + ':' + this.time.minute;
-    console.log(finalDateTimeDonner);
-    return finalDateTimeDonner;
-  }
+  // mergeDateAndTime(): string {
+  //   let day = '';
+  //   let month = '';
+  //   if (this.dateObject.day.toString().length === 1) {
+  //   day = '0' + this.dateObject.day;
+  //   } else {
+  //     day = this.dateObject.day.toString();
+  //   }
+  //   if (this.dateObject.month.toString().length === 1) {
+  //     month = '0' + this.dateObject.month;
+  //   } else {
+  //     month = this.dateObject.month.toString();
+  //   }
+  //   const finalDateTimeDonner = day + '-' + month + '-' + this.dateObject.year + ' ' + this.time.hour + ':' + this.time.minute;
+  //   console.log(finalDateTimeDonner);
+  //   return finalDateTimeDonner;
+  // }
 
 }

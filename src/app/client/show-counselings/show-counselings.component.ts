@@ -4,8 +4,9 @@ import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {Counseling} from '../model/counseling';
 import {faTasks} from '@fortawesome/free-solid-svg-icons';
-import {CounselingService} from './counseling.service';
+import {CounselingTableService} from './counseling-table.service';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
+import {CounselingService} from '../service/counseling.service';
 
 @Component({
   selector: 'app-show-counselings',
@@ -25,17 +26,18 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
 
   constructor(
     private clientService: ClientService,
-    public counselingService: CounselingService
+    public counselingTableService: CounselingTableService,
+    private counselingService: CounselingService
   ) {
-    this.total$ = counselingService.total$;
-    this.counselings$ = counselingService.counselings$;
+    this.total$ = counselingTableService.total$;
+    this.counselings$ = counselingTableService.counselings$;
   }
 
   ngOnInit(): void {
-    this.clientService.getCounselings().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+    this.counselingService.getCounselings().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       console.log(result);
       this.counselings = result;
-      this.parseCounselingsToService();
+      this.parseCounselingsToTableService();
     });
   }
 
@@ -43,8 +45,8 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
   }
 
-  parseCounselingsToService(): void {
-    this.counselingService.getCounselings(this.counselings);
+  parseCounselingsToTableService(): void {
+    this.counselingTableService.getCounselings(this.counselings);
   }
 
   onSort({column, direction}: SortEvent) {
@@ -55,8 +57,8 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.counselingService.sortColumn = column;
-    this.counselingService.sortDirection = direction;
+    this.counselingTableService.sortColumn = column;
+    this.counselingTableService.sortDirection = direction;
   }
 
 }

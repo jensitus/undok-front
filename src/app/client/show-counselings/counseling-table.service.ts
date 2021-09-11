@@ -42,7 +42,7 @@ function matches(counseling: Counseling, term: string, pipe: PipeTransform) {
 @Injectable({
   providedIn: 'root'
 })
-export class CounselingService {
+export class CounselingTableService {
 
   counsels: Counseling[];
 

@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="col">
-        <ngb-timepicker [(ngModel)]="time" name="time" (change)="mergeDateAndTime()"></ngb-timepicker>
+        <ngb-timepicker [(ngModel)]="time" name="time" (change)="dateTimeService.mergeDateAndTime()"></ngb-timepicker>
       </div>
     </div>
   </div>

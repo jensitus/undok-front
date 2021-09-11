@@ -16,6 +16,7 @@ import {CreateEmpoyerComponent} from './create-empoyer/create-empoyer.component'
 import {ShowEmployersListComponent} from './show-employers-list/show-employers-list.component';
 import {ShowClientEmployersComponent} from './show-client-employers/show-client-employers.component';
 import {NgbdSortableHeader} from './table/sortable.directive';
+import { EditCounselingComponent } from './edit-counseling/edit-counseling.component';
 
 const appRoutes: Routes = [
   {path: 'create', component: CreateClientComponent},
@@ -38,7 +39,8 @@ const appRoutes: Routes = [
     CreateEmpoyerComponent,
     ShowEmployersListComponent,
     ShowClientEmployersComponent,
-    NgbdSortableHeader
+    NgbdSortableHeader,
+    EditCounselingComponent
   ],
   imports: [
     CommonModule,

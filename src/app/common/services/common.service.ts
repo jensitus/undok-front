@@ -29,6 +29,15 @@ export class CommonService {
   public dueDateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public createCounselingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public createEmployerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  public reloadClientSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+
+  setReloadClientSubject(value) {
+    if (value) {
+      this.reloadClientSubject.next(value);
+    } else {
+      this.reloadClientSubject.next(null);
+    }
+  }
 
   setDemoSubject(value) {
     if (value) {

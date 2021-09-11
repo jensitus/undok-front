@@ -1,0 +1,47 @@
+<form #createCounselingForm="ngForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label>Status</label>
+    <input type="text" name="counselingStatus" [(ngModel)]="counseling.counselingStatus" placeholder="counselingStatus"
+           class="form-control"/>
+  </div>
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-4">
+        <label>Termin</label>&nbsp;
+        <input type="text" name="counselingDate" [(ngModel)]="counseling.counselingDate" class="form-control"/>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <label>Anliegen</label>
+    <textarea type="text" name="concern" [(ngModel)]="counseling.concern" placeholder="concern"
+              class="form-control"></textarea>
+  </div>
+  <div class="form-group">
+    <label>Kategorie</label>
+    <input type="text" name="concernCategory" [(ngModel)]="counseling.concernCategory" placeholder="concernCategory"
+           class="form-control"/>
+  </div>
+  <div class="form-group">
+    <label>Aktivität</label>
+    <input type="text" name="activity" [(ngModel)]="counseling.activity" placeholder="activity" class="form-control"/>
+  </div>
+  <div class="form-group">
+    <label>Aktivitätskategorie</label>
+    <input type="text" name="activityCategory" [(ngModel)]="counseling.activityCategory" placeholder="activityCategory"
+           class="form-control"/>
+  </div>
+  <div class="form-group">
+    <label>Registriert von</label>
+    <input type="text" name="registeredBy" [(ngModel)]="counseling.registeredBy" placeholder="registeredBy"
+           class="form-control"/>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-outline-danger" [disabled]="loading">submit</button>
+  </div>
+</form>
+<div class="spinner-border text-primary" role="status" *ngIf="loading">
+
+</div>
