@@ -4,7 +4,7 @@ import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {Counseling} from '../model/counseling';
 import {faTasks} from '@fortawesome/free-solid-svg-icons';
-import {CounselingTableService} from './counseling-table.service';
+import {CounselingTableService} from '../table/counseling-table.service';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
 import {CounselingService} from '../service/counseling.service';
 

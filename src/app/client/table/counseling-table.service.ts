@@ -1,21 +1,14 @@
 import {Inject, Injectable, PipeTransform} from '@angular/core';
 import {Counseling} from '../model/counseling';
-import {SortColumn, SortDirection} from '../table/sortable.directive';
+import {SortColumn, SortDirection} from './sortable.directive';
 import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 import {DecimalPipe} from '@angular/common';
 import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
+import {State} from './state';
 
 interface SearchResult {
   counselings: Counseling[];
   total: number;
-}
-
-interface State {
-  page: number;
-  pageSize: number;
-  searchTerm: string;
-  sortColumn: SortColumn;
-  sortDirection: SortDirection;
 }
 
 const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
@@ -76,7 +69,9 @@ export class CounselingTableService {
     this._search$.next();
   }
 
-  get counselings$() { return this._counselings$.asObservable(); }
+  get counselings$() {
+    return this._counselings$.asObservable();
+  }
   get total$() { return this._total$.asObservable(); }
   get loading$() {
     return this._loading$.asObservable();
@@ -100,15 +95,16 @@ export class CounselingTableService {
     const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
 
     // 1. sort
-    let counselings = sort(this.counsels, sortColumn, sortDirection);
+    let couns = sort(this.counsels, sortColumn, sortDirection);
 
     // 2. filter
-    counselings = counselings.filter(counseling => matches(counseling, searchTerm, this.pipe));
-    const total = counselings.length;
+    console.log('_search', couns);
+    couns = couns.filter(counseling => matches(counseling, searchTerm, this.pipe));
+    const total = couns.length;
 
     // 3. paginate
-    counselings = counselings.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-    return of({counselings, total});
+    couns = couns.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
+    return of({counselings: couns, total});
   }
 
   public getCounselings(counsels: Counseling[]) {
