@@ -11,20 +11,21 @@ export class DateTimeService {
 
   constructor() { }
 
-  mergeDateAndTime(): string {
+  mergeDateAndTime(dateObject: NgbDateStruct): string {
     let day = '';
     let month = '';
-    if (this.dateObject.day.toString().length === 1) {
-      day = '0' + this.dateObject.day;
+    console.log(dateObject);
+    if (dateObject.day.toString().length === 1) {
+      day = '0' + dateObject.day;
     } else {
-      day = this.dateObject.day.toString();
+      day = dateObject.day.toString();
     }
-    if (this.dateObject.month.toString().length === 1) {
-      month = '0' + this.dateObject.month;
+    if (dateObject.month.toString().length === 1) {
+      month = '0' + dateObject.month;
     } else {
-      month = this.dateObject.month.toString();
+      month = dateObject.month.toString();
     }
-    const finalDateTimeDonner = day + '-' + month + '-' + this.dateObject.year + ' ' + this.time.hour + ':' + this.time.minute;
+    const finalDateTimeDonner = day + '-' + month + '-' + dateObject.year + ' ' + this.time.hour + ':' + this.time.minute;
     console.log(finalDateTimeDonner);
     return finalDateTimeDonner;
   }

@@ -50,7 +50,7 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.loading = true;
     const theRealDate = this.dateAdapter.fromModel(this.entryDate);
-    this.counselingDate = this.dateTimeService.mergeDateAndTime();
+    this.counselingDate = this.dateTimeService.mergeDateAndTime(this.dateObject);
     this.counselingForm = {
       counselingStatus: this.counselingStatus,
       entryDate: this.ngbFormatterService.format(theRealDate),
