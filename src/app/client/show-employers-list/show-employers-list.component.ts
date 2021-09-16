@@ -38,7 +38,7 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
   }
 
   getEmployerList(): any {
-    this.employerService.getAllEmployers().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+    this.employerService.getAllEmployers(this.clientId).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       this.employers = result;
       this.parseEmployersToTableService();
     });
@@ -68,6 +68,7 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
   }
 
   parseEmployersToTableService(): void {
+    console.log('parseEmployersToTable', this.employers);
     this.employerTableService.getEmployers(this.employers);
   }
 

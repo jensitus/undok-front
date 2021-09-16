@@ -19,8 +19,8 @@ export class EmployerService {
     return this.http.post<any>(this.apiUrl + '/service/undok/employers/create', employerForm);
   }
 
-  getAllEmployers(): Observable<any> {
-    return this.http.get<any>(this.apiUrl + '/service/undok/employers/all');
+  getAllEmployers(clientId: string): Observable<any> {
+    return this.http.get<any>(this.apiUrl + '/service/undok/employers/all/client/' + clientId);
   }
 
   getEmployersForClient(clientId: string): Observable<any> {
