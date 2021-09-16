@@ -6,6 +6,7 @@ import {EmployerService} from '../service/employer.service';
 import {EmployerTableService} from '../table/employer-table.service';
 import {Counseling} from '../model/counseling';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
+import {CommonService} from '../../common/services/common.service';
 
 @Component({
   selector: 'app-show-employers-list',
@@ -23,7 +24,8 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
 
   constructor(
     private employerService: EmployerService,
-    public employerTableService: EmployerTableService
+    public employerTableService: EmployerTableService,
+    private commonService: CommonService
   ) {
     this.total$ = employerTableService.total$;
     this.employers$ = employerTableService.employers$;
@@ -50,7 +52,7 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
       if (res === true) {
         this.deleteEmployer(e_id, this.clientId);
       } else if (res === false) {
-        this.addEmployer(e_id, this.clientId);
+        this.addEmployer(e_id);
       }
     });
   }
@@ -61,9 +63,10 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
     });
   }
 
-  addEmployer(e_id: string, clientId: string) {
+  addEmployer(e_id: string) {
     this.employerService.setEmployerToClient(e_id, this.clientId).pipe(takeUntil(this.unsubscribe$)).subscribe(r => {
       console.log(r);
+      this.commonService.setEmployerSubject(true);
     });
   }
 

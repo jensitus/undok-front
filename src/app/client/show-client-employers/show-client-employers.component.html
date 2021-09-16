@@ -20,6 +20,11 @@
           <span class="text-secondary">Position:</span> {{e.position}}
         </div>
       </div>
+      <div class="row mt-3">
+        <div class="col text-right">
+          <button class="btn btn-sm btn-outline-danger" (click)="deleteEmployerFromClient(e.id)">remove</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -30,6 +30,7 @@ export class CommonService {
   public createCounselingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public createEmployerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public reloadClientSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  public employerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   setReloadClientSubject(value) {
     if (value) {
@@ -126,6 +127,14 @@ export class CommonService {
       this.createEmployerSubject.next(value);
     } else {
       this.createEmployerSubject.next(null);
+    }
+  }
+
+  setEmployerSubject(value) {
+    if (value) {
+      this.employerSubject.next(value);
+    } else {
+      this.employerSubject.next(null);
     }
   }
 

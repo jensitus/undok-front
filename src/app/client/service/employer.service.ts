@@ -28,11 +28,15 @@ export class EmployerService {
   }
 
   setEmployerToClient(employerId: string, clientId: string): Observable<any> {
-    return this.http.post(this.apiUrl + '/service/undok/client/employers/' + employerId + '/client/' + clientId + '/create', null);
+    const clientEmpForm = {
+      employerId: employerId,
+      clientId: clientId
+    };
+    return this.http.post(this.apiUrl + '/service/undok/client/employers/' + employerId + '/client/' + clientId + '/create', clientEmpForm);
   }
 
   deleteEmployerFromClient(employerId: string, clientId: string): Observable<any> {
-    return this.http.delete(this.apiUrl + '/service/undok/client/employers/' + employerId + '/client/' + clientId + '/delete',);
+    return this.http.delete(this.apiUrl + '/service/undok/client/employers/' + employerId + '/client/' + clientId + '/delete');
   }
 
   checkClientEmployer(employerId: string, clientId: string): Observable<boolean> {

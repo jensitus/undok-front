@@ -11,6 +11,7 @@
       <th scope="col">Last Name</th>
       <th scope="col">Company</th>
       <th scope="col">Position</th>
+      <th scope="col">add</th>
     </tr>
     </thead>
     <tbody>
@@ -27,6 +28,9 @@
       </td>
       <td>
         <ngb-highlight [result]="employer.position" [term]="employerTableService.searchTerm"></ngb-highlight>
+      </td>
+      <td>
+        <button class="btn btn-sm btn-outline-info" (click)="addEmployer(employer.id)">add</button>
       </td>
     </tr>
     </tbody>

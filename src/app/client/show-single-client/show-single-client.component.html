@@ -11,6 +11,10 @@
             {{client.person.firstName}} {{client.person.lastName}}
           </div>
           <div>
+            <label class="text-secondary">Keyword:</label>
+            {{client.keyword}}
+          </div>
+          <div>
             <label class="text-secondary">Familienstand:</label>
             {{client.maritalStatus}}
           </div>
@@ -82,10 +86,9 @@
     </div>
   </div>
 </div>
-<div class="row">
+<div class="row mt-2">
   <div class="col">
     <div *ngIf="client">
-      <app-show-client-employers [clientId]="client.id"></app-show-client-employers>
       <div class="row mt-2">
         <div class="col">
           <button class="btn btn-sm btn-outline-primary" (click)="openNewCounseling(content)">Neue Beratung anlegen
@@ -102,6 +105,11 @@
       <div class="row mt-2">
         <div class="col">
           <button class="btn btn-sm btn-outline-danger" (click)="openEmployer(list_employer)">AGs anzeigen</button>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col">
+          <app-show-client-employers [clientId]="client.id"></app-show-client-employers>
         </div>
       </div>
     </div>
