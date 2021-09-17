@@ -19,12 +19,14 @@
       <th scope="col">Anliegen</th>
       <th scope="col">Kategorie</th>
       <th scope="col">Activität</th>
-      <th scope="col">Kat</th>
+      <th scope="col">Klient:in</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let counseling of counselings$ | async; index as i">
-      <th><small>{{ i + 1 }}</small></th>
+      <td>
+        <small>{{ i + 1 }}</small>
+      </td>
       <td>{{counseling.counselingDate | date}}</td>
       <td>
         <ngb-highlight [result]="counseling.counselingStatus" [term]="counselingTableService.searchTerm"></ngb-highlight>
@@ -38,7 +40,9 @@
       <td>
         <ngb-highlight [result]="counseling.activity" [term]="counselingTableService.searchTerm"></ngb-highlight>
       </td>
-      <td>{{counseling.activityCategory}}</td>
+      <td>
+        <ngb-highlight [result]="counseling.clientFullName" [term]="counselingTableService.searchTerm"></ngb-highlight>
+      </td>
     </tr>
     </tbody>
   </table>

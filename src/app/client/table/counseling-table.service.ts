@@ -29,7 +29,8 @@ function matches(counseling: Counseling, term: string, pipe: PipeTransform) {
     || counseling.counselingStatus.toLowerCase().includes(term.toLowerCase())
     || counseling.concernCategory.toLowerCase().includes(term.toLowerCase())
     || counseling.activity.toLowerCase().includes(term.toLowerCase())
-    || counseling.registeredBy.toLowerCase().includes(term.toLowerCase());
+    || counseling.registeredBy.toLowerCase().includes(term.toLowerCase())
+    || counseling.clientFullName.toLowerCase().includes(term.toLowerCase());
 }
 
 @Injectable({
@@ -95,6 +96,7 @@ export class CounselingTableService {
     const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
 
     // 1. sort
+    console.log('this.counsels', this.counsels);
     let couns = sort(this.counsels, sortColumn, sortDirection);
 
     // 2. filter

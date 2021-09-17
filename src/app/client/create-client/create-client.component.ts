@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
 import {Country} from '../model/country.enum';
 import {ResidentStatus} from '../model/resident-status.enum';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 
 @Component({
   selector: 'app-create-client',
@@ -70,7 +71,8 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     private ngbFormatterService: NgbFormatterService,
     private dateAdapter: NgbDateAdapter<string>,
     private commonService: CommonService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) { }
 
   ngOnInit(): void {
@@ -115,9 +117,11 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     };
     console.log(this.clientForm);
     this.clientService.createClient(this.clientForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      console.log('client result', result);
-      this.router.navigate(['/clients/client-list']);
+      console.log('client result', result.id);
+      this.router.navigate(['/clients/', result.id]);
       this.loading = false;
+    }, error => {
+      this.alertService.error(error.error);
     });
   }
 

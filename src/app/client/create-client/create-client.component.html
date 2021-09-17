@@ -1,96 +1,107 @@
-<div class="row">
-  <div class="col-4">
-    <form #createClientForm="ngForm" (ngSubmit)="submit()" class="mt-1">
-
+<app-alert></app-alert>
+<form #createClientForm="ngForm" (ngSubmit)="submit()" class="mt-1">
+  <div class="row">
+    <div class="col-md-4">
       <!-- Person -->
       <div class="form-group">
-        <label>firstName</label>
-        <input type="text" class="form-control" name="firstName" [(ngModel)]="firstName" placeholder="firstName" />
+        <label>Vorname</label>
+        <input type="text" class="form-control" name="firstName" [(ngModel)]="firstName" placeholder="firstName"/>
       </div>
       <div class="form-group">
-        <label>lastName</label>
-        <input type="text" class="form-control" name="lastName" [(ngModel)]="lastName" placeholder="lastName" />
+        <label>Nachname</label>
+        <input type="text" class="form-control" name="lastName" [(ngModel)]="lastName" placeholder="lastName"/>
       </div>
       <div class="form-group">
+        <label>Geburtstag</label>
         <div class="input-group">
           <input class="form-control" placeholder="Date of birth"
                  name="dp" [(ngModel)]="dateOfBirth" ngbDatepicker #d="ngbDatepicker">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><fa-icon class="text-info" [icon]="faBars"></fa-icon></button>
+            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+              <fa-icon class="text-info" [icon]="faBars"></fa-icon>
+            </button>
           </div>
         </div>
       </div>
       <div class="form-group">
-        <label>contactData</label>
-        <input type="text" class="form-control" name="contactData" [(ngModel)]="contactData" placeholder="contactData" />
+        <label>Kontaktdaten (z.B. Email)</label>
+        <input type="text" class="form-control" name="contactData" [(ngModel)]="contactData" placeholder="contactData"/>
       </div>
 
       <!-- Address -->
       <div class="form-group">
-        <label>Street</label>
-        <input type="text" class="form-control" name="street" [(ngModel)]="street" placeholder="street" />
+        <label>Straße</label>
+        <input type="text" class="form-control" name="street" [(ngModel)]="street" placeholder="street"/>
       </div>
       <div class="form-group">
-        <label>Zip Code</label>
-        <input type="text" class="form-control" name="zipCode" [(ngModel)]="zipCode" placeholder="zip code" />
+        <label>Postleitzahl</label>
+        <input type="text" class="form-control" name="zipCode" [(ngModel)]="zipCode" placeholder="zip code"/>
       </div>
       <div class="form-group">
-        <label>City</label>
-        <input type="text" class="form-control" name="city" [(ngModel)]="city" placeholder="city" />
+        <label>Stadt</label>
+        <input type="text" class="form-control" name="city" [(ngModel)]="city" placeholder="city"/>
       </div>
       <div class="form-group">
-        <label>Country</label>
+        <label>Land</label>
         <select class="form-control">
           <option *ngFor="let c of countries" [value]="c" (click)="onCountryChange(c)">{{c}}</option>
         </select>
       </div>
+    </div>
+
+    <div class="col-md-4">
 
       <!-- client: -->
       <div class="form-group">
         <label>Keyword</label>
-        <input type="text" class="form-control" name="keyword" [(ngModel)]="keyword" placeholder="keyword" />
+        <input type="text" class="form-control" name="keyword" [(ngModel)]="keyword" placeholder="keyword"/>
       </div>
       <div class="form-group">
-        <label>Education</label>
-        <input type="text" class="form-control" name="education" [(ngModel)]="education" placeholder="education" />
+        <label>Bildung</label>
+        <input type="text" class="form-control" name="education" [(ngModel)]="education" placeholder="education"/>
       </div>
       <div class="form-group">
-        <label>How has the Person heard from us</label>
-        <input type="text" class="form-control" name="howHasThePersonHeardFromUS" [(ngModel)]="howHasThePersonHeardFromUs" placeholder="how has the person heard from us" />
+        <label>Wo hat die Person von uns gehört?</label>
+        <input type="text" class="form-control" name="howHasThePersonHeardFromUS"
+               [(ngModel)]="howHasThePersonHeardFromUs" placeholder="how has the person heard from us"/>
       </div>
-      <div class="form-group">
-        <label>Vulnerable</label>
-        <input type="checkbox" class="form-check" [(ngModel)]="vulnerableWhenAssertingRights" name="vulnerableWhenAssertingRights">
-        <label>vulnerableWhenAssertingRights</label>
+      <div class="form-check mt-3">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="vulnerableWhenAssertingRights"
+               name="vulnerableWhenAssertingRights">
+        <label class="form-check-label">vulnerable when asserting rights</label>
       </div>
-      <div class="form-group">
-        <label>Interpreter Necessary</label>
-        <input type="checkbox" class="form-check" [(ngModel)]="interpreterNecessary" name="interpreterNecessary">
-        <label>interpreterNecessary</label>
+      <div class="form-check mt-3">
+        <input type="checkbox" class="form-check-input" id="interpreter" [(ngModel)]="interpreterNecessary" name="interpreterNecessary">
+        <label class="form-check-label" for="interpreter">Interpreter Necessary</label>
       </div>
-      <div class="form-group">
-        <label>Marital Status</label>
+      <div class="form-group mt-4">
+        <label>Familienstatus</label>
         <select class="form-control">
           <option (click)="onMaritalChange('unknown')">Marital Status</option>
-          <option *ngFor="let marital of maStatus" [value]="marital" (click)="onMaritalChange(marital)">{{marital}}</option>
+          <option *ngFor="let marital of maStatus" [value]="marital"
+                  (click)="onMaritalChange(marital)">{{marital}}</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label>nationality</label>
-        <input type="text" class="form-control" name="nationality" [(ngModel)]="nationality" placeholder="nationality" />
+        <label>Staatsbürgerschaft</label>
+        <input type="text" class="form-control" name="nationality" [(ngModel)]="nationality" placeholder="nationality"/>
       </div>
       <div class="form-group">
-        <label>language</label>
-        <input type="text" class="form-control" name="language" [(ngModel)]="language" placeholder="language" />
+        <label>Sprache</label>
+        <input type="text" class="form-control" name="language" [(ngModel)]="language" placeholder="language"/>
       </div>
       <div class="form-group">
-        <label>Current Residentstatus</label>
+        <label>Aufenthaltsstatus</label>
         <select class="form-control">
           <option (click)="onMaritalChange('unknown')">Resident Status</option>
-          <option *ngFor="let status of residentStatusLOV" [value]="status" (click)="onResidentStatusChange(status)">{{status}}</option>
+          <option *ngFor="let status of residentStatusLOV" [value]="status"
+                  (click)="onResidentStatusChange(status)">{{status}}</option>
         </select>
       </div>
+
+    </div>
+    <div class="col-md-4">
       <!--
       <div class="form-group">
         <label>formerResidentStatus</label>
@@ -98,36 +109,42 @@
       </div>
       -->
       <div class="form-group">
-        <label>labourMarketAccess</label>
-        <input type="text" class="form-control" name="labourMarketAccess" [(ngModel)]="labourMarketAccess" placeholder="labourMarketAccess" />
+        <label>Arbeitsmarktzugang</label>
+        <input type="text" class="form-control" name="labourMarketAccess" [(ngModel)]="labourMarketAccess"
+               placeholder="labourMarketAccess"/>
       </div>
       <div class="form-group">
-        <label>position</label>
-        <input type="text" class="form-control" name="position" [(ngModel)]="position" placeholder="position" />
+        <label>Position</label>
+        <input type="text" class="form-control" name="position" [(ngModel)]="position" placeholder="position"/>
       </div>
       <div class="form-group">
-        <label>sector</label>
-        <input type="text" class="form-control" name="sector" [(ngModel)]="sector" placeholder="sector" />
+        <label>Branche</label>
+        <input type="text" class="form-control" name="sector" [(ngModel)]="sector" placeholder="sector"/>
       </div>
       <div class="form-group">
-        <label>union</label>
-        <input type="text" class="form-control" name="union" [(ngModel)]="union" placeholder="union" />
+        <label>Gewerkschaft</label>
+        <input type="text" class="form-control" name="union" [(ngModel)]="union" placeholder="union"/>
       </div>
-      <div class="form-group">
-        <input type="checkbox" class="form-check" [(ngModel)]="membership" name="membership">
-        <label>membership</label>
+      <div class="form-check mb-3">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="membership" name="membership">
+        <label class="form-check-label">Mitgliedschaft</label>
       </div>
 
-      <div class="form-group">
+      <div class="form-group mt-3">
         <label>organization</label>
-        <input type="text" class="form-control" name="organization" [(ngModel)]="organization" placeholder="organization" />
+        <input type="text" class="form-control" name="organization" [(ngModel)]="organization"
+               placeholder="organization"/>
       </div>
 
+    </div>
 
-      <div class="form-group">
-        <button class="btn btn-sm btn-outline-dark" [disabled]="loading">klick halt</button>
-      </div>
-
-    </form>
   </div>
-</div>
+
+  <div class="row">
+    <div class="col">
+      <div class="form-group mt-lg-5">
+        <button class="btn btn-lg btn-success" [disabled]="loading">Save</button>
+      </div>
+    </div>
+  </div>
+</form>

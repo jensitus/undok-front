@@ -17,6 +17,7 @@ import {ShowEmployersListComponent} from './show-employers-list/show-employers-l
 import {ShowClientEmployersComponent} from './show-client-employers/show-client-employers.component';
 import {NgbdSortableHeader} from './table/sortable.directive';
 import { EditCounselingComponent } from './edit-counseling/edit-counseling.component';
+import {AlertModule} from '../admin-template/layout/components/alert/alert.module';
 
 const appRoutes: Routes = [
   {path: 'create', component: CreateClientComponent},
@@ -42,13 +43,14 @@ const appRoutes: Routes = [
     NgbdSortableHeader,
     EditCounselingComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(appRoutes),
-    FormsModule,
-    NgbModule,
-    FontAwesomeModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(appRoutes),
+        FormsModule,
+        NgbModule,
+        FontAwesomeModule,
+        AlertModule
+    ],
   providers: [DecimalPipe]
 })
 export class ClientModule { }

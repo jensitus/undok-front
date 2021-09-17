@@ -8,4 +8,6 @@ export interface Counseling {
   activityCategory: string;
   registeredBy: string;
   counselingDate: string;
+  clientId: string;
+  clientFullName: string;
 }

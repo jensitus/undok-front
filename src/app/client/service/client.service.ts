@@ -19,8 +19,8 @@ export class ClientService {
     private http: HttpClient
   ) { }
 
-  createClient(client: ClientForm): Observable<ClientForm> {
-    return this.http.post<ClientForm>(this.apiUrl + '/service/undok/clients/create', client);
+  createClient(client: ClientForm): Observable<any> {
+    return this.http.post<any>(this.apiUrl + '/service/undok/clients/create', client);
   }
 
   updateClient(clientId: string, client: Client): Observable<Person> {

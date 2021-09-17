@@ -46,6 +46,7 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
   }
 
   parseCounselingsToTableService(): void {
+    console.log('show-counselings', this.counselings);
     this.counselingTableService.getCounselings(this.counselings);
   }
 
