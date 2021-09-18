@@ -20,6 +20,7 @@
       <th scope="col">Kategorie</th>
       <th scope="col">Activität</th>
       <th scope="col">Klient:in</th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
@@ -42,6 +43,9 @@
       </td>
       <td>
         <ngb-highlight [result]="counseling.clientFullName" [term]="counselingTableService.searchTerm"></ngb-highlight>
+      </td>
+      <td>
+        <a [routerLink]="['/clients', counseling.clientId]">link</a>
       </td>
     </tr>
     </tbody>
