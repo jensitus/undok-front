@@ -16,7 +16,7 @@ export class CounselingService {
   constructor(private http: HttpClient) { }
 
   getCounselings(): Observable<any> {
-    return this.http.get<any>(this.apiUrl + this.COUNSELING_URL + '/all');
+    return this.http.get<any>(this.apiUrl + this.COUNSELING_URL + 'all');
   }
 
   updateCounseling(counselingId: string, counseling: Counseling): Observable<Counseling> {

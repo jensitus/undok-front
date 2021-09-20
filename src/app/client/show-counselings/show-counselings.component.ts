@@ -35,8 +35,8 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.counselingService.getCounselings().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      console.log(result);
       this.counselings = result;
+      console.log('show counselings', this.counselings);
       this.parseCounselingsToTableService();
     });
   }
