@@ -37,7 +37,7 @@
           <div>
             <button class="btn btn-sm btn-outline-success" (click)="openEditCounseling(edit_counseling)">Edit</button>
           </div>
-          <div *ngIf="counseling.comment === null">
+          <div *ngIf="counseling.comment === null" class="mt-2">
             <button class="btn btn-sm btn-outline-dark" (click)="openEditCounseling(edit_comment)">Add Comment</button>
           </div>
         </div>
@@ -45,7 +45,12 @@
 
       <div class="card mt-1" *ngIf="counseling.comment != null">
         <div class="card-body">
+          <div>
           {{counseling.comment}}
+          </div>
+          <div class="mt-2">
+            <button class="btn btn-sm btn-outline-dark" (click)="openEditCounseling(edit_comment)">edit comment</button>
+          </div>
         </div>
       </div>
 
@@ -74,7 +79,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <app-create-comment [clientId]="counseling.id"></app-create-comment>
+          <app-create-comment [clientId]="counseling.id" [comment]="counseling.comment"></app-create-comment>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">

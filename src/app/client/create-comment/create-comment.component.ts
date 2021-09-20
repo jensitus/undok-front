@@ -12,8 +12,8 @@ import {CommonService} from '../../common/services/common.service';
 export class CreateCommentComponent implements OnInit, OnDestroy {
 
   @Input() private clientId: string;
+  @Input() public comment: string;
   private unsubscribe$ = new Subject();
-  comment: string;
 
   constructor(
     private counselingService: CounselingService,

@@ -21,6 +21,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   person: Person;
   client: Client;
   private closeResult = '';
+  public isCollapsed = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
