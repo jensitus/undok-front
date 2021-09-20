@@ -45,4 +45,10 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
     // modalRef.componentInstance.name = 'Counseling';
   }
 
+  // openCreateComment(content) {
+  //   this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+  //
+  //   })
+  // }
+
 }

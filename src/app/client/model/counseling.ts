@@ -10,4 +10,5 @@ export interface Counseling {
   counselingDate: string;
   clientId: string;
   clientFullName: string;
+  comment?: string;
 }

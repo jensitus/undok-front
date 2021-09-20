@@ -11,14 +11,20 @@ export class CounselingService {
 
   apiUrl = environment.api_url;
 
+  COUNSELING_URL = '/service/undok/counselings/';
+
   constructor(private http: HttpClient) { }
 
   getCounselings(): Observable<any> {
-    return this.http.get<any>(this.apiUrl + '/service/undok/counselings/all');
+    return this.http.get<any>(this.apiUrl + this.COUNSELING_URL + '/all');
   }
 
   updateCounseling(counselingId: string, counseling: Counseling): Observable<Counseling> {
-    return this.http.put<Counseling>(this.apiUrl + '/service/undok/counselings/' + counselingId + '/update', counseling);
+    return this.http.put<Counseling>(this.apiUrl + this.COUNSELING_URL + counselingId + '/update', counseling);
+  }
+
+  createUpdateComment(counselingId: string, comment: string): Observable<Counseling> {
+    return this.http.put<Counseling>(this.apiUrl + this.COUNSELING_URL + counselingId + '/set-or-update-comment/', comment);
   }
 
 }

@@ -18,6 +18,7 @@ import {ShowClientEmployersComponent} from './show-client-employers/show-client-
 import {NgbdSortableHeader} from './table/sortable.directive';
 import { EditCounselingComponent } from './edit-counseling/edit-counseling.component';
 import {AlertModule} from '../admin-template/layout/components/alert/alert.module';
+import { CreateCommentComponent } from './create-comment/create-comment.component';
 
 const appRoutes: Routes = [
   {path: 'create', component: CreateClientComponent},
@@ -41,7 +42,8 @@ const appRoutes: Routes = [
     ShowEmployersListComponent,
     ShowClientEmployersComponent,
     NgbdSortableHeader,
-    EditCounselingComponent
+    EditCounselingComponent,
+    CreateCommentComponent
   ],
     imports: [
         CommonModule,
