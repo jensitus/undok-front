@@ -7,6 +7,7 @@ import {Person} from '../model/person';
 import {CounselingForm} from '../model/counseling-form';
 import {EmployerForm} from '../model/employer-form';
 import {Client} from '../model/client';
+import {CountryData} from '../../admin-template/layout/charts/doughnut/country-data';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,8 @@ import {Client} from '../model/client';
 export class ClientService {
 
   apiUrl = environment.api_url;
+  UNDOK_CLIENTS = '/service/undok/clients';
+  UNDOK_DASHBOARD = '/dashboard';
 
   constructor(
     private http: HttpClient
@@ -27,7 +30,7 @@ export class ClientService {
     return this.http.put<Person>(this.apiUrl + '/service/undok/clients/' + clientId + '/update', client);
   }
 
-  getAllClients(page: number, size: number): Observable<any> {
+  getAllClientsPaginated(page: number, size: number): Observable<any> {
     return this.http.get<any>(this.apiUrl + '/service/undok/clients/all/' + page + '/' + size);
   }
 
@@ -48,7 +51,15 @@ export class ClientService {
   }
 
   getItemForTimeline(): Observable<any> {
-    return this.http.get<any>(this.apiUrl + '/timeline/items');
+    return this.http.get<any>(this.apiUrl + this.UNDOK_DASHBOARD + '/timeline/items');
+  }
+
+  getAll(): Observable<Client[]> {
+    return this.http.get<Client[]>(this.apiUrl + this.UNDOK_CLIENTS + '/all');
+  }
+
+  getCountryDataForCharts(): Observable<CountryData> {
+    return this.http.get<CountryData>(this.apiUrl + this.UNDOK_DASHBOARD + '/chart/country-chart-data');
   }
 
 }

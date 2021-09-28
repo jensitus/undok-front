@@ -15,12 +15,12 @@
                 </div>
             </div>
         </div>
-        <!--<div class="col col-sm-6">
+        <div class="col col-sm-6">
             <div class="card mb-3">
                 <div class="card-header">
                     Doughnut Chart
                 </div>
-                <div class="card-body">
+                <div class="card-body" *ngIf="doughnutChartLabels">
                     <canvas baseChart height="180px" [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
                     </canvas>
                 </div>

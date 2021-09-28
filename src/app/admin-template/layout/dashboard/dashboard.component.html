@@ -14,6 +14,20 @@
         <!--              <app-stat [bgClass]="'warning'" [icon]="faSurprise" [count]="employerCount" [label]="'Arbeitgeber:innen'"></app-stat>-->
         <!--          </div>-->
       </div>
+      <div class="row mt-3">
+        <div class="col">
+          <div *ngIf="currentUser.admin">
+            <div>
+              <a [routerLink]="['/clients/create']" class="btn btn-lg btn-outline-success">create client</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-lg-10">
+          <app-doughnut></app-doughnut>
+        </div>
+      </div>
     </div>
     <div class="col">
         <div class="card card-default">
@@ -31,19 +45,6 @@
 
   <div class="row">
     <div class="col-lg-6">
-      <div *ngIf="currentUser.admin">
-        <div>
-          <a [routerLink]="['/create-user']">create new user</a>
-        </div>
-        <div>
-          <a [routerLink]="['/clients/create']">create client</a>
-        </div>
-      </div>
-      <div>
-        <a  [routerLink]="['/clients/client-list']">client list</a>
-      </div>
-
-
       <!--            <div class="card card-default mb-3">-->
       <!--                <div class="card-header">-->
       <!--                    <i class="fa fa-bell fa-fw"></i> Notifications card-->

@@ -17,6 +17,10 @@
           <label class="text-secondary">Name:</label>
           {{client.person.firstName}} {{client.person.lastName}}
         </div>
+        <div class="col">
+          <label class="text-secondary">Keyword:</label>
+          {{client.keyword}}
+        </div>
       </div>
       <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="row mt-3">
         <div class="col-md-6">
@@ -25,8 +29,16 @@
             {{client.person.firstName}} {{client.person.lastName}}
           </div>-->
           <div>
-            <label class="text-secondary">Keyword:</label>
-            {{client.keyword}}
+            <label class="text-secondary">Straße:</label>
+            {{client.person.address.street}}
+          </div>
+          <div>
+            <label class="text-secondary">PLZ & City:</label>
+            {{client.person.address.zipCode}} {{client.person.address.city}}
+          </div>
+          <div>
+            <label class="text-secondary">Country:</label>
+            {{client.person.address.country}}
           </div>
           <div>
             <label class="text-secondary">Familienstand:</label>
@@ -57,12 +69,12 @@
             <label class="text-secondary">Dolmetch erforderlich:</label>
             {{client.interpreterNecessary}}
           </div>
+        </div>
+        <div class="col-md-6">
           <div>
             <label class="text-secondary">Nationalität:</label>
             {{client.nationality}}
           </div>
-        </div>
-        <div class="col-md-6">
           <div>
             <label class="text-secondary">Aufenthaltstatus:</label>
             {{client.currentResidentStatus}}

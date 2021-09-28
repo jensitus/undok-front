@@ -12,18 +12,20 @@ import {
 import { StatModule } from '../../shared';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {ChartsModule} from '../charts/charts.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    NgbCarouselModule,
-    NgbAlertModule,
-    DashboardRoutingModule,
-    StatModule,
-    ReactiveFormsModule,
-    FontAwesomeModule,
-    FormsModule
-  ],
+    imports: [
+        CommonModule,
+        NgbCarouselModule,
+        NgbAlertModule,
+        DashboardRoutingModule,
+        StatModule,
+        ReactiveFormsModule,
+        FontAwesomeModule,
+        FormsModule,
+        ChartsModule
+    ],
   declarations: [
     DashboardComponent,
     TimelineComponent,

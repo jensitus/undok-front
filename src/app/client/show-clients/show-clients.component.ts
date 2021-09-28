@@ -47,7 +47,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   }
 
   getClientList(page, size) {
-    this.clientService.getAllClients(page, size).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+    this.clientService.getAllClientsPaginated(page, size).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       console.log('result', result);
       this.resultMap = result;
       this.clients = this.resultMap.clientMap.clientList;
