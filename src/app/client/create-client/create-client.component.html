@@ -23,10 +23,6 @@
           </div>
         </div>
       </div>
-      <div class="form-group">
-        <label>Kontaktdaten (z.B. Email)</label>
-        <input type="text" class="form-control" name="contactData" [(ngModel)]="contactData" placeholder="contactData"/>
-      </div>
 
       <!-- Address -->
       <div class="form-group">
@@ -55,6 +51,10 @@
       <div class="form-group">
         <label>Keyword</label>
         <input type="text" class="form-control" name="keyword" [(ngModel)]="keyword" placeholder="keyword"/>
+      </div>
+      <div class="form-group">
+        <label>Kontaktdaten (z.B. Email)</label>
+        <input type="text" class="form-control" name="contactData" [(ngModel)]="contactData" placeholder="contactData"/>
       </div>
       <div class="form-group">
         <label>Bildung</label>
@@ -87,6 +87,15 @@
         <label>Staatsbürgerschaft</label>
         <input type="text" class="form-control" name="nationality" [(ngModel)]="nationality" placeholder="nationality"/>
       </div>
+
+    </div>
+    <div class="col-md-4">
+      <!--
+      <div class="form-group">
+        <label>formerResidentStatus</label>
+        <input type="text" class="form-control" name="formerResidentStatus" [(ngModel)]="formerResidentStatus" placeholder="formerResidentStatus" />
+      </div>
+      -->
       <div class="form-group">
         <label>Sprache</label>
         <input type="text" class="form-control" name="language" [(ngModel)]="language" placeholder="language"/>
@@ -99,15 +108,6 @@
                   (click)="onResidentStatusChange(status)">{{status}}</option>
         </select>
       </div>
-
-    </div>
-    <div class="col-md-4">
-      <!--
-      <div class="form-group">
-        <label>formerResidentStatus</label>
-        <input type="text" class="form-control" name="formerResidentStatus" [(ngModel)]="formerResidentStatus" placeholder="formerResidentStatus" />
-      </div>
-      -->
       <div class="form-group">
         <label>Arbeitsmarktzugang</label>
         <input type="text" class="form-control" name="labourMarketAccess" [(ngModel)]="labourMarketAccess"
@@ -142,7 +142,7 @@
 
   <div class="row">
     <div class="col">
-      <div class="form-group mt-lg-5">
+      <div class="form-group mt-3">
         <button type="button" class="btn btn-lg btn-success" (click)="submit()" [disabled]="loading">Save</button>
       </div>
     </div>

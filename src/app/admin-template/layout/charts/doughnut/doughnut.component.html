@@ -3,7 +3,16 @@
     The countries the clients come from
   </div>
   <div class="card-body" *ngIf="doughnutChartLabels">
-    <canvas baseChart height="180px" [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-    </canvas>
+    <div>
+      <canvas baseChart height="180px"
+              [data]="doughnutChartData"
+              [labels]="doughnutChartLabels"
+              [chartType]="doughnutChartType"
+              [colors]="colors"
+              [options]="options"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)">
+      </canvas>
+    </div>
   </div>
 </div>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ClientService} from '../../../../client/service/client.service';
 import {CountryData} from './country-data';
+import {Color} from 'ng2-charts';
+import {ChartOptions} from 'chart.js';
 
 @Component({
   selector: 'app-doughnut',
@@ -15,6 +17,10 @@ export class DoughnutComponent implements OnInit {
   citizens: number[] = [];
   countries: string[] = [];
   countryData: CountryData;
+  colors: Color[] = [];
+  options: ChartOptions = {
+    responsive: true
+  };
 
   constructor(
     private clientService: ClientService
@@ -30,6 +36,15 @@ export class DoughnutComponent implements OnInit {
       console.log('citizens', this.citizens);
       this.setChartLabelAndData();
     });
+    this.colors = [
+      {
+        backgroundColor: [
+          '#dc3545', '#adb5bd', '#6f42c1', '#20c997', '#fd7e14', '#0d6efd', '#d63384', '#ffc107', '#198754', '#0dcaf0', '#6610f2',
+          '#dc3545', '#adb5bd', '#6f42c1', '#20c997', '#fd7e14', '#0d6efd', '#d63384', '#ffc107', '#198754', '#0dcaf0', '#6610f2'
+          ]
+      }
+    ];
+
   }
 
   setChartLabelAndData() {
