@@ -16,9 +16,10 @@ import {CreateEmpoyerComponent} from './create-empoyer/create-empoyer.component'
 import {ShowEmployersListComponent} from './show-employers-list/show-employers-list.component';
 import {ShowClientEmployersComponent} from './show-client-employers/show-client-employers.component';
 import {NgbdSortableHeader} from './table/sortable.directive';
-import { EditCounselingComponent } from './edit-counseling/edit-counseling.component';
+import {EditCounselingComponent} from './edit-counseling/edit-counseling.component';
 import {AlertModule} from '../admin-template/layout/components/alert/alert.module';
-import { CreateCommentComponent } from './create-comment/create-comment.component';
+import {CreateCommentComponent} from './create-comment/create-comment.component';
+import {DownloadComponent} from './download/download.component';
 
 const appRoutes: Routes = [
   {path: 'create', component: CreateClientComponent},
@@ -43,16 +44,21 @@ const appRoutes: Routes = [
     ShowClientEmployersComponent,
     NgbdSortableHeader,
     EditCounselingComponent,
-    CreateCommentComponent
+    CreateCommentComponent,
+    DownloadComponent
   ],
-    imports: [
-        CommonModule,
-        RouterModule.forChild(appRoutes),
-        FormsModule,
-        NgbModule,
-        FontAwesomeModule,
-        AlertModule
-    ],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(appRoutes),
+    FormsModule,
+    NgbModule,
+    FontAwesomeModule,
+    AlertModule
+  ],
+  exports: [
+    DownloadComponent
+  ],
   providers: [DecimalPipe]
 })
-export class ClientModule { }
+export class ClientModule {
+}
