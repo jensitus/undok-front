@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ClientService} from '../service/client.service';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -7,6 +7,7 @@ import {faTasks} from '@fortawesome/free-solid-svg-icons';
 import {CounselingTableService} from '../table/counseling-table.service';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
 import {CounselingService} from '../service/counseling.service';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-show-counselings',
@@ -17,9 +18,14 @@ import {CounselingService} from '../service/counseling.service';
 export class ShowCounselingsComponent implements OnInit, OnDestroy {
 
   counselings: Counseling[];
+  columns = ['id', 'counselingStatus', 'entryDate', 'concern', 'concernCategory', 'activity', 'activityCategory', 'registeredBy', 'counselingDate', 'clientId', 'clientFullName', 'comment'];
   total$: Observable<number>;
   counselings$: Observable<Counseling[]>;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+  documentName = 'DokumentenName';
+  datePipe: DatePipe;
+
+  @ViewChild('documentLink', {static: true}) documentLink: ElementRef;
 
   private unsubscribe$ = new Subject();
   faTasks = faTasks;
@@ -36,7 +42,7 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.counselingService.getCounselings().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       this.counselings = result;
-      console.log('show counselings', this.counselings);
+      console.log('ngOnInit: show counselings', this.counselings);
       this.parseCounselingsToTableService();
     });
   }
@@ -46,7 +52,7 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
   }
 
   parseCounselingsToTableService(): void {
-    console.log('show-counselings', this.counselings);
+    console.log('parseCounselingsToTableService: show-counselings', this.counselings);
     this.counselingTableService.getCounselings(this.counselings);
   }
 
@@ -60,6 +66,50 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
 
     this.counselingTableService.sortColumn = column;
     this.counselingTableService.sortDirection = direction;
+  }
+
+
+  exportTable(): void {
+
+    const csvData = this.convertToCSV(this.counselings);
+
+    const blob = new Blob([csvData], {type: 'text/csv'});
+    const url = window.URL.createObjectURL(blob);
+
+    // const date = new Date();
+    // const dateFormat = 'yyyy-MM-dd';
+    //
+    const docName: string = this.documentName;
+    // const dateString: string = this.datePipe.transform(date, dateFormat);
+    // docName = docName.replace('{date}', dateString);
+
+    console.log(this.documentLink);
+
+    const documentLinkElement = this.documentLink.nativeElement;
+    documentLinkElement.href = url;
+    documentLinkElement.download = docName + '.csv';
+    documentLinkElement.click();
+  }
+
+  convertToCSV(objArray: any): string {
+    const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
+    let str = '';
+
+    const allowedColumnNames = this.columns; // this.columns.map( c => c.name );
+    // str += this.columns.map( c => c.caption ).join(',') + '\r\n';
+
+    for (const element of array) {
+      let line = '';
+      for (const col of allowedColumnNames) {
+        console.log(col);
+        if (line !== '') {
+          line += ',';
+        }
+        line += element[col];
+      }
+      str += line + '\r\n';
+    }
+    return str;
   }
 
 }

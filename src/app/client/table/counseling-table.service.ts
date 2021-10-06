@@ -73,7 +73,11 @@ export class CounselingTableService {
   get counselings$() {
     return this._counselings$.asObservable();
   }
-  get total$() { return this._total$.asObservable(); }
+
+  get total$() {
+    return this._total$.asObservable();
+  }
+
   get loading$() {
     return this._loading$.asObservable();
   }
@@ -111,7 +115,7 @@ export class CounselingTableService {
 
   public getCounselings(counsels: Counseling[]) {
     this.counsels = counsels;
-    console.log('this.counsels', this.counsels);
+    console.log('getCounselings.this.counsels', this.counsels);
   }
 
 }

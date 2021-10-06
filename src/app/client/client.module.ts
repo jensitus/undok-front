@@ -19,7 +19,6 @@ import {NgbdSortableHeader} from './table/sortable.directive';
 import {EditCounselingComponent} from './edit-counseling/edit-counseling.component';
 import {AlertModule} from '../admin-template/layout/components/alert/alert.module';
 import {CreateCommentComponent} from './create-comment/create-comment.component';
-import {DownloadComponent} from './download/download.component';
 
 const appRoutes: Routes = [
   {path: 'create', component: CreateClientComponent},
@@ -44,8 +43,7 @@ const appRoutes: Routes = [
     ShowClientEmployersComponent,
     NgbdSortableHeader,
     EditCounselingComponent,
-    CreateCommentComponent,
-    DownloadComponent
+    CreateCommentComponent
   ],
   imports: [
     CommonModule,
@@ -56,7 +54,6 @@ const appRoutes: Routes = [
     AlertModule
   ],
   exports: [
-    DownloadComponent
   ],
   providers: [DecimalPipe]
 })
