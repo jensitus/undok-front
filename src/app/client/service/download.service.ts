@@ -10,12 +10,12 @@ import {response} from 'express';
 export class DownloadService {
 
   apiUrl = environment.api_url;
-  DOWNLOAD_URL = '/service/undok/download';
+  DOWNLOAD_URL = '/service/undok/download/';
 
   constructor(private http: HttpClient) { }
 
-  downloadClientCsv(file: string | undefined): Observable<any> {
-    return this.http.get(this.apiUrl +  this.DOWNLOAD_URL + '/file', {responseType: 'blob'});
+  downloadClientCsv(file: string | undefined): Observable<Blob> {
+    return this.http.get(this.apiUrl +  this.DOWNLOAD_URL + file, {responseType: 'blob'});
   }
-
+// donner wetter
 }
