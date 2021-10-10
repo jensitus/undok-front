@@ -6,15 +6,16 @@ import {State} from './state';
 import {Client} from '../model/client';
 import {DecimalPipe} from '@angular/common';
 import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
+import {AllClient} from '../model/all-client';
 
 export interface SearchResult {
-  clients: Client[];
+  clients: AllClient[];
   total: number;
 }
 
 const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
-function sort(clients: Client[], column: SortColumn, direction: string): Client[] {
+function sort(clients: AllClient[], column: SortColumn, direction: string): AllClient[] {
   if (direction === '' || column === '') {
     return clients;
   } else {
@@ -25,9 +26,9 @@ function sort(clients: Client[], column: SortColumn, direction: string): Client[
   }
 }
 
-function matches(client: Client, term: string, pipe: PipeTransform) {
-  return client.person.firstName.toLowerCase().includes(term.toLowerCase())
-    || client.person.lastName.toLowerCase().includes(term.toLowerCase())
+function matches(client: AllClient, term: string, pipe: PipeTransform) {
+  return client.firstName.toLowerCase().includes(term.toLowerCase())
+    || client.lastName.toLowerCase().includes(term.toLowerCase())
     || client.keyword.toLowerCase().includes(term.toLowerCase());
 }
 
@@ -36,12 +37,12 @@ function matches(client: Client, term: string, pipe: PipeTransform) {
 })
 export class ClientTableService {
 
-  clients: Client[];
-  customers: Client[];
+  clients: AllClient[];
+  customers: AllClient[];
 
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _clients$ = new BehaviorSubject<Client[]>([]);
+  private _clients$ = new BehaviorSubject<AllClient[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
   private _state: State = {
@@ -120,11 +121,9 @@ export class ClientTableService {
     const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
 
     // 1. sort
-    console.log('private _search this.clients', this.customers);
     let c = sort(this.customers, sortColumn, sortDirection);
 
     // 2. filter
-    console.log('_search', c);
     c = c.filter(client => matches(client, searchTerm, this.pipe));
     const total = c.length;
 
@@ -133,9 +132,8 @@ export class ClientTableService {
     return of({clients: c, total});
   }
 
-  public getClients(customers: Client[]) {
+  public getClients(customers: AllClient[]) {
     this.customers = customers;
-    console.log('getCounselings.this.counsels', this.customers);
   }
 
 }

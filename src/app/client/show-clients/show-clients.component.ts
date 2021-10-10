@@ -6,6 +6,11 @@ import {faUsers} from '@fortawesome/free-solid-svg-icons';
 import {Client} from '../model/client';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
 import {ClientTableService} from '../table/client-table.service';
+import {CsvService} from '../service/csv.service';
+import {MaritalStatus} from '../model/marital-status.enum';
+import {Counseling} from '../model/counseling';
+import {Person} from '../model/person';
+import {AllClient} from '../model/all-client';
 
 @Component({
   selector: 'app-show-clients',
@@ -16,17 +21,23 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
 
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   total$: Observable<number>;
-  clients: Client[];
-  clients$: Observable<Client[]>;
+  clients: AllClient[];
+  clients$: Observable<AllClient[]>;
   private unsubscribe$ = new Subject();
   count: number;
   loading = false;
   faUsers = faUsers;
   tableColumns: string[];
+  columns = ['id', 'firstName', 'lastName', 'street', 'zipCode', 'city', 'country', 'keyword', 'education', 'maritalStatus', 'interpreterNecessary', 'howHasThePersonHeardFromUs', 'vulnerableWhenAssertingRights',
+    'counselings', 'nationality', 'language', 'currentResidentStatus', 'formerResidentStatus', 'labourMarketAccess', 'position',
+    'sector', 'union', 'membership', 'organization'];
+
+  CSV_FILENAME = 'clients';
 
   constructor(
     private clientService: ClientService,
-    public clientTableService: ClientTableService
+    public clientTableService: ClientTableService,
+    private csvService: CsvService
   ) {
     this.total$ = this.clientTableService.total$;
     this.clients$ = this.clientTableService.clients$;
@@ -42,14 +53,13 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
 
   getClientList() {
     this.clientService.getAllClientsPaginated().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      console.log('result', result);
+      console.log(result);
       this.clients = result;
       this.parseCounselingsToTableService();
     });
   }
 
   parseCounselingsToTableService(): void {
-    console.log('parseCounselingsToTableService: show-counselings', this.clients);
     this.clientTableService.getClients(this.clients);
   }
 
@@ -65,5 +75,8 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
     this.clientTableService.sortDirection = direction;
   }
 
+  clickToCsv() {
+    this.csvService.exportToCsv(this.clients, this.CSV_FILENAME, this.columns);
+  }
 
 }

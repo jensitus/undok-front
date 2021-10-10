@@ -8,6 +8,7 @@ import {CounselingForm} from '../model/counseling-form';
 import {EmployerForm} from '../model/employer-form';
 import {Client} from '../model/client';
 import {CountryData} from '../../admin-template/layout/charts/doughnut/country-data';
+import {AllClient} from '../model/all-client';
 
 @Injectable({
   providedIn: 'root'
@@ -30,8 +31,8 @@ export class ClientService {
     return this.http.put<Person>(this.apiUrl + '/service/undok/clients/' + clientId + '/update', client);
   }
 
-  getAllClientsPaginated(): Observable<Client[]> {
-    return this.http.get<Client[]>(this.apiUrl + '/service/undok/clients/all/');
+  getAllClientsPaginated(): Observable<AllClient[]> {
+    return this.http.get<AllClient[]>(this.apiUrl + '/service/undok/clients/all/');
   }
 
   getSingleClient(id: string): Observable<any> {

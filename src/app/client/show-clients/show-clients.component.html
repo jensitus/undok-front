@@ -24,10 +24,10 @@
       <tbody>
       <tr *ngFor="let client of clients$ | async">
         <td>
-          <ngb-highlight [result]="client.person.firstName" [term]="clientTableService.searchTerm"></ngb-highlight>
+          <ngb-highlight [result]="client.firstName" [term]="clientTableService.searchTerm"></ngb-highlight>
         </td>
         <td>
-          <ngb-highlight [result]="client.person.lastName" [term]="clientTableService.searchTerm"></ngb-highlight>
+          <ngb-highlight [result]="client.lastName" [term]="clientTableService.searchTerm"></ngb-highlight>
         </td>
         <td>
           <ngb-highlight [result]="client.keyword" [term]="clientTableService.searchTerm"></ngb-highlight>
@@ -38,6 +38,13 @@
       </tr>
       </tbody>
     </table>
+
+    <div class="input-group">
+      <button class="btn btn-sm btn-outline-success" (click)="clickToCsv()">
+        download csv
+      </button>
+    </div>
+
     <div class="d-flex justify-content-between p-2">
       <ngb-pagination
         [collectionSize]="(total$ | async)!" [(page)]="clientTableService.page" [pageSize]="clientTableService.pageSize">
