@@ -88,8 +88,8 @@ const app_routes: Routes = [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     DecimalPipe
   ],
-  exports: [
-  ],
+    exports: [
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

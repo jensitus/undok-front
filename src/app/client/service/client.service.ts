@@ -30,8 +30,8 @@ export class ClientService {
     return this.http.put<Person>(this.apiUrl + '/service/undok/clients/' + clientId + '/update', client);
   }
 
-  getAllClientsPaginated(page: number, size: number): Observable<any> {
-    return this.http.get<any>(this.apiUrl + '/service/undok/clients/all/' + page + '/' + size);
+  getAllClientsPaginated(): Observable<Client[]> {
+    return this.http.get<Client[]>(this.apiUrl + '/service/undok/clients/all/');
   }
 
   getSingleClient(id: string): Observable<any> {
