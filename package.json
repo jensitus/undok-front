@@ -34,6 +34,8 @@
     "chart.js": "^2.9.4",
     "core-js": "^2.6.12",
     "express": "^4.17.1",
+    "file-save": "^0.2.0",
+    "file-saver": "^2.0.5",
     "ng2-charts": "^2.3.0",
     "ng2-file-upload": "^1.4.0",
     "ngx-order-pipe": "^2.0.4",

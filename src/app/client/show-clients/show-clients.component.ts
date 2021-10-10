@@ -1,9 +1,16 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ClientService} from '../service/client.service';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {faUsers} from '@fortawesome/free-solid-svg-icons';
 import {Client} from '../model/client';
+import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
+import {ClientTableService} from '../table/client-table.service';
+import {CsvService} from '../service/csv.service';
+import {MaritalStatus} from '../model/marital-status.enum';
+import {Counseling} from '../model/counseling';
+import {Person} from '../model/person';
+import {AllClient} from '../model/all-client';
 
 @Component({
   selector: 'app-show-clients',
@@ -12,49 +19,64 @@ import {Client} from '../model/client';
 })
 export class ShowClientsComponent implements OnInit, OnDestroy {
 
-  clients: Client[];
+  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+  total$: Observable<number>;
+  clients: AllClient[];
+  clients$: Observable<AllClient[]>;
   private unsubscribe$ = new Subject();
   count: number;
-  page = 1;
-  offset = 0;
-  pageSize = 3;
-  MULTIPLYING_FACTOR = 2;
   loading = false;
-  resultMap: any;
   faUsers = faUsers;
+  tableColumns: string[];
+  columns = ['id', 'firstName', 'lastName', 'street', 'zipCode', 'city', 'country', 'keyword', 'education', 'maritalStatus', 'interpreterNecessary', 'howHasThePersonHeardFromUs', 'vulnerableWhenAssertingRights',
+    'counselings', 'nationality', 'language', 'currentResidentStatus', 'formerResidentStatus', 'labourMarketAccess', 'position',
+    'sector', 'union', 'membership', 'organization'];
+
+  CSV_FILENAME = 'clients';
 
   constructor(
-    private clientService: ClientService
+    private clientService: ClientService,
+    public clientTableService: ClientTableService,
+    private csvService: CsvService
   ) {
+    this.total$ = this.clientTableService.total$;
+    this.clients$ = this.clientTableService.clients$;
   }
 
   ngOnInit(): void {
-    this.getClientList(this.offset, this.pageSize)
+    this.getClientList();
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
   }
 
-  getThePageNumber() {
-    if (this.page === 0) {
-      this.offset = 0;
-    } else if (this.page >= 1 ) {
-      this.offset = this.page - 1;  // (this.page - 1 ) * this.MULTIPLYING_FACTOR;
-      console.log(this.offset);
-    }
-    this.getClientList(this.offset, this.pageSize);
-  }
-
-  getClientList(page, size) {
-    this.clientService.getAllClientsPaginated(page, size).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      console.log('result', result);
-      this.resultMap = result;
-      this.clients = this.resultMap.clientMap.clientList;
-      this.count = this.resultMap.countMap.count;
+  getClientList() {
+    this.clientService.getAllClientsPaginated().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+      console.log(result);
+      this.clients = result;
+      this.parseCounselingsToTableService();
     });
   }
 
+  parseCounselingsToTableService(): void {
+    this.clientTableService.getClients(this.clients);
+  }
 
+  onSort({column, direction}: SortEvent) {
+    // resetting other headers
+    this.headers.forEach(header => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+
+    this.clientTableService.sortColumn = column;
+    this.clientTableService.sortDirection = direction;
+  }
+
+  clickToCsv() {
+    this.csvService.exportToCsv(this.clients, this.CSV_FILENAME, this.columns);
+  }
 
 }
