@@ -25,19 +25,6 @@ export class DownloadComponent implements OnInit, OnDestroy {
       a.download = 'clients.csv';
       a.click();
       URL.revokeObjectURL(objectUrl);
-      // console.log(response);
-      // const binaryData = [];
-      // binaryData.push(response.data);
-      // const url = window.URL.createObjectURL(new Blob(binaryData, {type: 'application/csv'}));
-      // const a = document.createElement('a');
-      // document.body.appendChild(a);
-      // a.setAttribute('style', 'display: none');
-      // a.setAttribute('target', 'blank');
-      // a.href = url;
-      // a.download = response.filename;
-      // a.click();
-      // window.URL.revokeObjectURL(url);
-      // a.remove();
     });
   }
 
