@@ -13,7 +13,6 @@ import { StatModule } from '../../shared';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ChartsModule} from '../charts/charts.module';
-import {DownloadComponent} from '../../../client/download/download.component';
 
 @NgModule({
     imports: [
@@ -31,8 +30,7 @@ import {DownloadComponent} from '../../../client/download/download.component';
     DashboardComponent,
     TimelineComponent,
     NotificationComponent,
-    ChatComponent,
-    DownloadComponent
+    ChatComponent
   ]
 })
 export class DashboardModule {}
