@@ -8,6 +8,7 @@ import {CounselingTableService} from '../table/counseling-table.service';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
 import {CounselingService} from '../service/counseling.service';
 import {DatePipe} from '@angular/common';
+import {CsvService} from '../service/csv.service';
 
 @Component({
   selector: 'app-show-counselings',
@@ -33,7 +34,8 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
   constructor(
     private clientService: ClientService,
     public counselingTableService: CounselingTableService,
-    private counselingService: CounselingService
+    private counselingService: CounselingService,
+    private csvService: CsvService
   ) {
     this.total$ = counselingTableService.total$;
     this.counselings$ = counselingTableService.counselings$;
@@ -68,48 +70,8 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
     this.counselingTableService.sortDirection = direction;
   }
 
-
-  exportTable(): void {
-
-    const csvData = this.convertToCSV(this.counselings);
-
-    const blob = new Blob([csvData], {type: 'text/csv'});
-    const url = window.URL.createObjectURL(blob);
-
-    // const date = new Date();
-    // const dateFormat = 'yyyy-MM-dd';
-    //
-    const docName: string = this.documentName;
-    // const dateString: string = this.datePipe.transform(date, dateFormat);
-    // docName = docName.replace('{date}', dateString);
-
-    console.log(this.documentLink);
-
-    const documentLinkElement = this.documentLink.nativeElement;
-    documentLinkElement.href = url;
-    documentLinkElement.download = docName + '.csv';
-    documentLinkElement.click();
-  }
-
-  convertToCSV(objArray: any): string {
-    const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
-    let str = '';
-
-    const allowedColumnNames = this.columns; // this.columns.map( c => c.name );
-    // str += this.columns.map( c => c.caption ).join(',') + '\r\n';
-
-    for (const element of array) {
-      let line = '';
-      for (const col of allowedColumnNames) {
-        console.log(col);
-        if (line !== '') {
-          line += ',';
-        }
-        line += element[col];
-      }
-      str += line + '\r\n';
-    }
-    return str;
+  clickToCsv() {
+    this.csvService.exportToCsv(this.counselings, 'counselings', this.columns);
   }
 
 }
