@@ -1,12 +1,12 @@
 import {Injectable, PipeTransform} from '@angular/core';
-import {Counseling} from '../model/counseling';
 import {SortColumn, SortDirection} from './sortable.directive';
 import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 import {State} from './state';
-import {Client} from '../model/client';
 import {DecimalPipe} from '@angular/common';
 import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
 import {AllClient} from '../model/all-client';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../environments/environment';
 
 export interface SearchResult {
   clients: AllClient[];
@@ -27,6 +27,11 @@ function sort(clients: AllClient[], column: SortColumn, direction: string): AllC
 }
 
 function matches(client: AllClient, term: string, pipe: PipeTransform) {
+  if (client.firstName === null) {
+    client.firstName = '...';
+  } else if (client.lastName === null) {
+    client.lastName = '...';
+  }
   return client.firstName.toLowerCase().includes(term.toLowerCase())
     || client.lastName.toLowerCase().includes(term.toLowerCase())
     || client.keyword.toLowerCase().includes(term.toLowerCase());
@@ -37,8 +42,12 @@ function matches(client: AllClient, term: string, pipe: PipeTransform) {
 })
 export class ClientTableService {
 
+  apiUrl = environment.api_url;
+  UNDOK_CLIENTS = '/service/undok/clients';
+  UNDOK_DASHBOARD = '/dashboard';
+
   clients: AllClient[];
-  customers: AllClient[];
+  allClients: AllClient[];
 
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
@@ -54,18 +63,26 @@ export class ClientTableService {
   };
 
   constructor(
-    private pipe: DecimalPipe
+    private pipe: DecimalPipe,
+    private http: HttpClient
   ) {
     this._search$.pipe(tap(() => this._loading$.next(true)),
-                       debounceTime(200),
-                       switchMap(() => this._search()),
-                       delay(200),
-                       tap(() => this._loading$.next(false))
+      debounceTime(200),
+      switchMap(() => this._search()),
+      delay(200),
+      tap(() => this._loading$.next(false))
     ).subscribe(result => {
       this._clients$.next(result.clients);
       this._total$.next(result.total);
     });
     this._search$.next();
+    this.getAllClients().subscribe(result => {
+      this.allClients = result;
+    });
+  }
+
+  get allClients$() {
+    return this.allClients;
   }
 
   get clients$() {
@@ -121,7 +138,8 @@ export class ClientTableService {
     const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
 
     // 1. sort
-    let c = sort(this.customers, sortColumn, sortDirection);
+    console.log('this.customers: ', this.allClients);
+    let c = sort(this.allClients, sortColumn, sortDirection);
 
     // 2. filter
     c = c.filter(client => matches(client, searchTerm, this.pipe));
@@ -132,8 +150,12 @@ export class ClientTableService {
     return of({clients: c, total});
   }
 
-  public getClients(customers: AllClient[]) {
-    this.customers = customers;
+  // public getClients(customers: AllClient[]) {
+  //   this.customers = customers;
+  // }
+
+  getAllClients(): Observable<AllClient[]> {
+    return this.http.get<AllClient[]>(this.apiUrl + this.UNDOK_CLIENTS + '/all/');
   }
 
 }
