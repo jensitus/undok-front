@@ -44,23 +44,10 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getClientList();
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
-  }
-
-  getClientList() {
-    this.clientService.getAllClientsPaginated().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      console.log(result);
-      this.clients = result;
-      this.parseCounselingsToTableService();
-    });
-  }
-
-  parseCounselingsToTableService(): void {
-    this.clientTableService.getClients(this.clients);
   }
 
   onSort({column, direction}: SortEvent) {
@@ -76,7 +63,8 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   }
 
   clickToCsv() {
-    this.csvService.exportToCsv(this.clients, this.CSV_FILENAME, this.columns);
+    console.log('clients', this.clients$);
+    this.csvService.exportToCsv(this.clientTableService.allClients$, this.CSV_FILENAME, this.columns);
   }
 
 }

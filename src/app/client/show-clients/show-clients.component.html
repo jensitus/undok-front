@@ -3,7 +3,7 @@
   Klient:innen
 </h4>
 
-<form class="mt-3">
+<form class="mt-3" *ngIf="clients$">
 
   <div class="form-group form-inline">
     Full text search: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="clientTableService.searchTerm"/>
@@ -11,7 +11,7 @@
   </div>
 
 
-  <ng-container *ngIf="clients">
+  <ng-container>
     <table class="table table-striped mt-5">
       <thead>
       <tr>
