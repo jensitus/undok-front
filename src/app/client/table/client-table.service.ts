@@ -77,6 +77,7 @@ export class ClientTableService {
     });
     this._search$.next();
     this.getAllClients().subscribe(result => {
+      console.log('constructor result', result);
       this.allClients = result;
     });
   }
