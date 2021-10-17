@@ -46,7 +46,7 @@ export class ClientTableService {
   UNDOK_CLIENTS = '/service/undok/clients';
   UNDOK_DASHBOARD = '/dashboard';
 
-  clients: AllClient[];
+  // clients: AllClient[];
   allClients: AllClient[];
 
   private _loading$ = new BehaviorSubject<boolean>(true);

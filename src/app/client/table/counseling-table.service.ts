@@ -39,7 +39,6 @@ function matches(counseling: Counseling, term: string, pipe: PipeTransform) {
 })
 export class CounselingTableService {
 
-  counsels: Counseling[];
   counselings: Counseling[];
 
   private _loading$ = new BehaviorSubject<boolean>(true);
@@ -62,8 +61,8 @@ export class CounselingTableService {
     private counselingService: CounselingService
   ) {
     this.counselingService.getCounselings().subscribe(result => {
-      this.counsels = result;
-      console.log('ngOnInit: show counselings', this.counselings)
+      this.counselings = result;
+      console.log('ngOnInit: show counselings', this.counselings);
     });
     this._search$.pipe(
       tap(() => this._loading$.next(true)),
@@ -80,7 +79,7 @@ export class CounselingTableService {
   }
 
   get allCounselings() {
-    return this.counsels;
+    return this.counselings;
   }
 
   get counselings$() {
@@ -113,8 +112,8 @@ export class CounselingTableService {
     const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
 
     // 1. sort
-    console.log('this.counsels', this.counsels);
-    let couns = sort(this.counsels, sortColumn, sortDirection);
+    console.log('this.counsels', this.counselings);
+    let couns = sort(this.counselings, sortColumn, sortDirection);
 
     // 2. filter
     console.log('_search', couns);
