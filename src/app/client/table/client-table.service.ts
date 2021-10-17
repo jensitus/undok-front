@@ -66,6 +66,11 @@ export class ClientTableService {
     private pipe: DecimalPipe,
     private http: HttpClient
   ) {
+    this.getAllClients().subscribe(result => {
+      console.log('constructor result', result);
+      this.allClients = result;
+      console.log('constructor this.allClients', this.allClients);
+    });
     this._search$.pipe(tap(() => this._loading$.next(true)),
       debounceTime(200),
       switchMap(() => this._search()),
@@ -76,11 +81,6 @@ export class ClientTableService {
       this._total$.next(result.total);
     });
     this._search$.next();
-    this.getAllClients().subscribe(result => {
-      console.log('constructor result', result);
-      this.allClients = result;
-      console.log('constructor this.allClients', this.allClients);
-    });
   }
 
   get allClients$() {
