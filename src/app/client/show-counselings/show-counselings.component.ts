@@ -42,20 +42,10 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.counselingService.getCounselings().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      this.counselings = result;
-      console.log('ngOnInit: show counselings', this.counselings);
-      this.parseCounselingsToTableService();
-    });
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
-  }
-
-  parseCounselingsToTableService(): void {
-    console.log('parseCounselingsToTableService: show-counselings', this.counselings);
-    this.counselingTableService.getCounselings(this.counselings);
   }
 
   onSort({column, direction}: SortEvent) {
@@ -71,7 +61,7 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
   }
 
   clickToCsv() {
-    this.csvService.exportToCsv(this.counselings, 'counselings', this.columns);
+    this.csvService.exportToCsv(this.counselingTableService.allCounselings, 'counselings', this.columns);
   }
 
 }

@@ -3,8 +3,9 @@ import {Counseling} from '../model/counseling';
 import {SortColumn, SortDirection} from './sortable.directive';
 import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 import {DecimalPipe} from '@angular/common';
-import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
+import {debounceTime, delay, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {State} from './state';
+import {CounselingService} from '../service/counseling.service';
 
 interface SearchResult {
   counselings: Counseling[];
@@ -39,11 +40,14 @@ function matches(counseling: Counseling, term: string, pipe: PipeTransform) {
 export class CounselingTableService {
 
   counsels: Counseling[];
+  counselings: Counseling[];
 
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
   private _counselings$ = new BehaviorSubject<Counseling[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
+
+  private unsubscribe$ = new Subject();
 
   private _state: State = {
     page: 1,
@@ -54,8 +58,13 @@ export class CounselingTableService {
   };
 
   constructor(
-    private pipe: DecimalPipe
+    private pipe: DecimalPipe,
+    private counselingService: CounselingService
   ) {
+    this.counselingService.getCounselings().subscribe(result => {
+      this.counsels = result;
+      console.log('ngOnInit: show counselings', this.counselings)
+    });
     this._search$.pipe(
       tap(() => this._loading$.next(true)),
       debounceTime(200),
@@ -68,6 +77,10 @@ export class CounselingTableService {
     });
 
     this._search$.next();
+  }
+
+  get allCounselings() {
+    return this.counsels;
   }
 
   get counselings$() {
@@ -111,11 +124,6 @@ export class CounselingTableService {
     // 3. paginate
     couns = couns.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
     return of({counselings: couns, total});
-  }
-
-  public getCounselings(counsels: Counseling[]) {
-    this.counsels = counsels;
-    console.log('getCounselings.this.counsels', this.counsels);
   }
 
 }
