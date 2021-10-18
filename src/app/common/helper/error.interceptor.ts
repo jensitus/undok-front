@@ -18,7 +18,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
-      // console.log('errorInterceptor:', err);
+      console.log('errorInterceptor:', err);
       if (err.status === 401) {
         // console.log(err.message);
         // auto logout if 401 or 403 response returned from api
@@ -35,7 +35,6 @@ export class ErrorInterceptor implements HttpInterceptor {
       } else if (err.status === 404) {
         this.alertService.error(err.error.message);
       } else if (err.status === 409) {
-        this.alertService.error('err', true);
       } else if (err.status === 406) {
         this.alertService.error(err.error.text);
         //   this.router.navigate(['/login']);

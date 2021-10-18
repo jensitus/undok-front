@@ -60,7 +60,9 @@ export class CreateUserComponent implements OnInit {
         this.responseMessage = data;
         this.confUrl = this.responseMessage.text;
         console.log(this.confUrl);
-      });
+      }, error => {
+      this.alertService.error(error.error.text, true);
+    });
   }
 
   openLg(content) {
