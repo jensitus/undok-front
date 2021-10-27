@@ -18,7 +18,7 @@ import {CsvService} from '../service/csv.service';
 })
 export class ShowCounselingsComponent implements OnInit, OnDestroy {
 
-  counselings: Counseling[];
+  // counselings: Counseling[];
   columns = ['id', 'counselingStatus', 'entryDate', 'concern', 'concernCategory', 'activity', 'activityCategory', 'registeredBy', 'counselingDate', 'clientId', 'clientFullName', 'comment'];
   total$: Observable<number>;
   counselings$: Observable<Counseling[]>;

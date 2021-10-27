@@ -23,8 +23,13 @@ export class ErrorInterceptor implements HttpInterceptor {
         // console.log(err.message);
         // auto logout if 401 or 403 response returned from api
         this.authenticationService.logout();
-        this.alertService.error(err.message, true);
-        this.router.navigate(['/login']);
+        console.log('err.message 401', err.message);
+        if (err.message === 'Http failure response for http://localhost:8080/service/auth/login: 401 OK') {
+          this.alertService.error('wrong username or password');
+        } else {
+          this.alertService.error(err.message, true);
+          this.router.navigate(['/login']);
+        }
       } else if (err.status === 403) {
         console.log('403');
         this.alertService.error('Forbidden', true);
