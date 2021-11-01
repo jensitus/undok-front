@@ -88,13 +88,14 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
+    console.log('input type date', this.dateOfBirth);
     this.loading = true;
     const theRealDate = this.dateAdapter.fromModel(this.dateOfBirth);
     this.clientForm = {
       firstName: this.firstName,
       lastName: this.lastName,
       maritalStatus: this.m,
-      dateOfBirth: this.ngbFormatterService.format(theRealDate),
+      dateOfBirth: this.dateOfBirth, // this.ngbFormatterService.format(theRealDate),
       howHasThePersonHeardFromUs: this.howHasThePersonHeardFromUs,
       interpreterNecessary: this.interpreterNecessary,
       vulnerableWhenAssertingRights: this.vulnerableWhenAssertingRights,

@@ -1,9 +1,5 @@
 <form #createCounselingForm="ngForm" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <label>Status</label>
-    <input type="text" name="counselingStatus" [(ngModel)]="counseling.counselingStatus" placeholder="counselingStatus"
-           class="form-control"/>
-  </div>
+
   <div class="form-group">
     <div class="row">
       <div class="col-md-4">
@@ -12,7 +8,6 @@
       </div>
     </div>
   </div>
-
 
   <div class="form-group">
     <label>Anliegen</label>

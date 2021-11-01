@@ -27,10 +27,10 @@ function sort(counselings: Counseling[], column: SortColumn, direction: string):
 
 function matches(counseling: Counseling, term: string, pipe: PipeTransform) {
   return counseling.concern.toLowerCase().includes(term.toLowerCase())
-    || counseling.counselingStatus.toLowerCase().includes(term.toLowerCase())
+    // || counseling.counselingStatus.toLowerCase().includes(term.toLowerCase())
     || counseling.concernCategory.toLowerCase().includes(term.toLowerCase())
     || counseling.activity.toLowerCase().includes(term.toLowerCase())
-    || counseling.registeredBy.toLowerCase().includes(term.toLowerCase())
+    // || counseling.registeredBy.toLowerCase().includes(term.toLowerCase())
     || counseling.clientFullName.toLowerCase().includes(term.toLowerCase());
 }
 

@@ -70,17 +70,19 @@ export class ClientTableService {
       console.log('constructor result', result);
       this.allClients = result;
       console.log('constructor this.allClients', this.allClients);
+
+      this._search$.pipe(tap(() => this._loading$.next(true)),
+        debounceTime(200),
+        switchMap(() => this._search()),
+        delay(200),
+        tap(() => this._loading$.next(false))
+      ).subscribe(r => {
+        this._clients$.next(r.clients);
+        this._total$.next(r.total);
+      });
+      this._search$.next();
+
     });
-    this._search$.pipe(tap(() => this._loading$.next(true)),
-      debounceTime(200),
-      switchMap(() => this._search()),
-      delay(200),
-      tap(() => this._loading$.next(false))
-    ).subscribe(result => {
-      this._clients$.next(result.clients);
-      this._total$.next(result.total);
-    });
-    this._search$.next();
   }
 
   get allClients$() {
