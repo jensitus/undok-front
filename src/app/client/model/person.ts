@@ -8,6 +8,8 @@ export interface Person {
   dateOfBirth?: string;
   lastName?: string;
   firstName: string;
+  email?: string;
+  telephone?: string;
   address: Address;
   client: Client;
 }

@@ -19,6 +19,21 @@
     </div>
   </div>
   <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label><small>Email</small></label>
+        <input type="email" class="form-control" name="email" [(ngModel)]="client.person.email" placeholder="email"/>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label><small>Telephon</small></label>
+        <input type="tel" class="form-control" name="telephon" [(ngModel)]="client.person.telephone"
+               placeholder="telephone"/>
+      </div>
+    </div>
+  </div>
+  <div class="row">
     <div class="col">
       <div class="form-group">
         <label><small>Straße</small></label>
