@@ -6,7 +6,8 @@ export interface ClientForm {
   firstName: string;
   lastName: string;
   dateOfBirth?: string;
-  contactData?: string;
+  email?: string;
+  telephone?: string;
 
   // client:
   keyword: string;
