@@ -9,7 +9,7 @@
           <div>
             <small class="text-muted">
               <fa-icon [icon]="faClock"></fa-icon>
-              active since: {{item.createdAt | date:'longDate'}}</small>
+              created: {{item.createdAt | date:'longDate'}}</small>
           </div>
           <div>
             <b><span [innerHTML]="item.name"></span></b>
@@ -18,7 +18,7 @@
             <small>Client: <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a></small>
           </div>
           <div *ngIf="item.counselingDate">
-            <small>dueDate: <b>{{item.counselingDate}}</b></small>
+            <small><b>{{item.counselingDate | date: 'short'}}</b></small>
           </div>
         </div>
       </div>
@@ -32,7 +32,7 @@
           <div>
             <small class="text-muted">
               <fa-icon [icon]="faBomb"></fa-icon>
-              active since: {{item.createdAt | date:'longDate'}}</small>
+              created: {{item.createdAt | date:'longDate'}}</small>
           </div>
           <div>
             <b><span [innerHTML]="item.name"></span></b>
@@ -41,7 +41,7 @@
             <small>Client: <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a></small>
           </div>
           <div *ngIf="item.counselingDate">
-            <small>dueDate: <b>{{item.counselingDate}}</b></small>
+            <small><b>{{item.counselingDate | date: 'medium'}}</b></small>
           </div>
         </div>
       </div>
@@ -55,7 +55,7 @@
           <div>
             <small class="text-muted">
               <fa-icon [icon]="faClock"></fa-icon>
-              active since: {{item.createdAt | date:'longDate'}}</small>
+              created: {{item.createdAt | date:'longDate'}}</small>
           </div>
           <div>
             <b><span [innerHTML]="item.name"></span></b>
@@ -64,7 +64,7 @@
             <small>Client: <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a></small>
           </div>
           <div *ngIf="item.counselingDate">
-            <small>dueDate: <b>{{item.counselingDate}}</b></small>
+            <small><b>{{item.counselingDate | date: 'medium'}}</b></small>
           </div>
         </div>
       </div>
@@ -85,7 +85,7 @@
             <small>Client: <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a></small>
           </div>
           <div *ngIf="item.counselingDate">
-            <small>dueDate: <b>{{item.counselingDate}}</b></small>
+            <small><b>{{item.counselingDate | date: 'medium'}}</b></small>
           </div>
         </div>
       </div>
