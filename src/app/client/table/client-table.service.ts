@@ -67,7 +67,6 @@ export class ClientTableService {
     private http: HttpClient
   ) {
     this.getAllClients().subscribe(result => {
-      console.log('constructor result', result);
       this.allClients = result;
       console.log('constructor this.allClients', this.allClients);
 

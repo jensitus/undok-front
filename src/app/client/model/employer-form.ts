@@ -4,4 +4,6 @@ export interface EmployerForm {
   employerDateOfBirth: string;
   employerCompany: string;
   employerPosition: string;
+  employerTelephone: string;
+  employerEmail: string;
 }

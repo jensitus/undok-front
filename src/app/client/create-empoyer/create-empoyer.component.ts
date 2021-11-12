@@ -19,6 +19,8 @@ export class CreateEmpoyerComponent implements OnInit, OnDestroy {
   employerDateOfBirth: string;
   employerCompany: string;
   employerPosition: string;
+  email: string;
+  telephone: string;
   employerForm: EmployerForm;
 
 
@@ -41,6 +43,8 @@ export class CreateEmpoyerComponent implements OnInit, OnDestroy {
       employerDateOfBirth: this.employerDateOfBirth,
       employerCompany: this.employerCompany,
       employerPosition: this.employerPosition,
+      employerTelephone: this.telephone,
+      employerEmail: this.email
     };
     console.log(this.employerForm);
     this.employerService.createEmployer(this.employerForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {

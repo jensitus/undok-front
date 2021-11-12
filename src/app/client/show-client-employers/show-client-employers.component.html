@@ -8,7 +8,7 @@
       </div>
       <div class="row mt-3">
         <div class="col">
-          <span class="text-secondary">Firma:</span> {{e.company}}
+          <span class="text-secondary">Firma:</span> <b>{{e.company}}</b>
         </div>
 
       </div>
@@ -18,6 +18,16 @@
         </div>
         <div class="col">
           <span class="text-secondary">Position:</span> {{e.position}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <span class="text-secondary">Email:</span>
+          {{e.person.email}}
+        </div>
+        <div class="col">
+          <span class="text-secondary">Telephon:</span>
+          {{e.person.telephone}}
         </div>
       </div>
       <div class="row mt-3">
