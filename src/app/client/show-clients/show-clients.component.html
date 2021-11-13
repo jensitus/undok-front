@@ -18,7 +18,7 @@
         <th>Firstname</th>
         <th>Lastname</th>
         <th>Keyword</th>
-        <th></th>
+        <th>Bildung</th>
       </tr>
       </thead>
       <tbody>
@@ -31,6 +31,9 @@
         </td>
         <td>
           <ngb-highlight [result]="client.keyword" [term]="clientTableService.searchTerm"></ngb-highlight>
+        </td>
+        <td>
+          <ngb-highlight [result]="client.education" [term]="clientTableService.searchTerm"></ngb-highlight>
         </td>
         <td>
           <a [routerLink]="['/clients', client.id]"><small>link</small></a>
