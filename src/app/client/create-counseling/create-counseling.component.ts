@@ -8,6 +8,7 @@ import {NgbDateAdapter, NgbDateStruct, NgbTimepicker} from '@ng-bootstrap/ng-boo
 import {NgbFormatterService} from '../../common/services/ngb-formatter.service';
 import {CommonService} from '../../common/services/common.service';
 import {DateTimeService} from '../service/date-time.service';
+import {User} from '../../auth/model/user';
 
 @Component({
   selector: 'app-create-counseling',
@@ -20,6 +21,7 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
 
   time = {hour: 13, minute: 30};
   dateObject: NgbDateStruct;
+  currentUser: User;
 
   private unsubscribe$ = new Subject();
   loading = false;
@@ -45,6 +47,12 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.getCurrentUser();
+  }
+
+  private getCurrentUser() {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.registeredBy = this.currentUser.username;
   }
 
   onSubmit() {
