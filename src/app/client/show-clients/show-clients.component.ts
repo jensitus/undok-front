@@ -28,7 +28,8 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   loading = false;
   faUsers = faUsers;
   tableColumns: string[];
-  columns = ['id', 'firstName', 'lastName', 'street', 'zipCode', 'city', 'country', 'keyword', 'education', 'maritalStatus', 'interpreterNecessary', 'howHasThePersonHeardFromUs', 'vulnerableWhenAssertingRights',
+  columns = ['id', 'keyword', 'firstName', 'lastName', 'dateOfBirth', 'email', 'telephone', 'street', 'zipCode', 'city', 'country', 'education',
+    'maritalStatus', 'interpreterNecessary', 'howHasThePersonHeardFromUs', 'vulnerableWhenAssertingRights',
     'counselings', 'nationality', 'language', 'currentResidentStatus', 'formerResidentStatus', 'labourMarketAccess', 'position',
     'sector', 'union', 'membership', 'organization'];
 
