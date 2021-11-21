@@ -33,9 +33,9 @@ function matches(client: AllClient, term: string, pipe: PipeTransform) {
   if (client.lastName === null) {
     client.lastName = '...';
   }
-  // if (client.education === null) {
-  //   client.education = '...';
-  // }
+  if (client.education === null) {
+    client.education = '...';
+  }
   return client.firstName.toLowerCase().includes(term.toLowerCase())
     || client.lastName.toLowerCase().includes(term.toLowerCase())
     || client.keyword.toLowerCase().includes(term.toLowerCase())

@@ -1,7 +1,18 @@
-<h4>
-  <fa-icon [icon]="faTasks" class="text-danger mr-5"></fa-icon>
-  Beratungen
-</h4>
+<div class="row">
+  <div class="col-md-10">
+    <h4>
+      <fa-icon [icon]="faTasks" class="text-danger mr-5"></fa-icon>
+      Beratungen
+    </h4>
+  </div>
+  <div class="col-md-2">
+    <div class="input-group">
+      <button class="btn btn-sm btn-outline-success" (click)="clickToCsv()">
+        download csv
+      </button>
+    </div>
+  </div>
+</div>
 
 <a #documentLink class="d-none"></a>
 
@@ -15,7 +26,10 @@
   <table class="table table-striped mt-5">
     <thead>
     <tr>
-      <th scope="col">Datum</th>
+      <th scope="col">Datum</th><h4>
+  <fa-icon [icon]="faTasks" class="text-danger mr-5"></fa-icon>
+  Beratungen
+</h4>
       <th scope="col">Anliegen</th>
       <th scope="col">Kategorie</th>
       <th scope="col">Activität</th>
@@ -44,12 +58,6 @@
     </tr>
     </tbody>
   </table>
-
-  <div class="input-group">
-    <button class="btn btn-sm btn-outline-success" (click)="clickToCsv()">
-      download csv
-    </button>
-  </div>
 
   <div class="d-flex justify-content-between p-2">
     <ngb-pagination
