@@ -49,7 +49,9 @@ export class ErrorInterceptor implements HttpInterceptor {
         //   // this.router.navigate(['/login']);
       } else if (err.status === 422) {
       } else if (err.status === 400) {
-        this.alertService.error(err.error.errors[0].defaultMessage);
+        console.log('err 400', err);
+        console.log(err.error.error);
+        this.alertService.error(err.error.error);
       }
 
       // const error = err.text || err.statusText;

@@ -4,7 +4,6 @@ import {takeUntil} from 'rxjs/operators';
 import {Employer} from '../model/employer';
 import {EmployerService} from '../service/employer.service';
 import {EmployerTableService} from '../table/employer-table.service';
-import {Counseling} from '../model/counseling';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
 import {CommonService} from '../../common/services/common.service';
 
@@ -32,6 +31,7 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log('ngOnInit');
     this.getEmployerList();
   }
 
@@ -42,7 +42,7 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
   getEmployerList(): any {
     this.employerService.getAllEmployers(this.clientId).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       this.employers = result;
-      this.parseEmployersToTableService();
+      // this.parseEmployersToTableService();
     });
   }
 
@@ -68,11 +68,6 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
       console.log(r);
       this.commonService.setEmployerSubject(true);
     });
-  }
-
-  parseEmployersToTableService(): void {
-    console.log('parseEmployersToTable', this.employers);
-    this.employerTableService.getEmployers(this.employers);
   }
 
   onSort({column, direction}: SortEvent) {

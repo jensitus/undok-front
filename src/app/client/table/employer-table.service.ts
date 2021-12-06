@@ -5,6 +5,7 @@ import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 import {State} from './state';
 import {DecimalPipe} from '@angular/common';
 import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
+import {EmployerService} from '../service/employer.service';
 
 interface SearchResult {
   employers: Employer[];
@@ -14,7 +15,6 @@ interface SearchResult {
 const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
 function sort(employers: Employer[], column: SortColumn, direction: string): Employer[] {
-  console.log('function sort', employers);
   if (direction === '' || column === '') {
     return employers;
   } else {
@@ -52,19 +52,26 @@ export class EmployerTableService {
     sortDirection: ''
   };
 
-  constructor(private pipe: DecimalPipe) {
-    this._search$.pipe(
-      tap(() => this._loading$.next(true)),
-      debounceTime(200),
-      switchMap(() => this._search()),
-      delay(200),
-      tap(() => this._loading$.next(false))
-    ).subscribe(result => {
-      this._employers$.next(result.employers);
-      this._total$.next(result.total);
-    });
+  constructor(
+    private pipe: DecimalPipe,
+    private employerService: EmployerService
+  ) {
+    this.employerService.getAllEmployers(null).pipe().subscribe(employers => {
+      this.employers = employers;
 
-    this._search$.next();
+      this._search$.pipe(
+        tap(() => this._loading$.next(true)),
+        debounceTime(200),
+        switchMap(() => this._search()),
+        delay(200),
+        tap(() => this._loading$.next(false))
+      ).subscribe(result => {
+        this._employers$.next(result.employers);
+        this._total$.next(result.total);
+      });
+
+      this._search$.next();
+    });
   }
 
   get employers$() {
@@ -95,7 +102,6 @@ export class EmployerTableService {
     const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
 
     // 1. sort
-    console.log('_search', this.employers);
     let emps = sort(this.employers, sortColumn, sortDirection);
 
     // 2. filter
@@ -105,11 +111,6 @@ export class EmployerTableService {
     // 3. paginate
     emps = emps.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
     return of({employers: emps, total});
-  }
-
-  public getEmployers(employers: Employer[]) {
-    this.employers = employers;
-    console.log('getEmployers::this.employers', this.employers);
   }
 
 }

@@ -11,7 +11,8 @@
       <th scope="col">Last Name</th>
       <th scope="col">Company</th>
       <th scope="col">Position</th>
-      <th scope="col">add</th>
+      <th scope="col">Phone</th>
+      <th scope="col" *ngIf="clientId">add</th>
     </tr>
     </thead>
     <tbody>
@@ -30,6 +31,9 @@
         <ngb-highlight [result]="employer.position" [term]="employerTableService.searchTerm"></ngb-highlight>
       </td>
       <td>
+        {{employer.person.telephone}}
+      </td>
+      <td *ngIf="clientId">
         <button class="btn btn-sm btn-outline-info" (click)="addEmployer(employer.id)">add</button>
       </td>
     </tr>
