@@ -31,19 +31,10 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit');
-    this.getEmployerList();
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
-  }
-
-  getEmployerList(): any {
-    this.employerService.getAllEmployers(this.clientId).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      this.employers = result;
-      // this.parseEmployersToTableService();
-    });
   }
 
   setEmployer(e_id) {

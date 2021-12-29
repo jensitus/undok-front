@@ -10,7 +10,6 @@ export class ShowEmployersComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('Show Employers Kreuz Verfickte');
   }
 
 }
