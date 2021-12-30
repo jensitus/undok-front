@@ -1,7 +1,6 @@
 import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ClientService} from '../service/client.service';
 import {Observable, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
 import {Counseling} from '../model/counseling';
 import {faTasks} from '@fortawesome/free-solid-svg-icons';
 import {CounselingTableService} from '../table/counseling-table.service';

@@ -33,12 +33,16 @@ function matches(client: AllClient, term: string, pipe: PipeTransform) {
   if (client.lastName === null) {
     client.lastName = '...';
   }
+  if (client.gender === null) {
+    client.gender = '...';
+  }
   if (client.education === null) {
     client.education = '...';
   }
   return client.firstName.toLowerCase().includes(term.toLowerCase())
     || client.lastName.toLowerCase().includes(term.toLowerCase())
     || client.keyword.toLowerCase().includes(term.toLowerCase())
+    || client.gender.toLowerCase().includes(term.toLowerCase())
     || client.education.toLocaleLowerCase().includes(term.toLowerCase());
 }
 
@@ -51,7 +55,6 @@ export class ClientTableService {
   UNDOK_CLIENTS = '/service/undok/clients';
   UNDOK_DASHBOARD = '/dashboard';
 
-  // clients: AllClient[];
   allClients: AllClient[];
 
   private _loading$ = new BehaviorSubject<boolean>(true);

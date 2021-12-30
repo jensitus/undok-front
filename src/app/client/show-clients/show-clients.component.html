@@ -29,6 +29,7 @@
         <th>Firstname</th>
         <th>Lastname</th>
         <th>Keyword</th>
+        <th>Gender</th>
         <th>Bildung</th>
       </tr>
       </thead>
@@ -42,6 +43,9 @@
         </td>
         <td>
           <ngb-highlight [result]="client.keyword" [term]="clientTableService.searchTerm"></ngb-highlight>
+        </td>
+        <td>
+          <ngb-highlight [result]="client.gender" [term]="clientTableService.searchTerm"></ngb-highlight>
         </td>
         <td>
           <ngb-highlight [result]="client.education" [term]="clientTableService.searchTerm"></ngb-highlight>

@@ -4,7 +4,6 @@ import {Address} from './address';
 export interface Person {
   id: string;
   type: string;
-  // sex: string;
   dateOfBirth?: string;
   lastName?: string;
   firstName: string;
@@ -12,4 +11,5 @@ export interface Person {
   telephone?: string;
   address: Address;
   client: Client;
+  gender?: string;
 }
