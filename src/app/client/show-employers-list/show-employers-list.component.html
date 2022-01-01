@@ -53,7 +53,8 @@
     <ngb-pagination
       [collectionSize]="(total$ | async)!" [(page)]="employerTableService.page" [pageSize]="employerTableService.pageSize">
     </ngb-pagination>
-
+  </div>
+  <div>
     <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="employerTableService.pageSize">
       <option [ngValue]="2">2 items per page</option>
       <option [ngValue]="4">4 items per page</option>
