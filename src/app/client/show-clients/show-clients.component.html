@@ -23,12 +23,26 @@
 
 
   <ng-container>
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination
+        [collectionSize]="(total$ | async)!" [(page)]="clientTableService.page" [maxSize]="5" [rotate]="true"
+        [pageSize]="clientTableService.pageSize"
+        [ellipses]="false" [boundaryLinks]="true">
+      </ngb-pagination>
+      <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="clientTableService.pageSize">
+        <option [ngValue]="20">20 items per page</option>
+        <option [ngValue]="40">40 items per page</option>
+        <option [ngValue]="60">60 items per page</option>
+      </select>
+    </div>
+
     <table class="table table-striped mt-5">
       <thead>
       <tr>
         <th>Firstname</th>
         <th>Lastname</th>
         <th>Keyword</th>
+        <th>Staatsbürgerschaft</th>
         <th>Gender</th>
         <th>Bildung</th>
       </tr>
@@ -45,6 +59,9 @@
           <ngb-highlight [result]="client.keyword" [term]="clientTableService.searchTerm"></ngb-highlight>
         </td>
         <td>
+          <ngb-highlight [result]="client.nationality" [term]="clientTableService.searchTerm"></ngb-highlight>
+        </td>
+        <td>
           <ngb-highlight [result]="client.gender" [term]="clientTableService.searchTerm"></ngb-highlight>
         </td>
         <td>
@@ -56,19 +73,6 @@
       </tr>
       </tbody>
     </table>
-
-    <div class="d-flex justify-content-between p-2">
-      <ngb-pagination
-        [collectionSize]="(total$ | async)!" [(page)]="clientTableService.page" [pageSize]="clientTableService.pageSize">
-      </ngb-pagination>
-    </div>
-    <div>
-      <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="clientTableService.pageSize">
-        <option [ngValue]="20">20 items per page</option>
-        <option [ngValue]="40">40 items per page</option>
-        <option [ngValue]="60">60 items per page</option>
-      </select>
-    </div>
   </ng-container>
 
 </form>

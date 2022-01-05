@@ -39,11 +39,15 @@ function matches(client: AllClient, term: string, pipe: PipeTransform) {
   if (client.education === null) {
     client.education = '...';
   }
+  if (client.nationality === null) {
+    client.nationality = '...';
+  }
   return client.firstName.toLowerCase().includes(term.toLowerCase())
     || client.lastName.toLowerCase().includes(term.toLowerCase())
     || client.keyword.toLowerCase().includes(term.toLowerCase())
     || client.gender.toLowerCase().includes(term.toLowerCase())
-    || client.education.toLocaleLowerCase().includes(term.toLowerCase());
+    || client.education.toLocaleLowerCase().includes(term.toLowerCase())
+    || client.nationality.toLowerCase().includes(term.toLowerCase());
 }
 
 @Injectable({
