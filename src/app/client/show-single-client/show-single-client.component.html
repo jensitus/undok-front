@@ -129,18 +129,10 @@
     <div *ngIf="client">
       <div class="row mt-2">
         <div class="col">
-          <button class="btn btn-sm btn-outline-primary" (click)="openEmployer(create_employer)">Neuen AG anlegen
-          </button>
-        </div>
-        <div class="col">
           <button class="btn btn-sm btn-outline-success" (click)="openEditModal(edit_client)">Edit Client</button>
         </div>
       </div>
-      <div class="row mt-2">
-        <div class="col">
-          <button class="btn btn-sm btn-outline-primary" (click)="openEmployer(list_employer)">AGs zuordnen</button>
-        </div>
-      </div>
+
       <div class="row mt-2">
         <div class="col">
           <app-show-client-employers [clientId]="client.id"></app-show-client-employers>

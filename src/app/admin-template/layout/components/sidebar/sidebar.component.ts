@@ -117,6 +117,10 @@ export class SidebarComponent implements OnInit {
     this.sidebarService.setNewEmployerSubject(true);
   }
 
+  assignEmployer() {
+    this.sidebarService.setAssignEmployerSubject(true);
+  }
+
   // checkAdmin() {
   //   console.log('this.currentUser.roles', this.currentUser.roles);
   //   for (const r of this.currentUser.roles) {

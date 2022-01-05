@@ -25,6 +25,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   public isCollapsed = false;
   @ViewChild('content') contentCreateCounseling: ElementRef;
   @ViewChild('create_employer') createEmployer: ElementRef;
+  @ViewChild('list_employer') assignEmployer: ElementRef;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -54,6 +55,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
       this.getReloadClientSubject();
       this.checkIfNewCounselingIsNeeded();
       this.checkIfNewEmployerIsNeeded();
+      this.checkIfEmployerIsToBeAssigned();
     });
     this.sidebarService.setClientButtonSubject(true);
   }
@@ -143,6 +145,14 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.sidebarService.newEmployerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(newEmployer => {
       if (newEmployer === true) {
         this.openEmployer(this.createEmployer);
+      }
+    });
+  }
+
+  checkIfEmployerIsToBeAssigned() {
+    this.sidebarService.assignEmployerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(assignEmployer => {
+      if (assignEmployer === true) {
+        this.openEmployer(this.assignEmployer);
       }
     });
   }
