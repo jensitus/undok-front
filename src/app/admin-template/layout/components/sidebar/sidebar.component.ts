@@ -121,6 +121,10 @@ export class SidebarComponent implements OnInit {
     this.sidebarService.setAssignEmployerSubject(true);
   }
 
+  editClient() {
+    this.sidebarService.setEditClientSubject(true);
+  }
+
   // checkAdmin() {
   //   console.log('this.currentUser.roles', this.currentUser.roles);
   //   for (const r of this.currentUser.roles) {

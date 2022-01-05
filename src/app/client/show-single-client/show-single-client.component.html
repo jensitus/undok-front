@@ -125,14 +125,8 @@
   </div>
 </div>
 <div class="row mt-2">
-  <div class="col">
+  <div class="col-md-6">
     <div *ngIf="client">
-      <div class="row mt-2">
-        <div class="col">
-          <button class="btn btn-sm btn-outline-success" (click)="openEditModal(edit_client)">Edit Client</button>
-        </div>
-      </div>
-
       <div class="row mt-2">
         <div class="col">
           <app-show-client-employers [clientId]="client.id"></app-show-client-employers>
@@ -140,7 +134,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-7" *ngIf="client">
+  <div class="col-md-6" *ngIf="client">
     <app-show-counselings-per-client [counselings]="client.counselings"></app-show-counselings-per-client>
   </div>
 

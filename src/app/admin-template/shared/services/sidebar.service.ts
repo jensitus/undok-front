@@ -12,6 +12,7 @@ export class SidebarService {
   public newCounselingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public newEmployerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public assignEmployerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  public editClientSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   setClientButtonSubject(value) {
     if (value) {
@@ -42,6 +43,14 @@ export class SidebarService {
       this.assignEmployerSubject.next(value);
     } else {
       this.assignEmployerSubject.next(null);
+    }
+  }
+
+  setEditClientSubject(value) {
+    if (value) {
+      this.editClientSubject.next(value);
+    } else {
+      this.editClientSubject.next(null);
     }
   }
 

@@ -44,6 +44,11 @@
       <span>{{ 'assign employer' }}</span>
     </a>
 
+    <a *ngIf="showClientButtons" class="list-group-item" (click)="editClient()">
+      <fa-icon class="text-success" [icon]="faUsers"></fa-icon>&nbsp;
+      <span>{{ 'edit client' }}</span>
+    </a>
+
     <div class="header-fields">
       <a (click)="rltAndLtr()" class="list-group-item">
         <span><i class="fa fa-arrows-h"></i>&nbsp; RTL/LTR</span>

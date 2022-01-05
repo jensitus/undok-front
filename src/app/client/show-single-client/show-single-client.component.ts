@@ -26,6 +26,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   @ViewChild('content') contentCreateCounseling: ElementRef;
   @ViewChild('create_employer') createEmployer: ElementRef;
   @ViewChild('list_employer') assignEmployer: ElementRef;
+  @ViewChild('edit_client') editClient: ElementRef;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -56,6 +57,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
       this.checkIfNewCounselingIsNeeded();
       this.checkIfNewEmployerIsNeeded();
       this.checkIfEmployerIsToBeAssigned();
+      this.checkIfClientIsToBeEdited();
     });
     this.sidebarService.setClientButtonSubject(true);
   }
@@ -153,6 +155,14 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.sidebarService.assignEmployerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(assignEmployer => {
       if (assignEmployer === true) {
         this.openEmployer(this.assignEmployer);
+      }
+    });
+  }
+
+  checkIfClientIsToBeEdited() {
+    this.sidebarService.editClientSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(editClient => {
+      if (editClient === true) {
+        this.openEditModal(this.editClient);
       }
     });
   }
