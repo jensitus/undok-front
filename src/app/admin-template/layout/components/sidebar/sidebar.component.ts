@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
 import {User} from '../../../../auth/model/user';
-import {faBars, faCampground, faCoffee, faPowerOff, faTachometerAlt, faUser, faUsers, faTasks} from '@fortawesome/free-solid-svg-icons';
+import {faBars, faCampground, faCoffee, faPowerOff, faTachometerAlt, faUser, faUsers, faTasks, faSurprise} from '@fortawesome/free-solid-svg-icons';
 import {SidebarService} from '../../../shared/services/sidebar.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -26,6 +26,7 @@ export class SidebarComponent implements OnInit {
   faCampground = faCampground;
   faUsers = faUsers;
   faTasks = faTasks;
+  faSurprise = faSurprise;
   private unsubscribe$ = new Subject();
   showClientButtons = false;
 
@@ -110,6 +111,10 @@ export class SidebarComponent implements OnInit {
 
   newCounseling() {
     this.sidebarService.setNewCounselingSubject(true);
+  }
+
+  newEmployer() {
+    this.sidebarService.setNewEmployerSubject(true);
   }
 
   // checkAdmin() {

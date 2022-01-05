@@ -34,6 +34,11 @@
       <span>{{ 'new counseling' }}</span>
     </a>
 
+    <a *ngIf="showClientButtons" class="list-group-item" (click)="newEmployer()">
+      <fa-icon class="text-primary" [icon]="faSurprise"></fa-icon>&nbsp;
+      <span>{{ 'new Employer' }}</span>
+    </a>
+
     <div class="header-fields">
       <a (click)="rltAndLtr()" class="list-group-item">
         <span><i class="fa fa-arrows-h"></i>&nbsp; RTL/LTR</span>

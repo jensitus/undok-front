@@ -10,9 +10,9 @@ export class SidebarService {
 
   public clientButtonSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public newCounselingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  public newEmployerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   setClientButtonSubject(value) {
-    console.log('clientButtonSubject', value);
     if (value) {
       this.clientButtonSubject.next(value);
     } else {
@@ -21,11 +21,18 @@ export class SidebarService {
   }
 
   setNewCounselingSubject(value) {
-    console.log('newCounselingSubject');
     if (value) {
       this.newCounselingSubject.next(value);
     } else {
       this.newCounselingSubject.next(null);
+    }
+  }
+
+  setNewEmployerSubject(value) {
+    if (value) {
+      this.newEmployerSubject.next(value);
+    } else {
+      this.newEmployerSubject.next(null);
     }
   }
 
