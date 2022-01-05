@@ -33,6 +33,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   contactData: string;
   email: string;
   telephone: string;
+  gender: string;
 
   // client:
   maStatus = Object.values(MaritalStatus);
@@ -98,6 +99,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
       lastName: this.lastName,
       email: this.email,
       telephone: this.telephone,
+      gender: this.gender,
       maritalStatus: this.m,
       dateOfBirth: this.dateOfBirth, // this.ngbFormatterService.format(theRealDate),
       howHasThePersonHeardFromUs: this.howHasThePersonHeardFromUs,

@@ -24,6 +24,19 @@
     <span class="ml-3" *ngIf="counselingTableService.loading$ | async">Loading...</span>
   </div>
 
+  <ng-container>
+  <div class="d-flex justify-content-between p-2">
+    <ngb-pagination
+      [collectionSize]="(total$ | async)!" [(page)]="counselingTableService.page"
+      [pageSize]="counselingTableService.pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
+    </ngb-pagination>
+    <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="counselingTableService.pageSize">
+      <option [ngValue]="2">2 items per page</option>
+      <option [ngValue]="4">4 items per page</option>
+      <option [ngValue]="6">6 items per page</option>
+    </select>
+  </div>
+
   <table class="table table-striped mt-5">
     <thead>
     <tr>
@@ -56,18 +69,5 @@
     </tr>
     </tbody>
   </table>
-
-  <div class="d-flex justify-content-between p-2">
-    <ngb-pagination
-      [collectionSize]="(total$ | async)!" [(page)]="counselingTableService.page"
-      [pageSize]="counselingTableService.pageSize">
-    </ngb-pagination>
-
-    <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="counselingTableService.pageSize">
-      <option [ngValue]="2">2 items per page</option>
-      <option [ngValue]="4">4 items per page</option>
-      <option [ngValue]="6">6 items per page</option>
-    </select>
-  </div>
-
+  </ng-container>
 </form>

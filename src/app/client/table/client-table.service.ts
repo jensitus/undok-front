@@ -33,13 +33,21 @@ function matches(client: AllClient, term: string, pipe: PipeTransform) {
   if (client.lastName === null) {
     client.lastName = '...';
   }
+  if (client.gender === null) {
+    client.gender = '...';
+  }
   if (client.education === null) {
     client.education = '...';
+  }
+  if (client.nationality === null) {
+    client.nationality = '...';
   }
   return client.firstName.toLowerCase().includes(term.toLowerCase())
     || client.lastName.toLowerCase().includes(term.toLowerCase())
     || client.keyword.toLowerCase().includes(term.toLowerCase())
-    || client.education.toLocaleLowerCase().includes(term.toLowerCase());
+    || client.gender.toLowerCase().includes(term.toLowerCase())
+    || client.education.toLocaleLowerCase().includes(term.toLowerCase())
+    || client.nationality.toLowerCase().includes(term.toLowerCase());
 }
 
 @Injectable({
@@ -51,7 +59,6 @@ export class ClientTableService {
   UNDOK_CLIENTS = '/service/undok/clients';
   UNDOK_DASHBOARD = '/dashboard';
 
-  // clients: AllClient[];
   allClients: AllClient[];
 
   private _loading$ = new BehaviorSubject<boolean>(true);
@@ -61,7 +68,7 @@ export class ClientTableService {
 
   private _state: State = {
     page: 1,
-    pageSize: 4,
+    pageSize: 40,
     searchTerm: '',
     sortColumn: '',
     sortDirection: ''

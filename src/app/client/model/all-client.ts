@@ -1,6 +1,5 @@
 import {MaritalStatus} from './marital-status.enum';
 import {Counseling} from './counseling';
-import {Person} from './person';
 
 export interface AllClient {
   id: string;
@@ -10,8 +9,8 @@ export interface AllClient {
   firstName: string;
   lastName?: string;
   type: string;
-  // sex: string;
   dateOfBirth?: string;
+  gender?: string;
 
   // address:
   street: string;

@@ -6,6 +6,7 @@ import {EmployerService} from '../service/employer.service';
 import {EmployerTableService} from '../table/employer-table.service';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
 import {CommonService} from '../../common/services/common.service';
+import {faSurprise} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-show-employers-list',
@@ -20,6 +21,7 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
   total$: Observable<number>;
   employers$: Observable<Employer[]>;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+  faSurprise = faSurprise;
 
   constructor(
     private employerService: EmployerService,

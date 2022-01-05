@@ -1,8 +1,30 @@
+<div class="row">
+  <div class="col-md-10">
+    <h4>
+      <fa-icon [icon]="faSurprise" class="text-warning mr-5"></fa-icon>
+      Arbeitgeber:innen
+    </h4>
+  </div>
+</div>
+
 <form>
   <div class="form-group form-inline">
-    Full text search: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="employerTableService.searchTerm"/>
+    Filter: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="employerTableService.searchTerm"/>
     <span class="ml-3" *ngIf="employerTableService.loading$ | async">Loading...</span>
   </div>
+
+  <div class="d-flex justify-content-between p-2">
+    <ngb-pagination
+      [collectionSize]="(total$ | async)!" [(page)]="employerTableService.page" [pageSize]="employerTableService.pageSize"
+      [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
+    </ngb-pagination>
+    <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="employerTableService.pageSize">
+      <option [ngValue]="2">2 items per page</option>
+      <option [ngValue]="4">4 items per page</option>
+      <option [ngValue]="6">6 items per page</option>
+    </select>
+  </div>
+
   <table class="table table-striped mt-5">
     <thead>
     <tr>
@@ -39,18 +61,6 @@
     </tr>
     </tbody>
   </table>
-
-  <div class="d-flex justify-content-between p-2">
-    <ngb-pagination
-      [collectionSize]="(total$ | async)!" [(page)]="employerTableService.page" [pageSize]="employerTableService.pageSize">
-    </ngb-pagination>
-
-    <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="employerTableService.pageSize">
-      <option [ngValue]="2">2 items per page</option>
-      <option [ngValue]="4">4 items per page</option>
-      <option [ngValue]="6">6 items per page</option>
-    </select>
-  </div>
 
 </form>
 
