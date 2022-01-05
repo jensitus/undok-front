@@ -48,14 +48,6 @@ export class CommonService {
     }
   }
 
-  setNewTodoSubject(value) {
-    if (value) {
-      this.todoSubject.next(value);
-    } else {
-      this.todoSubject.next(null);
-    }
-  }
-
   checkAuthToken() {
     this.getCurrentUser();
     if (this.currentUser == null) {
@@ -82,37 +74,45 @@ export class CommonService {
     }
   }
 
-  setTaskSubject(value) {
-    if (value) {
-      this.taskSubject.next(value);
-    } else {
-      this.taskSubject.next(null);
-    }
-  }
-
-  setItemSubject(value) {
-    if (value) {
-      this.itemSubject.next(value);
-    } else {
-      this.itemSubject.next(null);
-    }
-  }
-
-  setDescriptionUpdateSubject(value) {
-    if (value) {
-      this.descriptionUpdateSubject.next(value);
-    } else {
-      this.descriptionUpdateSubject.next(null);
-    }
-  }
-
-  setDueDateSubject(value) {
-    if (value) {
-      this.dueDateSubject.next(value);
-    } else {
-      this.dueDateSubject.next(null);
-    }
-  }
+  // setTaskSubject(value) {
+  //   if (value) {
+  //     this.taskSubject.next(value);
+  //   } else {
+  //     this.taskSubject.next(null);
+  //   }
+  // }
+  //
+  // setNewTodoSubject(value) {
+  //   if (value) {
+  //     this.todoSubject.next(value);
+  //   } else {
+  //     this.todoSubject.next(null);
+  //   }
+  // }
+  //
+  // setItemSubject(value) {
+  //   if (value) {
+  //     this.itemSubject.next(value);
+  //   } else {
+  //     this.itemSubject.next(null);
+  //   }
+  // }
+  //
+  // setDescriptionUpdateSubject(value) {
+  //   if (value) {
+  //     this.descriptionUpdateSubject.next(value);
+  //   } else {
+  //     this.descriptionUpdateSubject.next(null);
+  //   }
+  // }
+  //
+  // setDueDateSubject(value) {
+  //   if (value) {
+  //     this.dueDateSubject.next(value);
+  //   } else {
+  //     this.dueDateSubject.next(null);
+  //   }
+  // }
 
   setCreateCounselingSubject(value) {
     if (value) {

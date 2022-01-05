@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ClientService} from '../service/client.service';
 import {Subject} from 'rxjs';
@@ -8,6 +8,7 @@ import {Person} from '../model/person';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
 import {Employer} from '../model/employer';
+import {SidebarService} from '../../admin-template/shared/services/sidebar.service';
 
 @Component({
   selector: 'app-show-single-client',
@@ -22,12 +23,14 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   client: Client;
   private closeResult = '';
   public isCollapsed = false;
+  @ViewChild('content') contentCreateCounseling: ElementRef;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private clientService: ClientService,
     private modalService: NgbModal,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private sidebarService: SidebarService
   ) { }
 
   private static getDismissReason(reason: any): string {
@@ -48,11 +51,14 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
       this.getDemoSubject();
       this.getCreateEmployerSubject();
       this.getReloadClientSubject();
+      this.checkIfNewCounselingIsNeeded();
     });
+    this.sidebarService.setClientButtonSubject(true);
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
+    this.sidebarService.setClientButtonSubject(false);
   }
 
   openEmployer(content) {
@@ -64,13 +70,12 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   openNewCounseling(content) {
+    console.log('open this modal?');
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
     });
-    // const modalRef = this.modalService.open(CreateCounselingComponent);
-    // modalRef.componentInstance.name = 'Counseling';
   }
 
   openEditModal(edit_client) {
@@ -120,6 +125,14 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
       if (reload === true) {
         this.getClient();
         this.modalService.dismissAll();
+      }
+    });
+  }
+
+  checkIfNewCounselingIsNeeded() {
+    this.sidebarService.newCounselingSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(newCounseling => {
+      if (newCounseling === true) {
+        this.openNewCounseling(this.contentCreateCounseling);
       }
     });
   }

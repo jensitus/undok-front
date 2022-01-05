@@ -1,7 +1,10 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
 import {User} from '../../../../auth/model/user';
-import {faBars, faCampground, faCoffee, faPowerOff, faTachometerAlt, faUser} from '@fortawesome/free-solid-svg-icons';
+import {faBars, faCampground, faCoffee, faPowerOff, faTachometerAlt, faUser, faUsers, faTasks} from '@fortawesome/free-solid-svg-icons';
+import {SidebarService} from '../../../shared/services/sidebar.service';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-sidebar',
@@ -21,12 +24,17 @@ export class SidebarComponent implements OnInit {
   faPowerOff = faPowerOff;
   faTachometerAlt = faTachometerAlt;
   faCampground = faCampground;
+  faUsers = faUsers;
+  faTasks = faTasks;
+  private unsubscribe$ = new Subject();
+  showClientButtons = false;
 
   @Output() collapsedEvent = new EventEmitter<boolean>();
 
   constructor(
     /*private translate: TranslateService,*/
-    public router: Router
+    public router: Router,
+    private sidebarService: SidebarService
   ) {
     this.router.events.subscribe(val => {
       if (
@@ -46,6 +54,7 @@ export class SidebarComponent implements OnInit {
     this.pushRightClass = 'push-right';
     this.getCurrentUser();
     // this.checkAdmin();
+    this.getSidebarButtons();
   }
 
 
@@ -91,6 +100,16 @@ export class SidebarComponent implements OnInit {
 
   getCurrentUser() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  }
+
+  getSidebarButtons() {
+    this.sidebarService.clientButtonSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(showButtons => {
+      this.showClientButtons = showButtons;
+    });
+  }
+
+  newCounseling() {
+    this.sidebarService.setNewCounselingSubject(true);
   }
 
   // checkAdmin() {
