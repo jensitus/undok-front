@@ -1,38 +1,65 @@
-<div *ngFor="let e of employers" class="mt-2">
+<div *ngFor="let e of clientEmployerJobDescriptions" class="mt-2">
   <div class="card">
     <div class="card-body">
       <div class="row">
         <div class="col">
-          <b class="text-primary">Arbeitgeber:in</b>
+          <b class="text-primary">Job</b>
         </div>
       </div>
       <div class="row mt-3">
         <div class="col">
-          <span class="text-secondary">Firma:</span> <b> {{e.company}}</b>
+          <span class="text-secondary">Firma:</span> <b> {{e.employer.company}}</b>
         </div>
 
       </div>
       <div class="row mt-2">
         <div class="col">
-          <span class="text-secondary">Ansprechpartner:</span> {{e.person.firstName}} {{e.person.lastName}}
+          <span
+            class="text-secondary">Ansprechpartner:</span> {{e.employer.person.firstName}} {{e.employer.person.lastName}}
         </div>
         <div class="col">
-          <span class="text-secondary">Position:</span> {{e.position}}
+          <span class="text-secondary">Position:</span> {{e.employer.position}}
         </div>
       </div>
       <div class="row">
         <div class="col">
           <span class="text-secondary">Email:</span>
-          {{e.person.email}}
+          {{e.employer.person.email}}
         </div>
         <div class="col">
           <span class="text-secondary">Telephon:</span>
-          {{e.person.telephone}}
+          {{e.employer.person.telephone}}
         </div>
       </div>
-      <div class="row mt-3">
-        <div class="col text-right">
-          <button class="btn btn-sm btn-outline-danger" (click)="deleteEmployerFromClient(e.id)">remove</button>
+      <div class="row">
+        <div class="col">
+          <span class="text-secondary">von:</span>
+          {{e.from}}
+        </div>
+        <div class="col">
+          <span class="text-secondary">bis:</span>
+          {{e.until}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <span class="text-secondary">branche:</span>
+          {{e.industry}}
+        </div>
+        <div class="col">
+          <span class="text-secondary">funktion:</span>
+          {{e.jobFunction}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <span class="text-secondary">remarks:</span>
+          {{e.jobRemarks}}
+        </div>
+      </div>
+      <div class="col text-right">
+        <div style="font-size: x-small">
+          <button class="btn btn-sm btn-outline-danger" (click)="deleteEmployerFromClient(e.employer.id)">remove</button>
         </div>
       </div>
     </div>

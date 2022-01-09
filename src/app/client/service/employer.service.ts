@@ -3,6 +3,7 @@ import {EmployerForm} from '../model/employer-form';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
+import {ClientEmployerForm} from '../model/client-employer-form';
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +54,11 @@ export class EmployerService {
 
   getNumberOfEmployers(): Observable<number> {
     return this.http.get<number>(this.apiUrl + '/service/undok/employers/count');
+  }
+
+  createClientEmployer(clientEmployerForm: ClientEmployerForm): Observable<any> {
+    const url = this.apiUrl + '/service/undok/client/employers/' + clientEmployerForm.employerId + '/client/' + clientEmployerForm.clientId + '/create';
+    return this.http.post<any>(url, clientEmployerForm);
   }
 
 }

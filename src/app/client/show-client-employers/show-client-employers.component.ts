@@ -5,6 +5,7 @@ import {Employer} from '../model/employer';
 import {Subject} from 'rxjs';
 import {CommonService} from '../../common/services/common.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ClientEmployerJobDescription} from '../model/client-employer-job-description';
 
 @Component({
   selector: 'app-show-client-employers',
@@ -14,7 +15,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 export class ShowClientEmployersComponent implements OnInit, OnDestroy {
 
   @Input() clientId: string;
-  employers: Employer[];
+  clientEmployerJobDescriptions: ClientEmployerJobDescription[];
   private unsubscribe$ = new Subject();
 
   constructor(
@@ -34,13 +35,13 @@ export class ShowClientEmployersComponent implements OnInit, OnDestroy {
 
   getEmployersForClient() {
     this.employerService.getEmployersForClient(this.clientId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.employers = res;
+      console.log(res);
+      this.clientEmployerJobDescriptions = res;
     });
   }
 
   deleteEmployerFromClient(e_id: string) {
     this.employerService.deleteEmployerFromClient(e_id, this.clientId).pipe(takeUntil(this.unsubscribe$)).subscribe(r => {
-      console.log(r);
       this.commonService.setEmployerSubject(true);
     });
   }
