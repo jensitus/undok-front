@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title">Assign {{company}}</h4>
+  <h4 class="modal-title">Edit {{clientEmployerJobDescription.employer.company}}</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -7,27 +7,27 @@
 <div class="modal-body">
   <div class="form-group">
     <label class="text-secondary">ab:</label>
-    <input type="date" [(ngModel)]="from" class="form-control" name="from" placeholder="dd/mm/yyyy">
+    <input type="date" [(ngModel)]="clientEmployerJobDescription.from" class="form-control" name="from" placeholder="dd/mm/yyyy">
   </div>
   <div class="form-group">
     <label>bis:</label>
-    <input type="date" [(ngModel)]="until" class="form-control" name="until">
+    <input type="date" [(ngModel)]="clientEmployerJobDescription.until" class="form-control" name="until">
   </div>
   <div class="form-group">
     <label>industry</label>
-    <input type="text" [(ngModel)]="industry" class="form-control" name="industry">
+    <input type="text" [(ngModel)]="clientEmployerJobDescription.industry" class="form-control" name="industry">
   </div>
   <div class="form-group">
     <label>industrySub</label>
-    <input type="text" [(ngModel)]="industrySub" class="form-control" name="industrySub">
+    <input type="text" [(ngModel)]="clientEmployerJobDescription.industrySub" class="form-control" name="industrySub">
   </div>
   <div class="form-group">
     <label>job function</label>
-    <input type="text" [(ngModel)]="jobFunction" class="form-control" name="jobFunction">
+    <input type="text" [(ngModel)]="clientEmployerJobDescription.jobFunction" class="form-control" name="jobFunction">
   </div>
   <div class="form-group">
     <label>remarks</label>
-    <input type="text" [(ngModel)]="jobRemarks" class="form-control" name="jobRemarks">
+    <input type="text" [(ngModel)]="clientEmployerJobDescription.jobRemarks" class="form-control" name="jobRemarks">
   </div>
   <div class="form-group">
     <button (click)="submit()" class="btn btn-outline-primary">submit</button>
@@ -38,4 +38,3 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-

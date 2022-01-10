@@ -61,4 +61,9 @@ export class EmployerService {
     return this.http.post<any>(url, clientEmployerForm);
   }
 
+  updateClientEmployer(clientEmployerForm: ClientEmployerForm): Observable<any> {
+    const url = this.apiUrl + '/service/undok/client/employers/' + clientEmployerForm.employerId + '/client/' + clientEmployerForm.clientId;
+    return this.http.put<any>(url, clientEmployerForm);
+  }
+
 }

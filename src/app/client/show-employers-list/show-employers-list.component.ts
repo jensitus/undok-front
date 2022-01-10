@@ -89,10 +89,11 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
     this.employerTableService.sortDirection = direction;
   }
 
-  assignEmployer(content, employer: Employer) {
+  assignEmployer(employer: Employer) {
     const assignModal = this.modalService.open(CreateClientEmployerJobDescriptionComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg'});
     assignModal.componentInstance.employerId = employer.id;
     assignModal.componentInstance.clientId = this.clientId;
+    assignModal.componentInstance.company = employer.company;
     assignModal.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {

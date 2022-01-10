@@ -4,8 +4,10 @@ import {takeUntil} from 'rxjs/operators';
 import {Employer} from '../model/employer';
 import {Subject} from 'rxjs';
 import {CommonService} from '../../common/services/common.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ClientEmployerJobDescription} from '../model/client-employer-job-description';
+import {CreateClientEmployerJobDescriptionComponent} from '../create-client-employer-job-description/create-client-employer-job-description.component';
+import {EditClientEmployerJobDescriptionComponent} from '../edit-client-employer-job-description/edit-client-employer-job-description.component';
 
 @Component({
   selector: 'app-show-client-employers',
@@ -17,12 +19,23 @@ export class ShowClientEmployersComponent implements OnInit, OnDestroy {
   @Input() clientId: string;
   clientEmployerJobDescriptions: ClientEmployerJobDescription[];
   private unsubscribe$ = new Subject();
+  private closeResult: string;
 
   constructor(
     private employerService: EmployerService,
     private commonService: CommonService,
     private modalService: NgbModal
   ) { }
+
+  private static getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 
   ngOnInit(): void {
     this.getEmployersForClient();
@@ -52,6 +65,17 @@ export class ShowClientEmployersComponent implements OnInit, OnDestroy {
         this.getEmployersForClient();
         this.modalService.dismissAll();
       }
+    });
+  }
+
+  edit(clientEmployerJobDescription: ClientEmployerJobDescription) {
+    const assignModal = this.modalService.open(EditClientEmployerJobDescriptionComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg'});
+    assignModal.componentInstance.clientEmployerJobDescription = clientEmployerJobDescription;
+    assignModal.componentInstance.clientId = this.clientId;
+    assignModal.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${ShowClientEmployersComponent.getDismissReason(reason)}`;
     });
   }
 

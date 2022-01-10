@@ -17,6 +17,7 @@ export class CreateClientEmployerJobDescriptionComponent implements OnInit, OnDe
 
   @Input() employerId: string;
   @Input() clientId: string;
+  @Input() company: string;
 
   from: string;
   until: string;

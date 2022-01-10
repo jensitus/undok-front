@@ -21,6 +21,7 @@ import {AlertModule} from '../admin-template/layout/components/alert/alert.modul
 import {CreateCommentComponent} from './create-comment/create-comment.component';
 import { ShowEmployersComponent } from './show-employers/show-employers.component';
 import { CreateClientEmployerJobDescriptionComponent } from './create-client-employer-job-description/create-client-employer-job-description.component';
+import { EditClientEmployerJobDescriptionComponent } from './edit-client-employer-job-description/edit-client-employer-job-description.component';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
@@ -47,7 +48,8 @@ const appRoutes: Routes = [
     EditCounselingComponent,
     CreateCommentComponent,
     ShowEmployersComponent,
-    CreateClientEmployerJobDescriptionComponent
+    CreateClientEmployerJobDescriptionComponent,
+    EditClientEmployerJobDescriptionComponent
   ],
   imports: [
     CommonModule,
