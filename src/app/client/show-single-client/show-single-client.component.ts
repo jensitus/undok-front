@@ -68,7 +68,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   openEmployer(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
