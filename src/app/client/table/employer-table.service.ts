@@ -4,8 +4,9 @@ import {Employer} from '../model/employer';
 import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 import {State} from './state';
 import {DecimalPipe} from '@angular/common';
-import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
+import {debounceTime, delay, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {EmployerService} from '../service/employer.service';
+import {CommonService} from '../../common/services/common.service';
 
 interface SearchResult {
   employers: Employer[];
@@ -50,6 +51,7 @@ function matches(employer: Employer, term: string, pipe: PipeTransform) {
 export class EmployerTableService {
 
   employers: Employer[];
+  private unsubscribe$ = new Subject();
 
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
@@ -58,7 +60,7 @@ export class EmployerTableService {
 
   private _state: State = {
     page: 1,
-    pageSize: 4,
+    pageSize: 20,
     searchTerm: '',
     sortColumn: '',
     sortDirection: ''
@@ -66,24 +68,11 @@ export class EmployerTableService {
 
   constructor(
     private pipe: DecimalPipe,
-    private employerService: EmployerService
+    private employerService: EmployerService,
+    private commonService: CommonService
   ) {
-    this.employerService.getAllEmployers(null).pipe().subscribe(employers => {
-      this.employers = employers;
-
-      this._search$.pipe(
-        tap(() => this._loading$.next(true)),
-        debounceTime(200),
-        switchMap(() => this._search()),
-        delay(200),
-        tap(() => this._loading$.next(false))
-      ).subscribe(result => {
-        this._employers$.next(result.employers);
-        this._total$.next(result.total);
-      });
-
-      this._search$.next();
-    });
+    this.constructEmployersObs();
+    this.getCreateEmployerSubject();
   }
 
   get employers$() {
@@ -123,6 +112,34 @@ export class EmployerTableService {
     // 3. paginate
     emps = emps.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
     return of({employers: emps, total});
+  }
+
+  private constructEmployersObs() {
+    this.employerService.getAllEmployers(null).pipe().subscribe(employers => {
+      this.employers = employers;
+
+      this._search$.pipe(
+        tap(() => this._loading$.next(true)),
+        debounceTime(200),
+        switchMap(() => this._search()),
+        delay(200),
+        tap(() => this._loading$.next(false))
+      ).subscribe(result => {
+        this._employers$.next(result.employers);
+        this._total$.next(result.total);
+      });
+
+      this._search$.next();
+    });
+  }
+
+  getCreateEmployerSubject() {
+    this.commonService.createEmployerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(reload => {
+      if (reload === true) {
+        console.log('employerTableService.getCreateEmployerSubject()');
+        this.constructEmployersObs();
+      }
+    });
   }
 
 }

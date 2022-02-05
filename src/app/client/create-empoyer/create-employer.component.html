@@ -26,7 +26,7 @@
         <input type="text" class="form-control" name="telephone" [(ngModel)]="telephone" placeholder="telephone" />
       </div>
       <div class="form-group">
-        <button class="btn btn-sm btn-outline-success">klick halt</button>
+        <button class="btn btn-sm btn-outline-success" [disabled]="loading">submit</button>
       </div>
     </form>
   </div>

@@ -21,9 +21,9 @@
       [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
     </ngb-pagination>
     <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="employerTableService.pageSize">
-      <option [ngValue]="2">2 items per page</option>
-      <option [ngValue]="4">4 items per page</option>
-      <option [ngValue]="6">6 items per page</option>
+      <option [ngValue]="10">10 items per page</option>
+      <option [ngValue]="20">20 items per page</option>
+      <option [ngValue]="60">60 items per page</option>
     </select>
   </div>
 
@@ -65,4 +65,21 @@
   </table>
 
 </form>
+
+<ng-template #create_employer let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Create Employer</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-create-employer></app-create-employer>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</ng-template>
 

@@ -29,6 +29,7 @@ export class SidebarComponent implements OnInit {
   faSurprise = faSurprise;
   private unsubscribe$ = new Subject();
   showClientButtons = false;
+  showCreateEmployerButton = false;
 
   @Output() collapsedEvent = new EventEmitter<boolean>();
 
@@ -56,6 +57,7 @@ export class SidebarComponent implements OnInit {
     this.getCurrentUser();
     // this.checkAdmin();
     this.getSidebarButtons();
+    this.getCreateEmployerButton();
   }
 
 
@@ -106,6 +108,12 @@ export class SidebarComponent implements OnInit {
   getSidebarButtons() {
     this.sidebarService.clientButtonSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(showButtons => {
       this.showClientButtons = showButtons;
+    });
+  }
+
+  getCreateEmployerButton() {
+    this.sidebarService.createEmployerButtonSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(createEmployerButton => {
+      this.showCreateEmployerButton = createEmployerButton;
     });
   }
 
