@@ -19,6 +19,10 @@ export class CreateEmployerComponent implements OnInit, OnDestroy {
   employerDateOfBirth: string;
   employerCompany: string;
   employerPosition: string;
+  employerStreet: string;
+  employerZipCode: string;
+  employerCity: string;
+  employerCountry: string;
   email: string;
   telephone: string;
   employerForm: EmployerForm;
@@ -45,7 +49,11 @@ export class CreateEmployerComponent implements OnInit, OnDestroy {
       employerCompany: this.employerCompany,
       employerPosition: this.employerPosition,
       employerTelephone: this.telephone,
-      employerEmail: this.email
+      employerEmail: this.email,
+      employerStreet: this.employerStreet,
+      employerZipCode: this.employerZipCode,
+      employerCity: this.employerCity,
+      employerCountry: this.employerCountry
     };
     this.loading = true;
     console.log(this.employerForm);
