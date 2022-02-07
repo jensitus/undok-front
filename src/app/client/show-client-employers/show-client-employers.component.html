@@ -5,6 +5,13 @@
         <div class="col-md-2">
           <b class="text-primary mr-3">Job</b>
         </div>
+        <div class="col text-right">
+          <button type="button" class="btn btn-sm btn-link" (click)="collapse.toggle()"
+                  [attr.aria-expanded]="!isCollapsed"
+                  aria-controls="collapseExample">
+            Adresse
+          </button>
+        </div>
       </div>
       <div class="row">
         <div class="col">
@@ -30,15 +37,42 @@
           {{e.employer.person.email}}
         </div>
       </div>
+      <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+        <hr>
+        <div *ngIf="e.employer.person.address == null">
+          Leider kein Adresseintrag vorhanden
+        </div>
+        <div *ngIf="e.employer.person.address != null">
+          <div class="row">
+            <div class="col">
+              <span class="text-secondary">Straße:</span>
+              <span *ngIf="e.employer.person.address.street != null"> {{e.employer.person.address.street}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <span class="text-secondary">Ort:</span>
+              <span *ngIf="e.employer.person.address.zipCode != null">{{e.employer.person.address.zipCode}}</span>
+              <span *ngIf="e.employer.person.address.city != null">{{e.employer.person.address.city}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <span class="text-secondary">Land:</span>
+              <span *ngIf="e.employer.person.address.country">{{e.employer.person.address.country}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <hr>
       <div class="row mt-1">
         <div class="col">
           <span class="text-secondary">von:</span>
-          {{e.from}}
+          {{e.from | date: 'dd.MM.yyyy'}}
         </div>
         <div class="col">
           <span class="text-secondary">bis:</span>
-          <span *ngIf="e.until != null">{{e.until}}</span>
+          <span *ngIf="e.until != null">{{e.until | date: 'dd.MM.yyyy'}}</span>
           <span *ngIf="e.until === null"> heute</span>
         </div>
       </div>

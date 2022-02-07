@@ -129,8 +129,9 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   getReloadClientSubject() {
     this.commonService.reloadClientSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(reload => {
       if (reload === true) {
-        this.getClient();
+        // this.getClient();
         this.modalService.dismissAll();
+        window.location.reload();
       }
     });
   }
