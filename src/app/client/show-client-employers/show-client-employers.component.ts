@@ -44,7 +44,7 @@ export class ShowClientEmployersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe$.next();
+    this.unsubscribe$.next(null);
   }
 
   getEmployersForClient() {

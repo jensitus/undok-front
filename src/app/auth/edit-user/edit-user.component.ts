@@ -1,16 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {UserService} from '../services/user.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {environment} from '../../../environments/environment';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-edit-user',
   templateUrl: './edit-user.component.html',
   styleUrls: ['./edit-user.component.css']
 })
-export class EditUserComponent implements OnInit {
+export class EditUserComponent implements OnInit, OnDestroy {
 
   username: string;
   userForm: FormGroup;
@@ -21,6 +22,7 @@ export class EditUserComponent implements OnInit {
   submitted = false;
   avatar_upload_url: string;
   apiUrl = environment.api_url;
+  private subscription$: Subscription[];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -31,15 +33,15 @@ export class EditUserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
+    this.subscription$.push(this.activatedRoute.params.subscribe(params => {
       this.username = params['username'];
-    });
+    }));
     this.userForm = this.formBuilder.group({
       id: [],
       name: ['', Validators.required],
       email: ['', Validators.required]
     });
-    this.userService.getByUsername(this.username).subscribe(data => {
+    this.subscription$.push(this.userService.getByUsername(this.username).subscribe(data => {
       this.data = data;
       console.log('this.data', this.data);
       if (this.data.avatar === null) {
@@ -55,8 +57,16 @@ export class EditUserComponent implements OnInit {
       this.userForm.setValue(this.user);
     }, error => {
       this.alertService.error(error);
-    });
+    }));
     this.avatar_upload_url = this.apiUrl + '/users/' + this.username + '/updateavatar';
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription$) {
+      this.subscription$.forEach((s) => {
+        s.unsubscribe();
+      });
+    }
   }
 
   get f() {

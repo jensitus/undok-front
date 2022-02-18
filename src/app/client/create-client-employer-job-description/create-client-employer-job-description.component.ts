@@ -38,6 +38,7 @@ export class CreateClientEmployerJobDescriptionComponent implements OnInit, OnDe
   }
 
   ngOnDestroy(): void {
+    // @ts-ignore
     this.unsubscribe$.next();
   }
 

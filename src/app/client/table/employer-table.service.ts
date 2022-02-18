@@ -4,7 +4,7 @@ import {Employer} from '../model/employer';
 import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 import {State} from './state';
 import {DecimalPipe} from '@angular/common';
-import {debounceTime, delay, switchMap, takeUntil, tap} from 'rxjs/operators';
+import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
 import {EmployerService} from '../service/employer.service';
 import {CommonService} from '../../common/services/common.service';
 
@@ -51,7 +51,6 @@ function matches(employer: Employer, term: string, pipe: PipeTransform) {
 export class EmployerTableService {
 
   employers: Employer[];
-  private unsubscribe$ = new Subject();
 
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();

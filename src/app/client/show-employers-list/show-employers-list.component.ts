@@ -54,8 +54,8 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe$.next();
     this.sidebarService.setCreateEmployerButtonSubject(false);
+    this.unsubscribe$.next(null);
   }
 
   setEmployer(e_id) {

@@ -38,6 +38,7 @@ export class CreateEmployerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // @ts-ignore
     this.unsubscribe$.next();
   }
 
