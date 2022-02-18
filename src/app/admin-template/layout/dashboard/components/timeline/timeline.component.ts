@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {faBomb, faGraduationCap, faClock, faCheck, faCreditCard} from '@fortawesome/free-solid-svg-icons';
 import {ClientService} from '../../../../../client/service/client.service';
-import {Subject} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 @Component({
@@ -18,21 +18,25 @@ export class TimelineComponent implements OnInit, OnDestroy {
   faClock = faClock;
   faCheck = faCheck;
   faCreditCard = faCreditCard;
-  private unsubscribe$ = new Subject();
+  private unsubscribe$: Subscription[] = [];
 
   constructor(
     private clientService: ClientService
   ) { }
 
   ngOnInit() {
-    this.clientService.getItemForTimeline().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+    this.unsubscribe$.push(this.clientService.getItemForTimeline().subscribe(result => {
       this.items = result;
       console.log('this.items', this.items);
-    });
+    }));
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe$.next();
+    if (this.unsubscribe$) {
+      this.unsubscribe$.forEach((s) => {
+        s.unsubscribe();
+      });
+    }
   }
 
 }

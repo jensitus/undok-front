@@ -12,53 +12,6 @@ import {CountryData} from './doughnut/country-data';
 })
 export class ChartsComponent implements OnInit {
 
-  constructor(
-    private clientService: ClientService
-  ) {
-  }
-
-  citizens: number[] = [];
-  countries: string[] = [];
-  countryData: CountryData;
-
-  // bar chart
-  public barChartOptions: any = {
-    scaleShowVerticalLines: false,
-    responsive: true
-  };
-  public barChartLabels: string[] = [
-    '2006',
-    '2007',
-    '2008',
-    '2009',
-    '2010',
-    '2011',
-    '2012'
-  ];
-  public barChartType: string;
-  public barChartLegend: boolean;
-
-  public barChartData: any[] = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
-  ];
-
-  // Doughnut
-  doughL = ['Angola', 'unknown', 'Serbia', 'USA', 'Sachsen'];
-
-  public doughnutChartLabels: string[]; // = this.doughL;
-  // public doughnutChartLabels = this.countries;
-  doughD = [350, 450, 100, 344, 100];
-  public doughnutChartData: number[]; // = this.doughD;
-
-  public doughnutChartType: string;
-
-  setChartLabelAndData() {
-    this.doughnutChartLabels = this.countries;
-    this.doughnutChartData = this.citizens;
-    console.log(this.doughnutChartLabels);
-  }
-
   // Radar
   public radarChartLabels: string[] = [
     'Eating',
@@ -148,6 +101,53 @@ export class ChartsComponent implements OnInit {
   public lineChartType: string;
 
   private clients: Client[];
+
+  constructor(
+    private clientService: ClientService
+  ) {
+  }
+
+  citizens: number[] = [];
+  countries: string[] = [];
+  countryData: CountryData;
+
+  // bar chart
+  public barChartOptions: any = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  };
+  public barChartLabels: string[] = [
+    '2006',
+    '2007',
+    '2008',
+    '2009',
+    '2010',
+    '2011',
+    '2012'
+  ];
+  public barChartType: string;
+  public barChartLegend: boolean;
+
+  public barChartData: any[] = [
+    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
+    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
+  ];
+
+  // Doughnut
+  doughL = ['Angola', 'unknown', 'Serbia', 'USA', 'Sachsen'];
+
+  public doughnutChartLabels: string[]; // = this.doughL;
+  // public doughnutChartLabels = this.countries;
+  doughD = [350, 450, 100, 344, 100];
+  public doughnutChartData: number[]; // = this.doughD;
+
+  public doughnutChartType: string;
+
+  setChartLabelAndData() {
+    this.doughnutChartLabels = this.countries;
+    this.doughnutChartData = this.citizens;
+    console.log(this.doughnutChartLabels);
+  }
 
   // events
   public chartClicked(e: any): void {

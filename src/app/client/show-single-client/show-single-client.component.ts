@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ClientService} from '../service/client.service';
-import {Subject} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {Client} from '../model/client';
 import {Person} from '../model/person';
@@ -19,6 +19,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
 
   private id: string;
   private unsubscribe$ = new Subject();
+  private subscription$: Subscription[] = [];
   person: Person;
   client: Client;
   private closeResult = '';
@@ -47,7 +48,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
+    this.subscription$.push(this.activatedRoute.params.subscribe(params => {
       this.id = params['id'];
       this.getClient();
       this.getCreateCounselingSubject();
@@ -58,12 +59,18 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
       this.checkIfNewEmployerIsNeeded();
       this.checkIfEmployerIsToBeAssigned();
       this.checkIfClientIsToBeEdited();
-    });
+    }));
     this.sidebarService.setClientButtonSubject(true);
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe$.next();
+    // this.unsubscribe$.next();
+    // this.unsubscribe$.complete();
+    if (this.subscription$) {
+      this.subscription$.forEach((s) => {
+        s.unsubscribe();
+      });
+    }
     this.sidebarService.setClientButtonSubject(false);
   }
 
@@ -93,78 +100,78 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   getClient() {
-    this.clientService.getSingleClient(this.id).pipe(takeUntil(this.unsubscribe$)).subscribe( res => {
+    this.subscription$.push(this.clientService.getSingleClient(this.id).subscribe( res => {
       this.client = res;
       console.log(this.client);
-    });
+    }));
   }
 
   getCreateCounselingSubject()   {
-    this.commonService.createCounselingSubject.pipe(takeUntil(this.unsubscribe$)).subscribe( rel => {
+    this.subscription$.push(this.commonService.createCounselingSubject.subscribe( rel => {
       if (rel) {
         this.getClient();
         this.modalService.dismissAll();
       }
-    });
+    }));
   }
 
   getDemoSubject() {
-    this.commonService.demoSubject.pipe(takeUntil(this.unsubscribe$)).subscribe( reload => {
+    this.subscription$.push(this.commonService.demoSubject.subscribe( reload => {
       if (reload === true) {
         this.getClient();
         this.modalService.dismissAll();
       }
-    });
+    }));
   }
 
   getCreateEmployerSubject() {
-    this.commonService.createEmployerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(reload => {
+    this.subscription$.push(this.commonService.createEmployerSubject.subscribe(reload => {
       if (reload === true) {
         this.getClient();
         this.modalService.dismissAll();
       }
-    });
+    }));
   }
 
   getReloadClientSubject() {
-    this.commonService.reloadClientSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(reload => {
+    this.subscription$.push(this.commonService.reloadClientSubject.subscribe(reload => {
       if (reload === true) {
         this.getClient();
         this.modalService.dismissAll();
       }
-    });
+    }));
   }
 
   checkIfNewCounselingIsNeeded() {
-    this.sidebarService.newCounselingSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(newCounseling => {
+    this.subscription$.push(this.sidebarService.newCounselingSubject.subscribe(newCounseling => {
       if (newCounseling === true) {
         this.openNewCounseling(this.contentCreateCounseling);
       }
-    });
+    }));
   }
 
   checkIfNewEmployerIsNeeded() {
-    this.sidebarService.newEmployerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(newEmployer => {
+    this.subscription$.push(this.sidebarService.newEmployerSubject.subscribe(newEmployer => {
       if (newEmployer === true) {
         this.openEmployer(this.createEmployer);
       }
-    });
+    }));
   }
 
   checkIfEmployerIsToBeAssigned() {
-    this.sidebarService.assignEmployerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(assignEmployer => {
+    this.subscription$.push(this.sidebarService.assignEmployerSubject.subscribe(assignEmployer => {
       if (assignEmployer === true) {
         this.openEmployer(this.assignEmployer);
       }
-    });
+    }));
   }
 
   checkIfClientIsToBeEdited() {
-    this.sidebarService.editClientSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(editClient => {
+    this.subscription$.push(this.sidebarService.editClientSubject.subscribe(editClient => {
       if (editClient === true) {
         this.openEditModal(this.editClient);
       }
-    });
+    }));
   }
 
 }

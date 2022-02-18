@@ -26,6 +26,9 @@ function sort(employers: Employer[], column: SortColumn, direction: string): Emp
 }
 
 function matches(employer: Employer, term: string, pipe: PipeTransform) {
+  if (employer.person.firstName === null) {
+    employer.person.firstName = '';
+  }
   return employer.person.firstName.toLowerCase().includes(term.toLowerCase())
     || employer.person.lastName.toLowerCase().includes(term.toLowerCase())
     || employer.company.toLowerCase().includes(term.toLowerCase())

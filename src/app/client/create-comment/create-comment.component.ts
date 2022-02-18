@@ -24,6 +24,7 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // @ts-ignore
     this.unsubscribe$.next();
   }
 

@@ -48,7 +48,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe$.next();
+    this.unsubscribe$.next(null);
   }
 
   onSort({column, direction}: SortEvent) {
