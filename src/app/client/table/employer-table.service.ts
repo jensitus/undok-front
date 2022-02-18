@@ -1,7 +1,7 @@
-import {Injectable, PipeTransform} from '@angular/core';
+import {Injectable, OnDestroy, PipeTransform} from '@angular/core';
 import {SortColumn, SortDirection} from './sortable.directive';
 import {Employer} from '../model/employer';
-import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, of, Subject, Subscription} from 'rxjs';
 import {State} from './state';
 import {DecimalPipe} from '@angular/common';
 import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
@@ -48,7 +48,7 @@ function matches(employer: Employer, term: string, pipe: PipeTransform) {
 @Injectable({
   providedIn: 'root'
 })
-export class EmployerTableService {
+export class EmployerTableService implements OnDestroy {
 
   employers: Employer[];
 
@@ -56,6 +56,7 @@ export class EmployerTableService {
   private _search$ = new Subject<void>();
   private _employers$ = new BehaviorSubject<Employer[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
+  private subscription$: Subscription[] = [];
 
   private _state: State = {
     page: 1,
@@ -72,6 +73,14 @@ export class EmployerTableService {
   ) {
     this.constructEmployersObs();
     this.getCreateEmployerSubject();
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription$) {
+      this.subscription$.forEach((s) => {
+        s.unsubscribe();
+      });
+    }
   }
 
   get employers$() {
@@ -133,12 +142,12 @@ export class EmployerTableService {
   }
 
   getCreateEmployerSubject() {
-    this.commonService.createEmployerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(reload => {
+    this.subscription$.push(this.commonService.createEmployerSubject.subscribe(reload => {
       if (reload === true) {
         console.log('employerTableService.getCreateEmployerSubject()');
         this.constructEmployersObs();
       }
-    });
+    }));
   }
 
 }
