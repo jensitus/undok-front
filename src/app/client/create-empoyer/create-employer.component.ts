@@ -6,11 +6,11 @@ import {CommonService} from '../../common/services/common.service';
 import {EmployerService} from '../service/employer.service';
 
 @Component({
-  selector: 'app-create-empoyer',
-  templateUrl: './create-empoyer.component.html',
-  styleUrls: ['./create-empoyer.component.css']
+  selector: 'app-create-employer',
+  templateUrl: './create-employer.component.html',
+  styleUrls: ['./create-employer.component.css']
 })
-export class CreateEmpoyerComponent implements OnInit, OnDestroy {
+export class CreateEmployerComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject();
 
@@ -19,9 +19,14 @@ export class CreateEmpoyerComponent implements OnInit, OnDestroy {
   employerDateOfBirth: string;
   employerCompany: string;
   employerPosition: string;
+  employerStreet: string;
+  employerZipCode: string;
+  employerCity: string;
+  employerCountry: string;
   email: string;
   telephone: string;
   employerForm: EmployerForm;
+  loading = false;
 
 
   constructor(
@@ -45,8 +50,13 @@ export class CreateEmpoyerComponent implements OnInit, OnDestroy {
       employerCompany: this.employerCompany,
       employerPosition: this.employerPosition,
       employerTelephone: this.telephone,
-      employerEmail: this.email
+      employerEmail: this.email,
+      employerStreet: this.employerStreet,
+      employerZipCode: this.employerZipCode,
+      employerCity: this.employerCity,
+      employerCountry: this.employerCountry
     };
+    this.loading = true;
     console.log(this.employerForm);
     this.employerService.createEmployer(this.employerForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       console.log(result);

@@ -95,13 +95,7 @@
       <div class="form-group">
         <label><small>Geburtsdatum</small></label>
         <div class="input-group">
-          <input class="form-control" placeholder="Date of birth"
-                 name="dp" [(ngModel)]="dateOfBirth" ngbDatepicker #d="ngbDatepicker">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
-              <fa-icon class="text-info" [icon]="faBars"></fa-icon>
-            </button>
-          </div>
+          <input class="form-control" type="date" [(ngModel)]="client.person.dateOfBirth" name="d">
         </div>
       </div>
     </div>
@@ -152,12 +146,8 @@
     </div>
     <div class="col">
       <div class="form-group">
-        <label><small>Aufenthaltsstatus</small></label>
-        <select class="form-control">
-          <option (click)="onMaritalChange('unknown')">Resident Status</option>
-          <option *ngFor="let status of residentStatusLOV" [value]="status"
-                  (click)="onResidentStatusChange(status)">{{status}}</option>
-        </select>
+        <label><small>Aufenthaltstitel</small></label>
+        <input type="text" class="form-control" name="currentResidentStatus" [(ngModel)]="client.currentResidentStatus" />
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {Employer} from '../model/employer';
@@ -9,6 +9,7 @@ import {CommonService} from '../../common/services/common.service';
 import {faSurprise} from '@fortawesome/free-solid-svg-icons';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CreateClientEmployerJobDescriptionComponent} from '../create-client-employer-job-description/create-client-employer-job-description.component';
+import {SidebarService} from '../../admin-template/shared/services/sidebar.service';
 
 @Component({
   selector: 'app-show-employers-list',
@@ -25,15 +26,16 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   faSurprise = faSurprise;
   private closeResult = '';
+  @ViewChild('create_employer') createEmployer: ElementRef;
 
   constructor(
     private employerService: EmployerService,
     public employerTableService: EmployerTableService,
     private modalService: NgbModal,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private sidebarService: SidebarService
   ) {
-    this.total$ = employerTableService.total$;
-    this.employers$ = employerTableService.employers$;
+    this.getEmployersPerTableService();
   }
 
   private static getDismissReason(reason: any): string {
@@ -47,9 +49,12 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.checkIfNewEmployerIsNeeded();
+    this.getCreateEmployerSubject();
   }
 
   ngOnDestroy(): void {
+    this.sidebarService.setCreateEmployerButtonSubject(false);
     this.unsubscribe$.next(null);
   }
 
@@ -102,5 +107,35 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
 
   }
 
+  openEmployer(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${ShowEmployersListComponent.getDismissReason(reason)}`;
+    });
+  }
+
+  checkIfNewEmployerIsNeeded() {
+    this.sidebarService.newEmployerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(newEmployer => {
+      if (newEmployer === true) {
+        this.openEmployer(this.createEmployer);
+      }
+    });
+  }
+
+  getCreateEmployerSubject() {
+    this.commonService.createEmployerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(reload => {
+      if (reload === true) {
+        console.log('showEmployersList.getCreateEmployerSubject()');
+        // this.getEmployersPerTableService();
+        this.modalService.dismissAll();
+      }
+    });
+  }
+
+  getEmployersPerTableService() {
+    this.total$ = this.employerTableService.total$;
+    this.employers$ = this.employerTableService.employers$;
+  }
 
 }

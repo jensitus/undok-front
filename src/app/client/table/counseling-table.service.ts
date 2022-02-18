@@ -26,6 +26,18 @@ function sort(counselings: Counseling[], column: SortColumn, direction: string):
 }
 
 function matches(counseling: Counseling, term: string, pipe: PipeTransform) {
+  if (counseling.concern === null) {
+    counseling.concern = ' ';
+  }
+  if (counseling.concernCategory === null) {
+    counseling.concernCategory = ' ';
+  }
+  if (counseling.activity === null) {
+    counseling.activity = ' ';
+  }
+  if (counseling.clientFullName === null) {
+    counseling.clientFullName = ' ';
+  }
   return counseling.concern.toLowerCase().includes(term.toLowerCase())
     // || counseling.counselingStatus.toLowerCase().includes(term.toLowerCase())
     || counseling.concernCategory.toLowerCase().includes(term.toLowerCase())

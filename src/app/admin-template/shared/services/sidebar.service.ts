@@ -13,6 +13,7 @@ export class SidebarService {
   public newEmployerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public assignEmployerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public editClientSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  public createEmployerButtonSubject: BehaviorSubject<boolean>  = new BehaviorSubject<boolean>(null);
 
   setClientButtonSubject(value) {
     if (value) {
@@ -51,6 +52,14 @@ export class SidebarService {
       this.editClientSubject.next(value);
     } else {
       this.editClientSubject.next(null);
+    }
+  }
+
+  setCreateEmployerButtonSubject(value) {
+    if (value) {
+      this.createEmployerButtonSubject.next(value);
+    } else {
+      this.createEmployerButtonSubject.next(null);
     }
   }
 

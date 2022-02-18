@@ -18,7 +18,7 @@
             <small>Client: <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a></small>
           </div>
           <div *ngIf="item.counselingDate">
-            <small><b>{{item.counselingDate | date: 'short'}}</b></small>
+            <small><b>{{item.counselingDate | date: 'dd.MM.yyyy HH:mm'}}</b></small>
           </div>
         </div>
       </div>
@@ -41,7 +41,7 @@
             <small>Client: <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a></small>
           </div>
           <div *ngIf="item.counselingDate">
-            <small><b>{{item.counselingDate | date: 'medium'}}</b></small>
+            <small><b>{{item.counselingDate | date: 'dd.MM.yyyy HH:mm'}}</b></small>
           </div>
         </div>
       </div>
@@ -64,7 +64,7 @@
             <small>Client: <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a></small>
           </div>
           <div *ngIf="item.counselingDate">
-            <small><b>{{item.counselingDate | date: 'medium'}}</b></small>
+            <small><b>{{item.counselingDate | date: 'dd.MM.yyyy HH:mm'}}</b></small>
           </div>
         </div>
       </div>
@@ -85,7 +85,7 @@
             <small>Client: <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a></small>
           </div>
           <div *ngIf="item.counselingDate">
-            <small><b>{{item.counselingDate | date: 'medium'}}</b></small>
+            <small><b>{{item.counselingDate | date: 'dd.MM.yyyy HH:mm'}}</b></small>
           </div>
         </div>
       </div>

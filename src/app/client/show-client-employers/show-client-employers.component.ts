@@ -20,6 +20,7 @@ export class ShowClientEmployersComponent implements OnInit, OnDestroy {
   clientEmployerJobDescriptions: ClientEmployerJobDescription[];
   private unsubscribe$ = new Subject();
   private closeResult: string;
+  public isCollapsed = true;
 
   constructor(
     private employerService: EmployerService,

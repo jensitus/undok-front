@@ -1,11 +1,12 @@
-import {Injectable, PipeTransform} from '@angular/core';
+import {Injectable, OnDestroy, PipeTransform} from '@angular/core';
 import {SortColumn, SortDirection} from './sortable.directive';
 import {Employer} from '../model/employer';
-import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, of, Subject, Subscription} from 'rxjs';
 import {State} from './state';
 import {DecimalPipe} from '@angular/common';
 import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
 import {EmployerService} from '../service/employer.service';
+import {CommonService} from '../../common/services/common.service';
 
 interface SearchResult {
   employers: Employer[];
@@ -27,7 +28,16 @@ function sort(employers: Employer[], column: SortColumn, direction: string): Emp
 
 function matches(employer: Employer, term: string, pipe: PipeTransform) {
   if (employer.person.firstName === null) {
-    employer.person.firstName = '';
+    employer.person.firstName = '  ';
+  }
+  if (employer.person.lastName === null) {
+    employer.person.lastName = '  ';
+  }
+  if (employer.company === null) {
+    employer.company = '  ';
+  }
+  if (employer.position === null) {
+    employer.position = '  ';
   }
   return employer.person.firstName.toLowerCase().includes(term.toLowerCase())
     || employer.person.lastName.toLowerCase().includes(term.toLowerCase())
@@ -38,7 +48,7 @@ function matches(employer: Employer, term: string, pipe: PipeTransform) {
 @Injectable({
   providedIn: 'root'
 })
-export class EmployerTableService {
+export class EmployerTableService implements OnDestroy {
 
   employers: Employer[];
 
@@ -46,10 +56,11 @@ export class EmployerTableService {
   private _search$ = new Subject<void>();
   private _employers$ = new BehaviorSubject<Employer[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
+  private subscription$: Subscription[] = [];
 
   private _state: State = {
     page: 1,
-    pageSize: 4,
+    pageSize: 20,
     searchTerm: '',
     sortColumn: '',
     sortDirection: ''
@@ -57,24 +68,19 @@ export class EmployerTableService {
 
   constructor(
     private pipe: DecimalPipe,
-    private employerService: EmployerService
+    private employerService: EmployerService,
+    private commonService: CommonService
   ) {
-    this.employerService.getAllEmployers(null).pipe().subscribe(employers => {
-      this.employers = employers;
+    this.constructEmployersObs();
+    this.getCreateEmployerSubject();
+  }
 
-      this._search$.pipe(
-        tap(() => this._loading$.next(true)),
-        debounceTime(200),
-        switchMap(() => this._search()),
-        delay(200),
-        tap(() => this._loading$.next(false))
-      ).subscribe(result => {
-        this._employers$.next(result.employers);
-        this._total$.next(result.total);
+  ngOnDestroy(): void {
+    if (this.subscription$) {
+      this.subscription$.forEach((s) => {
+        s.unsubscribe();
       });
-
-      this._search$.next();
-    });
+    }
   }
 
   get employers$() {
@@ -114,6 +120,34 @@ export class EmployerTableService {
     // 3. paginate
     emps = emps.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
     return of({employers: emps, total});
+  }
+
+  private constructEmployersObs() {
+    this.employerService.getAllEmployers(null).pipe().subscribe(employers => {
+      this.employers = employers;
+
+      this._search$.pipe(
+        tap(() => this._loading$.next(true)),
+        debounceTime(200),
+        switchMap(() => this._search()),
+        delay(200),
+        tap(() => this._loading$.next(false))
+      ).subscribe(result => {
+        this._employers$.next(result.employers);
+        this._total$.next(result.total);
+      });
+
+      this._search$.next();
+    });
+  }
+
+  getCreateEmployerSubject() {
+    this.subscription$.push(this.commonService.createEmployerSubject.subscribe(reload => {
+      if (reload === true) {
+        console.log('employerTableService.getCreateEmployerSubject()');
+        this.constructEmployersObs();
+      }
+    }));
   }
 
 }

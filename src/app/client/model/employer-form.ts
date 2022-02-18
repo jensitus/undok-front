@@ -6,4 +6,8 @@ export interface EmployerForm {
   employerPosition: string;
   employerTelephone: string;
   employerEmail: string;
+  employerStreet: string;
+  employerZipCode: string;
+  employerCity: string;
+  employerCountry: string;
 }

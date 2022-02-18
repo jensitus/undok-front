@@ -4,7 +4,7 @@
   </div>
   <div class="card-body" *ngIf="doughnutChartLabels">
     <div>
-      <canvas baseChart height="180px"
+      <canvas baseChart height="280px"
               [data]="doughnutChartData"
               [labels]="doughnutChartLabels"
               [chartType]="doughnutChartType"
@@ -13,6 +13,10 @@
               (chartHover)="chartHovered($event)"
               (chartClick)="chartClicked($event)">
       </canvas>
+      <!--
+      * [data]="doughnutChartData"
+      * [labels]="doughnutChartLabels"
+      -->
     </div>
   </div>
 </div>

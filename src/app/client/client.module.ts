@@ -12,7 +12,7 @@ import {ShowCounselingsComponent} from './show-counselings/show-counselings.comp
 import {ShowCounselingsPerClientComponent} from './show-counselings-per-client/show-counselings-per-client.component';
 import {EditClientComponent} from './edit-client/edit-client.component';
 import {ClientFormComponent} from './client-form/client-form.component';
-import {CreateEmpoyerComponent} from './create-empoyer/create-empoyer.component';
+import {CreateEmployerComponent} from './create-empoyer/create-employer.component';
 import {ShowEmployersListComponent} from './show-employers-list/show-employers-list.component';
 import {ShowClientEmployersComponent} from './show-client-employers/show-client-employers.component';
 import {NgbdSortableHeader} from './table/sortable.directive';
@@ -41,7 +41,7 @@ const appRoutes: Routes = [
     ShowCounselingsPerClientComponent,
     EditClientComponent,
     ClientFormComponent,
-    CreateEmpoyerComponent,
+    CreateEmployerComponent,
     ShowEmployersListComponent,
     ShowClientEmployersComponent,
     NgbdSortableHeader,

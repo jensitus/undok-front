@@ -23,10 +23,10 @@ export class CommonService {
   public demoSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public todoSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public createUserSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
-  public taskSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public itemSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  // public taskSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  // public itemSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public descriptionUpdateSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public dueDateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  // public dueDateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public createCounselingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public createEmployerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public reloadClientSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
@@ -73,46 +73,6 @@ export class CommonService {
       this.createUserSubject.next(null);
     }
   }
-
-  // setTaskSubject(value) {
-  //   if (value) {
-  //     this.taskSubject.next(value);
-  //   } else {
-  //     this.taskSubject.next(null);
-  //   }
-  // }
-  //
-  // setNewTodoSubject(value) {
-  //   if (value) {
-  //     this.todoSubject.next(value);
-  //   } else {
-  //     this.todoSubject.next(null);
-  //   }
-  // }
-  //
-  // setItemSubject(value) {
-  //   if (value) {
-  //     this.itemSubject.next(value);
-  //   } else {
-  //     this.itemSubject.next(null);
-  //   }
-  // }
-  //
-  // setDescriptionUpdateSubject(value) {
-  //   if (value) {
-  //     this.descriptionUpdateSubject.next(value);
-  //   } else {
-  //     this.descriptionUpdateSubject.next(null);
-  //   }
-  // }
-  //
-  // setDueDateSubject(value) {
-  //   if (value) {
-  //     this.dueDateSubject.next(value);
-  //   } else {
-  //     this.dueDateSubject.next(null);
-  //   }
-  // }
 
   setCreateCounselingSubject(value) {
     if (value) {

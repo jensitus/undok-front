@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {SidebarService} from '../../admin-template/shared/services/sidebar.service';
 
 @Component({
   selector: 'app-show-employers',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShowEmployersComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private sidebarService: SidebarService
+  ) { }
 
   ngOnInit(): void {
+    this.sidebarService.setCreateEmployerButtonSubject(true);
   }
 
 }
