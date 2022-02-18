@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ClientService} from '../../../../client/service/client.service';
 import {CountryData} from './country-data';
-import {Color} from 'ng2-charts';
+
 import {ChartOptions} from 'chart.js';
 
 @Component({
@@ -17,7 +17,7 @@ export class DoughnutComponent implements OnInit {
   citizens: number[] = [];
   countries: string[] = [];
   countryData: CountryData;
-  colors: Color[] = [];
+  colors: string[];
   options: ChartOptions = {
     responsive: true
   };
@@ -37,12 +37,12 @@ export class DoughnutComponent implements OnInit {
       this.setChartLabelAndData();
     });
     this.colors = [
-      {
-        backgroundColor: [
-          '#dc3545', '#adb5bd', '#6f42c1', '#20c997', '#fd7e14', '#0d6efd', '#d63384', '#ffc107', '#198754', '#0dcaf0', '#6610f2',
-          '#dc3545', '#adb5bd', '#6f42c1', '#20c997', '#fd7e14', '#0d6efd', '#d63384', '#ffc107', '#198754', '#0dcaf0', '#6610f2'
-          ]
-      }
+      // {
+      //   backgroundColor: [
+      //     '#dc3545', '#adb5bd', '#6f42c1', '#20c997', '#fd7e14', '#0d6efd', '#d63384', '#ffc107', '#198754', '#0dcaf0', '#6610f2',
+      //     '#dc3545', '#adb5bd', '#6f42c1', '#20c997', '#fd7e14', '#0d6efd', '#d63384', '#ffc107', '#198754', '#0dcaf0', '#6610f2'
+      //     ]
+      // }
     ];
 
   }

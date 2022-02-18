@@ -1,5 +1,4 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {FileUploader} from 'ng2-file-upload';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {UploadService} from '../services/upload.service';
 

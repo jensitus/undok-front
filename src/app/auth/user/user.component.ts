@@ -6,7 +6,7 @@ import {User} from '../model/user';
 import {takeUntil} from 'rxjs/operators';
 import {SetAdminDto} from '../../admin-template/layout/dashboard/components/show-users/model/set-admin-dto';
 import {ResponseMessage} from '../../common/helper/response-message';
-import {Subject} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {faCheck} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -23,7 +23,7 @@ export class UserComponent implements OnInit, OnDestroy {
   responseMessage: ResponseMessage;
   userList: User[];
   faCheck = faCheck;
-  private unsubscribe$ = new Subject();
+  private unsubscribe$: Subscription[];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -39,7 +39,9 @@ export class UserComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.unsubscribe$) {
-      this.unsubscribe$.next();
+      this.unsubscribe$.forEach((s) => {
+        s.unsubscribe();
+      });
     }
   }
 
@@ -53,24 +55,24 @@ export class UserComponent implements OnInit, OnDestroy {
     this.setAdminDto = {
       admin: admin
     };
-    this.userService.setAdmin(user_id, this.setAdminDto).pipe(takeUntil(this.unsubscribe$)).subscribe(message => {
+    this.unsubscribe$.push(this.userService.setAdmin(user_id, this.setAdminDto).subscribe(message => {
       this.responseMessage = message;
       this.alertService.success(message.text, true);
       this.getUser();
-    });
+    }));
   }
 
   getUser() {
     this.activatedRoute.params.subscribe(params => {
       this.username = params['username'];
     });
-    this.userService.getByUsername(this.username).subscribe(data => {
+    this.unsubscribe$.push(this.userService.getByUsername(this.username).subscribe(data => {
       this.user = data;
       console.log('user: ', this.user);
       this.alertService.success('hi');
     }, error => {
       this.alertService.error(error);
-    });
+    }));
   }
 
 }
