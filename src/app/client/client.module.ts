@@ -22,13 +22,15 @@ import {CreateCommentComponent} from './create-comment/create-comment.component'
 import { ShowEmployersComponent } from './show-employers/show-employers.component';
 import { CreateClientEmployerJobDescriptionComponent } from './create-client-employer-job-description/create-client-employer-job-description.component';
 import { EditClientEmployerJobDescriptionComponent } from './edit-client-employer-job-description/edit-client-employer-job-description.component';
+import { CounselingComponent } from './counseling/counseling.component';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
   {path: 'create', component: CreateClientComponent},
   {path: 'client-list', component: ShowClientsComponent},
   {path: 'counselings', component: ShowCounselingsComponent},
-  {path: ':id', component: ShowSingleClientComponent}
+  {path: ':id', component: ShowSingleClientComponent},
+  {path: ':id/counselings/create', component: CreateCounselingComponent}
 ];
 
 @NgModule({
@@ -49,7 +51,8 @@ const appRoutes: Routes = [
     CreateCommentComponent,
     ShowEmployersComponent,
     CreateClientEmployerJobDescriptionComponent,
-    EditClientEmployerJobDescriptionComponent
+    EditClientEmployerJobDescriptionComponent,
+    CounselingComponent
   ],
   imports: [
     CommonModule,

@@ -21,18 +21,6 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private commonService: CommonService
   ) {
-    this.sliders.push(
-      {
-        imagePath: 'assets/images/slider1.jpg'
-      },
-      {
-        imagePath: 'assets/images/slider2.jpg'
-      },
-      {
-        imagePath: 'assets/images/slider3.jpg'
-      }
-    );
-    this.processImagePath = 'assets/images/todo_trans.png';
   }
 
   ngOnInit() {
