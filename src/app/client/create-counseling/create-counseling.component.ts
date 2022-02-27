@@ -43,9 +43,11 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   activityCategory: string;
   registeredBy: string;
   faBars = faBars;
-  categories: Category[];
+  concernCategories: Category[];
+  activityCategories: Category[];
   category: Category;
   newCategory: string = null;
+  newActivityCategory: string = null;
   categoryExists: string = null;
 
   constructor(
@@ -56,11 +58,13 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     public dateTimeService: DateTimeService,
     private categoryService: CategoryService,
     private alertService: AlertService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.getCurrentUser();
-    this.loadCategories();
+    this.loadConcernCategories();
+    this.loadActivityCategories();
   }
 
   private getCurrentUser() {
@@ -97,27 +101,48 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadCategories(): void {
+  loadConcernCategories(): void {
     this.unsubscribe$.push(this.categoryService.getCategories(this.CONCERN_CATEGORY).subscribe(cat => {
-      this.categories = cat;
+      this.concernCategories = cat;
     }));
   }
 
-  selectCat(cat: Category) {
+  loadActivityCategories(): void {
+    this.unsubscribe$.push(this.categoryService.getCategories(this.ACTIVITY_CATEGORY).subscribe(cat => {
+      this.activityCategories = cat;
+    }));
+  }
+
+  selectConcernCat(cat: Category) {
     this.concernCategory = cat.name;
   }
 
+  selectActivityCat(cat: Category) {
+    this.activityCategory = cat.name;
+  }
+
   addNewCategory(type: string) {
-    console.log(type);
-    console.log(this.newCategory);
-    const category = {
-      name: this.newCategory,
-      type: type
-    };
-    this.unsubscribe$.push(this.categoryService.addCategory(category).subscribe( (r) => {
+    let category: Category;
+
+    switch (type) {
+      case this.CONCERN_CATEGORY:
+        category = {
+          name: this.newCategory,
+          type: type
+        };
+        break;
+      case this.ACTIVITY_CATEGORY:
+        category = {
+          name: this.newActivityCategory,
+          type: type
+        };
+    }
+    this.unsubscribe$.push(this.categoryService.addCategory(category).subscribe((r) => {
       console.log('unsubscribe$', this.unsubscribe$);
       this.newCategory = null;
-      this.loadCategories();
+      this.newActivityCategory = null;
+      this.loadConcernCategories();
+      this.loadActivityCategories();
     }, error => {
       this.categoryExists = error.error;
     }));
