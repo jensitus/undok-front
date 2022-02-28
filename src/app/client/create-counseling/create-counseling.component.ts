@@ -136,9 +136,9 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
           name: this.newActivityCategory,
           type: type
         };
+        break;
     }
     this.unsubscribe$.push(this.categoryService.addCategory(category).subscribe((r) => {
-      console.log('unsubscribe$', this.unsubscribe$);
       this.newCategory = null;
       this.newActivityCategory = null;
       this.loadConcernCategories();

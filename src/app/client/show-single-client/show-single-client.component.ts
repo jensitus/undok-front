@@ -73,6 +73,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   openEmployer(content) {
+    console.log('new employer... ', content);
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -81,7 +82,6 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   openNewCounseling(content_create_counseling) {
-    console.log('open this modal?', content_create_counseling);
     this.modalService.open(content_create_counseling, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -100,7 +100,6 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   getClient() {
     this.subscription$.push(this.clientService.getSingleClient(this.id).subscribe( res => {
       this.client = res;
-      console.log(this.client);
     }));
   }
 
@@ -144,7 +143,6 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   checkIfNewCounselingIsNeeded() {
     this.subscription$.push(this.sidebarService.newCounselingSubject.subscribe(newCounseling => {
       if (newCounseling === true) {
-        console.log('create counseling');
         this.openNewCounseling(this.contentCreateCounseling);
         // this.router.navigate(['clients', this.client.id, 'counselings', 'create']);
       }
@@ -168,6 +166,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   checkIfClientIsToBeEdited() {
+    console.log('assign .... ');
     this.subscription$.push(this.sidebarService.editClientSubject.subscribe(editClient => {
       if (editClient === true) {
         this.openEditModal(this.editClient);
