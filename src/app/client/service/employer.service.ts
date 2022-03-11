@@ -57,7 +57,10 @@ export class EmployerService {
   }
 
   createClientEmployer(clientEmployerForm: ClientEmployerForm): Observable<any> {
-    const url = this.apiUrl + '/service/undok/client/employers/' + clientEmployerForm.employerId + '/client/' + clientEmployerForm.clientId + '/create';
+    console.log('service', clientEmployerForm);
+    const url =
+      this.apiUrl + '/service/undok/client/employers/' + clientEmployerForm.employerId + '/client/' + clientEmployerForm.clientId + '/create';
+    console.log('url', url);
     return this.http.post<any>(url, clientEmployerForm);
   }
 
