@@ -31,6 +31,8 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
   newCategory: string = null;
   newActivityCategory: string = null;
   categoryExists: string = null;
+  activityCategoryIsCollapsed = true;
+  concernCategoryIsCollapsed = true;
 
   constructor(
     private counselingService: CounselingService,

@@ -20,34 +20,32 @@
     <div class="col">
       <!-- concern category section -->
       <div class="form-group">
-        <label>Categorize</label>
-        <input type="text" name="concernCategory" [(ngModel)]="counseling.concernCategory" placeholder="concernCategory"
-               class="form-control" disabled />
-      </div>
-      <div class="form-group">
-        <div class="btn-group me-3">
-          <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-            <button class="btn btn-sm btn-outline-success" ngbDropdownToggle type="button">Select concern category</button>
-            <div class="dropdown-menu" ngbDropdownMenu>
-              <div *ngFor="let c of concernCategories">
-                <button ngbDropdownItem (click)="selectConcernCat(c)" type="button">{{c.name}}</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <label>Concern Category</label>
+        <select class="form-control" aria-label="select concern category">
+          <option>{{counseling.concernCategory}}</option>
+          <option *ngFor="let c of concernCategories" [value]="c" (click)="selectConcernCat(c)">
+            {{c.name}}
+          </option>
+        </select>
       </div>
       <div *ngIf="categoryExists != null">
         <span class="text-danger">{{categoryExists}}</span>
       </div>
       <div class="form-group">
-        <label><small>Add New Category</small></label>
-        <input type="text" name="newCategory" [(ngModel)]="newCategory" placeholder="new concern category"
-               class="form-control"/>
-        <button class="btn btn-sm btn-outline-primary" type="button"
-                (click)="addNewCategory(CONCERN_CATEGORY)"
-                [disabled]="newCategory == null || newCategory == ''">
-          add new category
+        <button type="button" class="btn btn-link" (click)="collapse.toggle()"
+                [attr.aria-expanded]="!concernCategoryIsCollapsed"
+                aria-controls="collapseExample">
+          <small>Add new Category</small>
         </button>
+        <div #collapse="ngbCollapse" [(ngbCollapse)]="concernCategoryIsCollapsed">
+          <input type="text" name="newCategory" [(ngModel)]="newCategory" placeholder="new concern category"
+                 class="form-control"/>
+          <button class="btn btn-sm btn-outline-primary" type="button"
+                  (click)="addNewCategory(CONCERN_CATEGORY)"
+                  [disabled]="newCategory == null || newCategory == ''">
+            add new category
+          </button>
+        </div>
       </div>
       <!-- concern category section end -->
     </div>
@@ -55,37 +53,31 @@
       <!-- activity category start -->
       <div class="form-group">
         <label>Aktivitätskategorie</label>
-        <input type="text"
-               name="activityCategory"
-               [(ngModel)]="counseling.activityCategory"
-               placeholder="activityCategory"
-               class="form-control"
-               disabled />
-      </div>
-      <div class="form-group">
-        <div class="btn-group me-3">
-          <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-            <button class="btn btn-sm btn-outline-primary" ngbDropdownToggle type="button">Select activity category</button>
-            <div class="dropdown-menu" ngbDropdownMenu>
-              <div *ngFor="let c of activityCategories">
-                <button ngbDropdownItem (click)="selectActivityCat(c)" type="button">{{c.name}}</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <select class="form-control">
+          <option>{{counseling.activityCategory}}</option>
+          <option *ngFor="let c of activityCategories" [value]="c" (click)="selectActivityCat(c)">
+            {{c.name}}
+          </option>
+        </select>
       </div>
       <div *ngIf="categoryExists != null">
         <span class="text-danger">{{categoryExists}}</span>
       </div>
       <div class="form-group">
-        <label><small>Add New Category</small></label>
-        <input type="text" name="newCategory" [(ngModel)]="newActivityCategory" placeholder="new activity category"
-               class="form-control"/>
-        <button class="btn btn-sm btn-outline-success" type="button"
-                (click)="addNewCategory(ACTIVITY_CATEGORY)"
-                [disabled]="newActivityCategory == null || newActivityCategory == ''">
-          add new category
+        <button type="button" class="btn btn-link" (click)="collapseAct.toggle()"
+                [attr.aria-expanded]="!activityCategoryIsCollapsed"
+                aria-controls="collapseExample">
+          <small>Add new Category</small>
         </button>
+        <div #collapseAct="ngbCollapse" [(ngbCollapse)]="activityCategoryIsCollapsed">
+          <input type="text" name="newCategory" [(ngModel)]="newActivityCategory" placeholder="new activity category"
+                 class="form-control"/>
+          <button class="btn btn-sm btn-outline-success" type="button"
+                  (click)="addNewCategory(ACTIVITY_CATEGORY)"
+                  [disabled]="newActivityCategory == null || newActivityCategory == ''">
+            add new category
+          </button>
+        </div>
       </div>
       <!-- activity category end -->
     </div>
