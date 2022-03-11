@@ -31,7 +31,7 @@ export class EditClientEmployerJobDescriptionComponent implements OnInit, OnDest
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe$.next(null);
+    this.unsubscribe$.next(true);
   }
 
   submit() {

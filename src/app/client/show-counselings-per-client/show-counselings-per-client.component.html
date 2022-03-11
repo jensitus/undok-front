@@ -10,6 +10,15 @@
             <label class="text-secondary">Datum:</label>
             {{counseling.counselingDate | date: 'dd.MM.yyyy HH:mm'}}
           </div>
+          <div class="m-1 mb-3">
+            <label class="text-secondary">Anliegen:</label>
+            <br>
+            {{counseling.concern}}
+          </div>
+          <div>
+            <label class="text-secondary">Kategorie:</label>
+            {{counseling.concernCategory}}
+          </div>
           <div>
             <label class="text-secondary">Aktivität:</label>
             {{counseling.activity}}
@@ -17,14 +26,6 @@
           <div>
             <label class="text-secondary">Aktivitätskategorie:</label>
             {{counseling.activityCategory}}
-          </div>
-          <div>
-            <label class="text-secondary">Anliegen:</label>
-            {{counseling.concern}}
-          </div>
-          <div>
-            <label class="text-secondary">Kategorie:</label>
-            {{counseling.concernCategory}}
           </div>
           <div>
             <label class="text-secondary">Registriert von:</label>

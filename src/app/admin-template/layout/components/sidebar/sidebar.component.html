@@ -9,10 +9,10 @@
       <fa-icon class="text-info" [icon]="faTachometerAlt"></fa-icon>&nbsp;
       <span>{{ 'Dashboard' }}</span>
     </a>
-    <a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+    <!--<a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <fa-icon class="text-info" [icon]="faBars"></fa-icon>&nbsp;
       <span>{{ 'Charts' }}</span>
-    </a>
+    </a>-->
     <a [routerLink]="['/list-users']" *ngIf="currentUser.admin" [routerLinkActive]="['router-link-active']"
        class="list-group-item">
       <fa-icon class="text-info" [icon]="faCampground"></fa-icon>&nbsp;
