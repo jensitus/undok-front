@@ -49,7 +49,7 @@ export class ShowClientEmployersComponent implements OnInit, OnDestroy {
 
   getEmployersForClient() {
     this.employerService.getEmployersForClient(this.clientId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      console.log(res);
+      console.log('employers', res);
       this.clientEmployerJobDescriptions = res;
     });
   }

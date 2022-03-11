@@ -30,6 +30,7 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log('counselings', this.counselings);
   }
 
   ngOnDestroy(): void {

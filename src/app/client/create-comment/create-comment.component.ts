@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {CounselingService} from '../service/counseling.service';
 import {takeUntil} from 'rxjs/operators';
 import {CommonService} from '../../common/services/common.service';
@@ -13,7 +13,7 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
 
   @Input() private clientId: string;
   @Input() public comment: string;
-  private unsubscribe$ = new Subject();
+  private unsubscribe$: Subscription[] = [];
 
   constructor(
     private counselingService: CounselingService,
@@ -24,15 +24,17 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // @ts-ignore
-    this.unsubscribe$.next();
+    if (this.unsubscribe$) {
+      this.unsubscribe$.forEach((s) => {
+        s.unsubscribe();
+      });
+    }
   }
 
   onSubmit() {
-    this.counselingService.createUpdateComment(this.clientId, this.comment).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      console.log(res);
+    this.unsubscribe$.push(this.counselingService.createUpdateComment(this.clientId, this.comment).subscribe(res => {
       this.commonService.setReloadClientSubject(true);
-    });
+    }));
   }
 
 }

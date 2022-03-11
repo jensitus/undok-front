@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ClientService} from '../service/client.service';
 import {Subject, Subscription} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -18,13 +18,12 @@ import {SidebarService} from '../../admin-template/shared/services/sidebar.servi
 export class ShowSingleClientComponent implements OnInit, OnDestroy {
 
   private id: string;
-  private unsubscribe$ = new Subject();
   private subscription$: Subscription[] = [];
   person: Person;
   client: Client;
   private closeResult = '';
   public isCollapsed = false;
-  @ViewChild('content') contentCreateCounseling: ElementRef;
+  @ViewChild('content_create_counseling') contentCreateCounseling: ElementRef;
   @ViewChild('create_employer') createEmployer: ElementRef;
   @ViewChild('list_employer') assignEmployer: ElementRef;
   @ViewChild('edit_client') editClient: ElementRef;
@@ -34,7 +33,8 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     private clientService: ClientService,
     private modalService: NgbModal,
     private commonService: CommonService,
-    private sidebarService: SidebarService
+    private sidebarService: SidebarService,
+    private router: Router
   ) { }
 
   private static getDismissReason(reason: any): string {
@@ -64,8 +64,6 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.unsubscribe$.next();
-    // this.unsubscribe$.complete();
     if (this.subscription$) {
       this.subscription$.forEach((s) => {
         s.unsubscribe();
@@ -75,6 +73,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   openEmployer(content) {
+    console.log('new employer... ', content);
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -82,9 +81,8 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     });
   }
 
-  openNewCounseling(content) {
-    console.log('open this modal?');
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+  openNewCounseling(content_create_counseling) {
+    this.modalService.open(content_create_counseling, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
@@ -102,7 +100,6 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   getClient() {
     this.subscription$.push(this.clientService.getSingleClient(this.id).subscribe( res => {
       this.client = res;
-      console.log(this.client);
     }));
   }
 
@@ -147,6 +144,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.subscription$.push(this.sidebarService.newCounselingSubject.subscribe(newCounseling => {
       if (newCounseling === true) {
         this.openNewCounseling(this.contentCreateCounseling);
+        // this.router.navigate(['clients', this.client.id, 'counselings', 'create']);
       }
     }));
   }
@@ -168,6 +166,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   checkIfClientIsToBeEdited() {
+    console.log('assign .... ');
     this.subscription$.push(this.sidebarService.editClientSubject.subscribe(editClient => {
       if (editClient === true) {
         this.openEditModal(this.editClient);

@@ -1,14 +1,16 @@
-import {Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ClientService} from '../service/client.service';
-import {Subject} from 'rxjs';
+import {publish, Subscription} from 'rxjs';
 import {CounselingForm} from '../model/counseling-form';
-import {takeUntil} from 'rxjs/operators';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
-import {NgbDateAdapter, NgbDateStruct, NgbTimepicker} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {NgbFormatterService} from '../../common/services/ngb-formatter.service';
 import {CommonService} from '../../common/services/common.service';
 import {DateTimeService} from '../service/date-time.service';
 import {User} from '../../auth/model/user';
+import {Category} from '../model/category';
+import {CategoryService} from '../service/category.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 
 @Component({
   selector: 'app-create-counseling',
@@ -17,13 +19,17 @@ import {User} from '../../auth/model/user';
 })
 export class CreateCounselingComponent implements OnInit, OnDestroy {
 
+  CONCERN_CATEGORY = 'concernCategory';
+  ACTIVITY_CATEGORY = 'activityCategory';
+
   @Input() clientId: string;
 
   time = {hour: 13, minute: 30};
   dateObject: NgbDateStruct;
   currentUser: User;
 
-  private unsubscribe$ = new Subject();
+  private unsubscribe$: Subscription[] = [];
+
   loading = false;
   counselingForm: CounselingForm;
 
@@ -37,17 +43,30 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   activityCategory: string;
   registeredBy: string;
   faBars = faBars;
+  concernCategories: Category[];
+  activityCategories: Category[];
+  category: Category;
+  newCategory: string = null;
+  newActivityCategory: string = null;
+  categoryExists: string = null;
+  activityCategoryIsCollapsed = true;
+  concernCategoryIsCollapsed = true;
 
   constructor(
     private clientService: ClientService,
     private ngbFormatterService: NgbFormatterService,
     private dateAdapter: NgbDateAdapter<string>,
     private commonService: CommonService,
-    public dateTimeService: DateTimeService
-  ) { }
+    public dateTimeService: DateTimeService,
+    private categoryService: CategoryService,
+    private alertService: AlertService
+  ) {
+  }
 
   ngOnInit(): void {
     this.getCurrentUser();
+    this.loadConcernCategories();
+    this.loadActivityCategories();
   }
 
   private getCurrentUser() {
@@ -70,35 +89,66 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
       clientId: this.clientId,
       counselingDate: this.counselingDate
     };
-    console.log(this.counselingForm);
-    this.clientService.createCounseling(this.clientId, this.counselingForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      console.log('result', result);
+    this.unsubscribe$.push(this.clientService.createCounseling(this.clientId, this.counselingForm).subscribe(result => {
       this.commonService.setCreateCounselingSubject(true);
       this.loading = false;
-    });
+    }));
   }
 
   ngOnDestroy(): void {
-    // @ts-ignore
-    this.unsubscribe$.next();
+    if (this.unsubscribe$) {
+      this.unsubscribe$.forEach((s) => {
+        s.unsubscribe();
+      });
+    }
   }
 
-  // mergeDateAndTime(): string {
-  //   let day = '';
-  //   let month = '';
-  //   if (this.dateObject.day.toString().length === 1) {
-  //   day = '0' + this.dateObject.day;
-  //   } else {
-  //     day = this.dateObject.day.toString();
-  //   }
-  //   if (this.dateObject.month.toString().length === 1) {
-  //     month = '0' + this.dateObject.month;
-  //   } else {
-  //     month = this.dateObject.month.toString();
-  //   }
-  //   const finalDateTimeDonner = day + '-' + month + '-' + this.dateObject.year + ' ' + this.time.hour + ':' + this.time.minute;
-  //   console.log(finalDateTimeDonner);
-  //   return finalDateTimeDonner;
-  // }
+  loadConcernCategories(): void {
+    this.unsubscribe$.push(this.categoryService.getCategories(this.CONCERN_CATEGORY).subscribe(cat => {
+      this.concernCategories = cat;
+    }));
+  }
+
+  loadActivityCategories(): void {
+    this.unsubscribe$.push(this.categoryService.getCategories(this.ACTIVITY_CATEGORY).subscribe(cat => {
+      this.activityCategories = cat;
+    }));
+  }
+
+  selectConcernCat(cat: Category) {
+    this.concernCategory = cat.name;
+  }
+
+  selectActivityCat(cat: Category) {
+    this.activityCategory = cat.name;
+  }
+
+  addNewCategory(type: string) {
+    let category: Category;
+
+    switch (type) {
+      case this.CONCERN_CATEGORY:
+        category = {
+          name: this.newCategory,
+          type: type
+        };
+        break;
+      case this.ACTIVITY_CATEGORY:
+        category = {
+          name: this.newActivityCategory,
+          type: type
+        };
+        break;
+    }
+    this.unsubscribe$.push(this.categoryService.addCategory(category).subscribe((r) => {
+      this.newCategory = null;
+      this.newActivityCategory = null;
+      this.loadConcernCategories();
+      this.loadActivityCategories();
+    }, error => {
+      this.categoryExists = error.error;
+    }));
+
+  }
 
 }

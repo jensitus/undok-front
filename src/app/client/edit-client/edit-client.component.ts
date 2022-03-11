@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ClientForm} from '../model/clientForm';
-import {Subject} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {MaritalStatus} from '../model/marital-status.enum';
 import {Country} from '../model/country.enum';
 import {ClientService} from '../service/client.service';
@@ -24,7 +24,7 @@ export class EditClientComponent implements OnInit, OnDestroy {
   @Input() client: Client;
 
   clientForm: ClientForm;
-  private unsubscribe$ = new Subject();
+  private unsubscribe$: Subscription[] = [];
   firstName: string;
   lastName: string;
   dateOfBirth: string;
@@ -62,8 +62,11 @@ export class EditClientComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // @ts-ignore
-    this.unsubscribe$.next();
+    if (this.unsubscribe$) {
+      this.unsubscribe$.forEach((s) => {
+        s.unsubscribe();
+      });
+    }
   }
 
   onCountryChange(country) {
@@ -131,12 +134,11 @@ export class EditClientComponent implements OnInit, OnDestroy {
     //   city: this.city,
     //   country: this.country
     // };
-    this.clientService.updateClient(this.client.id, this.client).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+    this.unsubscribe$.push(this.clientService.updateClient(this.client.id, this.client).subscribe(result => {
       this.loading = true;
-      console.log(result);
       this.commonService.setDemoSubject(true);
       this.loading = false;
-    });
+    }));
   }
 
   onResidentStatusChange(status): void {
@@ -155,7 +157,6 @@ export class EditClientComponent implements OnInit, OnDestroy {
         resStatus = ResidentStatus.UNKNOWN;
     }
     this.client.currentResidentStatus = resStatus;
-    console.log('residenStatus', this.client.currentResidentStatus);
   }
 
 }

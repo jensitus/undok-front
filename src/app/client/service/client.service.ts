@@ -5,7 +5,6 @@ import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {Person} from '../model/person';
 import {CounselingForm} from '../model/counseling-form';
-import {EmployerForm} from '../model/employer-form';
 import {Client} from '../model/client';
 import {CountryData} from '../../admin-template/layout/charts/doughnut/country-data';
 import {AllClient} from '../model/all-client';

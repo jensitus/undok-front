@@ -23,7 +23,7 @@ export class UserComponent implements OnInit, OnDestroy {
   responseMessage: ResponseMessage;
   userList: User[];
   faCheck = faCheck;
-  private unsubscribe$: Subscription[];
+  private unsubscribe$: Subscription[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,

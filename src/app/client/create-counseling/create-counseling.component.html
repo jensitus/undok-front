@@ -1,3 +1,4 @@
+<app-alert></app-alert>
 <form #createCounselingForm="ngForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
     <label>Termin</label>
@@ -7,7 +8,9 @@
           <input class="form-control" placeholder="Beratungstermin"
                  name="dp" [(ngModel)]="dateObject" ngbDatepicker #d="ngbDatepicker">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><fa-icon class="text-info" [icon]="faBars"></fa-icon></button>
+            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+              <fa-icon class="text-info" [icon]="faBars"></fa-icon>
+            </button>
           </div>
         </div>
       </div>
@@ -20,21 +23,79 @@
     <label>Anliegen</label>
     <textarea type="text" name="concern" [(ngModel)]="concern" placeholder="concern" class="form-control"></textarea>
   </div>
-  <div class="form-group">
-    <label>Kategorie</label>
-    <input type="text" name="concernCategory" [(ngModel)]="concernCategory" placeholder="concernCategory" class="form-control" />
+  <!-- category section start -->
+  <div class="row">
+    <div class="col">
+
+      <div class="form-group">
+        <label>Concern Category</label>
+        <select class="form-control" aria-label="select concern category">
+          <option selected></option>
+          <option *ngFor="let c of concernCategories" [value]="c" (click)="selectConcernCat(c)">{{c.name}}</option>
+        </select>
+      </div>
+      <div *ngIf="categoryExists != null">
+        <span class="text-danger">{{categoryExists}}</span>
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-link" (click)="collapse.toggle()"
+                [attr.aria-expanded]="!concernCategoryIsCollapsed"
+                aria-controls="collapseExample">
+          <small>Add new Category</small>
+        </button>
+        <div #collapse="ngbCollapse" [(ngbCollapse)]="concernCategoryIsCollapsed">
+          <input type="text" name="newCategory" [(ngModel)]="newCategory" placeholder="new concern category"
+                 class="form-control"/>
+          <button class="btn btn-sm btn-outline-primary" type="button"
+                  (click)="addNewCategory(CONCERN_CATEGORY)"
+                  [disabled]="newCategory == null || newCategory == ''">
+            add new category
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- concern category section end -->
+    <!-- activity category start -->
+    <div class="col">
+      <div class="form-group">
+        <label>Aktivitätskategorie</label>
+        <select class="form-control">
+          <option></option>
+          <option *ngFor="let c of activityCategories" [value]="c" (click)="selectActivityCat(c)">{{c.name}}</option>
+        </select>
+      </div>
+      <div *ngIf="categoryExists != null">
+        <span class="text-danger">{{categoryExists}}</span>
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-link" (click)="collapseAct.toggle()"
+                [attr.aria-expanded]="!activityCategoryIsCollapsed"
+                aria-controls="collapseExample">
+          <small>Add new Category</small>
+        </button>
+        <div #collapseAct="ngbCollapse" [(ngbCollapse)]="activityCategoryIsCollapsed">
+          <input type="text" name="newCategory" [(ngModel)]="newActivityCategory" placeholder="new activity category"
+                 class="form-control"/>
+          <button class="btn btn-sm btn-outline-success" type="button"
+                  (click)="addNewCategory(ACTIVITY_CATEGORY)"
+                  [disabled]="newActivityCategory == null || newActivityCategory == ''">
+            add new category
+          </button>
+        </div>
+      </div>
+      <!-- activity category end -->
+    </div>
   </div>
+  <!-- category section end -->
+
   <div class="form-group">
-    <label>Aktivität</label>
-    <input type="text" name="activity" [(ngModel)]="activity" placeholder="activity" class="form-control" />
+    <label>Activity</label>
+    <input type="text" name="activity" [(ngModel)]="activity" placeholder="activity" class="form-control"/>
   </div>
-  <div class="form-group">
-    <label>Aktivitätskategorie</label>
-    <input type="text" name="activityCategory" [(ngModel)]="activityCategory" placeholder="activityCategory" class="form-control" />
-  </div>
+
   <div class="form-group">
     <label>Registriert von</label>
-    <input type="text" name="registeredBy" [(ngModel)]="registeredBy" placeholder="registeredBy" class="form-control" />
+    <input type="text" name="registeredBy" [(ngModel)]="registeredBy" placeholder="registeredBy" class="form-control"/>
   </div>
   <div class="form-group">
     <button class="btn btn-outline-danger" [disabled]="loading">submit</button>

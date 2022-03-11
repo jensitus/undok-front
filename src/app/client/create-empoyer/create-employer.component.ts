@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {EmployerForm} from '../model/employer-form';
-import {Subject} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {CommonService} from '../../common/services/common.service';
 import {EmployerService} from '../service/employer.service';
@@ -12,7 +12,7 @@ import {EmployerService} from '../service/employer.service';
 })
 export class CreateEmployerComponent implements OnInit, OnDestroy {
 
-  private unsubscribe$ = new Subject();
+  private unsubscribe$: Subscription[] = [];
 
   employerFirstName: string;
   employerLastName: string;
@@ -38,8 +38,11 @@ export class CreateEmployerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // @ts-ignore
-    this.unsubscribe$.next();
+    if (this.unsubscribe$) {
+      this.unsubscribe$.forEach((u) => {
+        u.unsubscribe();
+      });
+    }
   }
 
   submit(): void {
@@ -57,11 +60,9 @@ export class CreateEmployerComponent implements OnInit, OnDestroy {
       employerCountry: this.employerCountry
     };
     this.loading = true;
-    console.log(this.employerForm);
-    this.employerService.createEmployer(this.employerForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      console.log(result);
+    this.unsubscribe$.push(this.employerService.createEmployer(this.employerForm).subscribe(result => {
       this.commonService.setCreateEmployerSubject(true);
-    });
+    }));
   }
 
 }

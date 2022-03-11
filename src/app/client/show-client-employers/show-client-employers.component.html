@@ -95,13 +95,8 @@
       <div class="row mt-2">
         <div class="col-md-8"></div>
         <div class="col text-right">
-          <button class="btn btn-sm btn-outline-primary" (click)="edit(e)">edit</button>
-        </div>
-        <div class="col text-right">
-          <div style="font-size: x-small">
-            <button class="btn btn-sm btn-outline-danger" (click)="deleteEmployerFromClient(e.employer.id)">remove
-            </button>
-          </div>
+            <button class="btn btn-link" (click)="edit(e)"><small>edit</small></button>
+            <button class="btn btn-link" (click)="deleteEmployerFromClient(e.employer.id)"><small>remove</small></button>
         </div>
       </div>
     </div>
