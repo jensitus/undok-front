@@ -1,14 +1,13 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {ClientService} from '../service/client.service';
-import {Subject, Subscription} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {Subscription} from 'rxjs';
 import {Client} from '../model/client';
 import {Person} from '../model/person';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
-import {Employer} from '../model/employer';
 import {SidebarService} from '../../admin-template/shared/services/sidebar.service';
+import {EmployerService} from '../service/employer.service';
 
 @Component({
   selector: 'app-show-single-client',
@@ -33,8 +32,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     private clientService: ClientService,
     private modalService: NgbModal,
     private commonService: CommonService,
-    private sidebarService: SidebarService,
-    private router: Router
+    private sidebarService: SidebarService
   ) { }
 
   private static getDismissReason(reason: any): string {
@@ -133,9 +131,8 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   getReloadClientSubject() {
     this.subscription$.push(this.commonService.reloadClientSubject.subscribe(reload => {
       if (reload === true) {
-        // this.getClient();
+        this.getClient();
         this.modalService.dismissAll();
-        window.location.reload();
       }
     }));
   }

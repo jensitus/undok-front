@@ -1,12 +1,10 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {EmployerService} from '../service/employer.service';
 import {takeUntil} from 'rxjs/operators';
-import {Employer} from '../model/employer';
 import {Subject} from 'rxjs';
 import {CommonService} from '../../common/services/common.service';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ClientEmployerJobDescription} from '../model/client-employer-job-description';
-import {CreateClientEmployerJobDescriptionComponent} from '../create-client-employer-job-description/create-client-employer-job-description.component';
 import {EditClientEmployerJobDescriptionComponent} from '../edit-client-employer-job-description/edit-client-employer-job-description.component';
 
 @Component({
@@ -44,7 +42,7 @@ export class ShowClientEmployersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe$.next(null);
+    this.unsubscribe$.next(true);
   }
 
   getEmployersForClient() {
@@ -63,6 +61,7 @@ export class ShowClientEmployersComponent implements OnInit, OnDestroy {
   getAddEmployerSubject() {
     this.commonService.employerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(reload => {
       if (reload === true) {
+        console.log('employer Subject');
         this.getEmployersForClient();
         this.modalService.dismissAll();
       }
