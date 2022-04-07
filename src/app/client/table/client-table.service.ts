@@ -33,11 +33,11 @@ function matches(client: AllClient, term: string, pipe: PipeTransform) {
   if (client.lastName === null) {
     client.lastName = '...';
   }
-  if (client.gender === null) {
-    client.gender = '...';
+  if (client.sector === null) {
+    client.sector = '...';
   }
-  if (client.education === null) {
-    client.education = '...';
+  if (client.currentResidentStatus === null) {
+    client.currentResidentStatus = '...';
   }
   if (client.nationality === null) {
     client.nationality = '...';
@@ -45,8 +45,8 @@ function matches(client: AllClient, term: string, pipe: PipeTransform) {
   return client.firstName.toLowerCase().includes(term.toLowerCase())
     || client.lastName.toLowerCase().includes(term.toLowerCase())
     || client.keyword.toLowerCase().includes(term.toLowerCase())
-    || client.gender.toLowerCase().includes(term.toLowerCase())
-    || client.education.toLocaleLowerCase().includes(term.toLowerCase())
+    || client.sector.toLowerCase().includes(term.toLowerCase())
+    || client.currentResidentStatus.toLocaleLowerCase().includes(term.toLowerCase())
     || client.nationality.toLowerCase().includes(term.toLowerCase());
 }
 

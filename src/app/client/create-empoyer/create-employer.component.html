@@ -1,49 +1,65 @@
-<div class="row">
-  <div class="col-4">
-    <form #createEmployerForm="ngForm" (ngSubmit)="submit()" class="mt-1">
+<form #createEmployerForm="ngForm" (ngSubmit)="submit()" class="mt-1">
+  <div class="row">
+    <div class="col-4">
       <div class="form-group">
-        <label>Company</label>
-        <input type="text" class="form-control" name="employerCompany" [(ngModel)]="employerCompany" placeholder="Company" />
+        <label>Firma</label>
+        <input type="text" class="form-control" name="employerCompany" [(ngModel)]="employerCompany"
+               placeholder="Company"/>
       </div>
       <div class="form-group">
-        <label>First Name</label>
-        <input type="text" class="form-control" name="employerFirstName" [(ngModel)]="employerFirstName" placeholder="employerFirstName" />
+        <label>Vorname</label>
+        <input type="text" class="form-control" name="employerFirstName" [(ngModel)]="employerFirstName"
+               placeholder="employerFirstName"/>
       </div>
       <div class="form-group">
-        <label>Last Name</label>
-        <input type="text" class="form-control" name="employerLastName" [(ngModel)]="employerLastName" placeholder="employerLastName" />
+        <label>Nachname</label>
+        <input type="text" class="form-control" name="employerLastName" [(ngModel)]="employerLastName"
+               placeholder="employerLastName"/>
       </div>
+    </div>
+    <div class="col-4">
       <div class="form-group">
         <label>Position</label>
-        <input type="text" class="form-control" name="employerPosition" [(ngModel)]="employerPosition" placeholder="employerPosition" />
+        <input type="text" class="form-control" name="employerPosition" [(ngModel)]="employerPosition"
+               placeholder="employerPosition"/>
       </div>
       <div class="form-group">
         <label>Email</label>
-        <input type="text" class="form-control" name="employerEmail" [(ngModel)]="email" placeholder="Email" />
+        <input type="text" class="form-control" name="employerEmail" [(ngModel)]="email" placeholder="Email"/>
       </div>
       <div class="form-group">
         <label>Telephon</label>
-        <input type="text" class="form-control" name="telephone" [(ngModel)]="telephone" placeholder="telephone" />
+        <input type="text" class="form-control" name="telephone" [(ngModel)]="telephone" placeholder="telephone"/>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="form-group">
+        <label>Straße</label>
+        <input type="text" class="form-control" name="employerStreet" [(ngModel)]="employerStreet"
+               placeholder="street"/>
       </div>
       <div class="form-group">
-        <label>Street</label>
-        <input type="text" class="form-control" name="employerStreet" [(ngModel)]="employerStreet" placeholder="street" />
+        <label>Postleitzahl</label>
+        <input type="text" class="form-control" name="employerZipCode" [(ngModel)]="employerZipCode"
+               placeholder="zip code"/>
       </div>
       <div class="form-group">
-        <label>Zip Code</label>
-        <input type="text" class="form-control" name="employerZipCode" [(ngModel)]="employerZipCode" placeholder="zip code" />
+        <label>Stadt</label>
+        <input type="text" class="form-control" name="employerCity" [(ngModel)]="employerCity" placeholder="city"/>
       </div>
       <div class="form-group">
-        <label>City</label>
-        <input type="text" class="form-control" name="employerCity" [(ngModel)]="employerCity" placeholder="city" />
+        <label>Land</label>
+        <input type="text" class="form-control" name="employerCountry" [(ngModel)]="employerCountry"
+               placeholder="country"/>
       </div>
-      <div class="form-group">
-        <label>Country</label>
-        <input type="text" class="form-control" name="employerCountry" [(ngModel)]="employerCountry" placeholder="country" />
-      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
       <div class="form-group">
         <button class="btn btn-sm btn-outline-success" [disabled]="loading">submit</button>
       </div>
-    </form>
+    </div>
   </div>
-</div>
+</form>
+
