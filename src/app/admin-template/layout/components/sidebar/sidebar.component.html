@@ -34,7 +34,7 @@
       <span>{{ 'neue beratung' }}</span>
     </a>
 
-    <a *ngIf="showClientButtons" class="list-group-item" (click)="newEmployer()">
+    <a *ngIf="showClientButtons || showCreateEmployerButton" class="list-group-item" [routerLink]="['clients/create/employer']">
       <fa-icon class="text-primary" [icon]="faSurprise"></fa-icon>&nbsp;
       <span>{{ 'neue arbeitgeber:in' }}</span>
     </a>
@@ -47,11 +47,6 @@
     <a *ngIf="showClientButtons" class="list-group-item" (click)="editClient()">
       <fa-icon class="text-success" [icon]="faUsers"></fa-icon>&nbsp;
       <span>{{ 'klient:in bearbeiten' }}</span>
-    </a>
-
-    <a *ngIf="showCreateEmployerButton" class="list-group-item" (click)="newEmployer()">
-      <fa-icon class="text-primary" [icon]="faSurprise"></fa-icon>&nbsp;
-      <span>{{ 'neue arbeitgeber:in' }}</span>
     </a>
 
     <div class="header-fields">

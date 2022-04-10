@@ -1,7 +1,7 @@
-import {Inject, Injectable, PipeTransform} from '@angular/core';
+import {Inject, Injectable, OnDestroy, PipeTransform} from '@angular/core';
 import {Counseling} from '../model/counseling';
 import {SortColumn, SortDirection} from './sortable.directive';
-import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, of, Subject, Subscription} from 'rxjs';
 import {DecimalPipe} from '@angular/common';
 import {debounceTime, delay, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {State} from './state';
@@ -49,7 +49,7 @@ function matches(counseling: Counseling, term: string, pipe: PipeTransform) {
 @Injectable({
   providedIn: 'root'
 })
-export class CounselingTableService {
+export class CounselingTableService implements OnDestroy {
 
   counselings: Counseling[];
 
@@ -57,8 +57,7 @@ export class CounselingTableService {
   private _search$ = new Subject<void>();
   private _counselings$ = new BehaviorSubject<Counseling[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
-
-  private unsubscribe$ = new Subject();
+  private subscription$: Subscription[] = [];
 
   private _state: State = {
     page: 1,
@@ -72,9 +71,8 @@ export class CounselingTableService {
     private pipe: DecimalPipe,
     private counselingService: CounselingService
   ) {
-    this.counselingService.getCounselings().subscribe(result => {
+    this.subscription$.push(this.counselingService.getCounselings().subscribe(result => {
       this.counselings = result;
-      console.log('constructor: show counselings', this.counselings);
 
       this._search$.pipe(
         tap(() => this._loading$.next(true)),
@@ -89,7 +87,15 @@ export class CounselingTableService {
 
       this._search$.next();
 
-    });
+    }));
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription$) {
+      this.subscription$.forEach((s) => {
+        s.unsubscribe();
+      });
+    }
   }
 
   get allCounselings() {

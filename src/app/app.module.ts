@@ -34,6 +34,7 @@ import {UploadComponent} from './common/upload/upload.component';
 import {FilelistComponent} from './common/upload/filelist/filelist.component';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {DecimalPipe} from '@angular/common';
+import { BackButtonDirective } from './common/back-button.directive';
 
 const app_routes: Routes = [
   {path: 'home', redirectTo: 'login', pathMatch: 'full'},
@@ -63,6 +64,7 @@ const app_routes: Routes = [
     ChangePasswordComponent,
     UploadComponent,
     FilelistComponent,
+    BackButtonDirective,
   ],
   imports: [
     BrowserModule,
