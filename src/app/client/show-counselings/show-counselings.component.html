@@ -50,7 +50,9 @@
     </thead>
     <tbody>
     <tr *ngFor="let counseling of counselings$ | async; index as i">
-      <td>{{counseling.counselingDate | date}}</td>
+      <td width="200">
+        {{counseling.counselingDate | date: 'dd.MM.yyyy HH:mm'}}
+      </td>
       <td>
         <ngb-highlight [result]="counseling.concern" [term]="counselingTableService.searchTerm"></ngb-highlight>
       </td>
