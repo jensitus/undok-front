@@ -1,6 +1,6 @@
-import {Injectable, PipeTransform} from '@angular/core';
+import {Injectable, OnDestroy, PipeTransform} from '@angular/core';
 import {SortColumn, SortDirection} from './sortable.directive';
-import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, of, Subject, Subscription} from 'rxjs';
 import {State} from './state';
 import {DecimalPipe} from '@angular/common';
 import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
@@ -33,11 +33,11 @@ function matches(client: AllClient, term: string, pipe: PipeTransform) {
   if (client.lastName === null) {
     client.lastName = '...';
   }
-  if (client.gender === null) {
-    client.gender = '...';
+  if (client.sector === null) {
+    client.sector = '...';
   }
-  if (client.education === null) {
-    client.education = '...';
+  if (client.currentResidentStatus === null) {
+    client.currentResidentStatus = '...';
   }
   if (client.nationality === null) {
     client.nationality = '...';
@@ -45,15 +45,15 @@ function matches(client: AllClient, term: string, pipe: PipeTransform) {
   return client.firstName.toLowerCase().includes(term.toLowerCase())
     || client.lastName.toLowerCase().includes(term.toLowerCase())
     || client.keyword.toLowerCase().includes(term.toLowerCase())
-    || client.gender.toLowerCase().includes(term.toLowerCase())
-    || client.education.toLocaleLowerCase().includes(term.toLowerCase())
+    || client.sector.toLowerCase().includes(term.toLowerCase())
+    || client.currentResidentStatus.toLocaleLowerCase().includes(term.toLowerCase())
     || client.nationality.toLowerCase().includes(term.toLowerCase());
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class ClientTableService {
+export class ClientTableService implements OnDestroy {
 
   apiUrl = environment.api_url;
   UNDOK_CLIENTS = '/service/undok/clients';
@@ -65,6 +65,7 @@ export class ClientTableService {
   private _search$ = new Subject<void>();
   private _clients$ = new BehaviorSubject<AllClient[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
+  private subscription$: Subscription[] = [];
 
   private _state: State = {
     page: 1,
@@ -78,7 +79,7 @@ export class ClientTableService {
     private pipe: DecimalPipe,
     private http: HttpClient
   ) {
-    this.getAllClients().subscribe(result => {
+    this.subscription$.push(this.getAllClients().subscribe(result => {
       this.allClients = result;
       console.log('constructor this.allClients', this.allClients);
 
@@ -93,7 +94,15 @@ export class ClientTableService {
       });
       this._search$.next();
 
-    });
+    }));
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription$) {
+      this.subscription$.forEach((s) => {
+        s.unsubscribe();
+      });
+    }
   }
 
   get allClients$() {

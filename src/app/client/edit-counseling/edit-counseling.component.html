@@ -20,7 +20,7 @@
     <div class="col">
       <!-- concern category section -->
       <div class="form-group">
-        <label>Concern Category</label>
+        <label>Anliegen Kategorie</label>
         <select class="form-control" aria-label="select concern category">
           <option>{{counseling.concernCategory}}</option>
           <option *ngFor="let c of concernCategories" [value]="c" (click)="selectConcernCat(c)">
@@ -35,7 +35,7 @@
         <button type="button" class="btn btn-link" (click)="collapse.toggle()"
                 [attr.aria-expanded]="!concernCategoryIsCollapsed"
                 aria-controls="collapseExample">
-          <small>Add new Category</small>
+          <small>Neue Kategorie hinzufügen</small>
         </button>
         <div #collapse="ngbCollapse" [(ngbCollapse)]="concernCategoryIsCollapsed">
           <input type="text" name="newCategory" [(ngModel)]="newCategory" placeholder="new concern category"
@@ -43,7 +43,7 @@
           <button class="btn btn-sm btn-outline-primary" type="button"
                   (click)="addNewCategory(CONCERN_CATEGORY)"
                   [disabled]="newCategory == null || newCategory == ''">
-            add new category
+            neue Kategorie hinzufügen
           </button>
         </div>
       </div>
@@ -67,7 +67,7 @@
         <button type="button" class="btn btn-link" (click)="collapseAct.toggle()"
                 [attr.aria-expanded]="!activityCategoryIsCollapsed"
                 aria-controls="collapseExample">
-          <small>Add new Category</small>
+          <small>neue Kategorie</small>
         </button>
         <div #collapseAct="ngbCollapse" [(ngbCollapse)]="activityCategoryIsCollapsed">
           <input type="text" name="newCategory" [(ngModel)]="newActivityCategory" placeholder="new activity category"
@@ -75,7 +75,7 @@
           <button class="btn btn-sm btn-outline-success" type="button"
                   (click)="addNewCategory(ACTIVITY_CATEGORY)"
                   [disabled]="newActivityCategory == null || newActivityCategory == ''">
-            add new category
+            neue Kategorie hinzufügen
           </button>
         </div>
       </div>

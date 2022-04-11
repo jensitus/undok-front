@@ -123,10 +123,10 @@ export class EmployerTableService implements OnDestroy {
   }
 
   private constructEmployersObs() {
-    this.employerService.getAllEmployers(null).pipe().subscribe(employers => {
+    this.subscription$.push(this.employerService.getAllEmployers(null).pipe().subscribe(employers => {
       this.employers = employers;
 
-      this._search$.pipe(
+      this.subscription$.push(this._search$.pipe(
         tap(() => this._loading$.next(true)),
         debounceTime(200),
         switchMap(() => this._search()),
@@ -135,16 +135,15 @@ export class EmployerTableService implements OnDestroy {
       ).subscribe(result => {
         this._employers$.next(result.employers);
         this._total$.next(result.total);
-      });
+      }));
 
       this._search$.next();
-    });
+    }));
   }
 
   getCreateEmployerSubject() {
     this.subscription$.push(this.commonService.createEmployerSubject.subscribe(reload => {
       if (reload === true) {
-        console.log('employerTableService.getCreateEmployerSubject()');
         this.constructEmployersObs();
       }
     }));

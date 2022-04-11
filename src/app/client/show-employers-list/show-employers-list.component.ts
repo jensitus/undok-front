@@ -35,7 +35,6 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     private sidebarService: SidebarService
   ) {
-    this.getEmployersPerTableService();
   }
 
   private static getDismissReason(reason: any): string {
@@ -49,8 +48,8 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.getEmployersPerTableService();
     this.checkIfNewEmployerIsNeeded();
-    this.getCreateEmployerSubject();
   }
 
   ngOnDestroy(): void {
@@ -119,16 +118,6 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
     this.sidebarService.newEmployerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(newEmployer => {
       if (newEmployer === true) {
         this.openEmployer(this.createEmployer);
-      }
-    });
-  }
-
-  getCreateEmployerSubject() {
-    this.commonService.createEmployerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(reload => {
-      if (reload === true) {
-        console.log('showEmployersList.getCreateEmployerSubject()');
-        // this.getEmployersPerTableService();
-        this.modalService.dismissAll();
       }
     });
   }

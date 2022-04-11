@@ -1,5 +1,5 @@
 <div [@routerTransition]>
-  <h3 class="text-muted mb-4"><small>Statistics Overview</small></h3>
+  <h3 class="text-muted mb-4"><small>Überblick</small></h3>
 
   <div class="row">
     <div class="col-md-9">
@@ -25,7 +25,7 @@
         <div class="col">
           <div *ngIf="currentUser.admin">
             <div>
-              <a [routerLink]="['/clients/create']" class="btn btn-lg btn-outline-success">create client</a>
+              <a [routerLink]="['/clients/create']" class="btn btn-lg btn-outline-success">Klient:in anlegen</a>
             </div>
           </div>
         </div>
@@ -47,7 +47,7 @@
     <div class="col mt-3">
       <div class="card card-default">
         <div class="card-header">
-          <i class="fa fa-clock-o fa-fw"></i> Urgent Matter
+          <i class="fa fa-clock-o fa-fw"></i> Kommende Beratungstermine
         </div>
         <!-- /.card-header -->
         <app-timeline [user_id]="currentUser.id"></app-timeline>

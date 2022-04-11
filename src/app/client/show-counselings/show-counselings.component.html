@@ -31,9 +31,9 @@
       [pageSize]="counselingTableService.pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
     </ngb-pagination>
     <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="counselingTableService.pageSize">
-      <option [ngValue]="2">2 items per page</option>
-      <option [ngValue]="4">4 items per page</option>
-      <option [ngValue]="6">6 items per page</option>
+      <option [ngValue]="20">20 items per page</option>
+      <option [ngValue]="40">40 items per page</option>
+      <option [ngValue]="60">60 items per page</option>
     </select>
   </div>
 
@@ -50,7 +50,9 @@
     </thead>
     <tbody>
     <tr *ngFor="let counseling of counselings$ | async; index as i">
-      <td>{{counseling.counselingDate | date}}</td>
+      <td width="200">
+        {{counseling.counselingDate | date: 'dd.MM.yyyy HH:mm'}}
+      </td>
       <td>
         <ngb-highlight [result]="counseling.concern" [term]="counselingTableService.searchTerm"></ngb-highlight>
       </td>

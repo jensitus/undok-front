@@ -39,12 +39,12 @@
     <table class="table table-striped mt-5">
       <thead>
       <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Keyword</th>
+        <th>Vorname</th>
+        <th>Nachname</th>
+        <th>Schlüsselwort</th>
         <th>Staatsbürgerschaft</th>
-        <th>Gender</th>
-        <th>Bildung</th>
+        <th>Branche</th>
+        <th>Aufenthaltstitel</th>
       </tr>
       </thead>
       <tbody>
@@ -62,10 +62,10 @@
           <ngb-highlight [result]="client.nationality" [term]="clientTableService.searchTerm"></ngb-highlight>
         </td>
         <td>
-          <ngb-highlight [result]="client.gender" [term]="clientTableService.searchTerm"></ngb-highlight>
+          <ngb-highlight [result]="client.sector" [term]="clientTableService.searchTerm"></ngb-highlight>
         </td>
         <td>
-          <ngb-highlight [result]="client.education" [term]="clientTableService.searchTerm"></ngb-highlight>
+          <ngb-highlight [result]="client.currentResidentStatus" [term]="clientTableService.searchTerm"></ngb-highlight>
         </td>
         <td>
           <a [routerLink]="['/clients', client.id]"><small>link</small></a>

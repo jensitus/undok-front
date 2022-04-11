@@ -4,6 +4,7 @@ import {Subject, Subscription} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {CommonService} from '../../common/services/common.service';
 import {EmployerService} from '../service/employer.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-create-employer',
@@ -31,8 +32,10 @@ export class CreateEmployerComponent implements OnInit, OnDestroy {
 
   constructor(
     private commonService: CommonService,
-    private employerService: EmployerService
-  ) { }
+    private employerService: EmployerService,
+    private location: Location
+  ) {
+  }
 
   ngOnInit(): void {
   }
@@ -62,6 +65,7 @@ export class CreateEmployerComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.unsubscribe$.push(this.employerService.createEmployer(this.employerForm).subscribe(result => {
       this.commonService.setCreateEmployerSubject(true);
+      this.location.back();
     }));
   }
 

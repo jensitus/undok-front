@@ -1,93 +1,13 @@
 <div class="card-body">
-  <ul class="timeline" *ngFor="let item of items; let i = index">
-    <li *ngIf="(i % 2 == 0) && (i % 3 == 1)">
-      <div class="timeline-badge warning">
-        <fa-icon [icon]="faGraduationCap"></fa-icon>
+  <ul class="list-group list-group-flush" *ngFor="let item of items; let i = index">
+    <li class="list-group-item">
+      <div *ngIf="item.counselingDate">
+        {{item.counselingDate | date: 'dd.MM.yyyy HH:mm'}}
       </div>
-      <div class="timeline-panel">
-        <div class="timeline-body">
-          <div>
-            <small class="text-muted">
-              <fa-icon [icon]="faClock"></fa-icon>
-              created: {{item.createdAt | date:'longDate'}}</small>
-          </div>
-          <div>
-            <b><span [innerHTML]="item.name"></span></b>
-          </div>
-          <div>
-            <small>Client: <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a></small>
-          </div>
-          <div *ngIf="item.counselingDate">
-            <small><b>{{item.counselingDate | date: 'dd.MM.yyyy HH:mm'}}</b></small>
-          </div>
-        </div>
-      </div>
-    </li>
-    <li *ngIf="(i % 2 == 0) && !(i % 3 == 1)">
-      <div class="timeline-badge danger">
-        <fa-icon [icon]="faBomb"></fa-icon>
-      </div>
-      <div class="timeline-panel">
-        <div class="timeline-body">
-          <div>
-            <small class="text-muted">
-              <fa-icon [icon]="faBomb"></fa-icon>
-              created: {{item.createdAt | date:'longDate'}}</small>
-          </div>
-          <div>
-            <b><span [innerHTML]="item.name"></span></b>
-          </div>
-          <div>
-            <small>Client: <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a></small>
-          </div>
-          <div *ngIf="item.counselingDate">
-            <small><b>{{item.counselingDate | date: 'dd.MM.yyyy HH:mm'}}</b></small>
-          </div>
-        </div>
-      </div>
-    </li>
-    <li class="timeline-inverted" *ngIf="!(i % 2 == 0) && (i % 3 == 1)">
-      <div class="timeline-badge success">
-        <fa-icon [icon]="faCreditCard"></fa-icon>
-      </div>
-      <div class="timeline-panel">
-        <div class="timeline-body">
-          <div>
-            <small class="text-muted">
-              <fa-icon [icon]="faClock"></fa-icon>
-              created: {{item.createdAt | date:'longDate'}}</small>
-          </div>
-          <div>
-            <b><span [innerHTML]="item.name"></span></b>
-          </div>
-          <div>
-            <small>Client: <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a></small>
-          </div>
-          <div *ngIf="item.counselingDate">
-            <small><b>{{item.counselingDate | date: 'dd.MM.yyyy HH:mm'}}</b></small>
-          </div>
-        </div>
-      </div>
-    </li>
-    <li class="timeline-inverted" *ngIf="!(i % 2 == 0) && !(i % 3 == 1)">
-      <div class="timeline-badge info">
-        <fa-icon [icon]="faCheck"></fa-icon>
-      </div>
-      <div class="timeline-panel">
-        <div class="timeline-body">
-          <div>
-            <small>Client: <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a></small>
-          </div>
-          <div>
-            <b><span [innerHTML]="item.name"></span></b>
-          </div>
-          <div>
-            <small>Client: <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a></small>
-          </div>
-          <div *ngIf="item.counselingDate">
-            <small><b>{{item.counselingDate | date: 'dd.MM.yyyy HH:mm'}}</b></small>
-          </div>
-        </div>
+      <div>
+        <small>
+          <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a>
+        </small>
       </div>
     </li>
   </ul>

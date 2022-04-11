@@ -51,7 +51,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
       this.getClient();
       this.getCreateCounselingSubject();
       this.getDemoSubject();
-      this.getCreateEmployerSubject();
+      // this.getCreateEmployerSubject();
       this.getReloadClientSubject();
       this.checkIfNewCounselingIsNeeded();
       this.checkIfNewEmployerIsNeeded();
@@ -119,14 +119,14 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     }));
   }
 
-  getCreateEmployerSubject() {
+  /*getCreateEmployerSubject() {
     this.subscription$.push(this.commonService.createEmployerSubject.subscribe(reload => {
       if (reload === true) {
         this.getClient();
         this.modalService.dismissAll();
       }
     }));
-  }
+  }*/
 
   getReloadClientSubject() {
     this.subscription$.push(this.commonService.reloadClientSubject.subscribe(reload => {
@@ -141,7 +141,6 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.subscription$.push(this.sidebarService.newCounselingSubject.subscribe(newCounseling => {
       if (newCounseling === true) {
         this.openNewCounseling(this.contentCreateCounseling);
-        // this.router.navigate(['clients', this.client.id, 'counselings', 'create']);
       }
     }));
   }

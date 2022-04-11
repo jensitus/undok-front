@@ -31,11 +31,11 @@
     <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">First Name</th>
-      <th scope="col">Last Name</th>
-      <th scope="col">Company</th>
+      <th scope="col">Firma</th>
+      <th scope="col">Vorname</th>
+      <th scope="col">Nachname</th>
       <th scope="col">Position</th>
-      <th scope="col">Phone</th>
+      <th scope="col">Telephon</th>
       <th scope="col" *ngIf="clientId">add</th>
     </tr>
     </thead>
@@ -43,13 +43,13 @@
     <tr *ngFor="let employer of employers$ | async; index as i">
       <th><small>{{ i + 1 }}</small></th>
       <td>
+        <ngb-highlight [result]="employer.company" [term]="employerTableService.searchTerm"></ngb-highlight>
+      </td>
+      <td>
         <ngb-highlight [result]="employer.person.firstName" [term]="employerTableService.searchTerm"></ngb-highlight>
       </td>
       <td>
         <ngb-highlight [result]="employer.person.lastName" [term]="employerTableService.searchTerm"></ngb-highlight>
-      </td>
-      <td>
-        <ngb-highlight [result]="employer.company" [term]="employerTableService.searchTerm"></ngb-highlight>
       </td>
       <td>
         <ngb-highlight [result]="employer.position" [term]="employerTableService.searchTerm"></ngb-highlight>
@@ -65,21 +65,3 @@
   </table>
 
 </form>
-
-<ng-template #create_employer let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">Create Employer</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <app-create-employer></app-create-employer>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-</ng-template>
-
