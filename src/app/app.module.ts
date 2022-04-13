@@ -35,12 +35,14 @@ import {FilelistComponent} from './common/upload/filelist/filelist.component';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {DecimalPipe} from '@angular/common';
 import { BackButtonDirective } from './common/back-button.directive';
+import { TwoFactorComponent } from './auth/two-factor/two-factor.component';
 
 const app_routes: Routes = [
   {path: 'home', redirectTo: 'login', pathMatch: 'full'},
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   // { path: '', loadChildren: () => import('./admin-template/layout/layout.module').then(m => m.LayoutModule), canActivate: [AuthGuard] },
   {path: 'login', component: LoginComponent},
+  {path: 'second-factor', component: TwoFactorComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'forgot', component: ForgotPasswordComponent},
   {path: 'auth/reset_password/:token/edit', component: ResetPasswordComponent},
@@ -65,6 +67,7 @@ const app_routes: Routes = [
     UploadComponent,
     FilelistComponent,
     BackButtonDirective,
+    TwoFactorComponent,
   ],
   imports: [
     BrowserModule,

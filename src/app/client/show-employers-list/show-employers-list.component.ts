@@ -94,7 +94,8 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
   }
 
   assignEmployer(employer: Employer) {
-    const assignModal = this.modalService.open(CreateClientEmployerJobDescriptionComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg'});
+    const assignModal =
+      this.modalService.open(CreateClientEmployerJobDescriptionComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg'});
     assignModal.componentInstance.employerId = employer.id;
     assignModal.componentInstance.clientId = this.clientId;
     assignModal.componentInstance.company = employer.company;

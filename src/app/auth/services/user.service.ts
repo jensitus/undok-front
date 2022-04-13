@@ -6,6 +6,7 @@ import {ChangePwDto} from '../model/change-pw-dto';
 import {Observable} from 'rxjs';
 import {SetAdminDto} from '../../admin-template/layout/dashboard/components/show-users/model/set-admin-dto';
 import {ResponseMessage} from '../../common/helper/response-message';
+import {SecondFactorForm} from '../model/second-factor-form';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,10 @@ export class UserService {
 
   setAdmin(user_id: string, setAdminDto: SetAdminDto): Observable<ResponseMessage> {
     return this.http.post<ResponseMessage>(this.apiUrl + '/service/users/set-admin/' + user_id, setAdminDto);
+  }
+
+  sendSecondFactorToken(secondFactorForm: SecondFactorForm): Observable<any> {
+    return this.http.post<any>(this.apiUrl + '/service/auth/second-factor', secondFactorForm);
   }
 
 }

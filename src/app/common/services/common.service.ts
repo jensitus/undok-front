@@ -54,7 +54,7 @@ export class CommonService {
       this.router.navigate(['/login']);
       return;
     }
-    this.userService.checkAuthToken(this.currentUser.auth_token).subscribe(data => {
+    this.userService.checkAuthToken(this.currentUser.accessToken).subscribe(data => {
       this.data = data;
       console.log('authToken', this.data);
     }, error => {
