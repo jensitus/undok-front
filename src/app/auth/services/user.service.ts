@@ -62,7 +62,7 @@ export class UserService {
   }
 
   sendSecondFactorToken(secondFactorForm: SecondFactorForm): Observable<any> {
-    return this.http.post<any>(this.apiUrl + '/service/auth/second-factor', secondFactorForm);
+    return this.http.post<any>(this.apiUrl + '/service/second-factor-auth/second-factor', secondFactorForm);
   }
 
 }
