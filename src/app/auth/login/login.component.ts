@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
     this.authenticationService.logout();
 
     // get return url from route parametes or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   // convenience getter for easy access to form fields
@@ -59,9 +59,9 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(data => {
         this.loading = false;
-        this.commonService.setDemoSubject(true);
-        this.router.navigate([this.returnUrl]);
-        this.alertService.success('successfully logged in, how did you do that?', true);
+        console.log(data);
+        this.router.navigate(['/second-factor']);
+        this.alertService.success('we\'ve sent you a little token for signing in', true);
       }
     );
   }
