@@ -92,9 +92,7 @@
       <div class="form-group">
         <label>Staatsbürgerschaft</label>
         <select class="form-control">
-          <option>unbekannt</option>
-          <option>staatenlos</option>
-          <option *ngFor="let citizenship of countries" [value]="citizenship" (click)="onCitizenshipChange(citizenship)">
+          <option *ngFor="let citizenship of citizenships" [value]="citizenship" (click)="onCitizenshipChange(citizenship)">
             {{citizenship}}
           </option>
         </select>

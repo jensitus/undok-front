@@ -1,4 +1,6 @@
 export const CITIZENSHIPS: string[] = [
+  'unbekannt',
+  'staatenlos',
   'Afghanistan',
   'Ägypten',
   'Albanien',
