@@ -1,4 +1,3 @@
-import {MaritalStatus} from './marital-status.enum';
 import {Counseling} from './counseling';
 import {Person} from './person';
 
@@ -6,7 +5,7 @@ export interface Client {
   id: string;
   keyword: string;
   education: string;
-  maritalStatus?: MaritalStatus;
+  maritalStatus?: string;
   interpreterNecessary: boolean;
   howHasThePersonHeardFromUs: string;
   vulnerableWhenAssertingRights: boolean;

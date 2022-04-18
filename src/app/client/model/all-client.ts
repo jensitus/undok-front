@@ -1,4 +1,3 @@
-import {MaritalStatus} from './marital-status.enum';
 import {Counseling} from './counseling';
 
 export interface AllClient {
@@ -19,7 +18,7 @@ export interface AllClient {
   country: string;
 
   education: string;
-  maritalStatus?: MaritalStatus;
+  maritalStatus?: string;
   interpreterNecessary: boolean;
   howHasThePersonHeardFromUs: string;
   vulnerableWhenAssertingRights: boolean;

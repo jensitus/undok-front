@@ -2,16 +2,17 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ClientForm} from '../model/clientForm';
 import {ClientService} from '../service/client.service';
 import {Subject} from 'rxjs';
-import {MaritalStatus} from '../model/marital-status.enum';
+import {MARITAL_STATUS} from '../model/marital-status';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {NgbFormatterService} from '../../common/services/ngb-formatter.service';
 import {NgbDateAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
 import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
-import {Country} from '../model/country.enum';
 import {ResidentStatus} from '../model/resident-status.enum';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import {COUNTRIES_AT} from '../model/countriesAT';
+import {CITIZENSHIPS} from '../model/citizenships';
 
 @Component({
   selector: 'app-create-client',
@@ -36,8 +37,8 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   gender: string;
 
   // client:
-  maStatus = Object.values(MaritalStatus);
-  maritalStatus: MaritalStatus;
+  maStatus = MARITAL_STATUS;
+  maritalStatus: string;
   m: string;
   marital: string;
 
@@ -54,7 +55,8 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   zipCode: string;
   city: string;
   country: string;
-  countries = Object.keys(Country);
+  countries = COUNTRIES_AT;
+  citizenships = CITIZENSHIPS;
 
   nationality: string;
   language: string;
@@ -123,9 +125,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
       membership: this.membership,
       organization: this.organization
     };
-    console.log(this.clientForm);
     this.clientService.createClient(this.clientForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      console.log('client result', result.id);
       this.router.navigate(['/clients/', result.id]);
       this.loading = false;
     }, error => {
@@ -134,40 +134,12 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   }
 
   onDateChange(dateForm): void {
-    console.log(dateForm);
     // this.ngbFormatterService.format();
   }
 
 
-  onMaritalChange(donner): void {
-    switch (donner) {
-      case 'unknown':
-        this.m = MaritalStatus.UNKNOWN;
-        break;
-      case 'Ledig':
-        this.m = MaritalStatus.SINGLE;
-        break;
-      case 'Verheiratet':
-        this.m = MaritalStatus.MARRIED;
-        break;
-      case 'Geschieden':
-        this.m = MaritalStatus.DIVORCED;
-        break;
-      case 'Verwitwet':
-        this.m = MaritalStatus.WIDOWED;
-        break;
-      case 'Eingetragene Partnerschaft':
-        this.m = MaritalStatus.REGISTERED_PARTNERSHIP;
-        break;
-      case 'Aufgelöste eingetragene Partnerschaft':
-        this.m = MaritalStatus.DISSOLVED_REGISTERED_PARTNERSHIP;
-        break;
-      case 'Hinterbliebener eingetragene Partnerschaft':
-        this.m = MaritalStatus.SURVIVING_REGISTERED_PARTNERSHIP;
-        break;
-      default:
-        this.m = MaritalStatus.UNKNOWN;
-    }
+  onMaritalChange(marital): void {
+    this.m = marital;
     console.log(this.m);
   }
 
@@ -191,13 +163,22 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   }
 
   onCountryChange(country) {
-    console.log(country);
     switch (country) {
       case 'Countries':
         this.country = 'Unknown';
         break;
       default:
         this.country = country;
+    }
+  }
+
+  onCitizenshipChange(country) {
+    switch (country) {
+      case 'Countries':
+        this.nationality = 'Unknown';
+        break;
+      default:
+        this.nationality = country;
     }
   }
 

@@ -1,216 +1,219 @@
 <div class="spinner-border text-success" role="status" *ngIf="loading">
   <span class="sr-only">Loading...</span>
 </div>
-<form #createClientForm="ngForm" (ngSubmit)="submit()" class="mt-1">
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        <label><small>Vorname</small></label>
-        <input type="text" class="form-control" name="firstName" [(ngModel)]="client.person.firstName"
-               placeholder="firstName"/>
-      </div>
+<!--form #createClientForm="ngForm" (ngSubmit)="submit()" class="mt-1"-->
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label><small>Vorname</small></label>
+      <input type="text" class="form-control" name="firstName" [(ngModel)]="client.person.firstName" />
     </div>
-    <div class="col-md-6">
-      <div class="form-group">
-        <label><small>Nachname</small></label>
-        <input type="text" class="Countryform-control" name="lastName" [(ngModel)]="client.person.lastName"
-               placeholder="lastName"/>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label><small>Nachname</small></label>
+      <input type="text" class="form-control" name="lastName" [(ngModel)]="client.person.lastName" />
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label><small>Email</small></label>
+      <input type="email" class="form-control" name="email" [(ngModel)]="client.person.email" />
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label><small>Telephon</small></label>
+      <input type="tel" class="form-control" name="telephon" [(ngModel)]="client.person.telephone" />
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="form-group">
+      <label><small>Straße</small></label>
+      <input type="text" class="form-control" name="street" [(ngModel)]="client.person.address.street" />
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-group">
+      <label><small>Plz</small></label>
+      <input type="text" class="form-control" name="zipCode" [(ngModel)]="client.person.address.zipCode" />
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="form-group">
+      <label><small>Land</small></label>
+      <select id="country_select" class="form-control" [(ngModel)]="country">
+        <option *ngFor="let c of countries" [value]="c" (click)="onCountryChange(c)">{{c}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-group">
+      <label><small>Stadt</small></label>
+      <input type="text" class="form-control" name="city" [(ngModel)]="client.person.address.city" />
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="form-group">
+      <label><small>Schlüsselwort</small></label>
+      <input type="text" class="form-control" name="keyword" [(ngModel)]="client.keyword" />
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-group">
+      <label><small>Bildung</small></label>
+      <input type="text" class="form-control" name="education" [(ngModel)]="client.education" />
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="form-group">
+      <label><small>Von wo kam die Info über uns?</small></label>
+      <input type="text" class="form-control" name="howHasThePersonHeardFromUS"
+             [(ngModel)]="client.howHasThePersonHeardFromUs" placeholder="how has the person heard from us"/>
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-group">
+      <label><small>Geburtsdatum</small></label>
+      <div class="input-group">
+        <input class="form-control" type="date" [(ngModel)]="client.person.dateOfBirth" name="d">
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        <label><small>Email</small></label>
-        <input type="email" class="form-control" name="email" [(ngModel)]="client.person.email" placeholder="email"/>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="form-group">
-        <label><small>Telephon</small></label>
-        <input type="tel" class="form-control" name="telephon" [(ngModel)]="client.person.telephone"
-               placeholder="telephone"/>
-      </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="form-group">
+      <input type="checkbox" class="form-check-inline" [(ngModel)]="client.interpreterNecessary"
+             name="interpreterNecessary">
+      <label><small>Übersetzer:in notwendig</small></label>
     </div>
   </div>
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label><small>Straße</small></label>
-        <input type="text" class="form-control" name="street" [(ngModel)]="client.person.address.street"
-               placeholder="street"/>
-      </div>
+  <div class="col">
+    <div class="form-group">
+      <input type="checkbox" class="form-check-inline" [(ngModel)]="client.vulnerableWhenAssertingRights"
+             name="vulnerableWhenAssertingRights">
+      <label class="form-check-label"><small>gefährdet bei Geltendmachung</small></label>
     </div>
-    <div class="col">
-      <div class="form-group">
-        <label><small>Plz</small></label>
-        <input type="text" class="form-control" name="zipCode" [(ngModel)]="client.person.address.zipCode"
-               placeholder="zip code"/>
-      </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="form-group">
+      <label><small>Familienstatus</small></label>
+      <select id="marital_select" class="form-control" [(ngModel)]="marital">
+        <option *ngFor="let m of maritalStatus" [value]="m"
+                (click)="onMaritalChange(m)">
+          {{m}}
+        </option>
+      </select>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label><small>Land</small></label>
-        <select class="form-control">
-          <option *ngFor="let c of countries" [value]="c" (click)="onCountryChange(c)">{{c}}</option>
-        </select>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label><small>Stadt</small></label>
-        <input type="text" class="form-control" name="city" [(ngModel)]="client.person.address.city"
-               placeholder="city"/>
-      </div>
+  <div class="col">
+    <div class="form-group">
+      <label><small>Staatsbürger:innenschaft</small></label>
+      <select id="citizenship_select" class="form-control" [(ngModel)]="nationality">
+        <option *ngFor="let citizenship of citizenships" [value]="citizenship"
+                (click)="onCitizenshipChange(citizenship)">
+          {{citizenship}}
+        </option>
+      </select>
     </div>
   </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="form-group">
+      <label><small>Sprache</small></label>
+      <input type="text" class="form-control" name="language" [(ngModel)]="client.language" />
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-group">
+      <label class="col-form-label"><small>Gender</small></label>
+      <input type="text" class="form-control" name="gender" [(ngModel)]="client.person.gender">
+    </div>
+  </div>
+</div>
 
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label><small>Schlüsselwort</small></label>
-        <input type="text" class="form-control" name="keyword" [(ngModel)]="client.keyword" placeholder="keyword"/>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label><small>Bildung</small></label>
-        <input type="text" class="form-control" name="education" [(ngModel)]="client.education"
-               placeholder="education"/>
-      </div>
+<!--
+<div class="form-group">
+  <label>formerResidentStatus</label>
+  <input type="text" class="form-control" name="formerResidentStatus" [(ngModel)]="formerResidentStatus" placeholder="formerResidentStatus" />
+</div>
+-->
+<div class="row">
+  <div class="col">
+    <div class="form-group">
+      <label><small>Aufenthaltstitel</small></label>
+      <input type="text" class="form-control" name="currentResidentStatus" [(ngModel)]="client.currentResidentStatus"/>
     </div>
   </div>
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label><small>Von wo kam die Info über uns?</small></label>
-        <input type="text" class="form-control" name="howHasThePersonHeardFromUS"
-               [(ngModel)]="client.howHasThePersonHeardFromUs" placeholder="how has the person heard from us"/>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label><small>Geburtsdatum</small></label>
-        <div class="input-group">
-          <input class="form-control" type="date" [(ngModel)]="client.person.dateOfBirth" name="d">
-        </div>
-      </div>
+  <div class="col">
+    <div class="form-group">
+      <label><small>Arbeitsmarktzugang</small></label>
+      <input type="text" class="form-control" name="labourMarketAccess" [(ngModel)]="client.labourMarketAccess" />
     </div>
   </div>
+</div>
 
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <input type="checkbox" class="form-check" [(ngModel)]="client.interpreterNecessary"
-               name="interpreterNecessary">
-        <label><small>Übersetzer:in notwendig</small></label>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <input type="checkbox" class="form-check" [(ngModel)]="client.vulnerableWhenAssertingRights"
-               name="vulnerableWhenAssertingRights">
-        <label><small>gefährdet bei Geltendmachung</small></label>
-      </div>
+<div class="row">
+  <div class="col">
+    <div class="form-group">
+      <label><small>Position</small></label>
+      <input type="text" class="form-control" name="position" [(ngModel)]="client.position" />
     </div>
   </div>
+  <div class="col">
+    <div class="form-group">
+      <label><small>Gewerkschaft</small></label>
+      <input type="text" class="form-control" name="union" [(ngModel)]="client.union" />
+    </div>
+  </div>
+</div>
 
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <select class="form-control">
-          <option (click)="onMaritalChange('unknown')">Marital Status</option>
-          <option *ngFor="let marital of maStatus" [value]="marital"
-                  (click)="onMaritalChange(marital)">{{marital}}</option>
-        </select>
-      </div>
+<div class="row">
+  <div class="col">
+    <div class="form-group">
+      <label><small>Branche</small></label>
+      <input type="text" class="form-control" name="sector" [(ngModel)]="client.sector" />
     </div>
+  </div>
+  <div class="col">
+    <div class="form-group">
+      <input type="checkbox" class="form-check-inline" [(ngModel)]="client.membership" name="membership">
+      <label class="form-check-label"><small>Mitgliedschaft</small></label>
+    </div>
+  </div>
+</div>
 
-    <div class="col">
-      <div class="form-group">
-        <label><small>Staatsbürger:innenschaft</small></label>
-        <input type="text" class="form-control" name="nationality" [(ngModel)]="client.nationality"
-               placeholder="nationality"/>
-      </div>
+<div class="row">
+  <div class="col">
+    <div class="form-group">
+      <label><small>organization</small></label>
+      <input type="text" class="form-control" name="organization" [(ngModel)]="client.organization" />
     </div>
   </div>
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label><small>Sprache</small></label>
-        <input type="text" class="form-control" name="language" [(ngModel)]="client.language" placeholder="language"/>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label><small>Aufenthaltstitel</small></label>
-        <input type="text" class="form-control" name="currentResidentStatus" [(ngModel)]="client.currentResidentStatus" />
-      </div>
+  <div class="col text-center">
+    <div class="form-group">
+      <button type="button" (click)="submit()" class="btn btn-outline-dark">update</button>
     </div>
   </div>
+</div>
 
-  <!--
-  <div class="form-group">
-    <label>formerResidentStatus</label>
-    <input type="text" class="form-control" name="formerResidentStatus" [(ngModel)]="formerResidentStatus" placeholder="formerResidentStatus" />
-  </div>
-  -->
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label><small>Arbeitsmarktzugang</small></label>
-        <input type="text" class="form-control" name="labourMarketAccess" [(ngModel)]="client.labourMarketAccess"
-               placeholder="labourMarketAccess"/>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label><small>Position</small></label>
-        <input type="text" class="form-control" name="position" [(ngModel)]="client.position" placeholder="position"/>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label><small>Branche</small></label>
-        <input type="text" class="form-control" name="sector" [(ngModel)]="client.sector" placeholder="sector"/>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label><small>Gewerkschaft</small></label>
-        <input type="text" class="form-control" name="union" [(ngModel)]="client.union" placeholder="union"/>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <input type="checkbox" class="form-check" [(ngModel)]="client.membership" name="membership">
-        <label><small>Mitgliedschaft</small></label>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label><small>organization</small></label>
-        <input type="text" class="form-control" name="organization" [(ngModel)]="client.organization"
-               placeholder="organization"/>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <button class="btn btn-outline-dark">update</button>
-      </div>
-    </div>
-  </div>
-
-</form>
+<!--/form-->

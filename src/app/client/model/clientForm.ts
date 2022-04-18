@@ -1,6 +1,3 @@
-import {MaritalStatus} from './marital-status.enum';
-import {Country} from './country.enum';
-
 export interface ClientForm {
   // Person:
   firstName: string;
