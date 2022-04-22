@@ -173,6 +173,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   }
 
   onCitizenshipChange(country) {
+    console.log('country', country);
     switch (country) {
       case 'Countries':
         this.nationality = 'Unknown';

@@ -49,8 +49,8 @@
   <div class="col">
     <div class="form-group">
       <label><small>Land</small></label>
-      <select id="country_select" class="form-control" [(ngModel)]="country">
-        <option *ngFor="let c of countries" [value]="c" (click)="onCountryChange(c)">{{c}}</option>
+      <select id="country_select" class="form-control" [(ngModel)]="country" (click)="onCountryChange($event.target.value)">
+        <option *ngFor="let c of countries" [value]="c">{{c}}</option>
       </select>
     </div>
   </div>
@@ -115,9 +115,8 @@
   <div class="col">
     <div class="form-group">
       <label><small>Familienstatus</small></label>
-      <select id="marital_select" class="form-control" [(ngModel)]="marital">
-        <option *ngFor="let m of maritalStatus" [value]="m"
-                (click)="onMaritalChange(m)">
+      <select id="marital_select" class="form-control" [(ngModel)]="marital" (click)="onMaritalChange($event.target.value)">
+        <option *ngFor="let m of maritalStatus" [value]="m">
           {{m}}
         </option>
       </select>
@@ -127,9 +126,8 @@
   <div class="col">
     <div class="form-group">
       <label><small>Staatsbürger:innenschaft</small></label>
-      <select id="citizenship_select" class="form-control" [(ngModel)]="nationality">
-        <option *ngFor="let citizenship of citizenships" [value]="citizenship"
-                (click)="onCitizenshipChange(citizenship)">
+      <select id="citizenship_select" class="form-control" [(ngModel)]="nationality" (change)="onCitizenshipChange($event.target.value)">
+        <option *ngFor="let citizenship of citizenships" [value]="citizenship">
           {{citizenship}}
         </option>
       </select>

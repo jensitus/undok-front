@@ -1,4 +1,5 @@
 export const COUNTRIES_AT: string[] = [
+  'Österreich',
   'Afghanistan',
   'Ägypten',
   'Albanien',
