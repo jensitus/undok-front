@@ -95,10 +95,31 @@
       <div class="row mt-2">
         <div class="col-md-8"></div>
         <div class="col text-right">
-            <button class="btn btn-link" (click)="edit(e)"><small>edit</small></button>
-            <button class="btn btn-link" (click)="deleteEmployerFromClient(e.employer.id)"><small>remove</small></button>
+          <button class="btn btn-link" (click)="edit(e)"><small>edit</small></button>
+          <button class="btn btn-link" (click)="openDeleteConfirmationModal(confirmDelete)"><small>remove</small>
+          </button>
         </div>
       </div>
     </div>
   </div>
+
+  <ng-template #confirmDelete let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Confirm Remove</h5>
+    </div>
+    <div class="modal-body">
+      <div>
+        Do you really want to remove the employer?
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span class="text-left">
+        <button type="button" (click)="no()" class="btn btn-sm btn-outline-danger">no</button>
+      </span>
+      <span class="text-right">
+        <button type="button" (click)="yes(e.employer.id)" class="btn btn-sm btn-outline-success">yes</button>
+      </span>
+    </div>
+  </ng-template>
+
 </div>
