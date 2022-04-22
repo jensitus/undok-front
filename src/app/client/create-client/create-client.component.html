@@ -5,28 +5,19 @@
       <!-- Person -->
       <div class="form-group">
         <label>Vorname</label>
-        <input type="text" class="form-control" name="firstName" [(ngModel)]="firstName" placeholder="firstName"/>
+        <input type="text" class="form-control" name="firstName" [(ngModel)]="firstName" />
       </div>
       <div class="form-group">
         <label>Nachname</label>
-        <input type="text" class="form-control" name="lastName" [(ngModel)]="lastName" placeholder="lastName"/>
+        <input type="text" class="form-control" name="lastName" [(ngModel)]="lastName" />
       </div>
       <div class="form-group">
         <label>Gender</label>
-        <input type="text" class="form-control" name="lastName" [(ngModel)]="gender" placeholder="gender"/>
+        <input type="text" class="form-control" name="lastName" [(ngModel)]="gender" />
       </div>
 
       <div class="form-group">
         <label>Geburtstag</label>
-        <!--<div class="input-group">
-          <input class="form-control" placeholder="Date of birth"
-                 name="dp" [(ngModel)]="dateOfBirth" ngbDatepicker #d="ngbDatepicker">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
-              <fa-icon class="text-info" [icon]="faBars"></fa-icon>
-            </button>
-          </div>
-        </div>-->
         <div class="input-group">
           <input class="form-control" type="date" [(ngModel)]="dateOfBirth" name="d">
         </div>
@@ -35,26 +26,27 @@
       <!-- Address -->
       <div class="form-group">
         <label>Straße</label>
-        <input type="text" class="form-control" name="street" [(ngModel)]="street" placeholder="street"/>
+        <input type="text" class="form-control" name="street" [(ngModel)]="street" />
       </div>
       <div class="form-group">
         <label>Postleitzahl</label>
-        <input type="text" class="form-control" name="zipCode" [(ngModel)]="zipCode" placeholder="zip code"/>
+        <input type="text" class="form-control" name="zipCode" [(ngModel)]="zipCode" />
       </div>
       <div class="form-group">
         <label>Stadt</label>
-        <input type="text" class="form-control" name="city" [(ngModel)]="city" placeholder="city"/>
+        <input type="text" class="form-control" name="city" [(ngModel)]="city" />
       </div>
       <div class="form-group">
         <label>Land</label>
-        <select class="form-control">
-          <option *ngFor="let c of countries" [value]="c" (click)="onCountryChange(c)">{{c}}</option>
+        <select class="form-control" (click)="onCountryChange($event.target.value)">
+          <option></option>
+          <option *ngFor="let c of countries" [value]="c">{{c}}</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label>telephon</label>
-        <input type="tel" class="form-control" name="telephone" [(ngModel)]="telephone" placeholder="telephone">
+        <label>Telephon</label>
+        <input type="tel" class="form-control" name="telephone" [(ngModel)]="telephone" />
       </div>
 
     </div>
@@ -63,16 +55,16 @@
 
       <!-- client: -->
       <div class="form-group">
-        <label>Keyword</label>
-        <input type="text" class="form-control" name="keyword" [(ngModel)]="keyword" placeholder="keyword"/>
+        <label>Schlüsselwort</label>
+        <input type="text" class="form-control" name="keyword" [(ngModel)]="keyword" />
       </div>
       <div class="form-group">
         <label>Kontaktdaten (z.B. Email)</label>
-        <input type="text" class="form-control" name="contactData" [(ngModel)]="contactData" placeholder="contactData"/>
+        <input type="text" class="form-control" name="contactData" [(ngModel)]="contactData" />
       </div>
       <div class="form-group">
         <label>Bildung</label>
-        <input type="text" class="form-control" name="education" [(ngModel)]="education" placeholder="education"/>
+        <input type="text" class="form-control" name="education" [(ngModel)]="education" />
       </div>
       <div class="form-group">
         <label>Wo hat die Person von uns gehört?</label>
@@ -82,29 +74,33 @@
       <div class="form-check mt-3">
         <input type="checkbox" class="form-check-input" [(ngModel)]="vulnerableWhenAssertingRights"
                name="vulnerableWhenAssertingRights">
-        <label class="form-check-label">vulnerable when asserting rights</label>
+        <label class="form-check-label">Gefährdet bei Geltendmachung</label>
       </div>
       <div class="form-check mt-3">
         <input type="checkbox" class="form-check-input" id="interpreter" [(ngModel)]="interpreterNecessary" name="interpreterNecessary">
-        <label class="form-check-label" for="interpreter">Interpreter Necessary</label>
+        <label class="form-check-label" for="interpreter">Dolmetsch erforderlich</label>
       </div>
       <div class="form-group mt-4">
         <label>Familienstatus</label>
-        <select class="form-control">
-          <option (click)="onMaritalChange('unknown')">Marital Status</option>
-          <option *ngFor="let marital of maStatus" [value]="marital"
-                  (click)="onMaritalChange(marital)">{{marital}}</option>
+        <select class="form-control" (change)="onMaritalChange($event.target.value)">
+          <option></option>
+          <option *ngFor="let marital of maStatus" [value]="marital">{{marital}}</option>
         </select>
       </div>
 
       <div class="form-group">
         <label>Staatsbürgerschaft</label>
-        <input type="text" class="form-control" name="nationality" [(ngModel)]="nationality" placeholder="nationality"/>
+        <select class="form-control" (change)="onCitizenshipChange($event.target.value)">
+          <option></option>
+          <option *ngFor="let citizenship of citizenships" [value]="citizenship">
+            {{citizenship}}
+          </option>
+        </select>
       </div>
 
       <div class="form-group">
         <label>Email</label>
-        <input type="email" class="form-control" name="email" [(ngModel)]="email" placeholder="email" />
+        <input type="email" class="form-control" name="email" [(ngModel)]="email" />
       </div>
 
 
@@ -118,28 +114,27 @@
       -->
       <div class="form-group">
         <label>Sprache</label>
-        <input type="text" class="form-control" name="language" [(ngModel)]="language" placeholder="language"/>
+        <input type="text" class="form-control" name="language" [(ngModel)]="language" />
       </div>
       <div class="form-group">
         <label>Aufenthaltstitel</label>
-        <input type="text" class="form-control" name="currentResidentStatus" [(ngModel)]="currentResidentStatus" placeholder="residentStatus" />
+        <input type="text" class="form-control" name="currentResidentStatus" [(ngModel)]="currentResidentStatus" />
       </div>
       <div class="form-group">
         <label>Arbeitsmarktzugang</label>
-        <input type="text" class="form-control" name="labourMarketAccess" [(ngModel)]="labourMarketAccess"
-               placeholder="labourMarketAccess"/>
+        <input type="text" class="form-control" name="labourMarketAccess" [(ngModel)]="labourMarketAccess" />
       </div>
       <div class="form-group">
         <label>Position</label>
-        <input type="text" class="form-control" name="position" [(ngModel)]="position" placeholder="position"/>
+        <input type="text" class="form-control" name="position" [(ngModel)]="position" />
       </div>
       <div class="form-group">
         <label>Branche</label>
-        <input type="text" class="form-control" name="sector" [(ngModel)]="sector" placeholder="sector"/>
+        <input type="text" class="form-control" name="sector" [(ngModel)]="sector" />
       </div>
       <div class="form-group">
         <label>Gewerkschaft</label>
-        <input type="text" class="form-control" name="union" [(ngModel)]="union" placeholder="union"/>
+        <input type="text" class="form-control" name="union" [(ngModel)]="union" />
       </div>
       <div class="form-check mb-3">
         <input type="checkbox" class="form-check-input" [(ngModel)]="membership" name="membership">
@@ -148,8 +143,7 @@
 
       <div class="form-group mt-3">
         <label>organization</label>
-        <input type="text" class="form-control" name="organization" [(ngModel)]="organization"
-               placeholder="organization"/>
+        <input type="text" class="form-control" name="organization" [(ngModel)]="organization" />
       </div>
 
     </div>

@@ -1,15 +1,10 @@
 import {Component, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ClientService} from '../service/client.service';
 import {Observable, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
 import {faUsers} from '@fortawesome/free-solid-svg-icons';
-import {Client} from '../model/client';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
 import {ClientTableService} from '../table/client-table.service';
 import {CsvService} from '../service/csv.service';
-import {MaritalStatus} from '../model/marital-status.enum';
-import {Counseling} from '../model/counseling';
-import {Person} from '../model/person';
 import {AllClient} from '../model/all-client';
 
 @Component({
