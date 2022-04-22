@@ -105,20 +105,20 @@
 
   <ng-template #confirmDelete let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Confirm Remove</h4>
-      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      <h5 class="modal-title" id="modal-basic-title">Confirm Remove</h5>
     </div>
     <div class="modal-body">
-      <div class="mb-3">
-        you really want to remove the employer?
-      </div>
       <div>
-        <button type="button" (click)="yes(e.employer.id)" class="btn btn-sm btn-outline-success">yes</button>
-        <button type="button" (click)="no()" class="btn btn-sm btn-outline-danger">no</button>
+        Do you really want to remove the employer?
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      <span class="text-left">
+        <button type="button" (click)="no()" class="btn btn-sm btn-outline-danger">no</button>
+      </span>
+      <span class="text-right">
+        <button type="button" (click)="yes(e.employer.id)" class="btn btn-sm btn-outline-success">yes</button>
+      </span>
     </div>
   </ng-template>
 
