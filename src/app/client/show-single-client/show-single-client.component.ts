@@ -162,7 +162,6 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   checkIfClientIsToBeEdited() {
-    console.log('assign .... ');
     this.subscription$.push(this.sidebarService.editClientSubject.subscribe(editClient => {
       if (editClient === true) {
         this.openEditModal(this.editClient);
