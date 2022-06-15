@@ -52,6 +52,9 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   activityCategoryIsCollapsed = true;
   concernCategoryIsCollapsed = true;
 
+  concernLength = 2040;
+  activityLength = 2040;
+
   constructor(
     private clientService: ClientService,
     private ngbFormatterService: NgbFormatterService,
@@ -67,6 +70,14 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     this.getCurrentUser();
     this.loadConcernCategories();
     this.loadActivityCategories();
+  }
+
+  concernLengthChange(val) {
+    this.concernLength = 2040 - val.length;
+  }
+
+  activityLengthChange(val) {
+    this.activityLength = 2040 - val.length;
   }
 
   private getCurrentUser() {

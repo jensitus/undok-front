@@ -23,6 +23,7 @@ import { ShowEmployersComponent } from './show-employers/show-employers.componen
 import { CreateClientEmployerJobDescriptionComponent } from './create-client-employer-job-description/create-client-employer-job-description.component';
 import { EditClientEmployerJobDescriptionComponent } from './edit-client-employer-job-description/edit-client-employer-job-description.component';
 import { CounselingComponent } from './counseling/counseling.component';
+import { NewLinePipe } from './new-line.pipe';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
@@ -53,7 +54,8 @@ const appRoutes: Routes = [
     ShowEmployersComponent,
     CreateClientEmployerJobDescriptionComponent,
     EditClientEmployerJobDescriptionComponent,
-    CounselingComponent
+    CounselingComponent,
+    NewLinePipe
   ],
   imports: [
     CommonModule,

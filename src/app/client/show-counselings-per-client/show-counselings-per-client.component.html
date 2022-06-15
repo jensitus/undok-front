@@ -12,8 +12,7 @@
           </div>
           <div class="m-1 mb-3">
             <label class="text-secondary">Anliegen:</label>
-            <br>
-            {{counseling.concern}}
+            <div [innerHTML]="counseling.concern | newLine"></div>
           </div>
           <div>
             <label class="text-secondary">Kategorie:</label>
@@ -21,7 +20,7 @@
           </div>
           <div>
             <label class="text-secondary">Aktivität:</label>
-            {{counseling.activity}}
+            <div [innerHTML]="counseling.activity | newLine"></div>
           </div>
           <div>
             <label class="text-secondary">Aktivitätskategorie:</label>
