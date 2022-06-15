@@ -21,7 +21,9 @@
   </div>
   <div class="form-group">
     <label>Anliegen</label>
-    <textarea type="text" name="concern" [(ngModel)]="concern" placeholder="concern" class="form-control"></textarea>
+    <textarea type="text" name="concern" [(ngModel)]="concern" placeholder="concern"
+              (ngModelChange)="concernLengthChange($event)" class="form-control"></textarea>
+    <span><small>Es verbleiben {{concernLength}} Zeichen</small></span>
   </div>
   <!-- category section start -->
   <div class="row">
@@ -90,7 +92,9 @@
 
   <div class="form-group">
     <label>Aktivität</label>
-    <input type="text" name="activity" [(ngModel)]="activity" placeholder="activity" class="form-control"/>
+    <textarea type="text" name="activity" [(ngModel)]="activity" placeholder="activity"
+              (ngModelChange)="activityLengthChange($event)" class="form-control"></textarea>
+    <span><small>Es bleiben noch {{activityLength}} Zeichen</small></span>
   </div>
 
   <div class="form-group">
