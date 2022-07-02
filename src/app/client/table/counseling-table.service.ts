@@ -39,10 +39,9 @@ function matches(counseling: Counseling, term: string, pipe: PipeTransform) {
     counseling.clientFullName = ' ';
   }
   return counseling.concern.toLowerCase().includes(term.toLowerCase())
-    // || counseling.counselingStatus.toLowerCase().includes(term.toLowerCase())
     || counseling.concernCategory.toLowerCase().includes(term.toLowerCase())
     || counseling.activity.toLowerCase().includes(term.toLowerCase())
-    // || counseling.registeredBy.toLowerCase().includes(term.toLowerCase())
+    || counseling.keyword.toLowerCase().includes(term.toLowerCase())
     || counseling.clientFullName.toLowerCase().includes(term.toLowerCase());
 }
 

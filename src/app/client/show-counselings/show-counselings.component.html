@@ -25,51 +25,56 @@
   </div>
 
   <ng-container>
-  <div class="d-flex justify-content-between p-2">
-    <ngb-pagination
-      [collectionSize]="(total$ | async)!" [(page)]="counselingTableService.page"
-      [pageSize]="counselingTableService.pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
-    </ngb-pagination>
-    <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="counselingTableService.pageSize">
-      <option [ngValue]="20">20 items per page</option>
-      <option [ngValue]="40">40 items per page</option>
-      <option [ngValue]="60">60 items per page</option>
-    </select>
-  </div>
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination
+        [collectionSize]="(total$ | async)!" [(page)]="counselingTableService.page"
+        [pageSize]="counselingTableService.pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"
+        [boundaryLinks]="true">
+      </ngb-pagination>
+      <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="counselingTableService.pageSize">
+        <option [ngValue]="20">20 items per page</option>
+        <option [ngValue]="40">40 items per page</option>
+        <option [ngValue]="60">60 items per page</option>
+      </select>
+    </div>
 
-  <table class="table table-striped mt-5">
-    <thead>
-    <tr>
-      <th scope="col">Datum</th>
-      <th scope="col">Anliegen</th>
-      <th scope="col">Kategorie</th>
-      <th scope="col">Activität</th>
-      <th scope="col">Klient:in</th>
-      <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let counseling of counselings$ | async; index as i">
-      <td width="200">
-        {{counseling.counselingDate | date: 'dd.MM.yyyy HH:mm'}}
-      </td>
-      <td>
-        <ngb-highlight [result]="counseling.concern" [term]="counselingTableService.searchTerm"></ngb-highlight>
-      </td>
-      <td>
-        <ngb-highlight [result]="counseling.concernCategory" [term]="counselingTableService.searchTerm"></ngb-highlight>
-      </td>
-      <td>
-        <ngb-highlight [result]="counseling.activity" [term]="counselingTableService.searchTerm"></ngb-highlight>
-      </td>
-      <td>
-        <ngb-highlight [result]="counseling.clientFullName" [term]="counselingTableService.searchTerm"></ngb-highlight>
-      </td>
-      <td>
-        <a [routerLink]="['/clients', counseling.clientId]">link</a>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+    <table class="table table-striped mt-5">
+      <thead>
+      <tr>
+        <th scope="col">Datum</th>
+        <th scope="col">Anliegen</th>
+        <th scope="col">Kategorie</th>
+        <th scope="col">Activität</th>
+        <th scope="col">Keyword</th>
+        <th scope="col">Klient:in</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let counseling of counselings$ | async; index as i">
+        <td width="200">
+          {{counseling.counselingDate | date: 'dd.MM.yyyy HH:mm'}}
+        </td>
+        <td width="400">
+          <ngb-highlight [result]="counseling.concern" [innerHTML]="counseling.concern | newLine" [term]="counselingTableService.searchTerm"></ngb-highlight>
+        </td>
+        <td>
+          <ngb-highlight [result]="counseling.concernCategory"
+                         [term]="counselingTableService.searchTerm"></ngb-highlight>
+        </td>
+        <td>
+          <ngb-highlight [result]="counseling.activity" [innerHTML]="counseling.activity | newLine" [term]="counselingTableService.searchTerm"></ngb-highlight>
+        </td>
+        <td>
+          <a [routerLink]="['/clients', counseling.clientId]">
+            <ngb-highlight [result]="counseling.keyword" [term]="counselingTableService.searchTerm"></ngb-highlight>
+          </a>
+        </td>
+        <td>
+          <ngb-highlight [result]="counseling.clientFullName"
+                         [term]="counselingTableService.searchTerm"></ngb-highlight>
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </ng-container>
 </form>

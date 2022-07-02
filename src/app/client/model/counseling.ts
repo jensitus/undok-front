@@ -11,4 +11,5 @@ export interface Counseling {
   clientId: string;
   clientFullName: string;
   comment?: string;
+  keyword: string;
 }
