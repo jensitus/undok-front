@@ -32,6 +32,7 @@
           </div>
           <div>
             <button class="btn btn-sm btn-outline-success" (click)="openEditCounseling(edit_counseling)">Edit</button>
+            <button class="btn btn-sm btn-outline-warning" (click)="openDeleteConfirmationModal(confirmDelete)">delete</button>
           </div>
           <div *ngIf="counseling.comment === null" class="mt-2">
             <button class="btn btn-sm btn-outline-dark" (click)="openEditCounseling(edit_comment)">Add Comment</button>
@@ -81,6 +82,25 @@
           <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
             <span aria-hidden="true">&times;</span>
           </button>
+        </div>
+      </ng-template>
+
+      <ng-template #confirmDelete let-modal>
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-basic-title">Confirm Delete</h5>
+        </div>
+        <div class="modal-body">
+          <div>
+            Do you really want to delete the counseling?
+          </div>
+        </div>
+        <div class="modal-footer">
+      <span class="text-left">
+        <button type="button" (click)="no()" class="btn btn-sm btn-outline-danger">no</button>
+      </span>
+          <span class="text-right">
+        <button type="button" (click)="yes(counseling.id)" class="btn btn-sm btn-outline-success">yes</button>
+      </span>
         </div>
       </ng-template>
 
