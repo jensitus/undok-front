@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {ClientEmployerForm} from '../model/client-employer-form';
+import {Employer} from '../model/employer';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,8 @@ import {ClientEmployerForm} from '../model/client-employer-form';
 export class EmployerService {
 
   apiUrl = environment.api_url;
+
+  EMPLOYERS_URL = '/service/undok/employers/';
 
   constructor(
     private http: HttpClient
@@ -67,6 +70,14 @@ export class EmployerService {
   updateClientEmployer(clientEmployerForm: ClientEmployerForm): Observable<any> {
     const url = this.apiUrl + '/service/undok/client/employers/' + clientEmployerForm.employerId + '/client/' + clientEmployerForm.clientId;
     return this.http.put<any>(url, clientEmployerForm);
+  }
+
+  getSingleEmployer(id: string): Observable<Employer> {
+    return this.http.get<Employer>(this.apiUrl + this.EMPLOYERS_URL + id);
+  }
+
+  updateEmployer(id: string, employer: Employer): Observable<Employer> {
+    return this.http.put<Employer>(this.apiUrl + this.EMPLOYERS_URL + id, employer);
   }
 
 }

@@ -24,6 +24,8 @@ import { CreateClientEmployerJobDescriptionComponent } from './create-client-emp
 import { EditClientEmployerJobDescriptionComponent } from './edit-client-employer-job-description/edit-client-employer-job-description.component';
 import { CounselingComponent } from './counseling/counseling.component';
 import { NewLinePipe } from './new-line.pipe';
+import { ShowSingleEmployerComponent } from './show-single-employer/show-single-employer.component';
+import { EditEmployerComponent } from './edit-employer/edit-employer.component';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
@@ -32,7 +34,8 @@ const appRoutes: Routes = [
   {path: 'counselings', component: ShowCounselingsComponent},
   {path: ':id', component: ShowSingleClientComponent},
   {path: ':id/counselings/create', component: CreateCounselingComponent},
-  {path: 'create/employer', component: CreateEmployerComponent}
+  {path: 'create/employer', component: CreateEmployerComponent},
+  {path: 'employers/:id', component: ShowSingleEmployerComponent}
 ];
 
 @NgModule({
@@ -55,7 +58,9 @@ const appRoutes: Routes = [
     CreateClientEmployerJobDescriptionComponent,
     EditClientEmployerJobDescriptionComponent,
     CounselingComponent,
-    NewLinePipe
+    NewLinePipe,
+    ShowSingleEmployerComponent,
+    EditEmployerComponent
   ],
   imports: [
     CommonModule,
