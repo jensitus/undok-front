@@ -27,14 +27,13 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (err.message === 'Http failure response for http://localhost:8080/service/auth/login: 401 OK') {
           this.alertService.error('wrong username or password');
         } else {
-          this.alertService.error(err.message, true);
+          this.alertService.error('please login again', true);
           this.router.navigate(['/login']);
         }
       } else if (err.status === 403) {
-        console.log('403');
         this.alertService.error('Forbidden', true);
-        this.authenticationService.logout();
-        this.router.navigate(['/login']);
+        // this.authenticationService.logout();
+        // this.router.navigate(['/login']);
       } else if (err.status === 451) {
         this.alertService.error(err.error.text);
       } else if (err.status === 404) {

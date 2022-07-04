@@ -27,4 +27,8 @@ export class CounselingService {
     return this.http.put<Counseling>(this.apiUrl + this.COUNSELING_URL + counselingId + '/set-or-update-comment/', comment);
   }
 
+  deleteCounseling(counselingId: string): Observable<void> {
+    return this.http.delete<void>(this.apiUrl + this.COUNSELING_URL + counselingId);
+  }
+
 }
