@@ -36,6 +36,7 @@
       <th scope="col">Nachname</th>
       <th scope="col">Position</th>
       <th scope="col">Telephon</th>
+      <th scope="col">link</th>
       <th scope="col" *ngIf="clientId">add</th>
     </tr>
     </thead>
@@ -56,6 +57,9 @@
       </td>
       <td>
         {{employer.person.telephone}}
+      </td>
+      <td>
+        <a [routerLink]="['/clients/employers/', employer.id]">link</a>
       </td>
       <td *ngIf="clientId">
         <button class="btn btn-sm btn-outline-info" (click)="assignEmployer(employer)">assign</button>

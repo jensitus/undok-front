@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h4>
+        <fa-icon [icon]="faSurprise" class="text-warning mr-5"></fa-icon>
+        Arbeitgeber:in
+      </h4>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col">
+      <span class="text-secondary"> Firma: </span> <span *ngIf="employer.company">{{employer.company}}</span>
+    </div>
+    <div class="col">
+      <span class="text-secondary">Adresse: </span> <span
+      *ngIf="employer.person.address">{{employer.person.address.city}} {{employer.person.address.street}} {{employer.person.address.zipCode}}</span>
+    </div>
+    <div class="col">
+      <span class="text-secondary">Ansprechpartner: </span> <span
+      *ngIf="employer.person">{{employer.person.firstName}} {{employer.person.lastName}}</span>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col">
+      <span class="text-secondary">Email: </span> <span *ngIf="employer.person.email">{{employer.person.email}}</span>
+    </div>
+    <div class="col">
+      <span class="text-secondary">Position: </span> <span *ngIf="employer.position">{{employer.position}}</span>
+    </div>
+    <div class="col">
+      <span class="text-secondary">Telephon: </span> <span
+      *ngIf="employer.person.telephone">{{employer.person.telephone}}</span>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col">
+      <button class="btn btn-small btn-outline-warning" (click)="openEditEmployer(content_edit_employer)">edit</button>
+    </div>
+  </div>
+</div>
+
+<ng-template #content_edit_employer let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">edit employer</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-edit-employer [employer]="employer"></app-edit-employer>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</ng-template>
