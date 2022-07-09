@@ -1,11 +1,37 @@
 <div>
   <div class="row">
-    <div class="col-4">
+    <div class="col-md-6">
       <div class="form-group">
         <label>Firma</label>
         <input type="text" class="form-control" name="employerCompany" [(ngModel)]="employer.company"
                placeholder="Company"/>
       </div>
+      <div class="form-group">
+        <label>Straße</label>
+        <input type="text" class="form-control" name="employerStreet" [(ngModel)]="employer.person.address.street"
+               placeholder="street"/>
+      </div>
+      <div class="form-group">
+        <label>Postleitzahl</label>
+        <input type="text" class="form-control" name="employerZipCode" [(ngModel)]="employer.person.address.zipCode"
+               placeholder="zip code"/>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Stadt</label>
+        <input type="text" class="form-control" name="employerCity" [(ngModel)]="employer.person.address.city" placeholder="city"/>
+      </div>
+      <div class="form-group">
+        <label>Land</label>
+        <input type="text" class="form-control" name="employerCountry" [(ngModel)]="employer.person.address.country"
+               placeholder="country"/>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-6">
       <div class="form-group">
         <label>Vorname</label>
         <input type="text" class="form-control" name="employerFirstName" [(ngModel)]="employer.person.firstName"
@@ -17,7 +43,7 @@
                placeholder="employerLastName"/>
       </div>
     </div>
-    <div class="col-4">
+    <div class="col-md-6">
       <div class="form-group">
         <label>Position</label>
         <input type="text" class="form-control" name="employerPosition" [(ngModel)]="employer.position"
@@ -32,30 +58,10 @@
         <input type="text" class="form-control" name="telephone" [(ngModel)]="employer.person.telephone" placeholder="telephone"/>
       </div>
     </div>
-    <div class="col-4">
-      <div class="form-group">
-        <label>Straße</label>
-        <input type="text" class="form-control" name="employerStreet" [(ngModel)]="employer.person.address.street"
-               placeholder="street"/>
-      </div>
-      <div class="form-group">
-        <label>Postleitzahl</label>
-        <input type="text" class="form-control" name="employerZipCode" [(ngModel)]="employer.person.address.zipCode"
-               placeholder="zip code"/>
-      </div>
-      <div class="form-group">
-        <label>Stadt</label>
-        <input type="text" class="form-control" name="employerCity" [(ngModel)]="employer.person.address.city" placeholder="city"/>
-      </div>
-      <div class="form-group">
-        <label>Land</label>
-        <input type="text" class="form-control" name="employerCountry" [(ngModel)]="employer.person.address.country"
-               placeholder="country"/>
-      </div>
-    </div>
+
   </div>
   <div class="row">
-    <div class="col">
+    <div class="col-md-4">
       <div class="form-group">
         <button class="btn btn-sm btn-outline-success" [disabled]="loading" (click)="updateEmployer()">submit</button>
       </div>
