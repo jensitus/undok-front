@@ -1,40 +1,56 @@
 <div class="container">
   <div class="row">
-    <div class="col">
+    <div class="col-md-4">
       <h4>
         <fa-icon [icon]="faSurprise" class="text-warning mr-5"></fa-icon>
         Arbeitgeber:in
       </h4>
     </div>
   </div>
+  <div class="row mt-5">
+    <div class="col-md-4">
+      <b>Firma</b>
+    </div>
+  </div>
   <div class="row mt-3">
-    <div class="col">
-      <span class="text-secondary"> Firma: </span> <span *ngIf="employer.company">{{employer.company}}</span>
+    <div class="col-md-4">
+      <span class="text-secondary"> Name: </span><br>
+      <span *ngIf="employer.company">{{employer.company}}</span>
     </div>
-    <div class="col">
-      <span class="text-secondary">Adresse: </span> <span
-      *ngIf="employer.person.address">{{employer.person.address.city}} {{employer.person.address.street}} {{employer.person.address.zipCode}}</span>
+    <div class="col-md-4">
+      <span class="text-secondary">Adresse:</span><br>
+      <span *ngIf="employer.person.address"> {{employer.person.address.street}} {{employer.person.address.zipCode}} {{employer.person.address.city}}</span>
     </div>
-    <div class="col">
-      <span class="text-secondary">Ansprechpartner: </span> <span
-      *ngIf="employer.person">{{employer.person.firstName}} {{employer.person.lastName}}</span>
+  </div>
+  <hr class="mt-5 mb-5">
+  <div class="row">
+    <div class="col-md-4">
+      <b>Ansprechpartner:in</b>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-md-4">
+      <span class="text-secondary">Name:</span><br>
+      <span *ngIf="employer.person">{{employer.person.firstName}} {{employer.person.lastName}}</span>
     </div>
   </div>
   <div class="row mt-2">
-    <div class="col">
-      <span class="text-secondary">Email: </span> <span *ngIf="employer.person.email">{{employer.person.email}}</span>
+    <div class="col-md-4">
+      <span class="text-secondary">Email: </span> <br>
+      <span *ngIf="employer.person.email">{{employer.person.email}}</span>
     </div>
-    <div class="col">
-      <span class="text-secondary">Position: </span> <span *ngIf="employer.position">{{employer.position}}</span>
+    <div class="col-md-4">
+      <span class="text-secondary">Position: </span> <br>
+      <span *ngIf="employer.position">{{employer.position}}</span>
     </div>
-    <div class="col">
-      <span class="text-secondary">Telephon: </span> <span
-      *ngIf="employer.person.telephone">{{employer.person.telephone}}</span>
+    <div class="col-md-4">
+      <span class="text-secondary">Telephon: </span> <br>
+      <span *ngIf="employer.person.telephone">{{employer.person.telephone}}</span>
     </div>
   </div>
   <div class="row mt-5">
-    <div class="col">
-      <button class="btn btn-small btn-outline-warning" (click)="openEditEmployer(content_edit_employer)">edit</button>
+    <div class="col-md-4">
+      <button class="btn btn-small btn-outline-primary" (click)="openEditEmployer(content_edit_employer)">edit</button>
     </div>
   </div>
 </div>
