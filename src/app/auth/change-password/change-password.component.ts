@@ -1,8 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../services/user.service';
-import {User} from '../model/user';
 import {ChangePwDto} from '../model/change-pw-dto';
 import {Location} from '@angular/common';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
@@ -15,7 +14,6 @@ import {Subscription} from 'rxjs';
 })
 export class ChangePasswordComponent implements OnInit, OnDestroy {
 
-  changePWForm: FormGroup;
   loading = false;
   submitted = false;
   username: string;
@@ -23,7 +21,10 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
   data: any;
   changePwDto: ChangePwDto;
   himmel: any;
-  private subscription$: Subscription[];
+  oldPassword: string;
+  newPassword: string;
+  passwordConfirmation;
+  private subscription$: Subscription[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -43,36 +44,27 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
       this.data = data;
       this.user_id = this.data.id;
     }));
-    this.changePWForm = this.formBuilder.group({
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      passwordConfirmation: ['', Validators.required],
-      old_password: ['', Validators.required]
-    });
   }
 
   ngOnDestroy(): void {
-    this.subscription$.forEach((s) => {
-      s.unsubscribe();
-    });
-  }
-
-  get f() {
-    return this.changePWForm.controls;
+      this.subscription$.forEach((s) => {
+        s.unsubscribe();
+      });
   }
 
   onSubmit() {
     this.submitted = true;
-    if (this.changePWForm.invalid) {
+    this.loading = true;
+    if (!this.oldPassword || !this.newPassword || !this.passwordConfirmation) {
+      this.alertService.error('please fill out every field correctly');
       return;
     }
-    this.loading = true;
     this.changePwDto = {
       userId: this.user_id,
-      password: this.changePWForm.value.password,
-      passwordConfirmation: this.changePWForm.value.passwordConfirmation,
-      oldPassword: this.changePWForm.value.old_password
+      password: this.newPassword,
+      passwordConfirmation: this.passwordConfirmation,
+      oldPassword: this.oldPassword
     };
-    console.log(this.changePwDto);
     this.subscription$.push(this.userService.changePassword(this.changePwDto).subscribe(data => {
       this.himmel = data;
       this.alertService.success(this.himmel.text);
