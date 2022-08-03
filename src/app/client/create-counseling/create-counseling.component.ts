@@ -11,6 +11,7 @@ import {User} from '../../auth/model/user';
 import {Category} from '../model/category';
 import {CategoryService} from '../service/category.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import {Time} from '../model/time';
 
 @Component({
   selector: 'app-create-counseling',
@@ -24,7 +25,7 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
 
   @Input() clientId: string;
 
-  time = {hour: 13, minute: 30};
+  time: Time = {hour: 13, minute: 30};
   dateObject: NgbDateStruct;
   currentUser: User;
 
@@ -88,7 +89,7 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.loading = true;
     const theRealDate = this.dateAdapter.fromModel(this.entryDate);
-    this.counselingDate = this.dateTimeService.mergeDateAndTime(this.dateObject);
+    this.counselingDate = this.dateTimeService.mergeDateAndTime(this.dateObject, this.time);
     this.counselingForm = {
       counselingStatus: this.counselingStatus,
       entryDate: this.ngbFormatterService.format(theRealDate),

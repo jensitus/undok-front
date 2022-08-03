@@ -7,31 +7,31 @@
             <b class="text-danger">Beratung</b>
           </div>
           <div class="mt-3">
-            <label class="text-secondary">Datum:</label>
-            {{counseling.counselingDate | date: 'dd.MM.yyyy HH:mm'}}
+            <label class="text-secondary">Datum:</label>&nbsp;
+            <span [innerHTML]="counseling.counselingDate | date: 'dd.MM.yyyy HH:mm'"></span>
           </div>
           <div class="m-1 mb-3">
             <label class="text-secondary">Anliegen:</label>
-            <div [innerHTML]="counseling.concern | newLine"></div>
+            <div *ngIf="counseling.concern" [innerHTML]="counseling.concern | newLine"></div>
           </div>
           <div>
-            <label class="text-secondary">Kategorie:</label>
-            {{counseling.concernCategory}}
+            <label class="text-secondary">Kategorie:</label>&nbsp;
+            <span [innerHTML]="counseling.concernCategory"></span>
           </div>
-          <div>
+          <div class="m-1 mb-3">
             <label class="text-secondary">Aktivität:</label>
-            <div [innerHTML]="counseling.activity | newLine"></div>
+            <div *ngIf="counseling.activity" [innerHTML]="counseling.activity | newLine"></div>
           </div>
           <div>
-            <label class="text-secondary">Aktivitätskategorie:</label>
-            {{counseling.activityCategory}}
+            <label class="text-secondary">Aktivitätskategorie:</label>&nbsp;
+            <span [innerHTML]="counseling.activityCategory"></span>
           </div>
           <div>
-            <label class="text-secondary">Registriert von:</label>
-            {{counseling.registeredBy}}
+            <label class="text-secondary">Registriert von:</label>&nbsp;
+            <span [innerHTML]="counseling.registeredBy"></span>
           </div>
           <div>
-            <button class="btn btn-sm btn-outline-success" (click)="openEditCounseling(edit_counseling)">Edit</button>
+            <button class="btn btn-sm btn-outline-success" (click)="openEditCounseling(edit_counseling)">Edit</button>&nbsp;
             <button class="btn btn-sm btn-outline-warning" (click)="openDeleteConfirmationModal(confirmDelete)">delete</button>
           </div>
           <div *ngIf="counseling.comment === null" class="mt-2">
