@@ -91,6 +91,7 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
 
   loadConcernCategories(): void {
     this.unsubscribe$.push(this.categoryService.getCategories(this.CONCERN_CATEGORY).subscribe(cat => {
+      console.log(this.concernCategories);
       this.concernCategories = cat;
     }));
   }

@@ -1,5 +1,3 @@
-<form #createCounselingForm="ngForm" (ngSubmit)="onSubmit()">
-
   <div class="form-group">
     <div class="row">
       <div class="col-md-4">
@@ -13,7 +11,7 @@
     <label>Anliegen</label>
     <textarea type="text" name="concern" [(ngModel)]="counseling.concern" placeholder="concern"
               class="form-control"></textarea>
-    {{counseling.concern.length}}
+    {{counseling.concern?.length}}
   </div>
 
   <!-- category section start -->
@@ -22,7 +20,7 @@
       <!-- concern category section -->
       <div class="form-group">
         <label>Anliegen Kategorie</label>
-        <select class="form-control" aria-label="select concern category">
+        <select *ngIf="concernCategories" class="form-control" aria-label="select concern category">
           <option>{{counseling.concernCategory}}</option>
           <option *ngFor="let c of concernCategories" [value]="c" (click)="selectConcernCat(c)">
             {{c.name}}
@@ -87,8 +85,9 @@
 
   <div class="form-group">
     <label>Aktivität</label>
-    <textarea type="text" name="activity" [(ngModel)]="counseling.activity" placeholder="activity" class="form-control"></textarea>
-    <span>{{counseling.activity.length}}</span>
+    <textarea type="text" name="activity" [(ngModel)]="counseling.activity" placeholder="activity"
+              class="form-control"></textarea>
+    {{counseling.activity?.length}}
   </div>
 
   <div class="form-group">
@@ -97,9 +96,10 @@
            class="form-control"/>
   </div>
   <div class="form-group">
-    <button class="btn btn-outline-danger" [disabled]="counseling.activity.length > 2040 || counseling.concern.length > 2040 || loading">submit</button>
+    <button class="btn btn-outline-danger" (click)="onSubmit()" [disabled]="counseling.activity?.length > 2040
+            || counseling.concern?.length > 2040 || loading">submit</button>
   </div>
-</form>
+
 <div class="spinner-border text-primary" role="status" *ngIf="loading">
 
 </div>
