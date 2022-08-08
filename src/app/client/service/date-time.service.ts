@@ -8,6 +8,8 @@ import {Time} from '../model/time';
 export class DateTimeService {
 
   dateObject: NgbDateStruct;
+  localTimeMinute: string;
+  localTimeHour: string;
 
   constructor() { }
 
@@ -24,7 +26,20 @@ export class DateTimeService {
     } else {
       month = dateObject.month.toString();
     }
-    return day + '-' + month + '-' + dateObject.year + ' ' + time.hour + ':' + time.minute;
+
+    if (time.hour.toString().length === 1) {
+      this.localTimeHour = '0' + time.hour;
+    } else {
+      this.localTimeHour = time.hour.toString();
+    }
+
+    if (time.minute.toString().length === 1) {
+      this.localTimeMinute = '0' + time.minute;
+    } else {
+      this.localTimeMinute = time.minute.toString();
+    }
+
+    return day + '-' + month + '-' + dateObject.year + ' ' + this.localTimeHour + ':' + this.localTimeMinute;
   }
 
 }
