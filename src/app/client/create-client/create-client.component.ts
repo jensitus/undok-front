@@ -13,6 +13,7 @@ import {ResidentStatus} from '../model/resident-status.enum';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {COUNTRIES_AT} from '../model/countriesAT';
 import {CITIZENSHIPS} from '../model/citizenships';
+import {CategoryTypes} from '../model/category-types';
 
 @Component({
   selector: 'app-create-client',
@@ -26,6 +27,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   readonly DELIMITER = '-';
   enumKeys = [];
   loading = false;
+  cat_gender: CategoryTypes = CategoryTypes.CAT_GENDER;
 
   // Person:
   firstName: string;
@@ -183,4 +185,8 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     }
   }
 
+  showCat(event: any) {
+    this.gender = event;
+    console.log(this.gender);
+  }
 }

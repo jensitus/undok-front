@@ -1,0 +1,26 @@
+<div class="form-group">
+  <label>{{categoryType}}</label>
+  <select class="form-control" aria-label="select concern category">
+    <option selected></option>
+    <option *ngFor="let c of concernCategories" [value]="c" (click)="selectConcernCat(c)">{{c.name}}</option>
+  </select>
+</div>
+<div *ngIf="categoryExists != null">
+  <span class="text-danger">{{categoryExists}}</span>
+</div>
+<div class="form-group">
+  <button type="button" class="btn btn-link" (click)="collapse.toggle()"
+          [attr.aria-expanded]="!concernCategoryIsCollapsed"
+          aria-controls="collapseExample">
+    <small>neue {{categoryType}}-Kategorie</small>
+  </button>
+  <div #collapse="ngbCollapse" [(ngbCollapse)]="concernCategoryIsCollapsed">
+    <input type="text" name="newCategory" [(ngModel)]="newCategory" placeholder="{{categoryType}}"
+           class="form-control"/>
+    <button class="btn btn-sm btn-outline-primary" type="button"
+            (click)="addNewCategory(categoryType)"
+            [disabled]="newCategory == null || newCategory == ''">
+      {{categoryType}} hinzufügen
+    </button>
+  </div>
+</div>
