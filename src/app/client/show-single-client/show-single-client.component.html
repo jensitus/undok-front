@@ -67,10 +67,11 @@
           <div>
             <label class="text-secondary">gefährdet bei Geltendmachung:</label>
             <span *ngIf="client.vulnerableWhenAssertingRights">
-              yes
+              ja
             </span>
-            <span *ngIf="!client.vulnerableWhenAssertingRights">
-              nope
+
+            <span *ngIf="client.vulnerableWhenAssertingRights == false">
+              nein
             </span>
           </div>
           <div>
