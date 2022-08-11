@@ -1,7 +1,7 @@
 <div class="form-group">
   <label>{{categoryType}}</label>
   <select class="form-control" aria-label="select concern category">
-    <option selected></option>
+    <option selected>{{cat_model}}</option>
     <option *ngFor="let c of concernCategories" [value]="c" (click)="selectConcernCat(c)">{{c.name}}</option>
   </select>
 </div>

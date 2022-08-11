@@ -17,6 +17,7 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
   ACTIVITY_CATEGORY = 'activityCategory';
 
   @Input() categoryType: CategoryTypes;
+  @Input() cat_model: any;
   activityCategory: string;
   concernCategory: string;
 
@@ -39,6 +40,7 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadConcernCategories();
+    console.log('cat_model', this.cat_model);
   }
 
   ngOnDestroy(): void {
