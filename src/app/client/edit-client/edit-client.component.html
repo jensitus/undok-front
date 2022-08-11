@@ -143,8 +143,9 @@
   </div>
   <div class="col">
     <div class="form-group">
-      <label class="col-form-label"><small>Gender</small></label>
-      <input type="text" class="form-control" name="gender" [(ngModel)]="client.person.gender">
+      <!--<label class="col-form-label"><small>Gender</small></label>
+      <input type="text" class="form-control" name="gender" [(ngModel)]="client.person.gender">-->
+      <app-select-box [categoryType]="cat_gender" (catValue)="onGenderChange($event)" [cat_model]="client.person?.gender"></app-select-box>
     </div>
   </div>
 </div>

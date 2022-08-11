@@ -12,6 +12,7 @@ import {ResidentStatus} from '../model/resident-status.enum';
 import {COUNTRIES_AT} from '../model/countriesAT';
 import {MARITAL_STATUS} from '../model/marital-status';
 import {CITIZENSHIPS} from '../model/citizenships';
+import {CategoryTypes} from '../model/category-types';
 
 @Component({
   selector: 'app-edit-client',
@@ -48,6 +49,7 @@ export class EditClientComponent implements OnInit, OnDestroy {
   currentResidentStatus: string;
 
   loading = false;
+  cat_gender: CategoryTypes = CategoryTypes.CAT_GENDER;
 
   constructor(
     private clientService: ClientService,
@@ -119,4 +121,7 @@ export class EditClientComponent implements OnInit, OnDestroy {
     this.client.currentResidentStatus = resStatus;
   }
 
+  onGenderChange(event: string) {
+    this.client.person.gender = event;
+  }
 }

@@ -26,6 +26,7 @@ import { CounselingComponent } from './counseling/counseling.component';
 import { NewLinePipe } from './new-line.pipe';
 import { ShowSingleEmployerComponent } from './show-single-employer/show-single-employer.component';
 import { EditEmployerComponent } from './edit-employer/edit-employer.component';
+import { SelectBoxComponent } from './select-box/select-box.component';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
@@ -60,7 +61,8 @@ const appRoutes: Routes = [
     CounselingComponent,
     NewLinePipe,
     ShowSingleEmployerComponent,
-    EditEmployerComponent
+    EditEmployerComponent,
+    SelectBoxComponent
   ],
   imports: [
     CommonModule,
