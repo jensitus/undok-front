@@ -28,6 +28,8 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   enumKeys = [];
   loading = false;
   cat_gender: CategoryTypes = CategoryTypes.CAT_GENDER;
+  cat_aufenthaltstitel: CategoryTypes = CategoryTypes.AUFENTHALTSTITEL;
+  cat_sector: CategoryTypes = CategoryTypes.SECTOR;
 
   // Person:
   firstName: string;
@@ -188,5 +190,13 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   showCat(event: any) {
     this.gender = event;
     console.log(this.gender);
+  }
+
+  selectResidentStatus(event: any) {
+    this.currentResidentStatus = event;
+  }
+
+  selectSector(event: any) {
+    this.sector = event;
   }
 }

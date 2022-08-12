@@ -112,10 +112,13 @@
         <label>Sprache</label>
         <input type="text" class="form-control" name="language" [(ngModel)]="language" />
       </div>
-      <div class="form-group">
+      <!--<div class="form-group">
         <label>Aufenthaltstitel</label>
         <input type="text" class="form-control" name="currentResidentStatus" [(ngModel)]="currentResidentStatus" />
-      </div>
+      </div>-->
+
+      <app-select-box [categoryType]="cat_aufenthaltstitel" (catValue)="selectResidentStatus($event)" ></app-select-box>
+
       <div class="form-group">
         <label>Arbeitsmarktzugang</label>
         <input type="text" class="form-control" name="labourMarketAccess" [(ngModel)]="labourMarketAccess" />
@@ -124,10 +127,13 @@
         <label>Position</label>
         <input type="text" class="form-control" name="position" [(ngModel)]="position" />
       </div>
-      <div class="form-group">
+<!--      <div class="form-group">
         <label>Branche</label>
         <input type="text" class="form-control" name="sector" [(ngModel)]="sector" />
-      </div>
+      </div>-->
+
+      <app-select-box [categoryType]="cat_sector" (catValue)="selectSector($event)"></app-select-box>
+
       <div class="form-group">
         <label>Gewerkschaft</label>
         <input type="text" class="form-control" name="union" [(ngModel)]="union" />

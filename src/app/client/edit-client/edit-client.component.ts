@@ -50,6 +50,8 @@ export class EditClientComponent implements OnInit, OnDestroy {
 
   loading = false;
   cat_gender: CategoryTypes = CategoryTypes.CAT_GENDER;
+  cat_aufenthaltstitel: CategoryTypes = CategoryTypes.AUFENTHALTSTITEL;
+  cat_sector: CategoryTypes = CategoryTypes.SECTOR;
 
   constructor(
     private clientService: ClientService,
@@ -103,7 +105,7 @@ export class EditClientComponent implements OnInit, OnDestroy {
     }));
   }
 
-  onResidentStatusChange(status): void {
+  /*onResidentStatusChange(status): void {
     let resStatus: string;
     switch (status) {
       case 'asyl':
@@ -119,9 +121,17 @@ export class EditClientComponent implements OnInit, OnDestroy {
         resStatus = ResidentStatus.UNKNOWN;
     }
     this.client.currentResidentStatus = resStatus;
-  }
+  }*/
 
   onGenderChange(event: string) {
     this.client.person.gender = event;
+  }
+
+  changeResidentStatus(event: string) {
+    this.client.currentResidentStatus = event;
+  }
+
+  changeSector(event: string) {
+    this.client.sector = event;
   }
 }
