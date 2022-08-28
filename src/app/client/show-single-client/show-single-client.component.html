@@ -124,7 +124,9 @@
       </div>
       <div class="row">
         <div class="col text-right">
-          <button type="button" class="btn btn-sm btn-link" (click)="openEditModal(edit_client)">edit</button>
+          <button type="button" class="btn btn-sm btn-outline-primary" (click)="openEditModal(edit_client)">edit</button>
+          |
+          <app-delete [id_to_delete]="client.person.id" [type]="deleteTypeClient"></app-delete>
         </div>
       </div>
     </div>

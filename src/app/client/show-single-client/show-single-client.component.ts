@@ -7,7 +7,7 @@ import {Person} from '../model/person';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
 import {SidebarService} from '../../admin-template/shared/services/sidebar.service';
-import {EmployerService} from '../service/employer.service';
+import {DeleteTypes} from '../delete/delete-types';
 
 @Component({
   selector: 'app-show-single-client',
@@ -16,6 +16,7 @@ import {EmployerService} from '../service/employer.service';
 })
 export class ShowSingleClientComponent implements OnInit, OnDestroy {
 
+  deleteTypeClient: DeleteTypes = DeleteTypes.CLIENT;
   private id: string;
   private subscription$: Subscription[] = [];
   person: Person;
