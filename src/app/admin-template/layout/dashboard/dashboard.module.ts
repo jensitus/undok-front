@@ -13,6 +13,7 @@ import { StatModule } from '../../shared';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ChartsModule} from '../charts/charts.module';
+import {AlertModule} from '../components/alert/alert.module';
 
 @NgModule({
     imports: [
@@ -24,7 +25,8 @@ import {ChartsModule} from '../charts/charts.module';
         ReactiveFormsModule,
         FontAwesomeModule,
         FormsModule,
-        ChartsModule
+        ChartsModule,
+        AlertModule
     ],
   declarations: [
     DashboardComponent,
