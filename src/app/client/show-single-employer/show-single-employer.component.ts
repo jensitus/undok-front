@@ -6,6 +6,8 @@ import {Employer} from '../model/employer';
 import {faSurprise} from '@fortawesome/free-solid-svg-icons';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
+import {DeleteService} from '../service/delete.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 
 @Component({
   selector: 'app-show-single-employer',
@@ -18,7 +20,9 @@ export class ShowSingleEmployerComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private modalService: NgbModal,
     private employerService: EmployerService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private deleteService: DeleteService,
+    private alertService: AlertService
   ) {
   }
 
@@ -66,7 +70,7 @@ export class ShowSingleEmployerComponent implements OnInit, OnDestroy {
         this.getEmployer(this.id);
         this.modalService.dismissAll();
       }
-    })
+    });
   }
 
   ngOnDestroy(): void {
@@ -77,4 +81,12 @@ export class ShowSingleEmployerComponent implements OnInit, OnDestroy {
     }
   }
 
+  delete() {
+    this.deleteService.deleteEmployer(this.id).subscribe(res => {
+
+    }, error => {
+      console.log(error.error.text);
+      this.alertService.error(error.error.text);
+    });
+  }
 }
