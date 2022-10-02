@@ -5,6 +5,7 @@ import {DeleteService} from '../service/delete.service';
 import {Router} from '@angular/router';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {takeUntil} from 'rxjs/operators';
+import {CommonService} from '../../common/services/common.service';
 
 @Component({
   selector: 'app-delete',
@@ -24,7 +25,8 @@ export class DeleteComponent implements OnInit, OnDestroy {
   constructor(
     private deleteService: DeleteService,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private commonService: CommonService
   ) {
   }
 
@@ -39,8 +41,18 @@ export class DeleteComponent implements OnInit, OnDestroy {
     switch (this.type) {
       case DeleteTypes.CLIENT:
         this.deleteService.deleteClient(this.id_to_delete).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-          this.alertService.success('Client successfully deleted', true);
-          this.router.navigate(['/dashboard']);
+          this.commonService.setAlertSubject('Client successfully deleted');
+          this.router.navigate(['/clients/client-list']);
+        }, error => {
+          this.alertService.error('Sorry but something went wrong');
+        });
+        break;
+      case DeleteTypes.EMPLOYER:
+        this.deleteService.deleteEmployer(this.id_to_delete).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+          this.commonService.setAlertSubject('Employer successfully deleted');
+          this.router.navigate(['/clients/employers']);
+        }, error => {
+          this.alertService.error(error.error.text);
         });
         break;
       default:

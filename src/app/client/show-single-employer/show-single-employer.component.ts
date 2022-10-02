@@ -8,6 +8,7 @@ import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
 import {DeleteService} from '../service/delete.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import {DeleteTypes} from '../delete/delete-types';
 
 @Component({
   selector: 'app-show-single-employer',
@@ -15,6 +16,8 @@ import {AlertService} from '../../admin-template/layout/components/alert/service
   styleUrls: ['./show-single-employer.component.css']
 })
 export class ShowSingleEmployerComponent implements OnInit, OnDestroy {
+
+  deleteTypeEmployer: DeleteTypes = DeleteTypes.EMPLOYER;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -81,12 +84,12 @@ export class ShowSingleEmployerComponent implements OnInit, OnDestroy {
     }
   }
 
-  delete() {
-    this.deleteService.deleteEmployer(this.id).subscribe(res => {
-
-    }, error => {
-      console.log(error.error.text);
-      this.alertService.error(error.error.text);
-    });
-  }
+  // delete() {
+  //   this.subscription$.push(this.deleteService.deleteEmployer(this.id).subscribe(res => {
+  //     console.log(res);
+  //   }, error => {
+  //     console.log(error.error.text);
+  //     this.alertService.error(error.error.text);
+  //   }));
+  // }
 }

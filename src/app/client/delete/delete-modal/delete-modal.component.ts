@@ -23,7 +23,7 @@ export class DeleteModalComponent implements OnInit {
   }
 
   open(delete_object) {
-    this.modalService.open(delete_object, {ariaLabelledBy: 'modal-basic-title', size: 'sm'}).result.then((result) => {
+    this.modalService.open(delete_object, {ariaLabelledBy: 'modal-basic-title', size: 'md'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
       this.confirmed.emit(true);
     }, (reason) => {

@@ -6,6 +6,9 @@ import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
 import {ClientTableService} from '../table/client-table.service';
 import {CsvService} from '../service/csv.service';
 import {AllClient} from '../model/all-client';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import {CommonService} from '../../common/services/common.service';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-show-clients',
@@ -22,7 +25,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   count: number;
   loading = false;
   faUsers = faUsers;
-  tableColumns: string[];
+  successMessage: string;
   columns = ['id', 'keyword', 'firstName', 'lastName', 'dateOfBirth', 'email', 'telephone', 'street', 'zipCode', 'city', 'country', 'education',
     'maritalStatus', 'interpreterNecessary', 'howHasThePersonHeardFromUs', 'vulnerableWhenAssertingRights',
     'counselings', 'nationality', 'language', 'currentResidentStatus', 'formerResidentStatus', 'labourMarketAccess', 'position',
@@ -33,13 +36,16 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   constructor(
     private clientService: ClientService,
     public clientTableService: ClientTableService,
-    private csvService: CsvService
+    private csvService: CsvService,
+    private alertService: AlertService,
+    private commonService: CommonService
   ) {
     this.total$ = this.clientTableService.total$;
     this.clients$ = this.clientTableService.clients$;
   }
 
   ngOnInit(): void {
+    this.getAlertSubject();
   }
 
   ngOnDestroy(): void {
@@ -58,9 +64,21 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
     this.clientTableService.sortDirection = direction;
   }
 
+  showAlert() {
+    this.alertService.success(this.successMessage);
+  }
+
   clickToCsv() {
-    console.log('clients', this.clients$);
     this.csvService.exportToCsv(this.clientTableService.allClients$, this.CSV_FILENAME, this.columns);
+  }
+
+  getAlertSubject() {
+    this.commonService.alertSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+      this.successMessage = result;
+      if (result) {
+        this.showAlert();
+      }
+    });
   }
 
 }

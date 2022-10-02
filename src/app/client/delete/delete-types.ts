@@ -1,3 +1,4 @@
 export enum DeleteTypes {
-  CLIENT = 'client'
+  CLIENT = 'client',
+  EMPLOYER = 'employer'
 }

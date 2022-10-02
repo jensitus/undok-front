@@ -59,7 +59,6 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(data => {
         this.loading = false;
-        this.alertService.success('we\'ve sent you a little token for signing in', true);
         this.router.navigate(['/second-factor']);
       }
     );
