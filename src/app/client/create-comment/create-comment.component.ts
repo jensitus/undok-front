@@ -13,6 +13,7 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
 
   @Input() private clientId: string;
   @Input() public comment: string;
+  @Input() public delete = false;
   private unsubscribe$: Subscription[] = [];
 
   constructor(
@@ -37,4 +38,10 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
     }));
   }
 
+  deleteComment() {
+    this.comment = 'null';
+    this.unsubscribe$.push(this.counselingService.createUpdateComment(this.clientId, this.comment).subscribe(res => {
+      this.commonService.setReloadClientSubject(true);
+    }));
+  }
 }
