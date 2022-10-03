@@ -13,7 +13,6 @@ export class ShowEmployersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.sidebarService.setCreateEmployerButtonSubject(true);
   }
 
 }
