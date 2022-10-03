@@ -42,6 +42,7 @@ export class DeleteComponent implements OnInit, OnDestroy {
       case DeleteTypes.CLIENT:
         this.deleteService.deleteClient(this.id_to_delete).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
           this.commonService.setAlertSubject('Client successfully deleted');
+          this.commonService.setReloadClientSubject(true);
           this.router.navigate(['/clients/client-list']);
         }, error => {
           this.alertService.error('Sorry but something went wrong');

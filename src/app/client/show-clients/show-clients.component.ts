@@ -40,16 +40,20 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     private commonService: CommonService
   ) {
-    this.total$ = this.clientTableService.total$;
-    this.clients$ = this.clientTableService.clients$;
   }
 
   ngOnInit(): void {
     this.getAlertSubject();
+    this.getClientsForTable();
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next(null);
+  }
+
+  getClientsForTable() {
+    this.total$ = this.clientTableService.total$;
+    this.clients$ = this.clientTableService.clients$;
   }
 
   onSort({column, direction}: SortEvent) {
@@ -65,7 +69,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   }
 
   showAlert() {
-    this.alertService.success(this.successMessage);
+    this.alertService.error(this.successMessage);
   }
 
   clickToCsv() {
