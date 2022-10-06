@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="!delete">
   <div class="col-md">
     <form #commentForm (ngSubmit)="onSubmit()">
       <div class="form-group">
@@ -13,3 +13,7 @@
     </div>
   </div>
 </div>
+<span *ngIf="delete">
+  <button class="btn btn-sm btn-outline-secondary" (click)="deleteComment()">delete</button>
+</span>
+

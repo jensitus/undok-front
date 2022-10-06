@@ -1,3 +1,4 @@
+<app-alert></app-alert>
 <div class="container">
   <div class="row">
     <div class="col-md-4">
@@ -50,7 +51,10 @@
   </div>
   <div class="row mt-5">
     <div class="col-md-4">
-      <button class="btn btn-small btn-outline-primary" (click)="openEditEmployer(content_edit_employer)">edit</button>
+      <button class="btn btn-sm btn-outline-primary" (click)="openEditEmployer(content_edit_employer)">edit</button>
+      &nbsp;&nbsp;
+      <app-delete [type]="deleteTypeEmployer" [id_to_delete]="employer.id"></app-delete>
+      <!--button class="btn btn-sm btn-outline-danger" (click)="delete()">delete</button-->
     </div>
   </div>
 </div>

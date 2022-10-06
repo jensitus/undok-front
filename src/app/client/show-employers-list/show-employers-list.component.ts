@@ -10,6 +10,7 @@ import {faSurprise} from '@fortawesome/free-solid-svg-icons';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CreateClientEmployerJobDescriptionComponent} from '../create-client-employer-job-description/create-client-employer-job-description.component';
 import {SidebarService} from '../../admin-template/shared/services/sidebar.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 
 @Component({
   selector: 'app-show-employers-list',
@@ -33,7 +34,8 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
     public employerTableService: EmployerTableService,
     private modalService: NgbModal,
     private commonService: CommonService,
-    private sidebarService: SidebarService
+    private sidebarService: SidebarService,
+    private alertService: AlertService
   ) {
   }
 
@@ -50,16 +52,24 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getEmployersPerTableService();
     this.checkIfNewEmployerIsNeeded();
+    this.getAlertSubject();
   }
 
   ngOnDestroy(): void {
     this.sidebarService.setCreateEmployerButtonSubject(false);
-    this.unsubscribe$.next(null);
+    this.unsubscribe$.next(true);
+  }
+
+  getAlertSubject() {
+    this.commonService.alertSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+      if (result) {
+        this.alertService.success(result, true);
+      }
+    });
   }
 
   setEmployer(e_id) {
     this.employerService.checkClientEmployer(e_id, this.clientId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      console.log(res);
       if (res === true) {
         this.deleteEmployer(e_id, this.clientId);
       } else if (res === false) {
@@ -70,13 +80,11 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
 
   deleteEmployer(e_id: string, clientId: string) {
     this.employerService.deleteEmployerFromClient(e_id, this.clientId).pipe(takeUntil(this.unsubscribe$)).subscribe(r => {
-      console.log(r);
     });
   }
 
   addEmployer(e_id: string) {
     this.employerService.setEmployerToClient(e_id, this.clientId).pipe(takeUntil(this.unsubscribe$)).subscribe(r => {
-      console.log(r);
       this.commonService.setEmployerSubject(true);
     });
   }

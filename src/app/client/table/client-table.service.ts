@@ -7,6 +7,7 @@ import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
 import {AllClient} from '../model/all-client';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
+import {CommonService} from '../../common/services/common.service';
 
 export interface SearchResult {
   clients: AllClient[];
@@ -77,12 +78,24 @@ export class ClientTableService implements OnDestroy {
 
   constructor(
     private pipe: DecimalPipe,
-    private http: HttpClient
+    private http: HttpClient,
+    private commonService: CommonService
   ) {
+    this.getDeleteClientSubject();
+    this.getClientsConstructor();
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription$) {
+      this.subscription$.forEach((s) => {
+        s.unsubscribe();
+      });
+    }
+  }
+
+  getClientsConstructor() {
     this.subscription$.push(this.getAllClients().subscribe(result => {
       this.allClients = result;
-      console.log('constructor this.allClients', this.allClients);
-
       this._search$.pipe(tap(() => this._loading$.next(true)),
         debounceTime(200),
         switchMap(() => this._search()),
@@ -93,16 +106,7 @@ export class ClientTableService implements OnDestroy {
         this._total$.next(r.total);
       });
       this._search$.next();
-
     }));
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscription$) {
-      this.subscription$.forEach((s) => {
-        s.unsubscribe();
-      });
-    }
   }
 
   get allClients$() {
@@ -181,5 +185,14 @@ export class ClientTableService implements OnDestroy {
   getAllClients(): Observable<AllClient[]> {
     return this.http.get<AllClient[]>(this.apiUrl + this.UNDOK_CLIENTS + '/all/');
   }
+
+  getDeleteClientSubject() {
+    this.commonService.reloadClientSubject.subscribe(relClSub => {
+      if (relClSub) {
+        this.getClientsConstructor();
+      }
+    });
+  }
+
 
 }

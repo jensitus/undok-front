@@ -85,7 +85,7 @@
             {{client.nationality}}
           </div>
           <div>
-            <label class="text-secondary">Gender</label>
+            <label class="text-secondary">Gender:</label>
             {{client.person.gender}}
           </div>
           <div>
@@ -124,7 +124,9 @@
       </div>
       <div class="row">
         <div class="col text-right">
-          <button type="button" class="btn btn-sm btn-link" (click)="openEditModal(edit_client)">edit</button>
+          <button type="button" class="btn btn-sm btn-outline-primary" (click)="openEditModal(edit_client)">edit</button>
+          |
+          <app-delete [id_to_delete]="client.person.id" [type]="deleteTypeClient" [delete_object_name]="client.keyword"></app-delete>
         </div>
       </div>
     </div>

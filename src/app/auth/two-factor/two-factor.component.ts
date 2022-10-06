@@ -4,6 +4,7 @@ import {SecondFactorForm} from '../model/second-factor-form';
 import {User} from '../model/user';
 import {UserService} from '../services/user.service';
 import {Router} from '@angular/router';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 
 @Component({
   selector: 'app-two-factor',
@@ -20,11 +21,13 @@ export class TwoFactorComponent implements OnInit, OnDestroy {
 
   constructor(
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) { }
 
   ngOnInit(): void {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.alertService.success('we\'ve sent you a little token for signing in', true);
   }
 
   ngOnDestroy(): void {

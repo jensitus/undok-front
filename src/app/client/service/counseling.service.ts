@@ -24,6 +24,7 @@ export class CounselingService {
   }
 
   createUpdateComment(counselingId: string, comment: string): Observable<Counseling> {
+    console.log(counselingId, comment);
     return this.http.put<Counseling>(this.apiUrl + this.COUNSELING_URL + counselingId + '/set-or-update-comment/', comment);
   }
 

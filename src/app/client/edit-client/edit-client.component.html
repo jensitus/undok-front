@@ -143,24 +143,20 @@
   </div>
   <div class="col">
     <div class="form-group">
-      <label class="col-form-label"><small>Gender</small></label>
-      <input type="text" class="form-control" name="gender" [(ngModel)]="client.person.gender">
+      <app-select-box [categoryType]="cat_gender"
+                      (catValue)="onGenderChange($event)"
+                      [cat_model]="client.person?.gender">
+      </app-select-box>
     </div>
   </div>
 </div>
 
-<!--
-<div class="form-group">
-  <label>formerResidentStatus</label>
-  <input type="text" class="form-control" name="formerResidentStatus" [(ngModel)]="formerResidentStatus" placeholder="formerResidentStatus" />
-</div>
--->
 <div class="row">
   <div class="col">
-    <div class="form-group">
-      <label><small>Aufenthaltstitel</small></label>
-      <input type="text" class="form-control" name="currentResidentStatus" [(ngModel)]="client.currentResidentStatus"/>
-    </div>
+    <app-select-box (catValue)="changeResidentStatus($event)"
+                    [cat_model]="client.currentResidentStatus"
+                    [categoryType]="cat_aufenthaltstitel">
+    </app-select-box>
   </div>
   <div class="col">
     <div class="form-group">
@@ -187,10 +183,10 @@
 
 <div class="row">
   <div class="col">
-    <div class="form-group">
-      <label><small>Branche</small></label>
-      <input type="text" class="form-control" name="sector" [(ngModel)]="client.sector" />
-    </div>
+    <app-select-box [categoryType]="cat_sector"
+                    [cat_model]="client.sector"
+                    (catValue)="changeSector($event)">
+    </app-select-box>
   </div>
   <div class="col">
     <div class="form-group">

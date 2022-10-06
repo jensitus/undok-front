@@ -12,6 +12,7 @@ import {ResidentStatus} from '../model/resident-status.enum';
 import {COUNTRIES_AT} from '../model/countriesAT';
 import {MARITAL_STATUS} from '../model/marital-status';
 import {CITIZENSHIPS} from '../model/citizenships';
+import {CategoryTypes} from '../model/category-types';
 
 @Component({
   selector: 'app-edit-client',
@@ -48,6 +49,9 @@ export class EditClientComponent implements OnInit, OnDestroy {
   currentResidentStatus: string;
 
   loading = false;
+  cat_gender: CategoryTypes = CategoryTypes.CAT_GENDER;
+  cat_aufenthaltstitel: CategoryTypes = CategoryTypes.AUFENTHALTSTITEL;
+  cat_sector: CategoryTypes = CategoryTypes.SECTOR;
 
   constructor(
     private clientService: ClientService,
@@ -101,7 +105,7 @@ export class EditClientComponent implements OnInit, OnDestroy {
     }));
   }
 
-  onResidentStatusChange(status): void {
+  /*onResidentStatusChange(status): void {
     let resStatus: string;
     switch (status) {
       case 'asyl':
@@ -117,6 +121,17 @@ export class EditClientComponent implements OnInit, OnDestroy {
         resStatus = ResidentStatus.UNKNOWN;
     }
     this.client.currentResidentStatus = resStatus;
+  }*/
+
+  onGenderChange(event: string) {
+    this.client.person.gender = event;
   }
 
+  changeResidentStatus(event: string) {
+    this.client.currentResidentStatus = event;
+  }
+
+  changeSector(event: string) {
+    this.client.sector = event;
+  }
 }
