@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ClientService} from '../service/client.service';
-import {publish, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {CounselingForm} from '../model/counseling-form';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {NgbDateAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
@@ -12,6 +12,8 @@ import {Category} from '../model/category';
 import {CategoryService} from '../service/category.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {Time} from '../model/time';
+import {IDropdownSettings} from 'ng-multiselect-dropdown';
+import {CategoryTypes} from '../model/category-types';
 
 @Component({
   selector: 'app-create-counseling',
@@ -20,8 +22,14 @@ import {Time} from '../model/time';
 })
 export class CreateCounselingComponent implements OnInit, OnDestroy {
 
-  CONCERN_CATEGORY = 'concernCategory';
-  ACTIVITY_CATEGORY = 'activityCategory';
+  dropdownList = [];
+  selectedItems = [];
+  dropdownSettings: IDropdownSettings = {};
+
+  // CONCERN_CATEGORY = 'concernCategory';
+  concernCategoryType: CategoryTypes = CategoryTypes.CONCERN_CATEGORY;
+  // ACTIVITY_CATEGORY = 'activityCategory';
+  activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY_CATEGORY;
 
   @Input() clientId: string;
 
@@ -116,13 +124,13 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   }
 
   loadConcernCategories(): void {
-    this.unsubscribe$.push(this.categoryService.getCategories(this.CONCERN_CATEGORY).subscribe(cat => {
+    this.unsubscribe$.push(this.categoryService.getCategories(this.concernCategoryType).subscribe(cat => {
       this.concernCategories = cat;
     }));
   }
 
   loadActivityCategories(): void {
-    this.unsubscribe$.push(this.categoryService.getCategories(this.ACTIVITY_CATEGORY).subscribe(cat => {
+    this.unsubscribe$.push(this.categoryService.getCategories(this.activityCategoryType).subscribe(cat => {
       this.activityCategories = cat;
     }));
   }
@@ -135,32 +143,11 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     this.activityCategory = cat.name;
   }
 
-  addNewCategory(type: string) {
-    let category: Category;
-
-    switch (type) {
-      case this.CONCERN_CATEGORY:
-        category = {
-          name: this.newCategory,
-          type: type
-        };
-        break;
-      case this.ACTIVITY_CATEGORY:
-        category = {
-          name: this.newActivityCategory,
-          type: type
-        };
-        break;
-    }
-    this.unsubscribe$.push(this.categoryService.addCategory(category).subscribe((r) => {
-      this.newCategory = null;
-      this.newActivityCategory = null;
-      this.loadConcernCategories();
-      this.loadActivityCategories();
-    }, error => {
-      this.categoryExists = error.error;
-    }));
-
+  showActivityCat(event: string) {
+    this.activityCategory = event;
   }
 
+  showConcernCat(event: string) {
+    this.concernCategory = event;
+  }
 }

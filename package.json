@@ -35,6 +35,7 @@
     "express": "^4.17.1",
     "file-save": "^0.2.0",
     "file-saver": "^2.0.5",
+    "ng-multiselect-dropdown": "^1.0.0-beta.19",
     "ng2-charts": "^3.0.8",
     "ngx-order-pipe": "^2.0.4",
     "rxjs": "~7.5.4",

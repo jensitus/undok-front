@@ -16,6 +16,7 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
   CONCERN_CATEGORY = 'concernCategory';
   ACTIVITY_CATEGORY = 'activityCategory';
 
+  @Input() singleType = true;
   @Input() categoryType: CategoryTypes;
   @Input() cat_model: any;
   activityCategory: string;
