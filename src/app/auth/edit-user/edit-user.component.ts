@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {UserService} from '../services/user.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {environment} from '../../../environments/environment';
 import {Subscription} from 'rxjs';
 
@@ -14,7 +14,7 @@ import {Subscription} from 'rxjs';
 export class EditUserComponent implements OnInit, OnDestroy {
 
   username: string;
-  userForm: FormGroup;
+  userForm: UntypedFormGroup;
   user: any;
   data: any;
   avatar: any;
@@ -28,7 +28,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
     private alertService: AlertService,
-    private formBuilder: FormBuilder
+    private formBuilder: UntypedFormBuilder
   ) {
   }
 

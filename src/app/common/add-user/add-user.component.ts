@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import {UserService} from '../../auth/services/user.service';
 import {User} from '../../auth/model/user';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
@@ -13,7 +13,7 @@ export class AddUserComponent implements OnInit {
 
   loading = false;
   submitted = false;
-  addUserForm: FormGroup;
+  addUserForm: UntypedFormGroup;
   @Input() user_id: string;
   todo_users: User[];
   users: User[];
@@ -25,7 +25,7 @@ export class AddUserComponent implements OnInit {
   showAF = false;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private userService: UserService,
     private alertService: AlertService
   ) { }

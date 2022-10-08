@@ -139,5 +139,7 @@
       }
     }
   },
-  "defaultProject": "service-front"
+  "cli": {
+    "analytics": false
+  }
 }

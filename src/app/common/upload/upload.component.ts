@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import {UploadService} from '../services/upload.service';
 
 class ImageSnippet {
@@ -23,13 +23,13 @@ const URL = 'http://localhost:8080/service/app/files';
 export class UploadComponent implements OnInit {
 
   selectedFile: ImageSnippet;
-  uploadForm: FormGroup;
+  uploadForm: UntypedFormGroup;
   isDropOver: boolean;
   videoFiles: string[] = [];
   sMsg = '';
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private uploadService: UploadService
   ) {
   }
