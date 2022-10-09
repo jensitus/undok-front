@@ -8,6 +8,7 @@ import {DateTimeService} from '../service/date-time.service';
 import {CommonService} from '../../common/services/common.service';
 import {Category} from '../model/category';
 import {CategoryService} from '../service/category.service';
+import {CategoryTypes} from '../model/category-types';
 
 @Component({
   selector: 'app-edit-counseling',
@@ -16,8 +17,8 @@ import {CategoryService} from '../service/category.service';
 })
 export class EditCounselingComponent implements OnInit, OnDestroy {
 
-  CONCERN_CATEGORY = 'concernCategory';
-  ACTIVITY_CATEGORY = 'activityCategory';
+  concernCategoryType: CategoryTypes = CategoryTypes.CONCERN_CATEGORY;
+  activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY_CATEGORY;
 
   @Input() public counseling: Counseling;
   private unsubscribe$: Subscription[] = [];
@@ -62,6 +63,7 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
     }));
   }
 
+  /*
   addNewCategory(type: string) {
     let category: Category;
 
@@ -88,16 +90,17 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
       this.categoryExists = error.error;
     }));
   }
+   */
 
   loadConcernCategories(): void {
-    this.unsubscribe$.push(this.categoryService.getCategories(this.CONCERN_CATEGORY).subscribe(cat => {
+    this.unsubscribe$.push(this.categoryService.getCategories(this.concernCategoryType).subscribe(cat => {
       console.log(this.concernCategories);
       this.concernCategories = cat;
     }));
   }
 
   loadActivityCategories(): void {
-    this.unsubscribe$.push(this.categoryService.getCategories(this.ACTIVITY_CATEGORY).subscribe(cat => {
+    this.unsubscribe$.push(this.categoryService.getCategories(this.activityCategoryType).subscribe(cat => {
       this.activityCategories = cat;
     }));
   }
@@ -110,4 +113,11 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
     this.counseling.activityCategory = cat.name;
   }
 
+  showConcernCat(event: string) {
+    this.counseling.concernCategory = event;
+  }
+
+  showActivityCat(event: string) {
+    this.counseling.activityCategory = event;
+  }
 }

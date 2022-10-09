@@ -26,9 +26,7 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   selectedItems = [];
   dropdownSettings: IDropdownSettings = {};
 
-  // CONCERN_CATEGORY = 'concernCategory';
   concernCategoryType: CategoryTypes = CategoryTypes.CONCERN_CATEGORY;
-  // ACTIVITY_CATEGORY = 'activityCategory';
   activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY_CATEGORY;
 
   @Input() clientId: string;
