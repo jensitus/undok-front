@@ -12,7 +12,6 @@ import {Category} from '../model/category';
 import {CategoryService} from '../service/category.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {Time} from '../model/time';
-import {IDropdownSettings} from 'ng-multiselect-dropdown';
 import {CategoryTypes} from '../model/category-types';
 
 @Component({
@@ -21,10 +20,6 @@ import {CategoryTypes} from '../model/category-types';
   styleUrls: ['./create-counseling.component.css']
 })
 export class CreateCounselingComponent implements OnInit, OnDestroy {
-
-  dropdownList = [];
-  selectedItems = [];
-  dropdownSettings: IDropdownSettings = {};
 
   concernCategoryType: CategoryTypes = CategoryTypes.CONCERN_CATEGORY;
   activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY_CATEGORY;
