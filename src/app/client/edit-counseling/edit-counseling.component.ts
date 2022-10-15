@@ -18,6 +18,8 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
 
   CONCERN_CATEGORY = 'concernCategory';
   ACTIVITY_CATEGORY = 'activityCategory';
+  CONCERN_MAX_LENGTH = 4080;
+  ACTIVITY_MAX_LENGTH = 4080;
 
   @Input() public counseling: Counseling;
   private unsubscribe$: Subscription[] = [];
@@ -91,7 +93,6 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
 
   loadConcernCategories(): void {
     this.unsubscribe$.push(this.categoryService.getCategories(this.CONCERN_CATEGORY).subscribe(cat => {
-      console.log(this.concernCategories);
       this.concernCategories = cat;
     }));
   }
