@@ -23,6 +23,8 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
 
   concernCategoryType: CategoryTypes = CategoryTypes.CONCERN_CATEGORY;
   activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY_CATEGORY;
+  CONCERN_LENGTH = 4080;
+  ACTIVITY_LENGTH = 4080;
 
   @Input() clientId: string;
 
@@ -54,8 +56,8 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   activityCategoryIsCollapsed = true;
   concernCategoryIsCollapsed = true;
 
-  concernLength = 2040;
-  activityLength = 2040;
+  concernLength = this.CONCERN_LENGTH;
+  activityLength = this.ACTIVITY_LENGTH;
 
   constructor(
     private clientService: ClientService,
@@ -75,11 +77,11 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   }
 
   concernLengthChange(val) {
-    this.concernLength = 2040 - val.length;
+    this.concernLength = this.CONCERN_LENGTH - val.length;
   }
 
   activityLengthChange(val) {
-    this.activityLength = 2040 - val.length;
+    this.activityLength = this.ACTIVITY_LENGTH - val.length;
   }
 
   private getCurrentUser() {

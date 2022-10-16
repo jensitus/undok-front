@@ -17,6 +17,8 @@ import {CategoryTypes} from '../model/category-types';
 })
 export class EditCounselingComponent implements OnInit, OnDestroy {
 
+  CONCERN_MAX_LENGTH = 4080;
+  ACTIVITY_MAX_LENGTH = 4080;
   concernCategoryType: CategoryTypes = CategoryTypes.CONCERN_CATEGORY;
   activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY_CATEGORY;
 
@@ -95,7 +97,6 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
   loadConcernCategories(): void {
     this.unsubscribe$.push(this.categoryService.getCategories(this.concernCategoryType).subscribe(cat => {
       console.log(this.concernCategories);
-      this.concernCategories = cat;
     }));
   }
 

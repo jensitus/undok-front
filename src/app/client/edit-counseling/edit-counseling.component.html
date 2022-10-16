@@ -11,7 +11,7 @@
     <label>Anliegen</label>
     <textarea type="text" name="concern" [(ngModel)]="counseling.concern" placeholder="concern"
               class="form-control"></textarea>
-    {{counseling.concern?.length}}
+    {{CONCERN_MAX_LENGTH - counseling.concern?.length}}
   </div>
 
   <!-- category section start -->
@@ -40,7 +40,7 @@
     <label>Aktivität</label>
     <textarea type="text" name="activity" [(ngModel)]="counseling.activity" placeholder="activity"
               class="form-control"></textarea>
-    {{counseling.activity?.length}}
+    {{ACTIVITY_MAX_LENGTH - counseling.activity?.length}}
   </div>
 
   <div class="form-group">
@@ -49,8 +49,8 @@
            class="form-control"/>
   </div>
   <div class="form-group">
-    <button class="btn btn-outline-danger" (click)="onSubmit()" [disabled]="counseling.activity?.length > 2040
-            || counseling.concern?.length > 2040 || loading">submit</button>
+    <button class="btn btn-outline-danger" (click)="onSubmit()" [disabled]="counseling.activity?.length > ACTIVITY_MAX_LENGTH
+            || counseling.concern?.length > CONCERN_MAX_LENGTH || loading">submit</button>
   </div>
 
 <div class="spinner-border text-primary" role="status" *ngIf="loading">
