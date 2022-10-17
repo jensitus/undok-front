@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {Category} from '../model/category';
+import {Category} from '../../model/category';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {Subscription} from 'rxjs';
-import {CategoryService} from '../service/category.service';
-import {CategoryTypes} from '../model/category-types';
+import {CategoryService} from '../../service/category.service';
+import {CategoryTypes} from '../../model/category-types';
 import {IDropdownSettings} from 'ng-multiselect-dropdown';
+import {DropdownItem} from '../../model/dropdown-item';
 
 
 @Component({
@@ -14,15 +15,14 @@ import {IDropdownSettings} from 'ng-multiselect-dropdown';
 })
 export class SelectBoxComponent implements OnInit, OnDestroy {
 
-  dropdownList = [];
+  dropdownList: DropdownItem[] = [];
   dropdownList_1 = [];
-  selectedItems = [];
+  selectedItems: DropdownItem[] = [];
   dropdownSettings: IDropdownSettings = {};
 
   // CONCERN_CATEGORY = 'concernCategory';
   // ACTIVITY_CATEGORY = 'activityCategory';
 
-  @Input() multiSelect = false;
   @Input() categoryType: CategoryTypes;
   @Input() cat_model: any;
   activityCategory: string;
@@ -55,36 +55,6 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
     });
   }
 
-  getMultiSelectBoxItems() {
-      this.concernCategories?.forEach((c) => {
-        console.log('c', c);
-        this.dropdownList_1.push({item_id: c.id, item_text: c.name});
-      });
-
-      this.dropdownList = [
-        {item_id: 1, item_text: 'Mumbai'},
-        {item_id: 2, item_text: 'Bangaluru'},
-        {item_id: 3, item_text: 'Pune'},
-        {item_id: 4, item_text: 'Navsari'},
-        {item_id: 5, item_text: 'New Delhi'}
-      ];
-    console.log('dropdownList', this.dropdownList);
-    console.log('dropdownList_1', this.dropdownList_1);
-      this.selectedItems = [
-        this.dropdownList_1[0], this.dropdownList_1[1]
-      ];
-      this.dropdownSettings = {
-        singleSelection: false,
-        idField: 'item_id',
-        textField: 'item_text',
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        itemsShowLimit: 3,
-        allowSearchFilter: true
-      };
-
-  }
-
   onCatValueChange(): void {
     this.catValue.emit(this.concernCategory);
   }
@@ -106,9 +76,6 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
   loadCategoriesByCategoryType(): void {
     this.subscription$.push(this.categoryService.getCategories(this.categoryType).subscribe(cat => {
       this.concernCategories = cat;
-      if (this.multiSelect) {
-        this.getMultiSelectBoxItems();
-      }
     }));
   }
 

@@ -1,4 +1,4 @@
-<ng-container *ngIf="!multiSelect">
+<ng-container>
   <div class="form-group">
     <label>{{categoryType}}</label>
     <select class="form-control" aria-label="select concern category">
@@ -27,14 +27,4 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="multiSelect">
-  <label>{{categoryType}}</label>
-  <ng-multiselect-dropdown
-    [placeholder]="'custom placeholder'"
-    [settings]="dropdownSettings"
-    [data]="dropdownList_1"
-    [(ngModel)]="selectedItems"
-    (onSelect)="onItemSelect($event)"
-    (onSelectAll)="onSelectAll($event)">
-  </ng-multiselect-dropdown>
-</ng-container>
+

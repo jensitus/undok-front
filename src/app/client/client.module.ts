@@ -26,10 +26,11 @@ import { CounselingComponent } from './counseling/counseling.component';
 import { NewLinePipe } from './new-line.pipe';
 import { ShowSingleEmployerComponent } from './show-single-employer/show-single-employer.component';
 import { EditEmployerComponent } from './edit-employer/edit-employer.component';
-import { SelectBoxComponent } from './select-box/select-box.component';
+import { SelectBoxComponent } from './select-box/single/select-box.component';
 import { DeleteComponent } from './delete/delete.component';
 import { DeleteModalComponent } from './delete/delete-modal/delete-modal.component';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
+import { MultiSelectBoxComponent } from './select-box/multi/multi-select-box.component';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
@@ -67,7 +68,8 @@ const appRoutes: Routes = [
     EditEmployerComponent,
     SelectBoxComponent,
     DeleteComponent,
-    DeleteModalComponent
+    DeleteModalComponent,
+    MultiSelectBoxComponent
   ],
   imports: [
     NgMultiSelectDropDownModule.forRoot(),

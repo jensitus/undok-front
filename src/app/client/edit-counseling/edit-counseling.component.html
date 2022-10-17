@@ -20,17 +20,13 @@
       <!-- concern category section -->
       <app-select-box [categoryType]="concernCategoryType"
                       (catValue)="showConcernCat($event)"
-                      [cat_model]="counseling?.concernCategory" [multiSelect]="false">
+                      [cat_model]="counseling?.concernCategory">
       </app-select-box>
       <!-- concern category section end -->
     </div>
     <div class="col">
       <!-- activity category start -->
-      <app-select-box [categoryType]="activityCategoryType"
-                      (catValue)="showActivityCat($event)"
-                      [cat_model]="counseling?.activityCategory"
-                      [multiSelect]="true">
-      </app-select-box>
+      <app-multi [categoryType]="activityCategoryType"></app-multi>
       <!-- activity category end -->
     </div>
   </div>
