@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {DropdownItem} from '../../model/dropdown-item';
 import {IDropdownSettings} from 'ng-multiselect-dropdown';
 import {CategoryService} from '../../service/category.service';
@@ -21,9 +21,11 @@ export class MultiSelectBoxComponent implements OnInit, OnDestroy {
   category: Category;
   private subscription$: Subscription[] = [];
   @Input() categoryType: CategoryTypes;
+  @Output() activityCategoryValue = new EventEmitter<DropdownItem[]>();
 
-  constructor(private categoryService: CategoryService) {
-  }
+  constructor(
+    private categoryService: CategoryService
+  ) {}
 
   ngOnInit(): void {
     this.dropdownSettings = {
@@ -77,10 +79,12 @@ export class MultiSelectBoxComponent implements OnInit, OnDestroy {
   }
 
   onItemSelect(item: any) {
-    console.log(item);
+    console.log('onItemSelect', item);
+    console.log('this.selectedItems', this.selectedItems);
+    this.activityCategoryValue.emit(this.selectedItems);
   }
   onSelectAll(items: any) {
-    console.log(items);
+    console.log('onSelectAll', items);
   }
 
 }
