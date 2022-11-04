@@ -8,6 +8,7 @@ import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
 import {CounselingService} from '../service/counseling.service';
 import {DatePipe} from '@angular/common';
 import {CsvService} from '../service/csv.service';
+import {AllCounseling} from '../model/all-counseling';
 
 @Component({
   selector: 'app-show-counselings',
@@ -20,7 +21,7 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
   // counselings: Counseling[];
   columns = ['id', 'counselingStatus', 'entryDate', 'concern', 'concernCategory', 'activity', 'activityCategory', 'registeredBy', 'counselingDate', 'clientId', 'clientFullName', 'comment'];
   total$: Observable<number>;
-  counselings$: Observable<Counseling[]>;
+  counselings$: Observable<AllCounseling[]>;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   documentName = 'DokumentenName';
   datePipe: DatePipe;

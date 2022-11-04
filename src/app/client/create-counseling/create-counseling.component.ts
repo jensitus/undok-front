@@ -13,6 +13,11 @@ import {CategoryService} from '../service/category.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {Time} from '../model/time';
 import {CategoryTypes} from '../model/category-types';
+import {DropdownItem} from '../model/dropdown-item';
+import {EntityTypes} from '../model/entity-types';
+import {JoinCategory} from '../model/join-category';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Client} from '../model/client';
 
 @Component({
   selector: 'app-create-counseling',
@@ -26,13 +31,21 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   CONCERN_LENGTH = 4080;
   ACTIVITY_LENGTH = 4080;
 
-  @Input() clientId: string;
+  clientId: string;
+  client: Client;
+  @Input() clientFirstName: string;
+  @Input() clientLastName: string;
+  @Input() clientKeyword: string;
+
+
+
+  private counselingId: string;
 
   time: Time = {hour: 13, minute: 30};
   dateObject: NgbDateStruct;
   currentUser: User;
 
-  private unsubscribe$: Subscription[] = [];
+  private subscription$: Subscription[] = [];
 
   loading = false;
   counselingForm: CounselingForm;
@@ -59,6 +72,10 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   concernLength = this.CONCERN_LENGTH;
   activityLength = this.ACTIVITY_LENGTH;
 
+  joinCategories: JoinCategory[] = [];
+  joinCategory: JoinCategory;
+  private dropdownEvents: DropdownItem[] = [];
+
   constructor(
     private clientService: ClientService,
     private ngbFormatterService: NgbFormatterService,
@@ -66,14 +83,22 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     public dateTimeService: DateTimeService,
     private categoryService: CategoryService,
-    private alertService: AlertService
+    // private alertService: AlertService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
   }
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe(params => {
+      this.clientId = params['id'];
+    });
     this.getCurrentUser();
     this.loadConcernCategories();
     this.loadActivityCategories();
+    this.subscription$.push(this.clientService.getSingleClient(this.clientId).subscribe(client => {
+      this.client = client;
+    }));
   }
 
   concernLengthChange(val) {
@@ -104,28 +129,38 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
       clientId: this.clientId,
       counselingDate: this.counselingDate
     };
-    this.unsubscribe$.push(this.clientService.createCounseling(this.clientId, this.counselingForm).subscribe(result => {
-      this.commonService.setCreateCounselingSubject(true);
+    this.subscription$.push(this.clientService.createCounseling(this.clientId, this.counselingForm).subscribe(result => {
+      console.log('result', result.id);
+      this.counselingId = result.id;
+      // this.commonService.setCreateCounselingSubject(true);
+      this.sendJoinCategoriesToTheServer(result.id);
       this.loading = false;
     }));
   }
 
   ngOnDestroy(): void {
-    if (this.unsubscribe$) {
-      this.unsubscribe$.forEach((s) => {
+    if (this.subscription$) {
+      this.subscription$.forEach((s) => {
         s.unsubscribe();
       });
     }
   }
 
+  sendJoinCategoriesToTheServer(counselingId: string) {
+    this.subscription$.push(this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
+      console.log('join', join);
+      this.router.navigate(['/clients/' + this.clientId + '/counselings/' + counselingId]);
+    }));
+  }
+
   loadConcernCategories(): void {
-    this.unsubscribe$.push(this.categoryService.getCategories(this.concernCategoryType).subscribe(cat => {
+    this.subscription$.push(this.categoryService.getCategories(this.concernCategoryType).subscribe(cat => {
       this.concernCategories = cat;
     }));
   }
 
   loadActivityCategories(): void {
-    this.unsubscribe$.push(this.categoryService.getCategories(this.activityCategoryType).subscribe(cat => {
+    this.subscription$.push(this.categoryService.getCategories(this.activityCategoryType).subscribe(cat => {
       this.activityCategories = cat;
     }));
   }
@@ -145,4 +180,23 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   showConcernCat(event: string) {
     this.concernCategory = event;
   }
+  showActivityCatValue(event: DropdownItem[]) {
+    this.dropdownEvents = event;
+  }
+
+  addJoinCategories(counselingId: string) {
+    this.joinCategories = [];
+    this.dropdownEvents.forEach(e => {
+      this.joinCategory = {
+        categoryId: e.itemId,
+        categoryType: CategoryTypes.ACTIVITY_CATEGORY,
+        entityId: counselingId,
+        entityType: EntityTypes.COUNSELING
+      };
+      this.joinCategories.push(this.joinCategory);
+    });
+    console.log('this.joinCategories', this.joinCategories);
+    console.log('showActivityCatValue', this.dropdownEvents);
+  }
+
 }

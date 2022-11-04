@@ -1,20 +1,20 @@
-import {Inject, Injectable, OnDestroy, PipeTransform} from '@angular/core';
-import {Counseling} from '../model/counseling';
+import {Injectable, OnDestroy, PipeTransform} from '@angular/core';
 import {SortColumn, SortDirection} from './sortable.directive';
 import {BehaviorSubject, Observable, of, Subject, Subscription} from 'rxjs';
 import {DecimalPipe} from '@angular/common';
-import {debounceTime, delay, switchMap, takeUntil, tap} from 'rxjs/operators';
+import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
 import {State} from './state';
 import {CounselingService} from '../service/counseling.service';
+import {AllCounseling} from '../model/all-counseling';
 
 interface SearchResult {
-  counselings: Counseling[];
+  counselings: AllCounseling[];
   total: number;
 }
 
 const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
-function sort(counselings: Counseling[], column: SortColumn, direction: string): Counseling[] {
+function sort(counselings: AllCounseling[], column: SortColumn, direction: string): AllCounseling[] {
   if (direction === '' || column === '') {
     return counselings;
   } else {
@@ -25,7 +25,7 @@ function sort(counselings: Counseling[], column: SortColumn, direction: string):
   }
 }
 
-function matches(counseling: Counseling, term: string, pipe: PipeTransform) {
+function matches(counseling: AllCounseling, term: string, pipe: PipeTransform) {
   if (counseling.concern === null) {
     counseling.concern = ' ';
   }
@@ -50,11 +50,11 @@ function matches(counseling: Counseling, term: string, pipe: PipeTransform) {
 })
 export class CounselingTableService implements OnDestroy {
 
-  counselings: Counseling[];
+  counselings: AllCounseling[];
 
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _counselings$ = new BehaviorSubject<Counseling[]>([]);
+  private _counselings$ = new BehaviorSubject<AllCounseling[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
   private subscription$: Subscription[] = [];
 

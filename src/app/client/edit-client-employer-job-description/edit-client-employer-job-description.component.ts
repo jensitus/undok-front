@@ -47,7 +47,7 @@ export class EditClientEmployerJobDescriptionComponent implements OnInit, OnDest
     };
     this.employerService.updateClientEmployer(this.clientEmployerForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       if (result === true) {
-        this.commonService.setReloadClientSubject(true);
+        this.commonService.setReloadSubject(true);
       }
     });
   }

@@ -50,7 +50,6 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.subscription$.push(this.activatedRoute.params.subscribe(params => {
       this.id = params['id'];
       this.getClient();
-      this.getCreateCounselingSubject();
       this.getDemoSubject();
       // this.getCreateEmployerSubject();
       this.getReloadClientSubject();
@@ -99,15 +98,9 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   getClient() {
     this.subscription$.push(this.clientService.getSingleClient(this.id).subscribe( res => {
       this.client = res;
-    }));
-  }
-
-  getCreateCounselingSubject()   {
-    this.subscription$.push(this.commonService.createCounselingSubject.subscribe( rel => {
-      if (rel) {
-        this.getClient();
-        this.modalService.dismissAll();
-      }
+      console.log(this.client);
+      console.log(this.client.id);
+      this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
     }));
   }
 
@@ -120,17 +113,8 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     }));
   }
 
-  /*getCreateEmployerSubject() {
-    this.subscription$.push(this.commonService.createEmployerSubject.subscribe(reload => {
-      if (reload === true) {
-        this.getClient();
-        this.modalService.dismissAll();
-      }
-    }));
-  }*/
-
   getReloadClientSubject() {
-    this.subscription$.push(this.commonService.reloadClientSubject.subscribe(reload => {
+    this.subscription$.push(this.commonService.reloadSubject.subscribe(reload => {
       if (reload === true) {
         this.getClient();
         this.modalService.dismissAll();

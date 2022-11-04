@@ -9,6 +9,9 @@ import {CommonService} from '../../common/services/common.service';
 import {Category} from '../model/category';
 import {CategoryService} from '../service/category.service';
 import {CategoryTypes} from '../model/category-types';
+import {DropdownItem} from '../model/dropdown-item';
+import {JoinCategory} from '../model/join-category';
+import {EntityTypes} from '../model/entity-types';
 
 @Component({
   selector: 'app-edit-counseling',
@@ -23,7 +26,7 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
   activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY_CATEGORY;
 
   @Input() public counseling: Counseling;
-  private unsubscribe$: Subscription[] = [];
+  private subscription$: Subscription[] = [];
   faBars = faBars;
   dateObject: NgbDateStruct;
   time = {hour: 13, minute: 30};
@@ -36,13 +39,18 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
   categoryExists: string = null;
   activityCategoryIsCollapsed = true;
   concernCategoryIsCollapsed = true;
+  joinCategories: JoinCategory[] = [];
+  joinCategory: JoinCategory;
+  deSelectedItems: DropdownItem[] = [];
+  deSelectedCategories: JoinCategory[] = [];
 
   constructor(
     private counselingService: CounselingService,
     public dateTimeService: DateTimeService,
     private commonService: CommonService,
     private categoryService: CategoryService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.loadActivityCategories();
@@ -50,8 +58,8 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.unsubscribe$) {
-      this.unsubscribe$.forEach((s) => {
+    if (this.subscription$) {
+      this.subscription$.forEach((s) => {
         s.unsubscribe();
       });
     }
@@ -59,49 +67,34 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.loading = true;
-    this.unsubscribe$.push(this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe(res => {
-      this.commonService.setCreateCounselingSubject(true);
-      this.loading = false;
+    this.deSelectedItems.forEach((deSelected) => {
+      const deselect: JoinCategory = {
+        entityType: 'COUNSELING',
+        entityId: this.counseling.id,
+        categoryType: CategoryTypes.ACTIVITY_CATEGORY,
+        categoryId: deSelected.itemId
+      };
+      this.deSelectedCategories.push(deselect);
+    });
+    this.subscription$.push(this.categoryService.deleteJoinCategories(this.deSelectedCategories).subscribe(res => {
     }));
-  }
+    this.subscription$.push(this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe(res => {
 
-  /*
-  addNewCategory(type: string) {
-    let category: Category;
-
-    switch (type) {
-      case this.CONCERN_CATEGORY:
-        category = {
-          name: this.newCategory,
-          type: type
-        };
-        break;
-      case this.ACTIVITY_CATEGORY:
-        category = {
-          name: this.newActivityCategory,
-          type: type
-        };
-        break;
-    }
-    this.unsubscribe$.push(this.categoryService.addCategory(category).subscribe((r) => {
-      this.newCategory = null;
-      this.newActivityCategory = null;
-      this.loadConcernCategories();
-      this.loadActivityCategories();
-    }, error => {
-      this.categoryExists = error.error;
     }));
+    this.subscription$.push(this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
+      this.commonService.setReloadSubject(true);
+    }));
+    this.loading = false;
   }
-   */
 
   loadConcernCategories(): void {
-    this.unsubscribe$.push(this.categoryService.getCategories(this.concernCategoryType).subscribe(cat => {
+    this.subscription$.push(this.categoryService.getCategories(this.concernCategoryType).subscribe(cat => {
       console.log(this.concernCategories);
     }));
   }
 
   loadActivityCategories(): void {
-    this.unsubscribe$.push(this.categoryService.getCategories(this.activityCategoryType).subscribe(cat => {
+    this.subscription$.push(this.categoryService.getCategories(this.activityCategoryType).subscribe(cat => {
       this.activityCategories = cat;
     }));
   }
@@ -111,14 +104,33 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
   }
 
   selectActivityCat(cat: Category) {
-    this.counseling.activityCategory = cat.name;
+    // this.counseling.activityCategory = cat.name;
   }
 
   showConcernCat(event: string) {
     this.counseling.concernCategory = event;
   }
 
-  showActivityCat(event: string) {
-    this.counseling.activityCategory = event;
+  // showActivityCat(event: string) {
+  //   // this.counseling.activityCategory = event;
+  // }
+
+  showActivityCatValue(event: DropdownItem[]) {
+    this.joinCategories = [];
+    event.forEach(e => {
+      this.joinCategory = {
+        categoryId: e.itemId,
+        categoryType: CategoryTypes.ACTIVITY_CATEGORY,
+        entityId: this.counseling.id,
+        entityType: EntityTypes.COUNSELING
+      };
+      this.joinCategories.push(this.joinCategory);
+    });
   }
+
+  showDeSelected(event: DropdownItem[]) {
+    console.log('edit counseling: deSelected', event);
+    this.deSelectedItems = event;
+  }
+
 }

@@ -187,7 +187,7 @@ export class ClientTableService implements OnDestroy {
   }
 
   getDeleteClientSubject() {
-    this.commonService.reloadClientSubject.subscribe(relClSub => {
+    this.commonService.reloadSubject.subscribe(relClSub => {
       if (relClSub) {
         this.getClientsConstructor();
       }

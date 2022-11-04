@@ -5,6 +5,8 @@ import {CategoryService} from '../../service/category.service';
 import {Category} from '../../model/category';
 import {Subscription} from 'rxjs';
 import {CategoryTypes} from '../../model/category-types';
+import {ListItem} from 'ng-multiselect-dropdown/multiselect.model';
+import {CommonService} from '../../../common/services/common.service';
 
 @Component({
   selector: 'app-multi',
@@ -16,15 +18,20 @@ export class MultiSelectBoxComponent implements OnInit, OnDestroy {
   dropdownList: DropdownItem[] = [];
   dropdownList_1 = [];
   selectedItems: DropdownItem[] = [];
+  newItems: DropdownItem[] =[];
+  deSelectedItems: DropdownItem[] = [];
   dropdownSettings: IDropdownSettings = {};
   concernCategories: Category[];
   category: Category;
   private subscription$: Subscription[] = [];
+  @Input() selectedCategories: Category[];
   @Input() categoryType: CategoryTypes;
   @Output() activityCategoryValue = new EventEmitter<DropdownItem[]>();
+  @Output() deSelectedEmit = new EventEmitter<DropdownItem[]>();
 
   constructor(
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -32,12 +39,13 @@ export class MultiSelectBoxComponent implements OnInit, OnDestroy {
       singleSelection: false,
       idField: 'itemId',
       textField: 'itemText',
-      selectAllText: 'Select All',
+      // selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 3,
       allowSearchFilter: true
     };
     this.loadCategoriesByCategoryType();
+    this.getReloadSubject();
   }
 
   ngOnDestroy(): void {
@@ -55,7 +63,6 @@ export class MultiSelectBoxComponent implements OnInit, OnDestroy {
 
   getMultiSelectBoxItems() {
     this.concernCategories?.forEach((c) => {
-      console.log('c', c);
       const dropdownItem: DropdownItem = {
         itemId: c.id,
         itemText: c.name
@@ -63,28 +70,37 @@ export class MultiSelectBoxComponent implements OnInit, OnDestroy {
       this.dropdownList.push(dropdownItem);
       this.dropdownList_1.push({item_id: c.id, item_text: c.name});
     });
-
-    // this.dropdownList = [
-    // {item_id: 1, item_text: 'Mumbai'},
-    // {item_id: 2, item_text: 'Bangaluru'},
-    // {item_id: 3, item_text: 'Pune'},
-    // {item_id: 4, item_text: 'Navsari'},
-    // {item_id: 5, item_text: 'New Delhi'}
-    // ];
-    console.log('dropdownList', this.dropdownList);
-    console.log('dropdownList_1', this.dropdownList_1);
-    this.selectedItems = [
-      this.dropdownList[0], this.dropdownList[1]
-    ];
+    this.selectedCategories?.forEach((cat) => {
+      const dropdown: DropdownItem = {
+        itemId: cat.id,
+        itemText: cat.name
+      };
+      this.selectedItems.push(dropdown);
+    });
   }
 
-  onItemSelect(item: any) {
-    console.log('onItemSelect', item);
-    console.log('this.selectedItems', this.selectedItems);
+  onItemSelect(item: DropdownItem) {
     this.activityCategoryValue.emit(this.selectedItems);
+    this.deSelectedItems = this.deSelectedItems.filter(deSelectedItem => deSelectedItem.itemId !== item.itemId);
+    console.log('multiselectbox onItemSelect deSelected', this.deSelectedItems);
+    this.deSelectedEmit.emit(this.deSelectedItems);
   }
+
   onSelectAll(items: any) {
-    console.log('onSelectAll', items);
+  }
+
+  deSelect(event: DropdownItem) {
+    this.deSelectedItems.push({itemId: event.itemId, itemText: event.itemText});
+    console.log('mulitselectbox deSelectedItems', this.deSelectedItems);
+    this.deSelectedEmit.emit(this.deSelectedItems);
+  }
+
+  getReloadSubject() {
+    this.subscription$.push(this.commonService.reloadSubject.subscribe(result => {
+      if (result === true) {
+        this.loadCategoriesByCategoryType();
+      }
+    }));
   }
 
 }

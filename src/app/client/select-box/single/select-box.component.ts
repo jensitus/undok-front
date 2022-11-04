@@ -6,6 +6,7 @@ import {CategoryService} from '../../service/category.service';
 import {CategoryTypes} from '../../model/category-types';
 import {IDropdownSettings} from 'ng-multiselect-dropdown';
 import {DropdownItem} from '../../model/dropdown-item';
+import {CommonService} from '../../../common/services/common.service';
 
 
 @Component({
@@ -14,14 +15,6 @@ import {DropdownItem} from '../../model/dropdown-item';
   styleUrls: ['./select-box.component.css']
 })
 export class SelectBoxComponent implements OnInit, OnDestroy {
-
-  dropdownList: DropdownItem[] = [];
-  dropdownList_1 = [];
-  selectedItems: DropdownItem[] = [];
-  dropdownSettings: IDropdownSettings = {};
-
-  // CONCERN_CATEGORY = 'concernCategory';
-  // ACTIVITY_CATEGORY = 'activityCategory';
 
   @Input() categoryType: CategoryTypes;
   @Input() cat_model: any;
@@ -35,17 +28,16 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
   concernCategories: Category[];
 
   category: Category;
-  newCategory: string = null;
   newActivityCategory: string = null;
-  categoryExists: string = null;
-  concernCategoryIsCollapsed = true;
   private subscription$: Subscription[] = [];
 
   constructor(
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private commonService: CommonService
   ) { }
 
   ngOnInit(): void {
+    this.getReloadSubject();
     this.loadCategoriesByCategoryType();
   }
 
@@ -55,22 +47,16 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
     });
   }
 
-  onCatValueChange(): void {
-    this.catValue.emit(this.concernCategory);
+  getReloadSubject() {
+    this.subscription$.push(this.commonService.reloadSubject.subscribe(reload => {
+      if (reload === true) {
+        this.loadCategoriesByCategoryType();
+      }
+    }));
   }
 
-  addNewCategory(type: string) {
-    let category: Category;
-    category = {
-      name: this.newCategory,
-      type: type
-    };
-    this.subscription$.push(this.categoryService.addCategory(category).subscribe((r) => {
-      this.newCategory = null;
-      this.loadCategoriesByCategoryType();
-    }, error => {
-      this.categoryExists = error.error;
-    }));
+  onCatValueChange(): void {
+    this.catValue.emit(this.concernCategory);
   }
 
   loadCategoriesByCategoryType(): void {

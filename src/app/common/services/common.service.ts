@@ -24,15 +24,24 @@ export class CommonService {
   public createUserSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public createCounselingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public createEmployerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-  public reloadClientSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  public reloadSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public employerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public alertSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  public deleteSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
-  setReloadClientSubject(value) {
+  setDeleteSubject(value) {
     if (value) {
-      this.reloadClientSubject.next(value);
+      this.deleteSubject.next(value);
     } else {
-      this.reloadClientSubject.next(null);
+      this.deleteSubject.next(null);
+    }
+  }
+
+  setReloadSubject(value) {
+    if (value) {
+      this.reloadSubject.next(value);
+    } else {
+      this.reloadSubject.next(null);
     }
   }
 

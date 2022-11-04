@@ -31,6 +31,8 @@ import { DeleteComponent } from './delete/delete.component';
 import { DeleteModalComponent } from './delete/delete-modal/delete-modal.component';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import { MultiSelectBoxComponent } from './select-box/multi/multi-select-box.component';
+import { ShowCounselingComponent } from './show-counseling/show-counseling.component';
+import { AddCategoryComponent } from './select-box/add-category/add-category.component';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
@@ -40,7 +42,9 @@ const appRoutes: Routes = [
   {path: ':id', component: ShowSingleClientComponent},
   {path: ':id/counselings/create', component: CreateCounselingComponent},
   {path: 'create/employer', component: CreateEmployerComponent},
-  {path: 'employers/:id', component: ShowSingleEmployerComponent}
+  {path: 'employers/:id', component: ShowSingleEmployerComponent},
+  {path: ':id/create-counseling', component: CreateCounselingComponent},
+  {path: ':client_id/counselings/:counseling_id', component: ShowCounselingComponent}
 ];
 
 @NgModule({
@@ -69,7 +73,9 @@ const appRoutes: Routes = [
     SelectBoxComponent,
     DeleteComponent,
     DeleteModalComponent,
-    MultiSelectBoxComponent
+    MultiSelectBoxComponent,
+    ShowCounselingComponent,
+    AddCategoryComponent
   ],
   imports: [
     NgMultiSelectDropDownModule.forRoot(),

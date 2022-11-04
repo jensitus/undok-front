@@ -1,11 +1,13 @@
 <ng-container *ngIf="dropdownList?.length">
   <label>{{categoryType}}</label>
   <ng-multiselect-dropdown
-    [placeholder]="'custom placeholder'"
+    (onDeSelect)="deSelect($event)"
+    [placeholder]="'select category'"
     [settings]="dropdownSettings"
     [data]="dropdownList"
     [(ngModel)]="selectedItems"
-        (onSelect)="onItemSelect($event)"
-        (onSelectAll)="onSelectAll($event)">
+    (onSelect)="onItemSelect($event)"
+    (onSelectAll)="onSelectAll($event)">
   </ng-multiselect-dropdown>
+<app-add-category [categoryType]="categoryType"></app-add-category>
 </ng-container>
