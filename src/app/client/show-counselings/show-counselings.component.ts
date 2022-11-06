@@ -19,7 +19,7 @@ import {AllCounseling} from '../model/all-counseling';
 export class ShowCounselingsComponent implements OnInit, OnDestroy {
 
   // counselings: Counseling[];
-  columns = ['id', 'counselingStatus', 'entryDate', 'concern', 'concernCategory', 'activity', 'activityCategory', 'registeredBy', 'counselingDate', 'clientId', 'clientFullName', 'comment'];
+  columns = ['id', 'counselingStatus', 'entryDate', 'concern', 'concernCategory', 'activity', 'activityCategories', 'registeredBy', 'counselingDate', 'clientId', 'clientFullName', 'comment'];
   total$: Observable<number>;
   counselings$: Observable<AllCounseling[]>;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
