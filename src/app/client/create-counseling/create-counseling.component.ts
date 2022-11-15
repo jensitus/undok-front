@@ -132,6 +132,7 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     this.subscription$.push(this.clientService.createCounseling(this.clientId, this.counselingForm).subscribe(result => {
       console.log('result', result.id);
       this.counselingId = result.id;
+      this.addJoinCategories(this.counselingId);
       // this.commonService.setCreateCounselingSubject(true);
       this.sendJoinCategoriesToTheServer(result.id);
       this.loading = false;

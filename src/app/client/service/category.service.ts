@@ -4,6 +4,8 @@ import {environment} from '../../../environments/environment';
 import {Observable} from 'rxjs';
 import {Category} from '../model/category';
 import {JoinCategory} from '../model/join-category';
+import {isNotNullOrUndefined} from 'codelyzer/util/isNotNullOrUndefined';
+import {joinTestLogs} from 'protractor/built/util';
 
 @Injectable({
   providedIn: 'root'
