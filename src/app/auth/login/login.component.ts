@@ -1,16 +1,17 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../services/authentication.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {CommonService} from '../../common/services/common.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   @Output() toggle = new EventEmitter<any>();
 
@@ -18,14 +19,14 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
+  private subscription$: Subscription[] = [];
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private alertService: AlertService,
-    private commonService: CommonService
+    private alertService: AlertService
   ) {
   }
 
@@ -42,6 +43,12 @@ export class LoginComponent implements OnInit {
     // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
+  ngOnDestroy(): void {
+    this.subscription$.forEach((s) => {
+      s.unsubscribe();
+    });
+  }
+
   // convenience getter for easy access to form fields
   get f() {
     return this.loginForm.controls;
@@ -56,11 +63,13 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(data => {
+    this.subscription$.push(this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(data => {
         this.loading = false;
         this.router.navigate(['/second-factor']);
+      }, error => {
+        this.alertService.error(error.error.text);
       }
-    );
+    ));
   }
 
 }
