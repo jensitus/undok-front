@@ -59,7 +59,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
       this.subscription$.push(this.categoryService.getCategoriesByTypeAndEntity(
         CategoryTypes.ACTIVITY_CATEGORY, this.counselingId
       ).subscribe(categories => {
-        this.counseling.activityCategory = categories;
+        this.counseling.legalCategory = categories;
       }));
     }, error => {
       this.router.navigate(['/clients', this.clientId]);

@@ -23,7 +23,7 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
   CONCERN_MAX_LENGTH = 4080;
   ACTIVITY_MAX_LENGTH = 4080;
   concernCategoryType: CategoryTypes = CategoryTypes.CONCERN_CATEGORY;
-  activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY_CATEGORY;
+  legalCategoryType: CategoryTypes = CategoryTypes.LEGAL;
 
   @Input() public counseling: Counseling;
   private subscription$: Subscription[] = [];
@@ -94,7 +94,7 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
   }
 
   loadActivityCategories(): void {
-    this.subscription$.push(this.categoryService.getCategories(this.activityCategoryType).subscribe(cat => {
+    this.subscription$.push(this.categoryService.getCategories(this.legalCategoryType).subscribe(cat => {
       this.activityCategories = cat;
     }));
   }
@@ -120,7 +120,7 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
     event.forEach(e => {
       this.joinCategory = {
         categoryId: e.itemId,
-        categoryType: CategoryTypes.ACTIVITY_CATEGORY,
+        categoryType: CategoryTypes.LEGAL,
         entityId: this.counseling.id,
         entityType: EntityTypes.COUNSELING
       };

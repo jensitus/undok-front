@@ -27,7 +27,7 @@ import {Client} from '../model/client';
 export class CreateCounselingComponent implements OnInit, OnDestroy {
 
   concernCategoryType: CategoryTypes = CategoryTypes.CONCERN_CATEGORY;
-  activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY_CATEGORY;
+  legalCategoryType: CategoryTypes = CategoryTypes.LEGAL;
   CONCERN_LENGTH = 4080;
   ACTIVITY_LENGTH = 4080;
 
@@ -57,11 +57,11 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   concern: string;
   concernCategory: string;
   activity: string;
-  activityCategory: string;
+  legalCategory: string;
   registeredBy: string;
   faBars = faBars;
   concernCategories: Category[];
-  activityCategories: Category[];
+  legalCategories: Category[];
   category: Category;
   newCategory: string = null;
   newActivityCategory: string = null;
@@ -95,7 +95,7 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     });
     this.getCurrentUser();
     this.loadConcernCategories();
-    this.loadActivityCategories();
+    this.loadLegalCategories();
     this.subscription$.push(this.clientService.getSingleClient(this.clientId).subscribe(client => {
       this.client = client;
     }));
@@ -124,7 +124,7 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
       concern: this.concern,
       concernCategory: this.concernCategory,
       activity: this.activity,
-      activityCategory: this.activityCategory,
+      activityCategory: this.legalCategory,
       registeredBy: this.registeredBy,
       clientId: this.clientId,
       counselingDate: this.counselingDate
@@ -160,9 +160,9 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     }));
   }
 
-  loadActivityCategories(): void {
-    this.subscription$.push(this.categoryService.getCategories(this.activityCategoryType).subscribe(cat => {
-      this.activityCategories = cat;
+  loadLegalCategories(): void {
+    this.subscription$.push(this.categoryService.getCategories(this.legalCategoryType).subscribe(cat => {
+      this.legalCategories = cat;
     }));
   }
 
@@ -170,18 +170,18 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     this.concernCategory = cat.name;
   }
 
-  selectActivityCat(cat: Category) {
-    this.activityCategory = cat.name;
+  selectLegalCategory(cat: Category) {
+    this.legalCategory = cat.name;
   }
 
-  showActivityCat(event: string) {
-    this.activityCategory = event;
+  showLegalCategory(event: string) {
+    this.legalCategory = event;
   }
 
   showConcernCat(event: string) {
     this.concernCategory = event;
   }
-  showActivityCatValue(event: DropdownItem[]) {
+  showLegalCategoryValue(event: DropdownItem[]) {
     this.dropdownEvents = event;
   }
 
@@ -190,7 +190,7 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     this.dropdownEvents.forEach(e => {
       this.joinCategory = {
         categoryId: e.itemId,
-        categoryType: CategoryTypes.ACTIVITY_CATEGORY,
+        categoryType: CategoryTypes.LEGAL,
         entityId: counselingId,
         entityType: EntityTypes.COUNSELING
       };

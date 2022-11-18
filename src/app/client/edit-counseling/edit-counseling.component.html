@@ -26,10 +26,10 @@
     </div>
     <div class="col">
       <!-- activity category start -->
-      <app-multi [categoryType]="activityCategoryType"
+      <app-multi [categoryType]="legalCategoryType"
                  (activityCategoryValue)="showActivityCatValue($event)"
                  (deSelectedEmit)="showDeSelected($event)"
-                 [selectedCategories]="counseling.activityCategory">
+                 [selectedCategories]="counseling.legalCategory">
       </app-multi>
       <!-- activity category end -->
     </div>

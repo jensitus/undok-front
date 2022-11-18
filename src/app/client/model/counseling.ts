@@ -7,7 +7,7 @@ export interface Counseling {
   concern: string;
   concernCategory: string;
   activity: string;
-  activityCategory: Category[];
+  legalCategory: Category[];
   registeredBy: string;
   counselingDate: string;
   clientId: string;
