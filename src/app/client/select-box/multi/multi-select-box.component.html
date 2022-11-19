@@ -1,4 +1,7 @@
-<ng-container *ngIf="dropdownList?.length">
+<ng-container *ngIf="!waitForCategories">
+  <ngb-progressbar type="success" [value]="25" [striped]="true"></ngb-progressbar>
+</ng-container>
+<ng-container *ngIf="waitForCategories">
   <label>{{categoryType}}</label>
   <ng-multiselect-dropdown
     (onDeSelect)="deSelect($event)"

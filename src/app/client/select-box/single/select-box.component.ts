@@ -4,8 +4,6 @@ import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {Subscription} from 'rxjs';
 import {CategoryService} from '../../service/category.service';
 import {CategoryTypes} from '../../model/category-types';
-import {IDropdownSettings} from 'ng-multiselect-dropdown';
-import {DropdownItem} from '../../model/dropdown-item';
 import {CommonService} from '../../../common/services/common.service';
 
 
@@ -28,7 +26,6 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
   concernCategories: Category[];
 
   category: Category;
-  newActivityCategory: string = null;
   private subscription$: Subscription[] = [];
 
   constructor(

@@ -5,7 +5,6 @@ import {CategoryService} from '../../service/category.service';
 import {Category} from '../../model/category';
 import {Subscription} from 'rxjs';
 import {CategoryTypes} from '../../model/category-types';
-import {ListItem} from 'ng-multiselect-dropdown/multiselect.model';
 import {CommonService} from '../../../common/services/common.service';
 
 @Component({
@@ -18,15 +17,15 @@ export class MultiSelectBoxComponent implements OnInit, OnDestroy {
   dropdownList: DropdownItem[] = [];
   dropdownList_1 = [];
   selectedItems: DropdownItem[] = [];
-  newItems: DropdownItem[] =[];
   deSelectedItems: DropdownItem[] = [];
   dropdownSettings: IDropdownSettings = {};
   concernCategories: Category[];
   category: Category;
   private subscription$: Subscription[] = [];
+  waitForCategories = false;
   @Input() selectedCategories: Category[];
   @Input() categoryType: CategoryTypes;
-  @Output() activityCategoryValue = new EventEmitter<DropdownItem[]>();
+  @Output() categoryValue = new EventEmitter<DropdownItem[]>();
   @Output() deSelectedEmit = new EventEmitter<DropdownItem[]>();
 
   constructor(
@@ -55,6 +54,7 @@ export class MultiSelectBoxComponent implements OnInit, OnDestroy {
   }
 
   loadCategoriesByCategoryType(): void {
+    this.waitForCategories = false;
     this.subscription$.push(this.categoryService.getCategories(this.categoryType).subscribe(cat => {
       this.concernCategories = cat;
       this.getMultiSelectBoxItems();
@@ -62,6 +62,7 @@ export class MultiSelectBoxComponent implements OnInit, OnDestroy {
   }
 
   getMultiSelectBoxItems() {
+    this.dropdownList = [];
     this.concernCategories?.forEach((c) => {
       const dropdownItem: DropdownItem = {
         itemId: c.id,
@@ -77,12 +78,12 @@ export class MultiSelectBoxComponent implements OnInit, OnDestroy {
       };
       this.selectedItems.push(dropdown);
     });
+    this.waitForCategories = true;
   }
 
   onItemSelect(item: DropdownItem) {
-    this.activityCategoryValue.emit(this.selectedItems);
+    this.categoryValue.emit(this.selectedItems);
     this.deSelectedItems = this.deSelectedItems.filter(deSelectedItem => deSelectedItem.itemId !== item.itemId);
-    console.log('multiselectbox onItemSelect deSelected', this.deSelectedItems);
     this.deSelectedEmit.emit(this.deSelectedItems);
   }
 
@@ -91,7 +92,6 @@ export class MultiSelectBoxComponent implements OnInit, OnDestroy {
 
   deSelect(event: DropdownItem) {
     this.deSelectedItems.push({itemId: event.itemId, itemText: event.itemText});
-    console.log('mulitselectbox deSelectedItems', this.deSelectedItems);
     this.deSelectedEmit.emit(this.deSelectedItems);
   }
 

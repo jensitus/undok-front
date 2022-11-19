@@ -53,7 +53,6 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   counselingStatus: string;
   entryDate: string;
   counselingDate: string;
-  counselingTime: string;
   concern: string;
   concernCategory: string;
   activity: string;
@@ -63,11 +62,6 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   concernCategories: Category[];
   legalCategories: Category[];
   category: Category;
-  newCategory: string = null;
-  newActivityCategory: string = null;
-  categoryExists: string = null;
-  activityCategoryIsCollapsed = true;
-  concernCategoryIsCollapsed = true;
 
   concernLength = this.CONCERN_LENGTH;
   activityLength = this.ACTIVITY_LENGTH;
@@ -83,7 +77,6 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     public dateTimeService: DateTimeService,
     private categoryService: CategoryService,
-    // private alertService: AlertService,
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {
@@ -130,7 +123,6 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
       counselingDate: this.counselingDate
     };
     this.subscription$.push(this.clientService.createCounseling(this.clientId, this.counselingForm).subscribe(result => {
-      console.log('result', result.id);
       this.counselingId = result.id;
       this.addJoinCategories(this.counselingId);
       // this.commonService.setCreateCounselingSubject(true);
@@ -149,7 +141,6 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
 
   sendJoinCategoriesToTheServer(counselingId: string) {
     this.subscription$.push(this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
-      console.log('join', join);
       this.router.navigate(['/clients/' + this.clientId + '/counselings/' + counselingId]);
     }));
   }
@@ -196,8 +187,6 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
       };
       this.joinCategories.push(this.joinCategory);
     });
-    console.log('this.joinCategories', this.joinCategories);
-    console.log('showActivityCatValue', this.dropdownEvents);
   }
 
 }

@@ -115,7 +115,7 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
   //   // this.counseling.activityCategory = event;
   // }
 
-  showActivityCatValue(event: DropdownItem[]) {
+  showCategoryValue(event: DropdownItem[]) {
     this.joinCategories = [];
     event.forEach(e => {
       this.joinCategory = {

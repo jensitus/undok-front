@@ -38,7 +38,8 @@
         <div class="form-group">
           <label>Anliegen</label>
           <textarea type="text" name="concern" [(ngModel)]="concern" placeholder="concern"
-                    (ngModelChange)="concernLengthChange($event)" class="form-control"></textarea>
+                    (ngModelChange)="concernLengthChange($event)" class="form-control">
+          </textarea>
           <span><small>Es verbleiben {{concernLength}} Zeichen</small></span>
         </div>
       </div>
@@ -52,7 +53,7 @@
       <!-- concern category section end -->
       <!-- activity category start -->
       <div class="col">
-        <app-multi [categoryType]="legalCategoryType" (activityCategoryValue)="showLegalCategoryValue($event)"></app-multi>
+        <app-multi [categoryType]="legalCategoryType" (categoryValue)="showLegalCategoryValue($event)"></app-multi>
       </div>
       <!--    <div class="col">
             <app-select-box [categoryType]="activityCategoryType" (catValue)="showActivityCat($event)"></app-select-box>
@@ -66,7 +67,8 @@
         <div class="form-group">
           <label>Aktivität</label>
           <textarea type="text" name="activity" [(ngModel)]="activity" placeholder="activity"
-                    (ngModelChange)="activityLengthChange($event)" class="form-control"></textarea>
+                    (ngModelChange)="activityLengthChange($event)" class="form-control">
+          </textarea>
           <span><small>Es bleiben noch {{activityLength}} Zeichen</small></span>
         </div>
       </div>

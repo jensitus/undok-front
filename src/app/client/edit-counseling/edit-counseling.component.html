@@ -27,7 +27,7 @@
     <div class="col">
       <!-- activity category start -->
       <app-multi [categoryType]="legalCategoryType"
-                 (activityCategoryValue)="showActivityCatValue($event)"
+                 (categoryValue)="showCategoryValue($event)"
                  (deSelectedEmit)="showDeSelected($event)"
                  [selectedCategories]="counseling.legalCategory">
       </app-multi>
