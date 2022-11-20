@@ -2,7 +2,7 @@
   <ngb-progressbar type="success" [value]="25" [striped]="true"></ngb-progressbar>
 </ng-container>
 <ng-container *ngIf="waitForCategories">
-  <label>{{categoryType}}</label>
+  <label *ngIf="categoryType === 'LEGAL'">Rechtskategorie</label>
   <ng-multiselect-dropdown
     (onDeSelect)="deSelect($event)"
     [placeholder]="'select category'"

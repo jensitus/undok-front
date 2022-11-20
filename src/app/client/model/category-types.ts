@@ -4,5 +4,5 @@ export enum CategoryTypes {
   ACTIVITY_CATEGORY = 'activityCategory',
   AUFENTHALTSTITEL = 'Aufenthaltstitel',
   SECTOR = 'Branche',
-  LEGAL = 'Rechtskategorie'
+  LEGAL = 'LEGAL'
 }
