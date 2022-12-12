@@ -87,7 +87,7 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
       this.loadConcernCategories();
       this.loadActivityCategories();
     }, error => {
-      this.categoryExists = error.error;
+      this.categoryExists = error.error.text;
     }));
   }
 
