@@ -133,7 +133,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
       this.router.navigate(['/clients/', result.id]);
       this.loading = false;
     }, error => {
-      this.alertService.error(error.error);
+      this.alertService.error(error.error.text);
     });
   }
 
