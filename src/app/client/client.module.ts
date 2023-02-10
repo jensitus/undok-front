@@ -29,6 +29,7 @@ import { EditEmployerComponent } from './edit-employer/edit-employer.component';
 import { SelectBoxComponent } from './select-box/select-box.component';
 import { DeleteComponent } from './delete/delete.component';
 import { DeleteModalComponent } from './delete/delete-modal/delete-modal.component';
+import { SearchComponent } from './search/search.component';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
@@ -66,7 +67,8 @@ const appRoutes: Routes = [
     EditEmployerComponent,
     SelectBoxComponent,
     DeleteComponent,
-    DeleteModalComponent
+    DeleteModalComponent,
+    SearchComponent
   ],
   imports: [
     CommonModule,
