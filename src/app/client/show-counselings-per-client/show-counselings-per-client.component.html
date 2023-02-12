@@ -23,7 +23,7 @@
             <div *ngIf="counseling.activity" [innerHTML]="counseling.activity | newLine"></div>
           </div>
           <div>
-            <label class="text-secondary">Aktivitätskategorie:</label>&nbsp;
+            <label class="text-secondary">Rechtskategorie:</label>&nbsp;
             <span *ngFor="let activityCategory of counseling.legalCategory">
               <span [innerHTML]="activityCategory.name"></span>&nbsp;
             </span>

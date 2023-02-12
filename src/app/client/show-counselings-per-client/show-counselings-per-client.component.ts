@@ -62,7 +62,7 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
   getCounselings() {
     this.counselings.forEach((c) => {
       // tslint:disable-next-line:max-line-length
-      this.subscriptions.push(this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.ACTIVITY_CATEGORY, c.id).subscribe(categories => {
+      this.subscriptions.push(this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, c.id).subscribe(categories => {
         categories.forEach((cat) => {
           c.legalCategory = categories;
         });

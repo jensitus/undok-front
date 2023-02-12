@@ -71,7 +71,7 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
       const deselect: JoinCategory = {
         entityType: 'COUNSELING',
         entityId: this.counseling.id,
-        categoryType: CategoryTypes.ACTIVITY_CATEGORY,
+        categoryType: CategoryTypes.LEGAL,
         categoryId: deSelected.itemId
       };
       this.deSelectedCategories.push(deselect);

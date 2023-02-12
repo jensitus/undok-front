@@ -166,7 +166,6 @@ export class ClientTableService implements OnDestroy {
     const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
 
     // 1. sort
-    console.log('this.customers: ', this.allClients);
     let c = sort(this.allClients, sortColumn, sortDirection);
 
     // 2. filter

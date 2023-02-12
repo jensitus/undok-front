@@ -19,8 +19,9 @@ export class CounselingComponent implements OnInit, OnDestroy {
   @Input() counselingId: string;
   @Input() clientId: string;
   private subscription$: Subscription[] = [];
-  counseling: Counseling;
+  counseling: Counseling | undefined;
   private closeResult = '';
+  counselingLoaded: boolean;
 
   constructor(
     private counselingService: CounselingService,
