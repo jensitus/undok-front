@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
 import {User} from '../../../../auth/model/user';
 import {faBars, faCampground, faCoffee, faPowerOff, faTachometerAlt, faUser, faUsers, faTasks, faSurprise} from '@fortawesome/free-solid-svg-icons';
@@ -30,6 +30,7 @@ export class SidebarComponent implements OnInit {
   private unsubscribe$ = new Subject();
   showClientButtons = false;
   showCreateEmployerButton = false;
+  clientId: string;
 
   @Output() collapsedEvent = new EventEmitter<boolean>();
 
@@ -58,6 +59,7 @@ export class SidebarComponent implements OnInit {
     // this.checkAdmin();
     this.getSidebarButtons();
     this.getCreateEmployerButton();
+    this.getClientIDForCreatingCounseling();
   }
 
 
@@ -99,6 +101,12 @@ export class SidebarComponent implements OnInit {
 
   onLoggedout() {
     localStorage.removeItem('isLoggedin');
+  }
+
+  getClientIDForCreatingCounseling() {
+    this.sidebarService.clientIdForCreateCounselingSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(clientId => {
+      this.clientId = clientId;
+    });
   }
 
   getCurrentUser() {

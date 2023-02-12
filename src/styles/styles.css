@@ -31,3 +31,11 @@ a {
     margin-right: -35px;
   }
 }
+
+.multiselect-dropdown .dropdown-btn .selected-item {
+  border: 1px solid #e2e2e3 !important;
+  background: #e2e2e2 !important;
+  color: #555555 !important;
+  border-radius: 5px !important;
+  max-width: 100% !important;
+}

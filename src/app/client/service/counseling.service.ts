@@ -32,4 +32,8 @@ export class CounselingService {
     return this.http.delete<void>(this.apiUrl + this.COUNSELING_URL + counselingId);
   }
 
+  getCounseling(counselingId: string): Observable<Counseling> {
+    return this.http.get<Counseling>(this.apiUrl + this.COUNSELING_URL + counselingId);
+  }
+
 }

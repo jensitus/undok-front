@@ -34,14 +34,14 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.unsubscribe$.push(this.counselingService.createUpdateComment(this.clientId, this.comment).subscribe(res => {
-      this.commonService.setReloadClientSubject(true);
+      this.commonService.setReloadSubject(true);
     }));
   }
 
   deleteComment() {
     this.comment = 'null';
     this.unsubscribe$.push(this.counselingService.createUpdateComment(this.clientId, this.comment).subscribe(res => {
-      this.commonService.setReloadClientSubject(true);
+      this.commonService.setReloadSubject(true);
     }));
   }
 }

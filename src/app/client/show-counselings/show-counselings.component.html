@@ -44,7 +44,7 @@
         <th scope="col">Datum</th>
         <th scope="col">Anliegen</th>
         <th scope="col">Kategorie</th>
-        <th scope="col">Activität</th>
+        <th scope="col">Aktivität</th>
         <th scope="col">Keyword</th>
         <th scope="col">Klient:in</th>
       </tr>
@@ -55,14 +55,17 @@
           {{counseling.counselingDate | date: 'dd.MM.yyyy HH:mm'}}
         </td>
         <td width="400">
-          <ngb-highlight [result]="counseling.concern" [innerHTML]="counseling.concern | newLine" [term]="counselingTableService.searchTerm"></ngb-highlight>
+          <ngb-highlight [result]="counseling.concern" [innerHTML]="counseling.concern"
+                         [term]="counselingTableService.searchTerm">
+          </ngb-highlight>
         </td>
         <td>
           <ngb-highlight [result]="counseling.concernCategory"
-                         [term]="counselingTableService.searchTerm"></ngb-highlight>
+                         [term]="counselingTableService.searchTerm">
+          </ngb-highlight>
         </td>
         <td>
-          <ngb-highlight [result]="counseling.activity" [innerHTML]="counseling.activity | newLine" [term]="counselingTableService.searchTerm"></ngb-highlight>
+          <ngb-highlight [result]="counseling.activity" [innerHTML]="counseling.activity" [term]="counselingTableService.searchTerm"></ngb-highlight>
         </td>
         <td>
           <a [routerLink]="['/clients', counseling.clientId]">

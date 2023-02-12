@@ -29,7 +29,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   columns = ['id', 'keyword', 'firstName', 'lastName', 'dateOfBirth', 'email', 'telephone', 'street', 'zipCode', 'city', 'country', 'education',
     'maritalStatus', 'interpreterNecessary', 'howHasThePersonHeardFromUs', 'vulnerableWhenAssertingRights',
     'counselings', 'nationality', 'language', 'currentResidentStatus', 'formerResidentStatus', 'labourMarketAccess', 'position',
-    'sector', 'union', 'membership', 'organization'];
+    'sector', 'union', 'membership', 'organization', 'gender'];
 
   CSV_FILENAME = 'clients';
 

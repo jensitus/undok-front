@@ -1,9 +1,10 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {Category} from '../model/category';
+import {Category} from '../../model/category';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {Subscription} from 'rxjs';
-import {CategoryService} from '../service/category.service';
-import {CategoryTypes} from '../model/category-types';
+import {CategoryService} from '../../service/category.service';
+import {CategoryTypes} from '../../model/category-types';
+import {CommonService} from '../../../common/services/common.service';
 
 
 @Component({
@@ -12,9 +13,6 @@ import {CategoryTypes} from '../model/category-types';
   styleUrls: ['./select-box.component.css']
 })
 export class SelectBoxComponent implements OnInit, OnDestroy {
-
-  CONCERN_CATEGORY = 'concernCategory';
-  ACTIVITY_CATEGORY = 'activityCategory';
 
   @Input() categoryType: CategoryTypes;
   @Input() cat_model: any;
@@ -28,19 +26,16 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
   concernCategories: Category[];
 
   category: Category;
-  newCategory: string = null;
-  newActivityCategory: string = null;
-  categoryExists: string = null;
-  concernCategoryIsCollapsed = true;
   private subscription$: Subscription[] = [];
 
   constructor(
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private commonService: CommonService
   ) { }
 
   ngOnInit(): void {
-    this.loadConcernCategories();
-    console.log('cat_model', this.cat_model);
+    this.getReloadSubject();
+    this.loadCategoriesByCategoryType();
   }
 
   ngOnDestroy(): void {
@@ -49,25 +44,19 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
     });
   }
 
+  getReloadSubject() {
+    this.subscription$.push(this.commonService.reloadSubject.subscribe(reload => {
+      if (reload === true) {
+        this.loadCategoriesByCategoryType();
+      }
+    }));
+  }
+
   onCatValueChange(): void {
     this.catValue.emit(this.concernCategory);
   }
 
-  addNewCategory(type: string) {
-    let category: Category;
-    category = {
-      name: this.newCategory,
-      type: type
-    };
-    this.subscription$.push(this.categoryService.addCategory(category).subscribe((r) => {
-      this.newCategory = null;
-      this.loadConcernCategories();
-    }, error => {
-      this.categoryExists = error.error;
-    }));
-  }
-
-  loadConcernCategories(): void {
+  loadCategoriesByCategoryType(): void {
     this.subscription$.push(this.categoryService.getCategories(this.categoryType).subscribe(cat => {
       this.concernCategories = cat;
     }));
@@ -76,6 +65,13 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
   selectConcernCat(cat: Category) {
     this.concernCategory = cat.name;
     this.onCatValueChange();
+  }
+
+  onItemSelect(item: any) {
+    console.log(item);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
   }
 
 }

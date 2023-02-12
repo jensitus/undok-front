@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
+import {UntypedFormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../services/user.service';
 import {ChangePwDto} from '../model/change-pw-dto';
@@ -27,7 +27,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
   private subscription$: Subscription[] = [];
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
     private router: Router,

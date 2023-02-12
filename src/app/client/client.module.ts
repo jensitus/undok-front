@@ -26,9 +26,13 @@ import { CounselingComponent } from './counseling/counseling.component';
 import { NewLinePipe } from './new-line.pipe';
 import { ShowSingleEmployerComponent } from './show-single-employer/show-single-employer.component';
 import { EditEmployerComponent } from './edit-employer/edit-employer.component';
-import { SelectBoxComponent } from './select-box/select-box.component';
+import { SelectBoxComponent } from './select-box/single/select-box.component';
 import { DeleteComponent } from './delete/delete.component';
 import { DeleteModalComponent } from './delete/delete-modal/delete-modal.component';
+import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
+import { MultiSelectBoxComponent } from './select-box/multi/multi-select-box.component';
+import { ShowCounselingComponent } from './show-counseling/show-counseling.component';
+import { AddCategoryComponent } from './select-box/add-category/add-category.component';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
@@ -38,7 +42,9 @@ const appRoutes: Routes = [
   {path: ':id', component: ShowSingleClientComponent},
   {path: ':id/counselings/create', component: CreateCounselingComponent},
   {path: 'create/employer', component: CreateEmployerComponent},
-  {path: 'employers/:id', component: ShowSingleEmployerComponent}
+  {path: 'employers/:id', component: ShowSingleEmployerComponent},
+  {path: ':id/create-counseling', component: CreateCounselingComponent},
+  {path: ':client_id/counselings/:counseling_id', component: ShowCounselingComponent}
 ];
 
 @NgModule({
@@ -66,9 +72,13 @@ const appRoutes: Routes = [
     EditEmployerComponent,
     SelectBoxComponent,
     DeleteComponent,
-    DeleteModalComponent
+    DeleteModalComponent,
+    MultiSelectBoxComponent,
+    ShowCounselingComponent,
+    AddCategoryComponent
   ],
   imports: [
+    NgMultiSelectDropDownModule.forRoot(),
     CommonModule,
     RouterModule.forChild(appRoutes),
     FormsModule,

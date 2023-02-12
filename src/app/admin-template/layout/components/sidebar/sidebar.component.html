@@ -29,10 +29,12 @@
       <span>{{ 'klientin anlegen' }}</span>
     </a>
 
-    <a *ngIf="showClientButtons" class="list-group-item" (click)="newCounseling()">
+    <span *ngIf="showClientButtons">
+    <a *ngIf="clientId" class="list-group-item" [routerLink]="['clients/' + clientId + '/create-counseling']">
       <fa-icon class="text-danger" [icon]="faTasks"></fa-icon>&nbsp;
       <span>{{ 'neue beratung' }}</span>
     </a>
+    </span>
 
     <a *ngIf="showClientButtons || showCreateEmployerButton" class="list-group-item" [routerLink]="['clients/create/employer']">
       <fa-icon class="text-primary" [icon]="faSurprise"></fa-icon>&nbsp;

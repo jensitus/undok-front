@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ClientService} from '../service/client.service';
-import {publish, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {CounselingForm} from '../model/counseling-form';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {NgbDateAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
@@ -12,6 +12,12 @@ import {Category} from '../model/category';
 import {CategoryService} from '../service/category.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {Time} from '../model/time';
+import {CategoryTypes} from '../model/category-types';
+import {DropdownItem} from '../model/dropdown-item';
+import {EntityTypes} from '../model/entity-types';
+import {JoinCategory} from '../model/join-category';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Client} from '../model/client';
 
 @Component({
   selector: 'app-create-counseling',
@@ -20,18 +26,26 @@ import {Time} from '../model/time';
 })
 export class CreateCounselingComponent implements OnInit, OnDestroy {
 
-  CONCERN_CATEGORY = 'concernCategory';
-  ACTIVITY_CATEGORY = 'activityCategory';
+  concernCategoryType: CategoryTypes = CategoryTypes.CONCERN_CATEGORY;
+  legalCategoryType: CategoryTypes = CategoryTypes.LEGAL;
   CONCERN_LENGTH = 4080;
   ACTIVITY_LENGTH = 4080;
 
-  @Input() clientId: string;
+  clientId: string;
+  client: Client;
+  @Input() clientFirstName: string;
+  @Input() clientLastName: string;
+  @Input() clientKeyword: string;
+
+
+
+  private counselingId: string;
 
   time: Time = {hour: 13, minute: 30};
   dateObject: NgbDateStruct;
   currentUser: User;
 
-  private unsubscribe$: Subscription[] = [];
+  private subscription$: Subscription[] = [];
 
   loading = false;
   counselingForm: CounselingForm;
@@ -39,24 +53,22 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   counselingStatus: string;
   entryDate: string;
   counselingDate: string;
-  counselingTime: string;
   concern: string;
   concernCategory: string;
   activity: string;
-  activityCategory: string;
+  legalCategory: string;
   registeredBy: string;
   faBars = faBars;
   concernCategories: Category[];
-  activityCategories: Category[];
+  legalCategories: Category[];
   category: Category;
-  newCategory: string = null;
-  newActivityCategory: string = null;
-  categoryExists: string = null;
-  activityCategoryIsCollapsed = true;
-  concernCategoryIsCollapsed = true;
 
   concernLength = this.CONCERN_LENGTH;
   activityLength = this.ACTIVITY_LENGTH;
+
+  joinCategories: JoinCategory[] = [];
+  joinCategory: JoinCategory;
+  private dropdownEvents: DropdownItem[] = [];
 
   constructor(
     private clientService: ClientService,
@@ -65,14 +77,21 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     public dateTimeService: DateTimeService,
     private categoryService: CategoryService,
-    private alertService: AlertService
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
   }
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe(params => {
+      this.clientId = params['id'];
+    });
     this.getCurrentUser();
     this.loadConcernCategories();
-    this.loadActivityCategories();
+    this.loadLegalCategories();
+    this.subscription$.push(this.clientService.getSingleClient(this.clientId).subscribe(client => {
+      this.client = client;
+    }));
   }
 
   concernLengthChange(val) {
@@ -98,34 +117,43 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
       concern: this.concern,
       concernCategory: this.concernCategory,
       activity: this.activity,
-      activityCategory: this.activityCategory,
+      activityCategory: this.legalCategory,
       registeredBy: this.registeredBy,
       clientId: this.clientId,
       counselingDate: this.counselingDate
     };
-    this.unsubscribe$.push(this.clientService.createCounseling(this.clientId, this.counselingForm).subscribe(result => {
-      this.commonService.setCreateCounselingSubject(true);
+    this.subscription$.push(this.clientService.createCounseling(this.clientId, this.counselingForm).subscribe(result => {
+      this.counselingId = result.id;
+      this.addJoinCategories(this.counselingId);
+      // this.commonService.setCreateCounselingSubject(true);
+      this.sendJoinCategoriesToTheServer(result.id);
       this.loading = false;
     }));
   }
 
   ngOnDestroy(): void {
-    if (this.unsubscribe$) {
-      this.unsubscribe$.forEach((s) => {
+    if (this.subscription$) {
+      this.subscription$.forEach((s) => {
         s.unsubscribe();
       });
     }
   }
 
+  sendJoinCategoriesToTheServer(counselingId: string) {
+    this.subscription$.push(this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
+      this.router.navigate(['/clients/' + this.clientId + '/counselings/' + counselingId]);
+    }));
+  }
+
   loadConcernCategories(): void {
-    this.unsubscribe$.push(this.categoryService.getCategories(this.CONCERN_CATEGORY).subscribe(cat => {
+    this.subscription$.push(this.categoryService.getCategories(this.concernCategoryType).subscribe(cat => {
       this.concernCategories = cat;
     }));
   }
 
-  loadActivityCategories(): void {
-    this.unsubscribe$.push(this.categoryService.getCategories(this.ACTIVITY_CATEGORY).subscribe(cat => {
-      this.activityCategories = cat;
+  loadLegalCategories(): void {
+    this.subscription$.push(this.categoryService.getCategories(this.legalCategoryType).subscribe(cat => {
+      this.legalCategories = cat;
     }));
   }
 
@@ -133,36 +161,32 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     this.concernCategory = cat.name;
   }
 
-  selectActivityCat(cat: Category) {
-    this.activityCategory = cat.name;
+  selectLegalCategory(cat: Category) {
+    this.legalCategory = cat.name;
   }
 
-  addNewCategory(type: string) {
-    let category: Category;
+  showLegalCategory(event: string) {
+    this.legalCategory = event;
+  }
 
-    switch (type) {
-      case this.CONCERN_CATEGORY:
-        category = {
-          name: this.newCategory,
-          type: type
-        };
-        break;
-      case this.ACTIVITY_CATEGORY:
-        category = {
-          name: this.newActivityCategory,
-          type: type
-        };
-        break;
-    }
-    this.unsubscribe$.push(this.categoryService.addCategory(category).subscribe((r) => {
-      this.newCategory = null;
-      this.newActivityCategory = null;
-      this.loadConcernCategories();
-      this.loadActivityCategories();
-    }, error => {
-      this.categoryExists = error.error;
-    }));
+  showConcernCat(event: string) {
+    this.concernCategory = event;
+  }
+  showLegalCategoryValue(event: DropdownItem[]) {
+    this.dropdownEvents = event;
+  }
 
+  addJoinCategories(counselingId: string) {
+    this.joinCategories = [];
+    this.dropdownEvents.forEach(e => {
+      this.joinCategory = {
+        categoryId: e.itemId,
+        categoryType: CategoryTypes.LEGAL,
+        entityId: counselingId,
+        entityType: EntityTypes.COUNSELING
+      };
+      this.joinCategories.push(this.joinCategory);
+    });
   }
 
 }

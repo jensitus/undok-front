@@ -1,0 +1,12 @@
+<ng-container>
+  <div class="form-group">
+    <label>{{categoryType}}</label>
+    <select class="form-control" aria-label="select concern category">
+      <option selected>{{cat_model}}</option>
+      <option *ngFor="let c of concernCategories" [value]="c" (click)="selectConcernCat(c)">{{c.name}}</option>
+    </select>
+  </div>
+  <app-add-category [categoryType]="categoryType"></app-add-category>
+</ng-container>
+
+

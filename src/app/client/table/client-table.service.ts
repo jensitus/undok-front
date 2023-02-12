@@ -166,7 +166,6 @@ export class ClientTableService implements OnDestroy {
     const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
 
     // 1. sort
-    console.log('this.customers: ', this.allClients);
     let c = sort(this.allClients, sortColumn, sortDirection);
 
     // 2. filter
@@ -187,7 +186,7 @@ export class ClientTableService implements OnDestroy {
   }
 
   getDeleteClientSubject() {
-    this.commonService.reloadClientSubject.subscribe(relClSub => {
+    this.commonService.reloadSubject.subscribe(relClSub => {
       if (relClSub) {
         this.getClientsConstructor();
       }

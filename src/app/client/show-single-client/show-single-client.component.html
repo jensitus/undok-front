@@ -66,13 +66,18 @@
               ja
             </span>
 
-            <span *ngIf="client.vulnerableWhenAssertingRights == false">
+            <span *ngIf="client.vulnerableWhenAssertingRights === false">
               nein
             </span>
           </div>
           <div>
             <label class="text-secondary">Dolmetch erforderlich:</label>
-            {{client.interpreterNecessary}}
+            <span *ngIf="client.interpreterNecessary">
+              ja
+            </span>
+            <span *ngIf="client.interpreterNecessary === false">
+              nein
+            </span>
           </div>
         </div>
         <div class="col-md-6">
@@ -139,7 +144,7 @@
     </div>
   </div>
   <div class="col-md-7" *ngIf="client">
-    <app-show-counselings-per-client [counselings]="client.counselings"></app-show-counselings-per-client>
+    <app-show-counselings-per-client [counselings]="client.counselings" [clientId]="client.id"></app-show-counselings-per-client>
   </div>
 </div>
 
@@ -151,7 +156,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-create-counseling [clientId]="client.id"></app-create-counseling>
+    <app-create-counseling></app-create-counseling>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">

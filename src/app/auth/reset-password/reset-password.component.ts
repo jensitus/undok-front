@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {UserService} from '../services/user.service';
 import {first} from 'rxjs/operators';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
@@ -11,7 +11,7 @@ import {AlertService} from '../../admin-template/layout/components/alert/service
   styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent implements OnInit {
-  resetForm: FormGroup;
+  resetForm: UntypedFormGroup;
   token: string;
   email: string;
   loading = false;
@@ -24,7 +24,7 @@ export class ResetPasswordComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private userService: UserService,
     private alertService: AlertService
   ) {

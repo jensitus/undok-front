@@ -1,3 +1,5 @@
+import {Category} from './category';
+
 export interface Counseling {
   id: string;
   counselingStatus: string;
@@ -5,7 +7,7 @@ export interface Counseling {
   concern: string;
   concernCategory: string;
   activity: string;
-  activityCategory: string;
+  legalCategory: Category[];
   registeredBy: string;
   counselingDate: string;
   clientId: string;

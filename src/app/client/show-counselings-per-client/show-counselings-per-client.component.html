@@ -23,16 +23,18 @@
             <div *ngIf="counseling.activity" [innerHTML]="counseling.activity | newLine"></div>
           </div>
           <div>
-            <label class="text-secondary">Aktivitätskategorie:</label>&nbsp;
-            <span [innerHTML]="counseling.activityCategory"></span>
+            <label class="text-secondary">Rechtskategorie:</label>&nbsp;
+            <span *ngFor="let activityCategory of counseling.legalCategory">
+              <span [innerHTML]="activityCategory.name"></span>&nbsp;
+            </span>
           </div>
           <div>
             <label class="text-secondary">Registriert von:</label>&nbsp;
             <span [innerHTML]="counseling.registeredBy"></span>
           </div>
           <div>
-            <button class="btn btn-sm btn-outline-success" (click)="openEditCounseling(edit_counseling)">Edit</button>&nbsp;
-            <button class="btn btn-sm btn-outline-warning" (click)="openDeleteConfirmationModal(confirmDelete)">delete</button>
+            <!--<button class="btn btn-sm btn-outline-warning" (click)="openDeleteConfirmationModal(confirmDelete)">delete</button>-->
+            <a class="btn btn-sm btn-outline-primary" [routerLink]="['/clients/' + clientId + '/counselings/' + counseling.id]">link</a>
           </div>
           <div *ngIf="counseling.comment === null" class="mt-2">
             <button class="btn btn-sm btn-outline-dark" (click)="openEditCounseling(edit_comment)">Add Comment</button>
@@ -53,22 +55,22 @@
         </div>
       </div>
 
-      <ng-template #edit_counseling let-modal>
-        <div class="modal-header">
-          <h4 class="modal-title">Beratung bearbeiten</h4>
-          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <app-edit-counseling [counseling]="counseling"></app-edit-counseling>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      </ng-template>
+<!--      <ng-template #edit_counseling let-modal>-->
+<!--        <div class="modal-header">-->
+<!--          <h4 class="modal-title">Beratung bearbeiten</h4>-->
+<!--          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <div class="modal-body">-->
+<!--          <app-edit-counseling [counseling]="counseling"></app-edit-counseling>-->
+<!--        </div>-->
+<!--        <div class="modal-footer">-->
+<!--          <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </ng-template>-->
 
       <ng-template #edit_comment let-modal>
         <div class="modal-header">

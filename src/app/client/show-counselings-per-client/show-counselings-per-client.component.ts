@@ -5,6 +5,8 @@ import {CommonService} from '../../common/services/common.service';
 import {EditCounselingComponent} from '../edit-counseling/edit-counseling.component';
 import {CounselingService} from '../service/counseling.service';
 import {Subscription} from 'rxjs';
+import {CategoryService} from '../service/category.service';
+import {CategoryTypes} from '../model/category-types';
 
 @Component({
   selector: 'app-show-counselings-per-client',
@@ -14,13 +16,15 @@ import {Subscription} from 'rxjs';
 export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
 
   @Input() counselings: Counseling[];
+  @Input() clientId: string;
   private closeResult = '';
   private subscriptions: Subscription[] = [];
 
   constructor(
     private modalService: NgbModal,
     private counselingService: CounselingService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private categoryService: CategoryService
   ) { }
 
   private static getDismissReason(reason: any): string {
@@ -34,7 +38,8 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('counselings', this.counselings);
+    this.getCounselings();
+    this.getCreateCounselingSubject();
   }
 
   ngOnDestroy(): void {
@@ -45,8 +50,28 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
     }
   }
 
+  getCreateCounselingSubject() {
+    this.subscriptions.push(this.commonService.createCounselingSubject.subscribe((counselingSubject) => {
+      if (counselingSubject === true) {
+        this.getCounselings();
+        this.modalService.dismissAll();
+      }
+    }));
+  }
+
+  getCounselings() {
+    this.counselings.forEach((c) => {
+      // tslint:disable-next-line:max-line-length
+      this.subscriptions.push(this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, c.id).subscribe(categories => {
+        categories.forEach((cat) => {
+          c.legalCategory = categories;
+        });
+      }));
+    });
+  }
+
   openEditCounseling(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${ShowCounselingsPerClientComponent.getDismissReason(reason)}`;
