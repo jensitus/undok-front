@@ -48,12 +48,18 @@
     <!-- category section start -->
     <div class="row">
       <div class="col">
-        <app-select-box [categoryType]="concernCategoryType" (catValue)="showConcernCat($event)"></app-select-box>
+        <app-multi [label]="legalLabel"
+                   [categoryType]="legalCategoryType"
+                   (categoryValue)="showLegalCategoryValue($event)">
+        </app-multi>
       </div>
       <!-- concern category section end -->
       <!-- activity category start -->
       <div class="col">
-        <app-multi [categoryType]="legalCategoryType" (categoryValue)="showLegalCategoryValue($event)"></app-multi>
+        <app-multi [label]="activityLabel"
+                   [categoryType]="activityCategoryType"
+                   (categoryValue)="showLegalCategoryValue($event)">
+        </app-multi>
       </div>
       <!--    <div class="col">
             <app-select-box [categoryType]="activityCategoryType" (catValue)="showActivityCat($event)"></app-select-box>

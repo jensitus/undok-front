@@ -4,6 +4,7 @@ import {Subscription} from 'rxjs';
 import {Category} from '../../model/category';
 import {CategoryService} from '../../service/category.service';
 import {CommonService} from '../../../common/services/common.service';
+import {Label} from '../../model/label';
 
 @Component({
   selector: 'app-add-category',
@@ -13,6 +14,7 @@ import {CommonService} from '../../../common/services/common.service';
 export class AddCategoryComponent implements OnInit, OnDestroy {
 
   @Input() categoryType: CategoryTypes;
+  @Input() label: Label;
   private subscription$: Subscription[] = [];
   categoryExists: string = null;
   categoryIsCollapsed = true;
@@ -38,7 +40,7 @@ export class AddCategoryComponent implements OnInit, OnDestroy {
       name: this.newCategory,
       type: type
     };
-    this.subscription$.push(this.categoryService.addCategory(category).subscribe((r) => {
+    this.subscription$.push(this.categoryService.addCategory(category).subscribe(r => {
       this.newCategory = null;
       this.commonService.setReloadSubject(true);
     }, error => {

@@ -12,6 +12,7 @@ import {CategoryTypes} from '../model/category-types';
 import {DropdownItem} from '../model/dropdown-item';
 import {JoinCategory} from '../model/join-category';
 import {EntityTypes} from '../model/entity-types';
+import {Label} from '../model/label';
 
 @Component({
   selector: 'app-edit-counseling',
@@ -24,6 +25,7 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
   ACTIVITY_MAX_LENGTH = 4080;
   concernCategoryType: CategoryTypes = CategoryTypes.CONCERN_CATEGORY;
   legalCategoryType: CategoryTypes = CategoryTypes.LEGAL;
+  activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY_CATEGORY;
 
   @Input() public counseling: Counseling;
   private subscription$: Subscription[] = [];
@@ -43,6 +45,8 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
   joinCategory: JoinCategory;
   deSelectedItems: DropdownItem[] = [];
   deSelectedCategories: JoinCategory[] = [];
+  legalLabel: Label = Label.LEGAL;
+  activityLabel: Label = Label.ACTIVITY;
 
   constructor(
     private counselingService: CounselingService,
@@ -67,22 +71,7 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.loading = true;
-    this.deSelectedItems.forEach((deSelected) => {
-      const deselect: JoinCategory = {
-        entityType: 'COUNSELING',
-        entityId: this.counseling.id,
-        categoryType: CategoryTypes.LEGAL,
-        categoryId: deSelected.itemId
-      };
-      this.deSelectedCategories.push(deselect);
-    });
-    this.subscription$.push(this.categoryService.deleteJoinCategories(this.deSelectedCategories).subscribe(res => {
-    }));
     this.subscription$.push(this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe(res => {
-
-    }));
-    this.subscription$.push(this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
-      this.commonService.setReloadSubject(true);
     }));
     this.loading = false;
   }
@@ -99,28 +88,28 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
     }));
   }
 
-  selectConcernCat(cat: Category) {
-    this.counseling.concernCategory = cat.name;
-  }
+  // selectConcernCat(cat: Category) {
+  //   this.counseling.concernCategory = cat.name;
+  // }
 
   selectActivityCat(cat: Category) {
     // this.counseling.activityCategory = cat.name;
   }
 
-  showConcernCat(event: string) {
-    this.counseling.concernCategory = event;
-  }
+  // showConcernCat(event: string) {
+  //   this.counseling.concernCategory = event;
+  // }
 
   // showActivityCat(event: string) {
   //   // this.counseling.activityCategory = event;
   // }
 
-  showCategoryValue(event: DropdownItem[]) {
+  showCategoryValue(event: DropdownItem[], categoryType: CategoryTypes) {
     this.joinCategories = [];
     event.forEach(e => {
       this.joinCategory = {
         categoryId: e.itemId,
-        categoryType: CategoryTypes.LEGAL,
+        categoryType: categoryType,
         entityId: this.counseling.id,
         entityType: EntityTypes.COUNSELING
       };
@@ -129,8 +118,9 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
   }
 
   showDeSelected(event: DropdownItem[]) {
-    console.log('edit counseling: deSelected', event);
+    console.log('event', event);
     this.deSelectedItems = event;
+    console.log('deselectedItems', this.deSelectedItems);
   }
 
 }

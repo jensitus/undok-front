@@ -5,9 +5,9 @@ export interface Counseling {
   counselingStatus: string;
   entryDate: string;
   concern: string;
-  concernCategory: string;
   activity: string;
-  legalCategory: Category[];
+  legalCategory?: Category[];
+  activityCategories?: Category[];
   registeredBy: string;
   counselingDate: string;
   clientId: string;

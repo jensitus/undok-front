@@ -5,15 +5,15 @@
   <button type="button" class="btn btn-link" (click)="collapse.toggle()"
           [attr.aria-expanded]="!categoryIsCollapsed"
           aria-controls="collapseExample">
-    <small *ngIf="categoryType === 'LEGAL'">
-      neue Rechtskategorie
+    <small>
+      neue {{label}}
     </small>
   </button>
   <div #collapse="ngbCollapse" [(ngbCollapse)]="categoryIsCollapsed">
     <input type="text" name="newCategory" [(ngModel)]="newCategory" placeholder="{{categoryType}}"
            class="form-control"/>
     <button class="btn btn-sm btn-outline-primary" type="button" (click)="addNewCategory(categoryType)" [disabled]="newCategory == null || newCategory == ''">
-      <span *ngIf="categoryType === 'LEGAL'">Rechtskategorie hinzufügen</span>
+      <span>{{label}} hinzufügen</span>
     </button>
   </div>
 </div>

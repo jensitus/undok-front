@@ -10,7 +10,6 @@ import {DateTimeService} from '../service/date-time.service';
 import {User} from '../../auth/model/user';
 import {Category} from '../model/category';
 import {CategoryService} from '../service/category.service';
-import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {Time} from '../model/time';
 import {CategoryTypes} from '../model/category-types';
 import {DropdownItem} from '../model/dropdown-item';
@@ -18,6 +17,7 @@ import {EntityTypes} from '../model/entity-types';
 import {JoinCategory} from '../model/join-category';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Client} from '../model/client';
+import {Label} from '../model/label';
 
 @Component({
   selector: 'app-create-counseling',
@@ -28,6 +28,9 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
 
   concernCategoryType: CategoryTypes = CategoryTypes.CONCERN_CATEGORY;
   legalCategoryType: CategoryTypes = CategoryTypes.LEGAL;
+  activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY_CATEGORY;
+  activityLabel: Label = Label.ACTIVITY;
+  legalLabel: Label = Label.LEGAL;
   CONCERN_LENGTH = 4080;
   ACTIVITY_LENGTH = 4080;
 

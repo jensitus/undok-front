@@ -6,6 +6,7 @@ import {Category} from '../../model/category';
 import {Subscription} from 'rxjs';
 import {CategoryTypes} from '../../model/category-types';
 import {CommonService} from '../../../common/services/common.service';
+import {Label} from '../../model/label';
 
 @Component({
   selector: 'app-multi',
@@ -25,6 +26,7 @@ export class MultiSelectBoxComponent implements OnInit, OnDestroy {
   waitForCategories = false;
   @Input() selectedCategories: Category[];
   @Input() categoryType: CategoryTypes;
+  @Input() label: Label;
   @Output() categoryValue = new EventEmitter<DropdownItem[]>();
   @Output() deSelectedEmit = new EventEmitter<DropdownItem[]>();
 
@@ -45,6 +47,7 @@ export class MultiSelectBoxComponent implements OnInit, OnDestroy {
     };
     this.loadCategoriesByCategoryType();
     this.getReloadSubject();
+    console.log(this.label);
   }
 
   ngOnDestroy(): void {

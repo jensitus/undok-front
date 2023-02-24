@@ -8,6 +8,10 @@ import {CategoryService} from '../service/category.service';
 import {CategoryTypes} from '../model/category-types';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import {DropdownItem} from '../model/dropdown-item';
+import {EntityTypes} from '../model/entity-types';
+import {JoinCategory} from '../model/join-category';
+import {Label} from '../model/label';
 
 @Component({
   selector: 'app-counseling',
@@ -16,12 +20,26 @@ import {AlertService} from '../../admin-template/layout/components/alert/service
 })
 export class CounselingComponent implements OnInit, OnDestroy {
 
+  CONCERN_MAX_LENGTH = 4080;
+  ACTIVITY_MAX_LENGTH = 4080;
   @Input() counselingId: string;
   @Input() clientId: string;
   private subscription$: Subscription[] = [];
   counseling: Counseling | undefined;
   private closeResult = '';
-  counselingLoaded: boolean;
+  loading: boolean;
+  editConcern = false;
+  editActivity = false;
+  addActivityCategoryComponent = false;
+  addLegalCategoryComponent = false;
+  joinCategories: JoinCategory[] = [];
+  joinCategory: JoinCategory;
+  deSelectedItems: DropdownItem[] = [];
+  legalCategoryType: CategoryTypes = CategoryTypes.LEGAL;
+  activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY_CATEGORY;
+  legalLabel: Label = Label.LEGAL;
+  activityLabel: Label = Label.ACTIVITY;
+  deSelectedCategories: JoinCategory[] = [];
 
   constructor(
     private counselingService: CounselingService,
@@ -61,6 +79,11 @@ export class CounselingComponent implements OnInit, OnDestroy {
         CategoryTypes.LEGAL, this.counselingId
       ).subscribe(categories => {
         this.counseling.legalCategory = categories;
+      }));
+      this.subscription$.push(this.categoryService.getCategoriesByTypeAndEntity(
+        CategoryTypes.ACTIVITY_CATEGORY, this.counselingId
+      ).subscribe(categories => {
+        this.counseling.activityCategories = categories;
       }));
     }, error => {
       this.router.navigate(['/clients', this.clientId]);
@@ -111,6 +134,85 @@ export class CounselingComponent implements OnInit, OnDestroy {
         this.router.navigate(['/clients/', this.counseling.clientId]);
       }
     }));
+  }
+
+  addActivityCategory() {
+    this.addActivityCategoryComponent = !this.addActivityCategoryComponent;
+  }
+
+  showCategoryValue(event: DropdownItem[], categoryType: CategoryTypes) {
+    this.joinCategories = [];
+    event.forEach(e => {
+      this.joinCategory = {
+        categoryId: e.itemId,
+        categoryType: categoryType,
+        entityId: this.counseling.id,
+        entityType: EntityTypes.COUNSELING
+      };
+      this.joinCategories.push(this.joinCategory);
+    });
+  }
+
+  showDeSelected(event: DropdownItem[]) {
+    console.log('event', event);
+    this.deSelectedItems = event;
+    console.log('deselectedItems', this.deSelectedItems);
+  }
+
+  saveCategories(categoryType: CategoryTypes) {
+    this.deSelectedItems.forEach((deSelected) => {
+      const deselect: JoinCategory = {
+        entityType: 'COUNSELING',
+        entityId: this.counseling.id,
+        categoryType: categoryType,
+        categoryId: deSelected.itemId
+      };
+      this.deSelectedCategories.push(deselect);
+    });
+    console.log(this.deSelectedCategories);
+    this.subscription$.push(this.categoryService.deleteJoinCategories(this.deSelectedCategories).subscribe(res => {
+    }));
+    console.log('joinCategories', this.joinCategories);
+    this.subscription$.push(this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
+      this.commonService.setReloadSubject(true);
+    }));
+    switch (categoryType) {
+      case CategoryTypes.ACTIVITY_CATEGORY:
+        this.addActivityCategory();
+        break;
+      case CategoryTypes.LEGAL:
+        this.addLegalCategory();
+        break;
+    }
+  }
+
+  addLegalCategory() {
+    this.addLegalCategoryComponent = !this.addLegalCategoryComponent;
+  }
+
+  update(type: string) {
+    this.loading = true;
+    this.subscription$.push(this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe(res => {
+    }));
+    switch (type) {
+      case 'concern':
+        this.chooseEditConcern();
+        break;
+      case 'activity':
+        this.chooseEditActivity();
+        break;
+      default:
+        return;
+    }
+    this.loading = false;
+  }
+
+  chooseEditConcern() {
+    this.editConcern = !this.editConcern;
+  }
+
+  chooseEditActivity() {
+    this.editActivity = !this.editActivity;
   }
 
 }
