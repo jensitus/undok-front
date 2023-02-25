@@ -184,6 +184,7 @@ export const CITIZENSHIPS: string[] = [
   'Schweden',
   'Schweiz',
   'Senegal',
+  'Serbien',
   'Seychellen',
   'Sierra Leone',
   'Singapur',
