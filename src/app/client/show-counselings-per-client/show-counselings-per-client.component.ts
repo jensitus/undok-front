@@ -25,7 +25,8 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
     private counselingService: CounselingService,
     private commonService: CommonService,
     private categoryService: CategoryService
-  ) { }
+  ) {
+  }
 
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -63,9 +64,10 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
     this.counselings.forEach((c) => {
       // tslint:disable-next-line:max-line-length
       this.subscriptions.push(this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, c.id).subscribe(categories => {
-        categories.forEach((cat) => {
-          c.legalCategory = categories;
-        });
+        c.legalCategory = categories;
+      }));
+      this.subscriptions.push(this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.ACTIVITY, c.id).subscribe(categories => {
+        c.activityCategories = categories;
       }));
     });
   }

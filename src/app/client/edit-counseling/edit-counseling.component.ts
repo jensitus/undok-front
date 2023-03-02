@@ -25,7 +25,7 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
   ACTIVITY_MAX_LENGTH = 4080;
   concernCategoryType: CategoryTypes = CategoryTypes.CONCERN_CATEGORY;
   legalCategoryType: CategoryTypes = CategoryTypes.LEGAL;
-  activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY_CATEGORY;
+  activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY;
 
   @Input() public counseling: Counseling;
   private subscription$: Subscription[] = [];

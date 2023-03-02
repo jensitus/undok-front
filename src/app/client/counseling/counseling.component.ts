@@ -3,15 +3,18 @@ import {Subscription} from 'rxjs';
 import {CounselingService} from '../service/counseling.service';
 import {Counseling} from '../model/counseling';
 import {CommonService} from '../../common/services/common.service';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ModalDismissReasons, NgbDateStruct, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CategoryService} from '../service/category.service';
 import {CategoryTypes} from '../model/category-types';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {DropdownItem} from '../model/dropdown-item';
 import {EntityTypes} from '../model/entity-types';
 import {JoinCategory} from '../model/join-category';
 import {Label} from '../model/label';
+import {faBars} from '@fortawesome/free-solid-svg-icons';
+import {Time} from '../model/time';
+import {DateTimeService} from '../service/date-time.service';
 
 @Component({
   selector: 'app-counseling',
@@ -36,10 +39,14 @@ export class CounselingComponent implements OnInit, OnDestroy {
   joinCategory: JoinCategory;
   deSelectedItems: DropdownItem[] = [];
   legalCategoryType: CategoryTypes = CategoryTypes.LEGAL;
-  activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY_CATEGORY;
+  activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY;
   legalLabel: Label = Label.LEGAL;
   activityLabel: Label = Label.ACTIVITY;
   deSelectedCategories: JoinCategory[] = [];
+  faBars = faBars;
+  time: Time = {hour: 13, minute: 30};
+  dateObject: NgbDateStruct;
+  counselingDate: string;
 
   constructor(
     private counselingService: CounselingService,
@@ -47,7 +54,8 @@ export class CounselingComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private categoryService: CategoryService,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    public dateTimeService: DateTimeService,
   ) { }
 
   private static getDismissReason(reason: any): string {
@@ -81,7 +89,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
         this.counseling.legalCategory = categories;
       }));
       this.subscription$.push(this.categoryService.getCategoriesByTypeAndEntity(
-        CategoryTypes.ACTIVITY_CATEGORY, this.counselingId
+        CategoryTypes.ACTIVITY, this.counselingId
       ).subscribe(categories => {
         this.counseling.activityCategories = categories;
       }));
@@ -177,7 +185,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
       this.commonService.setReloadSubject(true);
     }));
     switch (categoryType) {
-      case CategoryTypes.ACTIVITY_CATEGORY:
+      case CategoryTypes.ACTIVITY:
         this.addActivityCategory();
         break;
       case CategoryTypes.LEGAL:
@@ -192,6 +200,10 @@ export class CounselingComponent implements OnInit, OnDestroy {
 
   update(type: string) {
     this.loading = true;
+    if (this.dateObject) {
+      this.counselingDate = this.dateTimeService.mergeDateAndTime(this.dateObject, this.time);
+    }
+    console.log('counselingDate', this.counselingDate);
     this.subscription$.push(this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe(res => {
     }));
     switch (type) {

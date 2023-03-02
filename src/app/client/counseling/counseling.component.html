@@ -10,12 +10,46 @@
 
 <div class="row mt-5" *ngIf="counseling">
   <div class="col-md-10">
-    <div>
-      <h4><b class="text-danger">Beratung</b></h4>
+    <div class="row">
+      <div class="col-md-12">
+        <h4><b class="text-danger">Beratung</b></h4>
+      </div>
     </div>
-    <div class="mt-4">
-      <label class="text-secondary">Datum:</label>&nbsp;
-      <span [innerHTML]="counseling?.counselingDate | date: 'dd.MM.yyyy HH:mm'"></span>
+    <div class="row">
+      <div class="col-md-10" *ngIf="!counseling.counselingDate">
+        <div class="form-group">
+          <label>Termin</label>
+          <div class="row">
+            <div class="col-3">
+              <div class="input-group">
+                <input class="form-control" placeholder="Beratungstermin"
+                       name="dp" [(ngModel)]="dateObject" ngbDatepicker #d="ngbDatepicker">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                    <fa-icon class="text-info" [icon]="faBars"></fa-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <ngb-timepicker [(ngModel)]="time" name="time"></ngb-timepicker>
+            </div>
+            <div class="col-3">
+              <input type="time">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2" *ngIf="!counseling.counselingDate">
+        <!-- div class="set-cursor-pointer" (click)="chooseEditConcern()">Close</div -->
+        <div class="mt-2">
+          <button class="btn btn-sm btn-outline-success" (click)="update('concern')">update</button>
+        </div>
+      </div>
+      <div class="mt-4" *ngIf="counseling.counselingDate">
+        <label class="text-secondary">Datum:</label>&nbsp;
+        <span [innerHTML]="counseling?.counselingDate | date: 'dd.MM.yyyy HH:mm'"></span>
+      </div>
     </div>
     <div class="row m-1 mb-3 mt-4 fade-in" *ngIf="!editConcern">
       <div class="col-md-10">
