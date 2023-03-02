@@ -202,6 +202,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
     this.loading = true;
     if (this.dateObject) {
       this.counselingDate = this.dateTimeService.mergeDateAndTime(this.dateObject, this.time);
+      this.counseling.counselingDate = this.counselingDate;
     }
     console.log('counselingDate', this.counselingDate);
     this.subscription$.push(this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe(res => {
@@ -216,6 +217,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
       default:
         return;
     }
+    this.getCounseling();
     this.loading = false;
   }
 
