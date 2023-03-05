@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {min, Subscription} from 'rxjs';
 import {CounselingService} from '../service/counseling.service';
 import {Counseling} from '../model/counseling';
 import {CommonService} from '../../common/services/common.service';
@@ -33,8 +33,8 @@ export class CounselingComponent implements OnInit, OnDestroy {
   loading: boolean;
   editConcern = false;
   editActivity = false;
-  addActivityCategoryComponent = false;
-  addLegalCategoryComponent = false;
+  editActivityCategory = false;
+  editLegalCategory = false;
   joinCategories: JoinCategory[] = [];
   joinCategory: JoinCategory;
   deSelectedItems: DropdownItem[] = [];
@@ -47,6 +47,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
   time: Time = {hour: 13, minute: 30};
   dateObject: NgbDateStruct;
   counselingDate: string;
+  editCounselingDate = false;
 
   constructor(
     private counselingService: CounselingService,
@@ -56,7 +57,8 @@ export class CounselingComponent implements OnInit, OnDestroy {
     private router: Router,
     private alertService: AlertService,
     public dateTimeService: DateTimeService,
-  ) { }
+  ) {
+  }
 
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -93,6 +95,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
       ).subscribe(categories => {
         this.counseling.activityCategories = categories;
       }));
+      this.setDateObject();
     }, error => {
       this.router.navigate(['/clients', this.clientId]);
     }));
@@ -145,7 +148,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
   }
 
   addActivityCategory() {
-    this.addActivityCategoryComponent = !this.addActivityCategoryComponent;
+    this.editActivityCategory = !this.editActivityCategory;
   }
 
   showCategoryValue(event: DropdownItem[], categoryType: CategoryTypes) {
@@ -195,29 +198,25 @@ export class CounselingComponent implements OnInit, OnDestroy {
   }
 
   addLegalCategory() {
-    this.addLegalCategoryComponent = !this.addLegalCategoryComponent;
+    this.editLegalCategory = !this.editLegalCategory;
   }
 
   update(type: string) {
     this.loading = true;
     if (this.dateObject) {
+      console.log('DATE OBJECT UPDATE', this.dateObject);
       this.counselingDate = this.dateTimeService.mergeDateAndTime(this.dateObject, this.time);
       this.counseling.counselingDate = this.counselingDate;
     }
     console.log('counselingDate', this.counselingDate);
     this.subscription$.push(this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe(res => {
+      this.getCounseling();
     }));
-    switch (type) {
-      case 'concern':
-        this.chooseEditConcern();
-        break;
-      case 'activity':
-        this.chooseEditActivity();
-        break;
-      default:
-        return;
-    }
-    this.getCounseling();
+    this.editCounselingDate = false;
+    this.editActivity = false;
+    this.editConcern = false;
+    this.editActivityCategory = false;
+    this.editLegalCategory = false;
     this.loading = false;
   }
 
@@ -227,6 +226,35 @@ export class CounselingComponent implements OnInit, OnDestroy {
 
   chooseEditActivity() {
     this.editActivity = !this.editActivity;
+  }
+
+  chooseEditCounselingDate() {
+    this.editCounselingDate = !this.editCounselingDate;
+  }
+
+  setDateObject() {
+    if (this.counseling) {
+      console.log('set Date Object', this.counseling.counselingDate);
+      const strings = this.counseling.counselingDate.split('T');
+      this.dateObject = new class implements NgbDateStruct {
+        day: number;
+        month: number;
+        year: number;
+      };
+      this.dateObject.day = Number.parseInt(strings[0].split('-')[2], 10);
+      this.dateObject.month = Number.parseInt(strings[0].split('-')[1], 10);
+      this.dateObject.year = Number.parseInt(strings[0].split('-')[0], 10);
+      const hour = Number.parseInt(strings[1].split(':')[0], 10);
+      const minute = Number.parseInt(strings[1].split(':')[1], 10);
+      console.log('hour', hour);
+      console.log('minute', minute);
+      this.time = {
+        hour: hour,
+        minute: minute
+      };
+      console.log(this.dateObject);
+      console.log(this.time);
+    }
   }
 
 }

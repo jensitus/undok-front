@@ -39,7 +39,7 @@ export class DateTimeService {
       this.localTimeMinute = time.minute.toString();
     }
 
-    return day + '-' + month + '-' + dateObject.year + ' ' + this.localTimeHour + ':' + this.localTimeMinute;
+    return dateObject.year + '-' + month + '-' + day + 'T' + this.localTimeHour + ':' + this.localTimeMinute;
   }
 
 }

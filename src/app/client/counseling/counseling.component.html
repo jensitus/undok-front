@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-10" *ngIf="!counseling.counselingDate">
+      <div class="col-md-10" *ngIf="!counseling.counselingDate && !editCounselingDate">
         <div class="form-group">
           <label>Termin</label> &nbsp; <span
           class="text-danger"><small>Ein Beratungstermin ist erforderlich</small></span>
@@ -38,18 +38,50 @@
           </div>
         </div>
       </div>
-      <div class="col-md-2" *ngIf="!counseling.counselingDate">
+      <div class="col-md-10" *ngIf="counseling.counselingDate && editCounselingDate">
+        <div class="form-group">
+          <label>Termin</label>
+          <div class="row">
+            <div class="col-3">
+              <div class="input-group">
+                <input class="form-control" placeholder="Beratungstermin"
+                       name="dp" [(ngModel)]="dateObject" ngbDatepicker #d="ngbDatepicker">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                    <fa-icon class="text-info" [icon]="faBars"></fa-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <ngb-timepicker [(ngModel)]="time" name="time"></ngb-timepicker>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2" *ngIf="!counseling.counselingDate && !editCounselingDate">
         <!-- div class="set-cursor-pointer" (click)="chooseEditConcern()">Close</div -->
         <div class="mt-2">
           <button class="btn btn-sm btn-outline-success" (click)="update('concern')">update</button>
         </div>
       </div>
-      <div class="mt-4" *ngIf="counseling.counselingDate">
+      <div class="col-md-2" *ngIf="counseling.counselingDate && editCounselingDate">
+        <!-- div class="set-cursor-pointer" (click)="chooseEditConcern()">Close</div -->
+        <div class="mt-2">
+          <button class="btn btn-sm btn-outline-success" (click)="update('concern')">update</button>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4" *ngIf="counseling.counselingDate && !editCounselingDate">
+      <div class="col-md-10">
         <label class="text-secondary">Datum:</label>&nbsp;
         <b><span [innerHTML]="counseling?.counselingDate | date: 'dd.MM.yyyy HH:mm'"></span></b>
       </div>
+      <div class="col-md-2">
+        <span class="set-cursor-pointer" (click)="chooseEditCounselingDate()">edit</span>
+      </div>
     </div>
-    <div class="row m-1 mb-3 mt-4 fade-in" *ngIf="!editConcern">
+    <div class="row mb-3 mt-4 fade-in" *ngIf="!editConcern">
       <div class="col-md-10">
         <label class="text-secondary">Anliegen:</label>
         <div *ngIf="counseling.concern" [innerHTML]="counseling.concern | newLine"></div>
@@ -76,18 +108,22 @@
         </div>
       </div>
     </div>
-    <div class="mt-4 fade-in" *ngIf="!addLegalCategoryComponent">
-      <label class="text-secondary">Rechtsschutzkategorie:</label>&nbsp;
-      <span *ngFor="let legalCategory of counseling.legalCategory">
-        <span [innerHTML]="legalCategory.name"></span>&nbsp;
-      </span>
-      <span class="set-cursor-pointer"
+    <div class="row mt-4 fade-in" *ngIf="!editLegalCategory">
+      <div class="col-md-10">
+        <label class="text-secondary">Rechtsschutzkategorie:</label>&nbsp;
+        <span *ngFor="let legalCategory of counseling.legalCategory">
+          <span [innerHTML]="legalCategory.name"></span>&nbsp;
+        </span>
+      </div>
+      <div class="col-md-2">
+        <div class="set-cursor-pointer"
             (click)="addLegalCategory()"
             *ngIf="counseling.counselingDate">
-        edit
-      </span>
+          edit
+        </div>
+      </div>
     </div>
-    <div class="row mt-4 fade-in" *ngIf="addLegalCategoryComponent">
+    <div class="row mt-4 fade-in" *ngIf="editLegalCategory">
       <div class="col">
         <app-multi [categoryType]="legalCategoryType"
                    [label]="legalLabel"
@@ -105,7 +141,7 @@
         </div>
       </div>
     </div>
-    <div class="m-1 mb-3 row fade-in" *ngIf="!editActivity">
+    <div class="mt-4 mb-3 row fade-in" *ngIf="!editActivity">
       <div class="col-md-10">
         <label class="text-secondary">Aktivität:</label>
         <div *ngIf="counseling.activity" [innerHTML]="counseling.activity | newLine"></div>
@@ -117,7 +153,7 @@
         </span>
       </div>
     </div>
-    <div class="row m-1 mb-3 fade-in" *ngIf="editActivity">
+    <div class="row mt-4 mb-3 fade-in" *ngIf="editActivity">
       <div class="col-md-10">
         <div class="form-group">
           <label>Aktivität</label>
@@ -136,17 +172,24 @@
         </div>
       </div>
     </div>
-    <div class="fade-in" *ngIf="!addActivityCategoryComponent">
-      <label class="text-secondary">Aktivitätskategorie:</label>&nbsp;
-      <span *ngFor="let activityCategory of counseling.activityCategories">
-        <span [innerHTML]="activityCategory.name"></span>&nbsp;
-      </span>
+    <div class="row mt-4 fade-in" *ngIf="!editActivityCategory">
+      <div class="col-md-6">
+        <label class="text-secondary">Aktivitätskategorie:</label>&nbsp;
+        <span *ngFor="let activityCategory of counseling.activityCategories">
+          <span [innerHTML]="activityCategory.name"></span>&nbsp;
+        </span>
+      </div>
+      <div class="col-md-4">
+
+      </div>
+      <div class="col-md-2">
       <span class="set-cursor-pointer"
             (click)="addActivityCategory()"
             *ngIf="counseling.counselingDate">edit</span>
+      </div>
     </div>
-    <div class="row fade-in" *ngIf="addActivityCategoryComponent">
-      <div class="col">
+    <div class="row mt-4 fade-in" *ngIf="editActivityCategory">
+      <div class="col-md-10">
         <app-multi [categoryType]="activityCategoryType"
                    [label]="activityLabel"
                    (categoryValue)="showCategoryValue($event, activityCategoryType)"
@@ -154,7 +197,7 @@
                    [selectedCategories]="counseling.activityCategories">
         </app-multi>
       </div>
-      <div class="col">
+      <div class="col-md-2">
         <div (click)="addActivityCategory()" class="set-cursor-pointer">Close</div>
         <div class="mt-2">
           <button class="btn btn-sm btn-outline-success"
@@ -164,7 +207,7 @@
         </div>
       </div>
     </div>
-    <div class="mt-3">
+    <div class="mt-4">
       <small>
         <label class="text-secondary">Registriert von:</label>&nbsp;
         <span [innerHTML]="counseling?.registeredBy"></span>

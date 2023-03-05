@@ -39,7 +39,6 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getCounselings();
     this.getCreateCounselingSubject();
   }
 
@@ -54,23 +53,12 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
   getCreateCounselingSubject() {
     this.subscriptions.push(this.commonService.createCounselingSubject.subscribe((counselingSubject) => {
       if (counselingSubject === true) {
-        this.getCounselings();
         this.modalService.dismissAll();
       }
     }));
   }
 
-  getCounselings() {
-    this.counselings.forEach((c) => {
-      // tslint:disable-next-line:max-line-length
-      this.subscriptions.push(this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, c.id).subscribe(categories => {
-        c.legalCategory = categories;
-      }));
-      this.subscriptions.push(this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.ACTIVITY, c.id).subscribe(categories => {
-        c.activityCategories = categories;
-      }));
-    });
-  }
+
 
   openEditCounseling(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) => {
