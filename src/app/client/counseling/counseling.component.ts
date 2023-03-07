@@ -165,9 +165,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
   }
 
   showDeSelected(event: DropdownItem[]) {
-    console.log('event', event);
     this.deSelectedItems = event;
-    console.log('deselectedItems', this.deSelectedItems);
   }
 
   saveCategories(categoryType: CategoryTypes) {
@@ -180,10 +178,8 @@ export class CounselingComponent implements OnInit, OnDestroy {
       };
       this.deSelectedCategories.push(deselect);
     });
-    console.log(this.deSelectedCategories);
     this.subscription$.push(this.categoryService.deleteJoinCategories(this.deSelectedCategories).subscribe(res => {
     }));
-    console.log('joinCategories', this.joinCategories);
     this.subscription$.push(this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
       this.commonService.setReloadSubject(true);
     }));
@@ -195,6 +191,8 @@ export class CounselingComponent implements OnInit, OnDestroy {
         this.addLegalCategory();
         break;
     }
+    this.deSelectedCategories = [];
+    this.joinCategories = [];
   }
 
   addLegalCategory() {
@@ -209,6 +207,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
       this.counseling.counselingDate = this.counselingDate;
     }
     console.log('counselingDate', this.counselingDate);
+    console.log('counseling', this.counseling);
     this.subscription$.push(this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe(res => {
       this.getCounseling();
     }));
@@ -234,7 +233,6 @@ export class CounselingComponent implements OnInit, OnDestroy {
 
   setDateObject() {
     if (this.counseling) {
-      console.log('set Date Object', this.counseling.counselingDate);
       const strings = this.counseling.counselingDate.split('T');
       this.dateObject = new class implements NgbDateStruct {
         day: number;
@@ -246,14 +244,10 @@ export class CounselingComponent implements OnInit, OnDestroy {
       this.dateObject.year = Number.parseInt(strings[0].split('-')[0], 10);
       const hour = Number.parseInt(strings[1].split(':')[0], 10);
       const minute = Number.parseInt(strings[1].split(':')[1], 10);
-      console.log('hour', hour);
-      console.log('minute', minute);
       this.time = {
         hour: hour,
         minute: minute
       };
-      console.log(this.dateObject);
-      console.log(this.time);
     }
   }
 

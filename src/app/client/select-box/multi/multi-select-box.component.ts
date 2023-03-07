@@ -42,7 +42,7 @@ export class MultiSelectBoxComponent implements OnInit, OnDestroy {
       textField: 'itemText',
       // selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 4,
       allowSearchFilter: true
     };
     this.loadCategoriesByCategoryType();
