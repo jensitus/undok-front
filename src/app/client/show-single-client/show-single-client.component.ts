@@ -8,6 +8,9 @@ import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
 import {SidebarService} from '../../admin-template/shared/services/sidebar.service';
 import {DeleteTypes} from '../delete/delete-types';
+import {CategoryTypes} from '../model/category-types';
+import {Counseling} from '../model/counseling';
+import {CategoryService} from '../service/category.service';
 
 @Component({
   selector: 'app-show-single-client',
@@ -17,6 +20,7 @@ import {DeleteTypes} from '../delete/delete-types';
 export class ShowSingleClientComponent implements OnInit, OnDestroy {
 
   deleteTypeClient: DeleteTypes = DeleteTypes.CLIENT;
+  counselings: Counseling[];
   private id: string;
   private subscription$: Subscription[] = [];
   person: Person;
@@ -33,7 +37,8 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     private clientService: ClientService,
     private modalService: NgbModal,
     private commonService: CommonService,
-    private sidebarService: SidebarService
+    private sidebarService: SidebarService,
+    private categoryService: CategoryService
   ) { }
 
   private static getDismissReason(reason: any): string {
@@ -100,8 +105,21 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
       this.client = res;
       console.log(this.client);
       console.log(this.client.id);
+      this.getCategories();
       this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
     }));
+  }
+
+  getCategories() {
+    this.client.counselings.forEach((c) => {
+      // tslint:disable-next-line:max-line-length
+      this.subscription$.push(this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, c.id).subscribe(categories => {
+        c.legalCategory = categories;
+      }));
+      this.subscription$.push(this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.ACTIVITY, c.id).subscribe(categories => {
+        c.activityCategories = categories;
+      }));
+    });
   }
 
   getDemoSubject() {

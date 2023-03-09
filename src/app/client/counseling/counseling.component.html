@@ -10,58 +10,229 @@
 
 <div class="row mt-5" *ngIf="counseling">
   <div class="col-md-10">
-    <div>
-      <h4><b class="text-danger">Beratung</b></h4>
+    <div class="row">
+      <div class="col-md-12">
+        <h4><b class="text-danger">Beratung</b></h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-10" *ngIf="!counseling.counselingDate && !editCounselingDate">
+        <div class="form-group">
+          <label>Termin</label> &nbsp; <span
+          class="text-danger"><small>Ein Beratungstermin ist erforderlich</small></span>
+          <div class="row">
+            <div class="col-3">
+              <div class="input-group">
+                <input class="form-control" placeholder="Beratungstermin"
+                       name="dp" [(ngModel)]="dateObject" ngbDatepicker #d="ngbDatepicker">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                    <fa-icon class="text-info" [icon]="faBars"></fa-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <ngb-timepicker [(ngModel)]="time" name="time"></ngb-timepicker>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-10" *ngIf="counseling.counselingDate && editCounselingDate">
+        <div class="form-group">
+          <label>Termin</label>
+          <div class="row">
+            <div class="col-3">
+              <div class="input-group">
+                <input class="form-control" placeholder="Beratungstermin"
+                       name="dp" [(ngModel)]="dateObject" ngbDatepicker #d="ngbDatepicker">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                    <fa-icon class="text-info" [icon]="faBars"></fa-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <ngb-timepicker [(ngModel)]="time" name="time"></ngb-timepicker>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2" *ngIf="!counseling.counselingDate && !editCounselingDate">
+        <!-- div class="set-cursor-pointer" (click)="chooseEditConcern()">Close</div -->
+        <div class="mt-2">
+          <button class="btn btn-sm btn-outline-success" (click)="update('concern')">update</button>
+        </div>
+      </div>
+      <div class="col-md-2" *ngIf="counseling.counselingDate && editCounselingDate">
+        <!-- div class="set-cursor-pointer" (click)="chooseEditConcern()">Close</div -->
+        <div class="mt-2">
+          <button class="btn btn-sm btn-outline-success" (click)="update('concern')">update</button>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4" *ngIf="counseling.counselingDate && !editCounselingDate">
+      <div class="col-md-10">
+        <label class="text-secondary">Datum:</label>&nbsp;
+        <b><span [innerHTML]="counseling?.counselingDate | date: 'dd.MM.yyyy HH:mm'"></span></b>
+      </div>
+      <div class="col-md-2">
+        <span class="set-cursor-pointer" (click)="chooseEditCounselingDate()">edit</span>
+      </div>
+    </div>
+    <div class="row mb-3 mt-4 fade-in" *ngIf="!editConcern">
+      <div class="col-md-10">
+        <label class="text-secondary">Anliegen:</label>
+        <div *ngIf="counseling.concern" [innerHTML]="counseling.concern | newLine"></div>
+      </div>
+      <div class="col-md-2" *ngIf="counseling.counselingDate">
+        <span class="set-cursor-pointer" (click)="chooseEditConcern()">edit</span>
+      </div>
+    </div>
+    <div *ngIf="editConcern" class="row fade-in m-1 mb-4 mt-4">
+      <div class="col-md-10">
+        <div class="form-group">
+          <label class="text-secondary">Anliegen:</label>
+          <textarea type="text" name="activity" [(ngModel)]="counseling.concern" placeholder="concern"
+                    class="form-control" rows="10"></textarea>
+          {{CONCERN_MAX_LENGTH - counseling.concern?.length}}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="set-cursor-pointer" (click)="chooseEditConcern()">Close</div>
+        <div class="mt-2">
+          <button class="btn btn-sm btn-outline-success" (click)="update('concern')"
+                  [disabled]="!counseling.counselingDate">update
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4 fade-in" *ngIf="!editLegalCategory">
+      <div class="col-md-10">
+        <label class="text-secondary">Rechtsschutzkategorie:</label>&nbsp;
+        <span *ngFor="let legalCategory of counseling.legalCategory">
+          <span [innerHTML]="legalCategory.name"></span>&nbsp;
+        </span>
+      </div>
+      <div class="col-md-2">
+        <div class="set-cursor-pointer"
+            (click)="addLegalCategory()"
+            *ngIf="counseling.counselingDate">
+          edit
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4 fade-in" *ngIf="editLegalCategory">
+      <div class="col">
+        <app-multi [categoryType]="legalCategoryType"
+                   [label]="legalLabel"
+                   (categoryValue)="showCategoryValue($event, legalCategoryType)"
+                   (deSelectedEmit)="showDeSelected($event)"
+                   [selectedCategories]="counseling.legalCategory">
+        </app-multi>
+      </div>
+      <div class="col">
+        <div (click)="addLegalCategory()" class="set-cursor-pointer">Close</div>
+        <div class="mt-2">
+          <button class="btn btn-sm btn-outline-success" (click)="saveCategories(legalCategoryType)"
+                  [disabled]="!counseling.counselingDate">submit
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4 mb-3 row fade-in" *ngIf="!editActivity">
+      <div class="col-md-10">
+        <label class="text-secondary">Aktivität:</label>
+        <div *ngIf="counseling.activity" [innerHTML]="counseling.activity | newLine"></div>
+      </div>
+      <div class="col-md-2">
+        <span class="set-cursor-pointer"
+              (click)="chooseEditActivity()"
+              *ngIf="counseling.counselingDate">edit
+        </span>
+      </div>
+    </div>
+    <div class="row mt-4 mb-3 fade-in" *ngIf="editActivity">
+      <div class="col-md-10">
+        <div class="form-group">
+          <label>Aktivität</label>
+          <textarea type="text" name="activity" [(ngModel)]="counseling.activity" placeholder="activity"
+                    class="form-control" rows="10"></textarea>
+          {{ACTIVITY_MAX_LENGTH - counseling.activity?.length}}
+        </div>
+      </div>
+      <div class="col-md-2">
+        <span class="set-cursor-pointer" (click)="chooseEditActivity()">Close</span>
+        <div class="mt-2">
+          <button class="btn btn-sm btn-outline-success"
+                  (click)="update('activity')"
+                  [disabled]="!counseling.counselingDate">update
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4 fade-in" *ngIf="!editActivityCategory">
+      <div class="col-md-10">
+        <label class="text-secondary">Aktivitätskategorie:</label>&nbsp;
+        <span *ngFor="let activityCategory of counseling.activityCategories">
+          <span [innerHTML]="activityCategory.name"></span>&nbsp;
+        </span>
+      </div>
+      <div class="col-md-2">
+      <span class="set-cursor-pointer"
+            (click)="addActivityCategory()"
+            *ngIf="counseling.counselingDate">edit</span>
+      </div>
+    </div>
+    <div class="row mt-4 fade-in" *ngIf="editActivityCategory">
+      <div class="col-md-10">
+        <app-multi [categoryType]="activityCategoryType"
+                   [label]="activityLabel"
+                   (categoryValue)="showCategoryValue($event, activityCategoryType)"
+                   (deSelectedEmit)="showDeSelected($event)"
+                   [selectedCategories]="counseling.activityCategories">
+        </app-multi>
+      </div>
+      <div class="col-md-2">
+        <div (click)="addActivityCategory()" class="set-cursor-pointer">Close</div>
+        <div class="mt-2">
+          <button class="btn btn-sm btn-outline-success"
+                  (click)="saveCategories(activityCategoryType)"
+                  [disabled]="!counseling.counselingDate">submit
+          </button>
+        </div>
+      </div>
     </div>
     <div class="mt-4">
-      <label class="text-secondary">Datum:</label>&nbsp;
-      <span [innerHTML]="counseling?.counselingDate | date: 'dd.MM.yyyy HH:mm'"></span>
+      <small>
+        <label class="text-secondary">Registriert von:</label>&nbsp;
+        <span [innerHTML]="counseling?.registeredBy"></span>
+      </small>
     </div>
-    <div class="m-1 mb-3">
-      <label class="text-secondary">Anliegen:</label>
-      <div *ngIf="counseling.concern" [innerHTML]="counseling.concern | newLine"></div>
-    </div>
-    <div>
-      <label class="text-secondary">Kategorie:</label>&nbsp;
-      <span [innerHTML]="counseling?.concernCategory"></span>
-    </div>
-    <div class="m-1 mb-3">
-      <label class="text-secondary">Aktivität:</label>
-      <div *ngIf="counseling.activity" [innerHTML]="counseling.activity | newLine"></div>
-    </div>
-    <div>
-      <label class="text-secondary">Rechtskategorie:</label>&nbsp;
-      <span *ngFor="let activityCategory of counseling.legalCategory">
-              <span [innerHTML]="activityCategory.name"></span>&nbsp;
-            </span>
-    </div>
-    <div class="mt-3">
-      <label class="text-secondary">Registriert von:</label>&nbsp;
-      <span [innerHTML]="counseling?.registeredBy"></span>
-    </div>
-    <div class="mt-3">
-      <button class="btn btn-sm btn-outline-success" (click)="openEditCounseling(edit_counseling)">Edit</button>&nbsp;
+    <div class="mt-3 mb-3">
       <button class="btn btn-sm btn-outline-warning" (click)="openDeleteConfirmationModal(confirmDelete)">delete
       </button>&nbsp;
-      <span *ngIf="counseling.comment === null" class="mt-2">
-            <button class="btn btn-sm btn-outline-dark" (click)="openEditCounseling(edit_comment)">Add Comment</button>
-          </span>
+
     </div>
   </div>
 </div>
 
-<ng-container *ngIf="counseling.comment != null">
+<ng-container *ngIf="counseling">
   <div class="row mt-5">
     <div class="col">
-      <h4><b>Kommentar</b></h4>
+      <h5><b>Kommentar</b></h5>
     </div>
   </div>
-  <div class="row mt-3">
+  <div class="row mt-3" *ngIf="counseling.comment != null">
     <div class="col-md-6">
       {{counseling.comment}}
     </div>
   </div>
-  <div class="row mt-3">
+  <div *ngIf="counseling.comment === null" class="row mt-3 ml-2">
+            <button class="btn btn-sm btn-outline-dark" (click)="openEditCounseling(edit_comment)">Add Comment</button>
+          </div>
+  <div class="row mt-3" *ngIf="counseling.comment != null">
     <div class="col">
       <button class="btn btn-sm btn-outline-dark" (click)="openEditCounseling(edit_comment)">edit comment</button>
       &nbsp;&nbsp;

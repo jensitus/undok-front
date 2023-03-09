@@ -15,16 +15,18 @@
             <div *ngIf="counseling.concern" [innerHTML]="counseling.concern | newLine"></div>
           </div>
           <div>
-            <label class="text-secondary">Kategorie:</label>&nbsp;
-            <span [innerHTML]="counseling.concernCategory"></span>
+            <label class="text-secondary">Rechtsschutzkategorie:</label>&nbsp;
+            <span *ngFor="let legalCategory of counseling.legalCategory">
+              <span [innerHTML]="legalCategory.name"></span>&nbsp;
+            </span>
           </div>
           <div class="m-1 mb-3">
             <label class="text-secondary">Aktivität:</label>
             <div *ngIf="counseling.activity" [innerHTML]="counseling.activity | newLine"></div>
           </div>
           <div>
-            <label class="text-secondary">Rechtskategorie:</label>&nbsp;
-            <span *ngFor="let activityCategory of counseling.legalCategory">
+            <label class="text-secondary">Aktivitätskategorie:</label>&nbsp;
+            <span *ngFor="let activityCategory of counseling.activityCategories">
               <span [innerHTML]="activityCategory.name"></span>&nbsp;
             </span>
           </div>
