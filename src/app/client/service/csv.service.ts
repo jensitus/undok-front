@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as FileSaver from 'file-saver';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +11,16 @@ export class CsvService {
 
   CSV_EXTENSION = '.csv';
   CSV_TYPE = 'text/plain;charset=utf-8';
+  apiUrl = environment.api_url;
+  COUNSELING_URL = '/service/undok/counselings';
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
+
+  public downloadCsv(): Observable<Blob> {
+    return this.http.get(this.apiUrl + this.COUNSELING_URL + '/csv', {responseType: 'blob'});
+  }
 
   private saveAsFile(buffer: any, fileName: string, fileType: string): void {
     const data: Blob = new Blob([buffer], { type: fileType });

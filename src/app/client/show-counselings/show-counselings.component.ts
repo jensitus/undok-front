@@ -1,7 +1,6 @@
 import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ClientService} from '../service/client.service';
 import {Observable, Subject} from 'rxjs';
-import {Counseling} from '../model/counseling';
 import {faTasks} from '@fortawesome/free-solid-svg-icons';
 import {CounselingTableService} from '../table/counseling-table.service';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
@@ -9,6 +8,7 @@ import {CounselingService} from '../service/counseling.service';
 import {DatePipe} from '@angular/common';
 import {CsvService} from '../service/csv.service';
 import {AllCounseling} from '../model/all-counseling';
+import {saveAs} from 'file-saver';
 
 @Component({
   selector: 'app-show-counselings',
@@ -61,7 +61,8 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
   }
 
   clickToCsv() {
-    this.csvService.exportToCsv(this.counselingTableService.allCounselings, 'counselings', this.columns);
+    // this.csvService.exportToCsv(this.counselingTableService.allCounselings, 'counselings', this.columns);
+    this.csvService.downloadCsv().subscribe(blob => saveAs(blob, 'counselings.csv'));
   }
 
 }
