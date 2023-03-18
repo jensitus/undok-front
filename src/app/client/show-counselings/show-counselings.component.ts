@@ -18,8 +18,6 @@ import {saveAs} from 'file-saver';
 })
 export class ShowCounselingsComponent implements OnInit, OnDestroy {
 
-  // counselings: Counseling[];
-  columns = ['id', 'counselingStatus', 'entryDate', 'concern', 'concernCategory', 'activity', 'activityCategories', 'registeredBy', 'counselingDate', 'clientId', 'clientFullName', 'comment'];
   total$: Observable<number>;
   counselings$: Observable<AllCounseling[]>;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
@@ -61,7 +59,6 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
   }
 
   clickToCsv() {
-    // this.csvService.exportToCsv(this.counselingTableService.allCounselings, 'counselings', this.columns);
     this.csvService.downloadCsv().subscribe(blob => saveAs(blob, 'counselings.csv'));
   }
 
