@@ -18,8 +18,8 @@ export class CsvService {
     private http: HttpClient
   ) { }
 
-  public downloadCsv(): Observable<Blob> {
-    return this.http.get(this.apiUrl + this.COUNSELING_URL + '/csv', {responseType: 'blob'});
+  public downloadCsv(url): Observable<Blob> {
+    return this.http.get(this.apiUrl + url + '/csv', {responseType: 'blob'});
   }
 
   private saveAsFile(buffer: any, fileName: string, fileType: string): void {

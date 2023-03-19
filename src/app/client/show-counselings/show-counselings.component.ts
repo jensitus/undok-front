@@ -59,7 +59,7 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
   }
 
   clickToCsv() {
-    this.csvService.downloadCsv().subscribe(blob => saveAs(blob, 'counselings.csv'));
+    this.csvService.downloadCsv('/service/undok/counselings').subscribe(blob => saveAs(blob, 'counselings.csv'));
   }
 
 }
