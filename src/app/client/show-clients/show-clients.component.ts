@@ -9,6 +9,7 @@ import {AllClient} from '../model/all-client';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {CommonService} from '../../common/services/common.service';
 import {takeUntil} from 'rxjs/operators';
+import {saveAs} from 'file-saver';
 
 @Component({
   selector: 'app-show-clients',
@@ -73,7 +74,8 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   }
 
   clickToCsv() {
-    this.csvService.exportToCsv(this.clientTableService.allClients$, this.CSV_FILENAME, this.columns);
+    this.csvService.downloadCsv('/service/undok/clients').subscribe(blob => saveAs(blob, 'clients.csv'));
+    // this.csvService.exportToCsv(this.clientTableService.allClients$, this.CSV_FILENAME, this.columns);
   }
 
   getAlertSubject() {
