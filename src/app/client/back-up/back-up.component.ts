@@ -11,13 +11,26 @@ import {CsvService} from '../service/csv.service';
 export class BackUpComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription[] = [];
-  public cscList: string[];
+  public csvList: string[];
+  public clientsList: string[] = [];
+  public counselingsList: string[] = [];
   constructor(private csvService: CsvService) { }
 
   ngOnInit(): void {
     this.subscription.push(this.csvService.getCsvList().subscribe(result => {
-      this.cscList = result;
+      this.csvList = result;
+      this.divideCsv();
     }));
+  }
+
+  divideCsv() {
+    for (const csv of this.csvList) {
+      if (csv.includes('clients')) {
+        this.clientsList.push(csv);
+      } else {
+        this.counselingsList.push(csv);
+      }
+    }
   }
 
   ngOnDestroy(): void {
@@ -27,7 +40,6 @@ export class BackUpComponent implements OnInit, OnDestroy {
   }
 
   getCsvAsBackup(filename: string) {
-    console.log(filename);
     this.subscription.push(
       this.csvService.getBackUpCsv(filename)
           .subscribe(blob => saveAs(blob, filename + '.csv'))

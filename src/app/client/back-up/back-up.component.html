@@ -1,9 +1,18 @@
-<p>back-up works!</p>
-<div>
-  <div class="row">
-    <div *ngFor="let csv of cscList">
-      <div class="col">
-       <a class="csvlink" (click)="getCsvAsBackup(csv)">{{csv}}</a>
+<p>Daten Backup</p>
+<div class="row">
+  <div class="col-md-6">
+    <div><b>Clients</b></div>
+    <div class="row" *ngFor="let clientsCsv of clientsList">
+      <div class="col-12">
+        <a class="csvlink" (click)="getCsvAsBackup(clientsCsv)">{{clientsCsv}}</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div><b>Counselings</b></div>
+    <div class="row" *ngFor="let counselingsCsv of counselingsList">
+      <div class="col-md-12">
+        <a class="csvlink" (click)="getCsvAsBackup(counselingsCsv)">{{counselingsCsv}}</a>
       </div>
     </div>
   </div>
