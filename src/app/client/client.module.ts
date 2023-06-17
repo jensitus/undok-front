@@ -19,23 +19,29 @@ import {NgbdSortableHeader} from './table/sortable.directive';
 import {EditCounselingComponent} from './edit-counseling/edit-counseling.component';
 import {AlertModule} from '../admin-template/layout/components/alert/alert.module';
 import {CreateCommentComponent} from './create-comment/create-comment.component';
-import { ShowEmployersComponent } from './show-employers/show-employers.component';
-import { CreateClientEmployerJobDescriptionComponent } from './create-client-employer-job-description/create-client-employer-job-description.component';
-import { EditClientEmployerJobDescriptionComponent } from './edit-client-employer-job-description/edit-client-employer-job-description.component';
-import { CounselingComponent } from './counseling/counseling.component';
-import { NewLinePipe } from './new-line.pipe';
-import { ShowSingleEmployerComponent } from './show-single-employer/show-single-employer.component';
-import { EditEmployerComponent } from './edit-employer/edit-employer.component';
-import { SelectBoxComponent } from './select-box/single/select-box.component';
-import { DeleteComponent } from './delete/delete.component';
-import { DeleteModalComponent } from './delete/delete-modal/delete-modal.component';
+import {ShowEmployersComponent} from './show-employers/show-employers.component';
+import {
+  CreateClientEmployerJobDescriptionComponent
+} from './create-client-employer-job-description/create-client-employer-job-description.component';
+import {
+  EditClientEmployerJobDescriptionComponent
+} from './edit-client-employer-job-description/edit-client-employer-job-description.component';
+import {CounselingComponent} from './counseling/counseling.component';
+import {NewLinePipe} from './new-line.pipe';
+import {ShowSingleEmployerComponent} from './show-single-employer/show-single-employer.component';
+import {EditEmployerComponent} from './edit-employer/edit-employer.component';
+import {SelectBoxComponent} from './select-box/single/select-box.component';
+import {DeleteComponent} from './delete/delete.component';
+import {DeleteModalComponent} from './delete/delete-modal/delete-modal.component';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
-import { MultiSelectBoxComponent } from './select-box/multi/multi-select-box.component';
-import { ShowCounselingComponent } from './show-counseling/show-counseling.component';
-import { AddCategoryComponent } from './select-box/add-category/add-category.component';
+import {MultiSelectBoxComponent} from './select-box/multi/multi-select-box.component';
+import {ShowCounselingComponent} from './show-counseling/show-counseling.component';
+import {AddCategoryComponent} from './select-box/add-category/add-category.component';
+import {BackUpComponent} from './back-up/back-up.component';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
+  {path: 'csv-download-list', component: BackUpComponent},
   {path: 'create', component: CreateClientComponent},
   {path: 'client-list', component: ShowClientsComponent},
   {path: 'counselings', component: ShowCounselingsComponent},
@@ -75,7 +81,8 @@ const appRoutes: Routes = [
     DeleteModalComponent,
     MultiSelectBoxComponent,
     ShowCounselingComponent,
-    AddCategoryComponent
+    AddCategoryComponent,
+    BackUpComponent
   ],
   imports: [
     NgMultiSelectDropDownModule.forRoot(),
