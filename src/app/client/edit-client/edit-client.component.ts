@@ -1,11 +1,11 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ClientForm} from '../model/clientForm';
 import {Subscription} from 'rxjs';
 import {ClientService} from '../service/client.service';
 import {NgbFormatterService} from '../../common/services/ngb-formatter.service';
 import {NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {Client} from '../model/client';
 import {ResidentStatus} from '../model/resident-status.enum';
@@ -21,8 +21,9 @@ import {CategoryTypes} from '../model/category-types';
 })
 export class EditClientComponent implements OnInit, OnDestroy {
 
-  @Input() client: Client;
+  client: Client | undefined;
 
+  client_id: string;
   clientForm: ClientForm;
   private unsubscribe$: Subscription[] = [];
   firstName: string;
@@ -58,13 +59,26 @@ export class EditClientComponent implements OnInit, OnDestroy {
     private ngbFormatterService: NgbFormatterService,
     private dateAdapter: NgbDateAdapter<string>,
     private commonService: CommonService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {
+  }
 
   ngOnInit(): void {
-    this.country = this.client.person.address.country;
-    this.nationality = this.client.nationality;
-    this.marital = this.client.maritalStatus;
+    // this.country = this.client.person.address.country;
+    // this.nationality = this.client.nationality;
+    // this.marital = this.client.maritalStatus;
+    this.unsubscribe$.push(
+      this.activatedRoute.params.subscribe(params => {
+        this.unsubscribe$.push(
+          this.clientService.getSingleClient(params['id']).subscribe({
+            next: (client) => {
+              this.client = client;
+            }
+          })
+        );
+      })
+    );
   }
 
   ngOnDestroy(): void {

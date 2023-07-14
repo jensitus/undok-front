@@ -50,6 +50,7 @@ const appRoutes: Routes = [
   {path: 'create/employer', component: CreateEmployerComponent},
   {path: 'employers/:id', component: ShowSingleEmployerComponent},
   {path: ':id/create-counseling', component: CreateCounselingComponent},
+  {path: ':id/edit', component: EditClientComponent},
   {path: ':client_id/counselings/:counseling_id', component: ShowCounselingComponent}
 ];
 

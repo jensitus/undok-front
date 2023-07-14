@@ -39,7 +39,8 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     private sidebarService: SidebarService,
     private categoryService: CategoryService
-  ) { }
+  ) {
+  }
 
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -101,7 +102,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   getClient() {
-    this.subscription$.push(this.clientService.getSingleClient(this.id).subscribe( res => {
+    this.subscription$.push(this.clientService.getSingleClient(this.id).subscribe(res => {
       this.client = res;
       console.log(this.client);
       console.log(this.client.id);
@@ -123,7 +124,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   getDemoSubject() {
-    this.subscription$.push(this.commonService.demoSubject.subscribe( reload => {
+    this.subscription$.push(this.commonService.demoSubject.subscribe(reload => {
       if (reload === true) {
         this.getClient();
         this.modalService.dismissAll();
@@ -157,19 +158,26 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   checkIfEmployerIsToBeAssigned() {
-    this.subscription$.push(this.sidebarService.assignEmployerSubject.subscribe(assignEmployer => {
-      if (assignEmployer === true) {
-        this.openEmployer(this.assignEmployer);
-      }
-    }));
+    this.subscription$.push(
+      this.sidebarService.assignEmployerSubject.subscribe({
+          next: (assignEmployer) => {
+            if (assignEmployer === true) {
+              this.openEmployer(this.assignEmployer);
+            }
+          }
+        }
+      )
+    );
   }
 
   checkIfClientIsToBeEdited() {
-    this.subscription$.push(this.sidebarService.editClientSubject.subscribe(editClient => {
-      if (editClient === true) {
-        this.openEditModal(this.editClient);
-      }
-    }));
+    this.subscription$.push(
+      this.sidebarService.editClientSubject.subscribe(editClient => {
+        if (editClient === true) {
+          this.openEditModal(this.editClient);
+        }
+      })
+    );
   }
 
 }

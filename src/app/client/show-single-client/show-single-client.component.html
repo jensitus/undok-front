@@ -125,7 +125,7 @@
       </div>
       <div class="row">
         <div class="col text-right">
-          <button type="button" class="btn btn-sm btn-outline-primary" (click)="openEditModal(edit_client)">edit</button>
+          <a class="btn btn-sm btn-outline-primary" [routerLink]="['edit']">edit</a>
           |
           <app-delete [id_to_delete]="client.person.id" [type]="deleteTypeClient" [delete_object_name]="client.keyword"></app-delete>
         </div>
