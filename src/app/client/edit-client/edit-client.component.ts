@@ -69,14 +69,17 @@ export class EditClientComponent implements OnInit, OnDestroy {
     // this.nationality = this.client.nationality;
     // this.marital = this.client.maritalStatus;
     this.unsubscribe$.push(
-      this.activatedRoute.params.subscribe(params => {
-        this.unsubscribe$.push(
-          this.clientService.getSingleClient(params['id']).subscribe({
-            next: (client) => {
-              this.client = client;
-            }
-          })
-        );
+      this.activatedRoute.params.subscribe({
+        next: (params) => {
+          this.client_id = params['id'];
+          this.unsubscribe$.push(
+            this.clientService.getSingleClient(this.client_id).subscribe({
+              next: (client) => {
+                this.client = client;
+              }
+            })
+          );
+        }
       })
     );
   }
@@ -90,7 +93,6 @@ export class EditClientComponent implements OnInit, OnDestroy {
   }
 
   onCountryChange(country) {
-    console.log(country);
     switch (country) {
       case 'Countries':
         this.client.person.address.country = 'Unknown';
@@ -110,32 +112,18 @@ export class EditClientComponent implements OnInit, OnDestroy {
 
   submit(): void {
     const theRealDate = this.dateAdapter.fromModel(this.dateOfBirth);
-    const dateOfBirth = this.ngbFormatterService.format(theRealDate);
-    this.client.person.dateOfBirth = dateOfBirth;
-    this.unsubscribe$.push(this.clientService.updateClient(this.client.id, this.client).subscribe(result => {
-      this.loading = true;
-      this.commonService.setDemoSubject(true);
-      this.loading = false;
-    }));
+    this.client.person.dateOfBirth = this.ngbFormatterService.format(theRealDate);
+    this.unsubscribe$.push(
+      this.clientService.updateClient(this.client.id, this.client).subscribe({
+        next: () => {
+          this.loading = true;
+          this.commonService.setDemoSubject(true);
+          this.loading = false;
+          this.router.navigate(['clients/', this.client_id]);
+        }
+      })
+    );
   }
-
-  /*onResidentStatusChange(status): void {
-    let resStatus: string;
-    switch (status) {
-      case 'asyl':
-        resStatus = ResidentStatus.ASYL;
-        break;
-      case 'eu':
-        resStatus = ResidentStatus.EU;
-        break;
-      case 'illegal':
-        resStatus = ResidentStatus.ILLEGAL;
-        break;
-      default:
-        resStatus = ResidentStatus.UNKNOWN;
-    }
-    this.client.currentResidentStatus = resStatus;
-  }*/
 
   onGenderChange(event: string) {
     this.client.person.gender = event;

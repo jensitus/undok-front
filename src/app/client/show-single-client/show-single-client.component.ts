@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ClientService} from '../service/client.service';
 import {Subscription} from 'rxjs';
 import {Client} from '../model/client';
@@ -38,6 +38,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private commonService: CommonService,
     private sidebarService: SidebarService,
+    private router: Router,
     private categoryService: CategoryService
   ) {
   }
@@ -77,7 +78,6 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   openEmployer(content) {
-    console.log('new employer... ', content);
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -104,8 +104,6 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   getClient() {
     this.subscription$.push(this.clientService.getSingleClient(this.id).subscribe(res => {
       this.client = res;
-      console.log(this.client);
-      console.log(this.client.id);
       this.getCategories();
       this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
     }));
@@ -113,13 +111,18 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
 
   getCategories() {
     this.client.counselings.forEach((c) => {
-      // tslint:disable-next-line:max-line-length
-      this.subscription$.push(this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, c.id).subscribe(categories => {
-        c.legalCategory = categories;
-      }));
-      this.subscription$.push(this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.ACTIVITY, c.id).subscribe(categories => {
-        c.activityCategories = categories;
-      }));
+      this.subscription$.push(
+        this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, c.id).subscribe({
+          next: (categories) => {
+            c.legalCategory = categories;
+          }
+        }));
+      this.subscription$.push(
+        this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.ACTIVITY, c.id).subscribe({
+          next: (categories) => {
+            c.activityCategories = categories;
+          }
+        }));
     });
   }
 
@@ -174,7 +177,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.subscription$.push(
       this.sidebarService.editClientSubject.subscribe(editClient => {
         if (editClient === true) {
-          this.openEditModal(this.editClient);
+          this.router.navigate([`clients/${this.client.id}/edit`]);
         }
       })
     );
