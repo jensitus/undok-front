@@ -26,7 +26,7 @@ export class ShowEmployersListComponent implements OnInit, OnDestroy {
   employers$: Observable<Employer[]>;
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   faSurprise = faSurprise;
-  private closeResult = '';
+  closeResult = '';
   @ViewChild('create_employer') createEmployer: ElementRef;
 
   constructor(
