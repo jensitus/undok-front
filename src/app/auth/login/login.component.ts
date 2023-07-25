@@ -3,7 +3,6 @@ import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../services/authentication.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
-import {CommonService} from '../../common/services/common.service';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -63,13 +62,16 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     this.loading = true;
-    this.subscription$.push(this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(data => {
-        this.loading = false;
-        this.router.navigate(['/second-factor']);
-      }, error => {
-        this.alertService.error(error.error.text);
-      }
-    ));
+    this.subscription$.push(
+      this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe({
+        next: () => {
+          this.loading = false;
+          this.router.navigate(['/second-factor']);
+        },
+        error: error => {
+          this.alertService.error(error.error.text);
+        }
+      }));
   }
 
 }
