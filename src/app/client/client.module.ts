@@ -38,10 +38,12 @@ import {MultiSelectBoxComponent} from './select-box/multi/multi-select-box.compo
 import {ShowCounselingComponent} from './show-counseling/show-counseling.component';
 import {AddCategoryComponent} from './select-box/add-category/add-category.component';
 import {BackUpComponent} from './back-up/back-up.component';
+import { EditCategoriesComponent } from './edit-categories/edit-categories.component';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
   {path: 'csv-download-list', component: BackUpComponent},
+  {path: 'edit-categories', component: EditCategoriesComponent},
   {path: 'create', component: CreateClientComponent},
   {path: 'client-list', component: ShowClientsComponent},
   {path: 'counselings', component: ShowCounselingsComponent},
@@ -83,7 +85,8 @@ const appRoutes: Routes = [
     MultiSelectBoxComponent,
     ShowCounselingComponent,
     AddCategoryComponent,
-    BackUpComponent
+    BackUpComponent,
+    EditCategoriesComponent
   ],
   imports: [
     NgMultiSelectDropDownModule.forRoot(),

@@ -22,6 +22,10 @@ export class CategoryService {
     private http: HttpClient
   ) { }
 
+  getAllCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(this.apiUrl + this.UNDOK_CATEGORIES + '/all');
+  }
+
   getCategories(type: string): Observable<any> {
     return this.http.get(this.apiUrl + this.UNDOK_CATEGORIES + this.UNDOK_BY_TYPE + type);
   }

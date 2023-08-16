@@ -118,9 +118,7 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
   }
 
   showDeSelected(event: DropdownItem[]) {
-    console.log('event', event);
     this.deSelectedItems = event;
-    console.log('deselectedItems', this.deSelectedItems);
   }
 
 }
