@@ -13,6 +13,7 @@ export class EditCategoriesComponent implements OnInit, OnDestroy {
 
   private subscription$: Subscription[] = [];
   categories: Category[];
+  catMap = new Map<string, Category[]>();
 
   protected readonly CategoryTypes = CategoryTypes;
 
@@ -25,6 +26,7 @@ export class EditCategoriesComponent implements OnInit, OnDestroy {
       this.categoryService.getAllCategories().subscribe({
         next: result => {
           this.categories = result;
+          this.sortCategories();
         }
       })
     );
@@ -35,4 +37,20 @@ export class EditCategoriesComponent implements OnInit, OnDestroy {
       s.unsubscribe();
     });
   }
+
+  sortCategories() {
+    let catType: keyof typeof CategoryTypes;
+    // tslint:disable-next-line:forin
+    for (catType in CategoryTypes) {
+      const catArray: Category[] = [];
+      const value = CategoryTypes[catType];
+      this.categories.forEach((c) => {
+        if (c.type === value) {
+          catArray.push(c);
+        }
+      });
+      this.catMap.set(value, catArray);
+    }
+  }
+
 }

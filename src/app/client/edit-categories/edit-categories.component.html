@@ -1,18 +1,8 @@
-<div *ngFor="let category of categories">
-  <div *ngIf="category.type === CategoryTypes.ACTIVITY" class="row">
-    <div class="col">
-      {{category.name}}
-    </div>
-    <div class="col">
-      {{category.type}}
-    </div>
+<div class="row" *ngFor="let catMapEntry of catMap | keyvalue">
+  <div>
+    <b>{{catMapEntry.key}}</b>
   </div>
-</div>
-<div class="row" *ngFor="let type of CategoryTypes | keyvalue">
-  <div class="col">
-    <b>{{type.value}}</b>
-  </div>
-  <div class="col">
-    
+  <div *ngFor="let c of catMapEntry.value">
+    {{c.name}}
   </div>
 </div>
