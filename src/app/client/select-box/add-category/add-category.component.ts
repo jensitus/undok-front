@@ -6,6 +6,13 @@ import {CategoryService} from '../../service/category.service';
 import {CommonService} from '../../../common/services/common.service';
 import {Label} from '../../model/label';
 
+export enum Crud {
+  CREATE,
+  READ,
+  UPDATE,
+  DELETE
+}
+
 @Component({
   selector: 'app-add-category',
   templateUrl: './add-category.component.html',
@@ -15,6 +22,7 @@ export class AddCategoryComponent implements OnInit, OnDestroy {
 
   @Input() categoryType: CategoryTypes;
   @Input() label: Label;
+  @Input() crud: Crud | undefined;
   private subscription$: Subscription[] = [];
   categoryExists: string = null;
   categoryIsCollapsed = true;
@@ -23,9 +31,13 @@ export class AddCategoryComponent implements OnInit, OnDestroy {
   constructor(
     private categoryService: CategoryService,
     private commonService: CommonService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
+    if (this.crud === undefined) {
+      this.crud = Crud.CREATE;
+    }
   }
 
   ngOnDestroy(): void {
@@ -40,12 +52,17 @@ export class AddCategoryComponent implements OnInit, OnDestroy {
       name: this.newCategory,
       type: type
     };
-    this.subscription$.push(this.categoryService.addCategory(category).subscribe(r => {
-      this.newCategory = null;
-      this.commonService.setReloadSubject(true);
-    }, error => {
-      this.categoryExists = error.error;
-    }));
+    this.subscription$.push(
+      this.categoryService.addCategory(category).subscribe({
+        next: (r) => {
+          this.newCategory = null;
+          this.commonService.setReloadSubject(true);
+        },
+        error: (err) => {
+          this.categoryExists = err.error;
+        }
+      })
+    );
   }
 
 }

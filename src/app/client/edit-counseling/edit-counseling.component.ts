@@ -23,7 +23,7 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
 
   CONCERN_MAX_LENGTH = 4080;
   ACTIVITY_MAX_LENGTH = 4080;
-  concernCategoryType: CategoryTypes = CategoryTypes.CONCERN_CATEGORY;
+  concernCategoryType: string;
   legalCategoryType: CategoryTypes = CategoryTypes.LEGAL;
   activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY;
 
@@ -71,8 +71,14 @@ export class EditCounselingComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.loading = true;
-    this.subscription$.push(this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe(res => {
-    }));
+    this.subscription$.push(
+      this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe({
+        next: () => {
+        }, error: (err) => {
+          console.log(err);
+        }
+      })
+    );
     this.loading = false;
   }
 

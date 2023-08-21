@@ -48,7 +48,6 @@ const appRoutes: Routes = [
   {path: 'client-list', component: ShowClientsComponent},
   {path: 'counselings', component: ShowCounselingsComponent},
   {path: ':id', component: ShowSingleClientComponent},
-  {path: ':id/counselings/create', component: CreateCounselingComponent},
   {path: 'create/employer', component: CreateEmployerComponent},
   {path: 'employers/:id', component: ShowSingleEmployerComponent},
   {path: ':id/create-counseling', component: CreateCounselingComponent},
