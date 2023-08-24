@@ -52,4 +52,8 @@ export class CategoryService {
     return this.http.delete<any>(this.apiUrl + this.UNDOK_CATEGORIES + '/join-categories', options);
   }
 
+  updateCategory(id: string, name: string): Observable<Category> {
+    return this.http.put<Category>(this.apiUrl + this.UNDOK_CATEGORIES + '/' + id + '/update', name);
+  }
+
 }

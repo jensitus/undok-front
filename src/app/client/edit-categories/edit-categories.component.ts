@@ -19,7 +19,8 @@ export class EditCategoriesComponent implements OnInit, OnDestroy {
 
   constructor(
     private categoryService: CategoryService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.subscription$.push(
@@ -49,7 +50,13 @@ export class EditCategoriesComponent implements OnInit, OnDestroy {
           catArray.push(c);
         }
       });
-      this.catMap.set(value, catArray);
+      if (value === 'ACTIVITY') {
+        this.catMap.set('Aktivitätskategorie', catArray);
+      } else if (value === 'LEGAL') {
+        this.catMap.set('Rechtsschutzkategorie', catArray);
+      } else {
+        this.catMap.set(value, catArray);
+      }
     }
   }
 
