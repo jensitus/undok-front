@@ -112,8 +112,8 @@ export class EditClientComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
-    const theRealDate = this.dateAdapter.fromModel(this.dateOfBirth);
-    this.client.person.dateOfBirth = this.ngbFormatterService.format(theRealDate);
+    // const theRealDate = this.dateAdapter.fromModel(this.dateOfBirth);
+    // this.client.person.dateOfBirth = this.ngbFormatterService.format(theRealDate);
     this.unsubscribe$.push(
       this.clientService.updateClient(this.client.id, this.client).subscribe({
         next: () => {

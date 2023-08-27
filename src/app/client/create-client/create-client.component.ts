@@ -14,6 +14,7 @@ import {AlertService} from '../../admin-template/layout/components/alert/service
 import {COUNTRIES_AT} from '../model/countriesAT';
 import {CITIZENSHIPS} from '../model/citizenships';
 import {CategoryTypes} from '../model/category-types';
+import {Label} from '../model/label';
 
 @Component({
   selector: 'app-create-client',
@@ -199,4 +200,6 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   selectSector(event: any) {
     this.sector = event;
   }
+
+  protected readonly Label = Label;
 }

@@ -56,6 +56,7 @@ export class AddCategoryComponent implements OnInit, OnDestroy {
       this.categoryService.addCategory(category).subscribe({
         next: (r) => {
           this.newCategory = null;
+          this.categoryIsCollapsed = true;
           this.commonService.setReloadSubject(true);
         },
         error: (err) => {

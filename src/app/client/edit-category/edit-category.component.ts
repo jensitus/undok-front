@@ -30,7 +30,7 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
 
   editCategory() {
     this.subscription$.push(
-      this.categoryService.updateCategory('d2cc6192-8564-4ee5-bcb5-9b6639608f23', this.categoryName).subscribe({
+      this.categoryService.updateCategory(this.categoryId, this.categoryName).subscribe({
         next: (result) => {
           this.updateCategory();
         }, error: (error) => {
@@ -42,10 +42,10 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
 
   updateCategory() {
     this.update = !this.update;
-    this.setErrorMessage();
+    this.setErrorMessageToNull();
   }
 
-  setErrorMessage() {
+  setErrorMessageToNull() {
     this.errorMessage = null;
   }
 

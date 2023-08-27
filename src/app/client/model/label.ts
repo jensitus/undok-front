@@ -1,4 +1,7 @@
 export enum Label {
   LEGAL = 'Rechtsschutzkategorie',
-  ACTIVITY = 'Aktivitätskategorie'
+  ACTIVITY = 'Aktivitätskategorie',
+  RESIDENT_STATUS = 'Aufenthaltstitel',
+  GENDER = 'gender',
+  SECTOR = 'branche'
 }

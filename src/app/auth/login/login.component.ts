@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     // reset login status
     this.authenticationService.logout();
 
-    // get return url from route parametes or default to '/'
+    // get return url from route parameters or default to '/'
     // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 

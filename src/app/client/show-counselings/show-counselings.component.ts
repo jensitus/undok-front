@@ -10,6 +10,7 @@ import {CsvService} from '../service/csv.service';
 import {AllCounseling} from '../model/all-counseling';
 import {saveAs} from 'file-saver';
 import {takeUntil} from 'rxjs/operators';
+import {currentDate, currentDateTime} from '../../common/helper/date-utility';
 
 @Component({
              selector: 'app-show-counselings',
@@ -63,7 +64,7 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
     this.csvService
         .downloadCsv('/service/undok/counselings')
         .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(blob => saveAs(blob, 'counselings.csv'));
+        .subscribe(blob => saveAs(blob, currentDate + '-counselings.csv'));
   }
 
 }

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
 import {User} from '../../../../auth/model/user';
-import {faBars, faCampground, faCoffee, faPowerOff, faTachometerAlt, faUser, faUsers, faTasks, faSurprise, faSave} from '@fortawesome/free-solid-svg-icons';
+import {faEarListen, faBars, faCampground, faCoffee, faPowerOff, faTachometerAlt, faUser, faUsers, faTasks, faSurprise, faSave} from '@fortawesome/free-solid-svg-icons';
 import {SidebarService} from '../../../shared/services/sidebar.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -28,6 +28,7 @@ export class SidebarComponent implements OnInit {
   faTasks = faTasks;
   faSurprise = faSurprise;
   faSave = faSave;
+  faEarListen = faEarListen;
   private unsubscribe$ = new Subject();
   showClientButtons = false;
   showCreateEmployerButton = false;

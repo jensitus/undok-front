@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs';
 import {CategoryService} from '../../service/category.service';
 import {CategoryTypes} from '../../model/category-types';
 import {CommonService} from '../../../common/services/common.service';
+import {Label} from '../../model/label';
 
 
 @Component({
@@ -16,14 +17,14 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
 
   @Input() categoryType: CategoryTypes;
   @Input() cat_model: any;
-  activityCategory: string;
-  concernCategory: string;
+  @Input() label: Label;
+  categoryName: string;
 
   @Output()
   catValue = new EventEmitter<string>();
 
   faBars = faBars;
-  concernCategories: Category[];
+  categoriesToSelect: Category[];
 
   category: Category;
   private subscription$: Subscription[] = [];
@@ -52,26 +53,26 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
     }));
   }
 
-  onCatValueChange(): void {
-    this.catValue.emit(this.concernCategory);
+  onCategoryValueChange(): void {
+    this.catValue.emit(this.categoryName);
   }
 
   loadCategoriesByCategoryType(): void {
     this.subscription$.push(this.categoryService.getCategories(this.categoryType).subscribe(cat => {
-      this.concernCategories = cat;
+      this.categoriesToSelect = cat;
     }));
   }
 
-  selectConcernCat(cat: Category) {
-    this.concernCategory = cat.name;
-    this.onCatValueChange();
+  selectCategory(category: Category) {
+    this.categoryName = category.name;
+    this.onCategoryValueChange();
   }
 
-  onItemSelect(item: any) {
-    console.log(item);
-  }
-  onSelectAll(items: any) {
-    console.log(items);
-  }
+  // onItemSelect(item: any) {
+  //   console.log(item);
+  // }
+  // onSelectAll(items: any) {
+  //   console.log(items);
+  // }
 
 }
