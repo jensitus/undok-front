@@ -3,16 +3,16 @@
   <div class="row">
     <div class="col-md-4">
       <!-- Person -->
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Vorname</label>
         <input type="text" class="form-control" name="firstName" [(ngModel)]="firstName" />
       </div>
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Nachname</label>
         <input type="text" class="form-control" name="lastName" [(ngModel)]="lastName" />
       </div>
 
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Geburtstag</label>
         <div class="input-group">
           <input class="form-control" type="date" [(ngModel)]="dateOfBirth" name="d">
@@ -20,19 +20,19 @@
       </div>
 
       <!-- Address -->
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Straße</label>
         <input type="text" class="form-control" name="street" [(ngModel)]="street" />
       </div>
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Postleitzahl</label>
         <input type="text" class="form-control" name="zipCode" [(ngModel)]="zipCode" />
       </div>
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Stadt</label>
         <input type="text" class="form-control" name="city" [(ngModel)]="city" />
       </div>
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Land</label>
         <select class="form-control" (click)="onCountryChange($event.target.value)">
           <option></option>
@@ -50,19 +50,19 @@
     <div class="col-md-4">
 
       <!-- client: -->
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Schlüsselwort</label>
         <input type="text" class="form-control" name="keyword" [(ngModel)]="keyword" />
       </div>
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Kontaktdaten (z.B. Email)</label>
         <input type="text" class="form-control" name="contactData" [(ngModel)]="contactData" />
       </div>
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Bildung</label>
         <input type="text" class="form-control" name="education" [(ngModel)]="education" />
       </div>
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Wo hat die Person von uns gehört?</label>
         <input type="text" class="form-control" name="howHasThePersonHeardFromUS"
                [(ngModel)]="howHasThePersonHeardFromUs" placeholder="how has the person heard from us"/>
@@ -76,7 +76,7 @@
         <input type="checkbox" class="form-check-input" id="interpreter" [(ngModel)]="interpreterNecessary" name="interpreterNecessary">
         <label class="form-check-label" for="interpreter">Dolmetsch erforderlich</label>
       </div>
-      <div class="form-group mt-4">
+      <div class="form-group mt-4 mb-2">
         <label>Familienstatus</label>
         <select class="form-control" (change)="onMaritalChange($event.target.value)">
           <option></option>
@@ -84,7 +84,7 @@
         </select>
       </div>
 
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Staatsbürgerschaft</label>
         <select class="form-control" (change)="onCitizenshipChange($event.target.value)">
           <option></option>
@@ -94,7 +94,7 @@
         </select>
       </div>
 
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Email</label>
         <input type="email" class="form-control" name="email" [(ngModel)]="email" />
       </div>
@@ -102,54 +102,40 @@
 
     </div>
     <div class="col-md-4">
-      <!--
-      <div class="form-group">
-        <label>formerResidentStatus</label>
-        <input type="text" class="form-control" name="formerResidentStatus" [(ngModel)]="formerResidentStatus" placeholder="formerResidentStatus" />
-      </div>
-      -->
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Sprache</label>
         <input type="text" class="form-control" name="language" [(ngModel)]="language" />
       </div>
-      <!--<div class="form-group">
-        <label>Aufenthaltstitel</label>
-        <input type="text" class="form-control" name="currentResidentStatus" [(ngModel)]="currentResidentStatus" />
-      </div>-->
 
-      <app-select-box [categoryType]="cat_aufenthaltstitel" (catValue)="selectResidentStatus($event)" ></app-select-box>
+      <app-select-box [categoryType]="cat_aufenthaltstitel" (catValue)="selectResidentStatus($event)" [label]="Label.RESIDENT_STATUS"></app-select-box>
 
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Arbeitsmarktzugang</label>
         <input type="text" class="form-control" name="labourMarketAccess" [(ngModel)]="labourMarketAccess" />
       </div>
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Position</label>
         <input type="text" class="form-control" name="position" [(ngModel)]="position" />
       </div>
-<!--      <div class="form-group">
-        <label>Branche</label>
-        <input type="text" class="form-control" name="sector" [(ngModel)]="sector" />
-      </div>-->
 
-      <app-select-box [categoryType]="cat_sector" (catValue)="selectSector($event)"></app-select-box>
+      <app-select-box [categoryType]="cat_sector" (catValue)="selectSector($event)" [label]="Label.SECTOR"></app-select-box>
 
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label>Gewerkschaft</label>
         <input type="text" class="form-control" name="union" [(ngModel)]="union" />
       </div>
-      <div class="form-check mb-3">
+      <div class="form-check mb-2">
         <input type="checkbox" class="form-check-input" [(ngModel)]="membership" name="membership">
         <label class="form-check-label">Mitgliedschaft</label>
       </div>
 
-      <div class="form-group mt-3">
+      <div class="form-group mt-2 mb-2">
         <label>organization</label>
         <input type="text" class="form-control" name="organization" [(ngModel)]="organization" />
       </div>
 
       <div>
-        <app-select-box (catValue)="showCat($event)" [categoryType]="cat_gender"></app-select-box>
+        <app-select-box (catValue)="showCat($event)" [categoryType]="cat_gender" [label]="Label.GENDER"></app-select-box>
       </div>
 
     </div>

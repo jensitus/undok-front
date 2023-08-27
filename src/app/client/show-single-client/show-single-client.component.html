@@ -2,10 +2,10 @@
   <div class="card">
     <div class="card-body">
       <div class="row">
-        <div class="col-md mb-2">
+        <div class="col mb-2">
           <b class="text-success">Klient:in</b>
         </div>
-        <div class="col-md text-right">
+        <div class="col text-end">
           <button type="button" class="btn btn-sm btn-link" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed"
                   aria-controls="collapseExample">
             collapse
@@ -124,8 +124,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="col text-right">
-          <button type="button" class="btn btn-sm btn-outline-primary" (click)="openEditModal(edit_client)">edit</button>
+        <div class="col text-end">
+          <a class="btn btn-sm btn-outline-primary" [routerLink]="['edit']">edit</a>
           |
           <app-delete [id_to_delete]="client.person.id" [type]="deleteTypeClient" [delete_object_name]="client.keyword"></app-delete>
         </div>
@@ -182,28 +182,10 @@
   </div>
 </ng-template>
 
-<!--<ng-template #create_employer let-modal>-->
-<!--  <div class="modal-header">-->
-<!--    <h4 class="modal-title">Create Employer</h4>-->
-<!--    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
-<!--      <span aria-hidden="true">&times;</span>-->
-<!--    </button>-->
-<!--  </div>-->
-<!--  <div class="modal-body">-->
-<!--    <app-create-employer></app-create-employer>-->
-<!--  </div>-->
-<!--  <div class="modal-footer">-->
-<!--    <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">-->
-<!--      <span aria-hidden="true">&times;</span>-->
-<!--    </button>-->
-<!--  </div>-->
-<!--</ng-template>-->
-
 <ng-template #list_employer let-modal>
   <div class="modal-header">
     <h4 class="modal-title">List Employer</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
     </button>
   </div>
   <div class="modal-body">

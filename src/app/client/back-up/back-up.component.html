@@ -1,0 +1,20 @@
+<app-alert></app-alert>
+<p>Daten Backup</p>
+<div class="row">
+  <div class="col-md-6">
+    <div><b>Clients</b></div>
+    <div class="row" *ngFor="let clientsCsv of clientsList">
+      <div class="col-12">
+        <a class="csvlink" (click)="getCsvAsBackup(clientsCsv)">{{clientsCsv}}</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div><b>Counselings</b></div>
+    <div class="row" *ngFor="let counselingsCsv of counselingsList">
+      <div class="col-md-12">
+        <a class="csvlink" (click)="getCsvAsBackup(counselingsCsv)">{{counselingsCsv}}</a>
+      </div>
+    </div>
+  </div>
+</div>

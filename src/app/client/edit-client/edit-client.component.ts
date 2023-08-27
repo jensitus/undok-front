@@ -1,11 +1,11 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ClientForm} from '../model/clientForm';
 import {Subscription} from 'rxjs';
 import {ClientService} from '../service/client.service';
 import {NgbFormatterService} from '../../common/services/ngb-formatter.service';
 import {NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {Client} from '../model/client';
 import {ResidentStatus} from '../model/resident-status.enum';
@@ -21,8 +21,9 @@ import {CategoryTypes} from '../model/category-types';
 })
 export class EditClientComponent implements OnInit, OnDestroy {
 
-  @Input() client: Client;
+  client: Client | undefined;
 
+  client_id: string;
   clientForm: ClientForm;
   private unsubscribe$: Subscription[] = [];
   firstName: string;
@@ -58,13 +59,30 @@ export class EditClientComponent implements OnInit, OnDestroy {
     private ngbFormatterService: NgbFormatterService,
     private dateAdapter: NgbDateAdapter<string>,
     private commonService: CommonService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {
+  }
 
   ngOnInit(): void {
-    this.country = this.client.person.address.country;
-    this.nationality = this.client.nationality;
-    this.marital = this.client.maritalStatus;
+
+    this.unsubscribe$.push(
+      this.activatedRoute.params.subscribe({
+        next: (params) => {
+          this.client_id = params['id'];
+          this.unsubscribe$.push(
+            this.clientService.getSingleClient(this.client_id).subscribe({
+              next: (client) => {
+                this.client = client;
+                this.country = this.client.person.address.country;
+                this.nationality = this.client.nationality;
+                this.marital = this.client.maritalStatus;
+              }
+            })
+          );
+        }
+      })
+    );
   }
 
   ngOnDestroy(): void {
@@ -76,7 +94,6 @@ export class EditClientComponent implements OnInit, OnDestroy {
   }
 
   onCountryChange(country) {
-    console.log(country);
     switch (country) {
       case 'Countries':
         this.client.person.address.country = 'Unknown';
@@ -95,33 +112,19 @@ export class EditClientComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
-    const theRealDate = this.dateAdapter.fromModel(this.dateOfBirth);
-    const dateOfBirth = this.ngbFormatterService.format(theRealDate);
-    this.client.person.dateOfBirth = dateOfBirth;
-    this.unsubscribe$.push(this.clientService.updateClient(this.client.id, this.client).subscribe(result => {
-      this.loading = true;
-      this.commonService.setDemoSubject(true);
-      this.loading = false;
-    }));
+    // const theRealDate = this.dateAdapter.fromModel(this.dateOfBirth);
+    // this.client.person.dateOfBirth = this.ngbFormatterService.format(theRealDate);
+    this.unsubscribe$.push(
+      this.clientService.updateClient(this.client.id, this.client).subscribe({
+        next: () => {
+          this.loading = true;
+          this.commonService.setDemoSubject(true);
+          this.loading = false;
+          this.router.navigate(['clients/', this.client_id]);
+        }
+      })
+    );
   }
-
-  /*onResidentStatusChange(status): void {
-    let resStatus: string;
-    switch (status) {
-      case 'asyl':
-        resStatus = ResidentStatus.ASYL;
-        break;
-      case 'eu':
-        resStatus = ResidentStatus.EU;
-        break;
-      case 'illegal':
-        resStatus = ResidentStatus.ILLEGAL;
-        break;
-      default:
-        resStatus = ResidentStatus.UNKNOWN;
-    }
-    this.client.currentResidentStatus = resStatus;
-  }*/
 
   onGenderChange(event: string) {
     this.client.person.gender = event;

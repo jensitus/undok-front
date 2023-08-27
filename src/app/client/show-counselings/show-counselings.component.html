@@ -43,7 +43,6 @@
       <tr>
         <th scope="col">Datum</th>
         <th scope="col">Anliegen</th>
-        <th scope="col">Kategorie</th>
         <th scope="col">Aktivität</th>
         <th scope="col">Keyword</th>
         <th scope="col">Klient:in</th>
@@ -51,16 +50,11 @@
       </thead>
       <tbody>
       <tr *ngFor="let counseling of counselings$ | async; index as i">
-        <td width="200">
+        <td class="width_10">
           {{counseling.counselingDate | date: 'dd.MM.yyyy HH:mm'}}
         </td>
-        <td width="400">
+        <td class="width_20">
           <ngb-highlight [result]="counseling.concern" [innerHTML]="counseling.concern"
-                         [term]="counselingTableService.searchTerm">
-          </ngb-highlight>
-        </td>
-        <td>
-          <ngb-highlight [result]="counseling.concernCategory"
                          [term]="counselingTableService.searchTerm">
           </ngb-highlight>
         </td>
@@ -72,7 +66,7 @@
             <ngb-highlight [result]="counseling.keyword" [term]="counselingTableService.searchTerm"></ngb-highlight>
           </a>
         </td>
-        <td>
+        <td class="width_10">
           <ngb-highlight [result]="counseling.clientFullName"
                          [term]="counselingTableService.searchTerm"></ngb-highlight>
         </td>

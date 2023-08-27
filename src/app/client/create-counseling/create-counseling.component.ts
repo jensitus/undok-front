@@ -26,7 +26,7 @@ import {Label} from '../model/label';
 })
 export class CreateCounselingComponent implements OnInit, OnDestroy {
 
-  concernCategoryType: CategoryTypes = CategoryTypes.CONCERN_CATEGORY;
+  concernCategoryType: string;
   legalCategoryType: CategoryTypes = CategoryTypes.LEGAL;
   activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY;
   activityLabel: Label = Label.ACTIVITY;
