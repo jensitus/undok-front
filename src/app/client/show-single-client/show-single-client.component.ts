@@ -11,6 +11,7 @@ import {DeleteTypes} from '../delete/delete-types';
 import {CategoryTypes} from '../model/category-types';
 import {Counseling} from '../model/counseling';
 import {CategoryService} from '../service/category.service';
+import {faEarListen, faBars, faCampground, faCoffee, faPowerOff, faTachometerAlt, faUser, faUsers, faTasks, faSurprise, faSave} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-show-single-client',
@@ -31,6 +32,8 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   @ViewChild('create_employer') createEmployer: ElementRef;
   @ViewChild('list_employer') assignEmployer: ElementRef;
   @ViewChild('edit_client') editClient: ElementRef;
+  faTachometerAlt = faTachometerAlt;
+  protected readonly faUser = faUser;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -183,4 +186,5 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     );
   }
 
+  protected readonly faUsers = faUsers;
 }

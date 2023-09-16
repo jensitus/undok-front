@@ -1,3 +1,8 @@
+<app-page-header [firstPoint]="'dashboard'" [firstIcon]="faTachometerAlt" [firstLink]="'/dashboard'"
+                 [secondPoint]="'clients'" [secondIcon]="faUsers" [secondLink]="'/clients/client-list'"
+                 [thirdPoint]="'client'" [thirdIcon]="faUser" [thirdLink]="'/clients/' + client_id"
+                 [endPointIcon]="faPencil" [endPoint]="'edit'">
+</app-page-header>
 <div class="spinner-border text-success" role="status" *ngIf="loading">
   <span class="sr-only">Loading...</span>
 </div>

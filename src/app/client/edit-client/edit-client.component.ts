@@ -6,13 +6,26 @@ import {NgbFormatterService} from '../../common/services/ngb-formatter.service';
 import {NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {Client} from '../model/client';
 import {ResidentStatus} from '../model/resident-status.enum';
 import {COUNTRIES_AT} from '../model/countriesAT';
 import {MARITAL_STATUS} from '../model/marital-status';
 import {CITIZENSHIPS} from '../model/citizenships';
 import {CategoryTypes} from '../model/category-types';
+import {
+  faEarListen,
+  faBars,
+  faCampground,
+  faCoffee,
+  faPowerOff,
+  faTachometerAlt,
+  faUser,
+  faUsers,
+  faTasks,
+  faSurprise,
+  faSave,
+  faPencilAlt
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-edit-client',
@@ -24,7 +37,6 @@ export class EditClientComponent implements OnInit, OnDestroy {
   client: Client | undefined;
 
   client_id: string;
-  clientForm: ClientForm;
   private unsubscribe$: Subscription[] = [];
   firstName: string;
   lastName: string;
@@ -32,13 +44,16 @@ export class EditClientComponent implements OnInit, OnDestroy {
   maritalStatus = MARITAL_STATUS;
   marital: string;
   faBars = faBars;
+  faTachometerAlt = faTachometerAlt;
+  faPencil = faPencilAlt;
+  protected readonly faUser = faUser;
+  protected readonly faUsers = faUsers;
   howHasThePersonHeardFromUs: string;
   interpreterNecessary: boolean;
   vulnerableWhenAssertingRights: boolean;
   keyword: string;
   education: string;
   readonly DELIMITER = '-';
-  enumKeys = [];
   street: string;
   zipCode: string;
   city: string;
@@ -46,7 +61,6 @@ export class EditClientComponent implements OnInit, OnDestroy {
   country: string;
   countries = COUNTRIES_AT;
   citizenships = CITIZENSHIPS;
-  residentStatusLOV = Object.values(ResidentStatus);
   currentResidentStatus: string;
 
   loading = false;
@@ -56,8 +70,6 @@ export class EditClientComponent implements OnInit, OnDestroy {
 
   constructor(
     private clientService: ClientService,
-    private ngbFormatterService: NgbFormatterService,
-    private dateAdapter: NgbDateAdapter<string>,
     private commonService: CommonService,
     private router: Router,
     private activatedRoute: ActivatedRoute
@@ -112,8 +124,6 @@ export class EditClientComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
-    // const theRealDate = this.dateAdapter.fromModel(this.dateOfBirth);
-    // this.client.person.dateOfBirth = this.ngbFormatterService.format(theRealDate);
     this.unsubscribe$.push(
       this.clientService.updateClient(this.client.id, this.client).subscribe({
         next: () => {
@@ -137,4 +147,5 @@ export class EditClientComponent implements OnInit, OnDestroy {
   changeSector(event: string) {
     this.client.sector = event;
   }
+
 }
