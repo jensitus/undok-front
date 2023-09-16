@@ -58,23 +58,13 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
     }));
   }
 
-
-
   openEditCounseling(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${ShowCounselingsPerClientComponent.getDismissReason(reason)}`;
     });
-    // const modalRef = this.modalService.open(CreateCounselingComponent);
-    // modalRef.componentInstance.name = 'Counseling';
   }
-
-  // openCreateComment(content) {
-  //   this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
-  //
-  //   })
-  // }
 
   openDeleteConfirmationModal(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
@@ -86,7 +76,6 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
 
   yes(id: string) {
     this.subscriptions.push(this.counselingService.deleteCounseling(id).subscribe(result => {
-      console.log(result);
       this.commonService.setCreateCounselingSubject(true);
     }));
   }

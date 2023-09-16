@@ -1,30 +1,41 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {Component, OnInit, Input} from '@angular/core';
+import {IconDefinition} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-    selector: 'app-page-header',
-    templateUrl: './page-header.component.html',
-    styleUrls: ['./page-header.component.scss']
-})
+             selector: 'app-page-header',
+             templateUrl: './page-header.component.html',
+             styleUrls: ['./page-header.component.scss']
+           })
 export class PageHeaderComponent implements OnInit {
 
-  @Input() firstPoint: string;
-  @Input() firstIcon: string;
-  @Input() firstLink: string;
+  @Input() firstPoint!: string;
+  @Input() firstIcon!: IconDefinition;
+  @Input() firstLink!: string;
 
-    @Input() heading: string;
-    @Input() icon: string;
+  @Input() secondPoint: string;
+  @Input() secondIcon: IconDefinition;
+  @Input() secondLink: string;
 
-    routerlink: string;
+  @Input() thirdPoint: string;
+  @Input() thirdIcon: IconDefinition;
+  @Input() thirdLink: string;
 
-    constructor() {}
+  @Input() fourthPoint: string;
+  @Input() fourthIcon: string;
+  @Input() fourthLink: string;
 
-    ngOnInit() {
-      console.log(this.firstLink, 'this.firstLink');
-      if (this.firstLink == null) {
-        this.routerlink = null;
-      } else {
-        this.routerlink = '/' + this.firstLink;
-      }
-    }
+  @Input() endPoint!: string;
+  @Input() endPointIcon: IconDefinition;
+
+  @Input() heading: string;
+  @Input() icon: string;
+
+  routerlink: string;
+
+  constructor() {
+  }
+
+  ngOnInit() {
+
+  }
 }

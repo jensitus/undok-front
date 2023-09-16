@@ -1,150 +1,257 @@
+<app-page-header [firstPoint]="'dashboard'" [firstIcon]="faTachometerAlt" [firstLink]="'/dashboard'"
+                 [secondPoint]="'clients'" [secondIcon]="faUsers" [secondLink]="'/clients/client-list'"
+                 [endPoint]="'client'">
+</app-page-header>
 <div *ngIf="client">
-  <div class="card">
-    <div class="card-body">
-      <div class="row">
-        <div class="col mb-2">
-          <b class="text-success">Klient:in</b>
-        </div>
-        <div class="col text-end">
-          <button type="button" class="btn btn-sm btn-link" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed"
-                  aria-controls="collapseExample">
-            collapse
-          </button>
+  <div class="row">
+    <div class="col-xl-5">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col mb-2">
+              <b class="text-success">Klient:in</b>
+            </div>
+            <div class="col text-end">
+              <button type="button" class="btn btn-sm btn-link" (click)="collapse.toggle()"
+                      [attr.aria-expanded]="!isCollapsed"
+                      aria-controls="collapseExample">
+                collapse
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mt-1">
+              <label class="text-secondary">Name:</label>
+              {{client.person.firstName}} {{client.person.lastName}}
+            </div>
+            <div class="col">
+              <label class="text-secondary">Keyword:</label>
+              {{client.keyword}}
+            </div>
+          </div>
+          <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="row mt-3">
+            <div class="row">
+              <div class="col-md-5">
+                <label class="text-secondary">Email:</label>
+              </div>
+              <div class="col-md-7">
+                {{client.person.email}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label class="text-secondary">Telephon:</label>
+              </div>
+              <div class="col-md-7">
+                {{client.person.telephone}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label class="text-secondary">Geburtstag:</label>
+              </div>
+              <div class="col-md-7">
+                {{client.person.dateOfBirth | date: 'dd.MM.yyyy'}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label class="text-secondary">Nationalität:</label>
+              </div>
+              <div class="col-md-7">
+                {{client.nationality}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label class="text-secondary">Gender:</label>
+              </div>
+              <div class="col-md-7">
+                {{client.person.gender}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label class="text-secondary">Aufenthaltstitel:</label>
+              </div>
+              <div class="col-md-7">
+                {{client.currentResidentStatus}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label class="text-secondary">Arbeitsmarktzugang:</label>
+              </div>
+              <div class="col-md-7">
+                {{client.labourMarketAccess}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label class="text-secondary">Sprache:</label>
+              </div>
+              <div class="col-md-7">
+                {{client.language}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label class="text-secondary">Dolmetch erforderlich:</label>
+              </div>
+              <div class="col-md-7">
+                <span *ngIf="client.interpreterNecessary">
+                    ja
+                </span>
+                <span *ngIf="client.interpreterNecessary === false">
+                    nein
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col text-end">
+              <a class="btn btn-sm btn-outline-primary" [routerLink]="['edit']">edit</a>
+              |
+              <app-delete [id_to_delete]="client.person.id" [type]="deleteTypeClient"
+                          [delete_object_name]="client.keyword"></app-delete>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col mt-1">
-          <label class="text-secondary">Name:</label>
-          {{client.person.firstName}} {{client.person.lastName}}
-        </div>
-        <div class="col">
-          <label class="text-secondary">Keyword:</label>
-          {{client.keyword}}
-        </div>
+      <div>
+        <app-show-client-employers [clientId]="client.id"></app-show-client-employers>
       </div>
-      <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="row mt-3">
-        <div class="col-md-6">
-          <div>
-            <label class="text-secondary">Email:</label>
-            {{client.person.email}}
+      <div class="card mt-1">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <label class="text-secondary">Straße:</label>
+            </div>
+            <div class="col-md-8">
+              {{client.person.address.street}}
+            </div>
           </div>
-          <div>
-            <label class="text-secondary">Telephon:</label>
-            {{client.person.telephone}}
+          <div class="row">
+            <div class="col-md-4">
+              <label class="text-secondary">PLZ & City:</label>
+            </div>
+            <div class="col-md-8">
+              {{client.person.address.zipCode}} {{client.person.address.city}}
+            </div>
           </div>
-          <div>
-            <label class="text-secondary">Straße:</label>
-            {{client.person.address.street}}
+          <div class="row">
+            <div class="col-md-4">
+              <label class="text-secondary">Country:</label>
+            </div>
+            <div class="col-md-8">
+              {{client.person.address.country}}
+            </div>
           </div>
-          <div>
-            <label class="text-secondary">PLZ & City:</label>
-            {{client.person.address.zipCode}} {{client.person.address.city}}
+          <div class="row">
+            <div class="col-md-4">
+              <label class="text-secondary">Familienstand:</label>
+            </div>
+            <div class="col-md-8">
+              {{client.maritalStatus}}
+            </div>
           </div>
-          <div>
-            <label class="text-secondary">Country:</label>
-            {{client.person.address.country}}
-          </div>
-          <div>
-            <label class="text-secondary">Familienstand:</label>
-            {{client.maritalStatus}}
-          </div>
-          <div>
-            <label class="text-secondary">Geburtstag:</label>
-            {{client.person.dateOfBirth | date: 'dd.MM.yyyy'}}
-          </div>
-          <div>
-            <label class="text-secondary">Bildung:</label>
-            {{client.education}}
-          </div>
-          <div>
-            <label class="text-secondary">Woher kennt uns die Person:</label>
-            {{client.howHasThePersonHeardFromUs}}
-          </div>
-          <div>
-            <label class="text-secondary">gefährdet bei Geltendmachung:</label>
-            <span *ngIf="client.vulnerableWhenAssertingRights">
-              ja
-            </span>
+          <div class="row">
+            <div class="col-md-4">
 
-            <span *ngIf="client.vulnerableWhenAssertingRights === false">
-              nein
-            </span>
-          </div>
-          <div>
-            <label class="text-secondary">Dolmetch erforderlich:</label>
-            <span *ngIf="client.interpreterNecessary">
-              ja
-            </span>
-            <span *ngIf="client.interpreterNecessary === false">
-              nein
-            </span>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div>
-            <label class="text-secondary">Nationalität:</label>
-            {{client.nationality}}
-          </div>
-          <div>
-            <label class="text-secondary">Gender:</label>
-            {{client.person.gender}}
-          </div>
-          <div>
-            <label class="text-secondary">Aufenthaltstitel:</label>
-            {{client.currentResidentStatus}}
-          </div>
-          <div>
-            <label class="text-secondary">Arbeitsmarktzugang:</label>
-            {{client.labourMarketAccess}}
-          </div>
-          <div>
-            <label class="text-secondary">Sprache:</label>
-            {{client.language}}
-          </div>
-          <div>
-            <label class="text-secondary">Branche:</label>
-            {{client.sector}}
-          </div>
-          <div>
-            <label class="text-secondary">Gewerkschaft:</label>
-            {{client.union}}
-          </div>
-          <div>
-            <label class="text-secondary">Mitgliedschaft</label>
-            {{client.membership}}
-          </div>
-          <div>
-            <label class="text-secondary">Position:</label>
-            {{client.position}}
-          </div>
-          <div>
-            <label class="text-secondary">Organisation:</label>
-            {{client.organization}}
+            </div>
+            <div class="col-md-8">
+
+            </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col text-end">
-          <a class="btn btn-sm btn-outline-primary" [routerLink]="['edit']">edit</a>
-          |
-          <app-delete [id_to_delete]="client.person.id" [type]="deleteTypeClient" [delete_object_name]="client.keyword"></app-delete>
+      <div class="card mt-1">
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-md-4">
+              <label class="text-secondary">Branche:</label>
+            </div>
+            <div class="col-md-8">
+              {{client.sector}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label class="text-secondary">Gewerkschaft:</label>
+            </div>
+            <div class="col-md-8">
+              {{client.union}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label class="text-secondary">Mitgliedschaft</label>
+            </div>
+            <div class="col-md-8">
+                <span *ngIf="client.membership === true">
+                      ja
+                </span>
+                <span *ngIf="client.membership === false">
+                      nein
+                </span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label class="text-secondary">Position:</label>
+            </div>
+            <div class="col-md-8">
+              {{client.position}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label class="text-secondary">Organisation:</label>
+            </div>
+            <div class="col-md-8">
+              {{client.organization}}
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <label class="text-secondary">Bildung:</label>
+            </div>
+            <div class="col-md-6">
+              {{client.education}}
+            </div>
+          </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="text-secondary">Woher kennt uns die Person:</label>
+                </div>
+                <div class="col-md-6">
+                  {{client.howHasThePersonHeardFromUs}}
+                </div>
+              </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label class="text-secondary">gefährdet bei Geltendmachung:</label>
+            </div>
+            <div class="col-md-6">
+                <span *ngIf="client.vulnerableWhenAssertingRights">
+                  ja
+                </span>
+                <span *ngIf="client.vulnerableWhenAssertingRights === false">
+                  nein
+                </span>
+            </div>
+
+          </div>
+
         </div>
       </div>
     </div>
-  </div>
-</div>
-<div class="row mt-2">
-  <div class="col-md-5">
-    <div *ngIf="client">
-      <div class="row">
-        <div class="col">
-          <app-show-client-employers [clientId]="client.id"></app-show-client-employers>
-        </div>
-      </div>
+    <div class="col-xl-7">
+      <app-show-counselings-per-client [counselings]="client.counselings"
+                                       [clientId]="client.id"></app-show-counselings-per-client>
     </div>
-  </div>
-  <div class="col-md-7" *ngIf="client">
-    <app-show-counselings-per-client [counselings]="client.counselings" [clientId]="client.id"></app-show-counselings-per-client>
   </div>
 </div>
 

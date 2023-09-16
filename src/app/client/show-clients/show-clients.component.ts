@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ClientService} from '../service/client.service';
 import {Observable, Subject} from 'rxjs';
-import {faUsers} from '@fortawesome/free-solid-svg-icons';
+import {faTachometerAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
 import {ClientTableService} from '../table/client-table.service';
 import {CsvService} from '../service/csv.service';
@@ -26,6 +26,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   count: number;
   loading = false;
   faUsers = faUsers;
+  protected readonly faTachometerAlt = faTachometerAlt;
   successMessage: string;
   columns = ['id', 'keyword', 'firstName', 'lastName', 'dateOfBirth', 'email', 'telephone', 'street', 'zipCode', 'city', 'country', 'education',
     'maritalStatus', 'interpreterNecessary', 'howHasThePersonHeardFromUs', 'vulnerableWhenAssertingRights',
