@@ -1,13 +1,13 @@
 <div *ngIf="categoryExists != null">
   <span class="text-danger">{{categoryExists}}</span>
 </div>
-<div class="form-group mb-1">
+<div class="form-group mb-2">
   <button type="button" class="btn btn-link" (click)="collapse.toggle()"
           [attr.aria-expanded]="!categoryIsCollapsed"
           aria-controls="collapseExample">
-    <p class="label-text-size">
+    <div class="label-text-size">
        {{label}} neu
-    </p>
+    </div>
   </button>
   <div #collapse="ngbCollapse" [(ngbCollapse)]="categoryIsCollapsed">
     <input type="text" name="newCategory" [(ngModel)]="newCategory" placeholder="{{categoryType}}"

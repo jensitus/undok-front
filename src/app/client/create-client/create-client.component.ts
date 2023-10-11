@@ -3,7 +3,7 @@ import {ClientForm} from '../model/clientForm';
 import {ClientService} from '../service/client.service';
 import {Subject} from 'rxjs';
 import {MARITAL_STATUS} from '../model/marital-status';
-import {faBars} from '@fortawesome/free-solid-svg-icons';
+import {faBars, faTachometerAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
 import {NgbFormatterService} from '../../common/services/ngb-formatter.service';
 import {NgbDateAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
@@ -202,4 +202,6 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   }
 
   protected readonly Label = Label;
+  protected readonly faUsers = faUsers;
+  protected readonly faTachometerAlt = faTachometerAlt;
 }
