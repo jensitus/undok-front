@@ -11,7 +11,7 @@
 </div>
 <form #createClientForm="ngForm" (ngSubmit)="submit()" class="mt-1">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
 
       <div class="form-group mb-2">
         <label for="keyword">Schlüsselwort</label>
@@ -119,8 +119,8 @@
 
         <div class="col-md-4">
           <div class="form-group mb-2">
-            <label>Sprache</label>
-            <input type="text" class="form-control" name="language" [(ngModel)]="language"/>
+            <label>Position</label>
+            <input type="text" class="form-control" name="position" [(ngModel)]="position"/>
           </div>
         </div>
       </div>
@@ -135,8 +135,8 @@
 
         <div class="col-md-4">
           <div class="form-group mb-2">
-            <label>Position</label>
-            <input type="text" class="form-control" name="position" [(ngModel)]="position"/>
+            <label>Sprache</label>
+            <input type="text" class="form-control" name="language" [(ngModel)]="language"/>
           </div>
         </div>
 
