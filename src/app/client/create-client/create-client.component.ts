@@ -36,7 +36,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
-  contactData: string;
+  socialInsuranceNumber: string;
   email: string;
   telephone: string;
   gender: string;
@@ -129,7 +129,8 @@ export class CreateClientComponent implements OnInit, OnDestroy {
       sector: this.sector,
       union: this.union,
       membership: this.membership,
-      organization: this.organization
+      organization: this.organization,
+      socialInsuranceNumber: this.socialInsuranceNumber
     };
     this.clientService.createClient(this.clientForm).pipe(takeUntil(this.unsubscribe$)).subscribe({
       next: (result) => {

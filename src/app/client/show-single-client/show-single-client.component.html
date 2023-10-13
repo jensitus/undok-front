@@ -4,27 +4,29 @@
 </app-page-header>
 <div *ngIf="client">
   <div class="row">
+    <div class="col">
+      <h2 style="font-size: x-large; font-weight: bold">Klient:in</h2>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-xl-5">
       <div class="card">
         <div class="card-body">
           <div class="row">
-            <div class="col mb-2">
-              <b class="text-success">Klient:in</b>
-            </div>
-            <div class="col text-end">
+            <!--<div class="col text-end">
               <button type="button" class="btn btn-sm btn-link" (click)="collapse.toggle()"
                       [attr.aria-expanded]="!isCollapsed"
                       aria-controls="collapseExample">
                 collapse
               </button>
-            </div>
+            </div>-->
           </div>
           <div class="row">
             <div class="col mt-1">
               <label class="text-secondary">Name:</label>
               {{client.person.firstName}} {{client.person.lastName}}
             </div>
-            <div class="col">
+            <div class="col mt-1">
               <label class="text-secondary">Keyword:</label>
               {{client.keyword}}
             </div>
@@ -107,6 +109,16 @@
                 </span>
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label class="text-secondary">
+                  SV-Nummer:
+                </label>
+              </div>
+              <div class="col-md-7">
+                {{client.socialInsuranceNumber}}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -184,7 +196,7 @@
                 <span *ngIf="client.membership === true">
                       ja
                 </span>
-                <span *ngIf="client.membership === false">
+              <span *ngIf="client.membership === false">
                       nein
                 </span>
             </div>
@@ -214,14 +226,14 @@
               {{client.education}}
             </div>
           </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <label class="text-secondary">Woher kennt uns die Person:</label>
-                </div>
-                <div class="col-md-6">
-                  {{client.howHasThePersonHeardFromUs}}
-                </div>
-              </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label class="text-secondary">Woher kennt uns die Person:</label>
+            </div>
+            <div class="col-md-6">
+              {{client.howHasThePersonHeardFromUs}}
+            </div>
+          </div>
           <div class="row">
             <div class="col-md-6">
               <label class="text-secondary">gefährdet bei Geltendmachung:</label>
@@ -230,7 +242,7 @@
                 <span *ngIf="client.vulnerableWhenAssertingRights">
                   ja
                 </span>
-                <span *ngIf="client.vulnerableWhenAssertingRights === false">
+              <span *ngIf="client.vulnerableWhenAssertingRights === false">
                   nein
                 </span>
             </div>

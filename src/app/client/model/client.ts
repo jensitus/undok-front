@@ -22,5 +22,6 @@ export interface Client {
   union: string;
   membership: boolean;
   organization: string;
+  socialInsuranceNumber: string;
 
 }

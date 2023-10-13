@@ -24,6 +24,7 @@ export interface ClientForm {
   union: string;
   membership: boolean;
   organization: string;
+  socialInsuranceNumber: string;
 
   // Adress:
   street: string;
