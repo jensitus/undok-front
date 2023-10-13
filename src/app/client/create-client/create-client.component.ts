@@ -83,7 +83,8 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     private router: Router,
     private alertService: AlertService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     // this.dateOfBirth = 'yyyy-mm-dd';
@@ -130,12 +131,15 @@ export class CreateClientComponent implements OnInit, OnDestroy {
       membership: this.membership,
       organization: this.organization
     };
-    this.clientService.createClient(this.clientForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      this.router.navigate(['/clients/', result.id]);
-      this.loading = false;
-    }, error => {
-      this.alertService.error(error.error);
-    });
+    this.clientService.createClient(this.clientForm).pipe(takeUntil(this.unsubscribe$)).subscribe({
+      next: (result) => {
+        this.router.navigate(['/clients/', result.id]);
+        this.loading = false;
+      }, error: (error) => {
+        this.alertService.error(error.error);
+      }
+    })
+    ;
   }
 
   onDateChange(dateForm): void {
