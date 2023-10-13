@@ -22,14 +22,12 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {UserComponent} from './auth/user/user.component';
 import {EditUserComponent} from './auth/edit-user/edit-user.component';
 
-import {OrderModule} from 'ngx-order-pipe';
-
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {LayoutModule} from './admin-template/layout/layout.module';
 import {ConfirmAccountComponent} from './auth/confirm-account/confirm-account.component';
 import {AlertModule} from './admin-template/layout/components/alert/alert.module';
 import {ChangePasswordComponent} from './auth/change-password/change-password.component';
-import {PageHeaderModule} from './admin-template/shared/modules';
+import {PageHeaderModule} from './admin-template/shared';
 import {UploadComponent} from './common/upload/upload.component';
 import {FilelistComponent} from './common/upload/filelist/filelist.component';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
@@ -71,7 +69,6 @@ const app_routes: Routes = [
   ],
   imports: [
     BrowserModule,
-    OrderModule,
     FormsModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(app_routes, {enableTracing: true}),
