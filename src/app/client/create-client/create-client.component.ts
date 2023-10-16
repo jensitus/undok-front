@@ -15,6 +15,7 @@ import {COUNTRIES_AT} from '../model/countriesAT';
 import {CITIZENSHIPS} from '../model/citizenships';
 import {CategoryTypes} from '../model/category-types';
 import {Label} from '../model/label';
+import {AUSTRIA} from '../defaults/defaults';
 
 @Component({
   selector: 'app-create-client',
@@ -59,7 +60,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   street: string;
   zipCode: string;
   city: string;
-  country: string;
+  country = AUSTRIA;
   countries = COUNTRIES_AT;
   citizenships = CITIZENSHIPS;
 
@@ -209,4 +210,8 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   protected readonly Label = Label;
   protected readonly faUsers = faUsers;
   protected readonly faTachometerAlt = faTachometerAlt;
+
+  showEvent() {
+    console.log('EVENT');
+  }
 }

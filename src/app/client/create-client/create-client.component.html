@@ -80,7 +80,7 @@
           <div class="form-group mb-2">
             <label>Land</label>
             <select class="form-control" (click)="onCountryChange($event.target.value)">
-              <option></option>
+              <option selected="selected">Österreich</option>
               <option *ngFor="let c of countries" [value]="c">{{c}}</option>
             </select>
           </div>
@@ -198,6 +198,10 @@
       <div>
         <app-select-box (catValue)="showCat($event)" [categoryType]="cat_gender"
                         [label]="Label.GENDER"></app-select-box>
+      </div>
+
+      <div>
+        <input (keydown.enter)="showEvent()">
       </div>
 
       <div>
