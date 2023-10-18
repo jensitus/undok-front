@@ -196,12 +196,8 @@
       </div>
 
       <div>
-        <app-select-box (catValue)="showCat($event)" [categoryType]="cat_gender"
+        <app-select-box (catValue)="selectGender($event)" [categoryType]="cat_gender"
                         [label]="Label.GENDER"></app-select-box>
-      </div>
-
-      <div>
-        <input (keydown.enter)="showEvent()">
       </div>
 
       <div>

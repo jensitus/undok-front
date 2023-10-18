@@ -63,16 +63,9 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
     }));
   }
 
-  selectCategory(category: Category) {
-    this.categoryName = category.name;
+  selectCategory() {
+    this.categoryName = this.cat_model.name;
     this.onCategoryValueChange();
   }
-
-  // onItemSelect(item: any) {
-  //   console.log(item);
-  // }
-  // onSelectAll(items: any) {
-  //   console.log(items);
-  // }
 
 }
