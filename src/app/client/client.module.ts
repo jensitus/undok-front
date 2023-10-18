@@ -41,6 +41,7 @@ import {BackUpComponent} from './back-up/back-up.component';
 import { EditCategoriesComponent } from './edit-categories/edit-categories.component';
 import { EditCategoryComponent } from './edit-category/edit-category.component';
 import {PageHeaderModule} from '../admin-template/shared';
+import {NgSelectModule} from '@ng-select/ng-select';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
@@ -90,16 +91,17 @@ const appRoutes: Routes = [
     EditCategoriesComponent,
     EditCategoryComponent
   ],
-              imports: [
-                  NgMultiSelectDropDownModule.forRoot(),
-                  CommonModule,
-                  RouterModule.forChild(appRoutes),
-                  FormsModule,
-                  NgbModule,
-                  FontAwesomeModule,
-                  AlertModule,
-                  PageHeaderModule
-              ],
+    imports: [
+        NgMultiSelectDropDownModule.forRoot(),
+        CommonModule,
+        RouterModule.forChild(appRoutes),
+        FormsModule,
+        NgbModule,
+        FontAwesomeModule,
+        AlertModule,
+        PageHeaderModule,
+        NgSelectModule
+    ],
   exports: [
   ],
   providers: [DecimalPipe]

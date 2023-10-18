@@ -26,6 +26,7 @@ import {
   faSave,
   faPencilAlt
 } from '@fortawesome/free-solid-svg-icons';
+import {Label} from '../model/label';
 
 @Component({
   selector: 'app-edit-client',
@@ -148,4 +149,5 @@ export class EditClientComponent implements OnInit, OnDestroy {
     this.client.sector = event;
   }
 
+  protected readonly Label = Label;
 }

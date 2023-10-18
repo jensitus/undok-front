@@ -12,4 +12,5 @@ export interface Person {
   address: Address;
   client: Client;
   gender?: string;
+  contactData?: string;
 }

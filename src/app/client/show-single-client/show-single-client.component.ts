@@ -107,6 +107,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   getClient() {
     this.subscription$.push(this.clientService.getSingleClient(this.id).subscribe(res => {
       this.client = res;
+      console.log(this.client);
       this.getCategories();
       this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
     }));

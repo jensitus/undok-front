@@ -3,7 +3,7 @@ import {ClientForm} from '../model/clientForm';
 import {ClientService} from '../service/client.service';
 import {Subject} from 'rxjs';
 import {MARITAL_STATUS} from '../model/marital-status';
-import {faBars} from '@fortawesome/free-solid-svg-icons';
+import {faBars, faTachometerAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
 import {NgbFormatterService} from '../../common/services/ngb-formatter.service';
 import {NgbDateAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
@@ -15,6 +15,7 @@ import {COUNTRIES_AT} from '../model/countriesAT';
 import {CITIZENSHIPS} from '../model/citizenships';
 import {CategoryTypes} from '../model/category-types';
 import {Label} from '../model/label';
+import {AUSTRIA} from '../defaults/defaults';
 
 @Component({
   selector: 'app-create-client',
@@ -36,7 +37,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
-  contactData: string;
+  socialInsuranceNumber: string;
   email: string;
   telephone: string;
   gender: string;
@@ -59,7 +60,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   street: string;
   zipCode: string;
   city: string;
-  country: string;
+  country = AUSTRIA;
   countries = COUNTRIES_AT;
   citizenships = CITIZENSHIPS;
 
@@ -75,27 +76,25 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   membership: boolean;
   organization: string;
 
+  protected readonly Label = Label;
+  protected readonly faUsers = faUsers;
+  protected readonly faTachometerAlt = faTachometerAlt;
+
 
   constructor(
     private clientService: ClientService,
-    private ngbFormatterService: NgbFormatterService,
     private dateAdapter: NgbDateAdapter<string>,
-    private commonService: CommonService,
     private router: Router,
     private alertService: AlertService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
-    // this.dateOfBirth = 'yyyy-mm-dd';
   }
 
   ngOnDestroy(): void {
     // @ts-ignore
     this.unsubscribe$.next();
-  }
-
-  private formTheDate(date: NgbDateStruct): string {
-    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : null;
   }
 
   submit(): void {
@@ -122,49 +121,27 @@ export class CreateClientComponent implements OnInit, OnDestroy {
       nationality: this.nationality,
       language: this.language,
       currentResidentStatus: this.currentResidentStatus,
-      // formerResidentStatus: this.formerResidentStatus,
       labourMarketAccess: this.labourMarketAccess,
       position: this.position,
       sector: this.sector,
       union: this.union,
       membership: this.membership,
-      organization: this.organization
+      organization: this.organization,
+      socialInsuranceNumber: this.socialInsuranceNumber
     };
-    this.clientService.createClient(this.clientForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      this.router.navigate(['/clients/', result.id]);
-      this.loading = false;
-    }, error => {
-      this.alertService.error(error.error);
-    });
+    this.clientService.createClient(this.clientForm).pipe(takeUntil(this.unsubscribe$)).subscribe({
+      next: (result) => {
+        this.router.navigate(['/clients/', result.id]);
+        this.loading = false;
+      }, error: (error) => {
+        this.alertService.error(error.error);
+      }
+    })
+    ;
   }
-
-  onDateChange(dateForm): void {
-    // this.ngbFormatterService.format();
-  }
-
 
   onMaritalChange(marital): void {
     this.m = marital;
-    console.log(this.m);
-  }
-
-  onResidentStatusChange(status): void {
-    let resStatus: string;
-    switch (status) {
-      case 'asyl':
-        resStatus = ResidentStatus.ASYL;
-        break;
-      case 'eu':
-        resStatus = ResidentStatus.EU;
-        break;
-      case 'illegal':
-        resStatus = ResidentStatus.ILLEGAL;
-        break;
-      default:
-        resStatus = ResidentStatus.UNKNOWN;
-    }
-    this.currentResidentStatus = resStatus;
-    console.log(this.currentResidentStatus);
   }
 
   onCountryChange(country) {
@@ -178,7 +155,6 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   }
 
   onCitizenshipChange(country) {
-    console.log('country', country);
     switch (country) {
       case 'Countries':
         this.nationality = 'Unknown';
@@ -188,9 +164,8 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     }
   }
 
-  showCat(event: any) {
+  selectGender(event: any) {
     this.gender = event;
-    console.log(this.gender);
   }
 
   selectResidentStatus(event: any) {
@@ -201,5 +176,4 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     this.sector = event;
   }
 
-  protected readonly Label = Label;
 }
