@@ -10,6 +10,7 @@ import {AlertService} from '../../admin-template/layout/components/alert/service
 import {CommonService} from '../../common/services/common.service';
 import {takeUntil} from 'rxjs/operators';
 import {saveAs} from 'file-saver';
+import {ClientForTable} from '../model/client-for-table';
 
 @Component({
   selector: 'app-show-clients',
@@ -21,7 +22,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   total$: Observable<number>;
   clients: AllClient[];
-  clients$: Observable<AllClient[]>;
+  clients$: Observable<ClientForTable[]>;
   private unsubscribe$ = new Subject();
   count: number;
   loading = false;

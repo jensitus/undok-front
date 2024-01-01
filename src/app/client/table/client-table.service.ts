@@ -8,6 +8,7 @@ import {AllClient} from '../model/all-client';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {CommonService} from '../../common/services/common.service';
+import {ClientForTable} from '../model/client-for-table';
 
 export interface SearchResult {
   clients: AllClient[];
@@ -16,7 +17,7 @@ export interface SearchResult {
 
 const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
-function sort(clients: AllClient[], column: SortColumn, direction: string): AllClient[] {
+function sort(clients: ClientForTable[], column: SortColumn, direction: string): ClientForTable[] {
   if (direction === '' || column === '') {
     return clients;
   } else {
@@ -27,7 +28,7 @@ function sort(clients: AllClient[], column: SortColumn, direction: string): AllC
   }
 }
 
-function matches(client: AllClient, term: string, pipe: PipeTransform) {
+function matches(client: ClientForTable, term: string, pipe: PipeTransform) {
   if (client.firstName === null) {
     client.firstName = '...';
   }
@@ -60,11 +61,11 @@ export class ClientTableService implements OnDestroy {
   UNDOK_CLIENTS = '/service/undok/clients';
   UNDOK_DASHBOARD = '/dashboard';
 
-  allClients: AllClient[];
+  allClients: ClientForTable[];
 
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
-  private _clients$ = new BehaviorSubject<AllClient[]>([]);
+  private _clients$ = new BehaviorSubject<ClientForTable[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
   private subscription$: Subscription[] = [];
 
@@ -94,19 +95,22 @@ export class ClientTableService implements OnDestroy {
   }
 
   getClientsConstructor() {
-    this.subscription$.push(this.getAllClients().subscribe(result => {
-      this.allClients = result;
-      this._search$.pipe(tap(() => this._loading$.next(true)),
-        debounceTime(200),
-        switchMap(() => this._search()),
-        delay(200),
-        tap(() => this._loading$.next(false))
-      ).subscribe(r => {
-        this._clients$.next(r.clients);
-        this._total$.next(r.total);
-      });
-      this._search$.next();
-    }));
+    console.log('get clients for the fucking table');
+    this.subscription$.push(
+      this.getAllClients().subscribe(result => {
+        this.allClients = result;
+        this._search$.pipe(tap(() => this._loading$.next(true)),
+          debounceTime(200),
+          switchMap(() => this._search()),
+          delay(200),
+          tap(() => this._loading$.next(false))
+        ).subscribe(r => {
+          this._clients$.next(r.clients);
+          this._total$.next(r.total);
+        });
+        this._search$.next();
+      })
+    );
   }
 
   get allClients$() {
@@ -162,7 +166,7 @@ export class ClientTableService implements OnDestroy {
     this._search$.next();
   }
 
-  private _search(): Observable<SearchResult> {
+  private _search(): Observable<{ total: number; clients: ClientForTable[] }> {
     const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
 
     // 1. sort
@@ -181,8 +185,9 @@ export class ClientTableService implements OnDestroy {
   //   this.customers = customers;
   // }
 
-  getAllClients(): Observable<AllClient[]> {
-    return this.http.get<AllClient[]>(this.apiUrl + this.UNDOK_CLIENTS + '/all/');
+  getAllClients(): Observable<ClientForTable[]> {
+    console.log('get clients for the fucking table');
+    return this.http.get<ClientForTable[]>(this.apiUrl + this.UNDOK_CLIENTS + '/overview');
   }
 
   getDeleteClientSubject() {
