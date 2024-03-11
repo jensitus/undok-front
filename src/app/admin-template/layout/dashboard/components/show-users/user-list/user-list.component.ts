@@ -6,6 +6,7 @@ import {UserService} from '../../../../../../auth/services/user.service';
 import {ResponseMessage} from '../../../../../../common/helper/response-message';
 import {CommonService} from '../../../../../../common/services/common.service';
 import {faCheck} from '@fortawesome/free-solid-svg-icons';
+import {AlertService} from '../../../../components/alert/services/alert.service';
 
 @Component({
   selector: 'app-user-list',
@@ -21,7 +22,8 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   constructor(
     private userService: UserService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private alertService: AlertService
   ) {
   }
 
@@ -46,6 +48,15 @@ export class UserListComponent implements OnInit, OnDestroy {
       if (res) {
         this.getUserList();
       }
+    });
+  }
+
+  resendConfirmationLink(userId: string) {
+    this.userService.resendConfirmationLink(userId).pipe(takeUntil(this.unsubscribe$)).subscribe({
+      next: value => {
+        this.alertService.success(value.text, true);
+      },
+      error: err => console.log('Himmel', err)
     });
   }
 

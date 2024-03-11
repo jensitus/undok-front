@@ -20,12 +20,18 @@
       </a>
     </div>
     <div class="col-md-5">
-      {{u.email}}
+      {{ u.email }}
     </div>
     <div class="col-md-2 text-center">
       <span *ngIf="u.admin">
         <fa-icon class="text-danger" [icon]="faCheck"></fa-icon>
       </span>
+    </div>
+    <div class="col-2">
+      <button class="btn btn-sm btn-outline-dark"
+              *ngIf="!u.confirmed" (click)="resendConfirmationLink(u.id)">
+        send again
+      </button>
     </div>
 
   </div>

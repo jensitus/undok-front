@@ -65,4 +65,8 @@ export class UserService {
     return this.http.post<any>(this.apiUrl + '/service/second-factor-auth/second-factor', secondFactorForm);
   }
 
+  resendConfirmationLink(userId: string): Observable<any> {
+    return this.http.post<any>(this.apiUrl + '/service/users/resend-confirmation-link', userId);
+  }
+
 }

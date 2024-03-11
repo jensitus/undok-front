@@ -7,6 +7,7 @@ export class User {
   password?: string;
   passwordConfirmation?: string;
   accessToken?: string;
+  confirmed?: boolean;
   avatar?: string;
   admin?: boolean;
   roles?: Role[];
