@@ -7,7 +7,7 @@ import {takeUntil} from 'rxjs/operators';
 import {SetAdminDto} from '../../admin-template/layout/dashboard/components/show-users/model/set-admin-dto';
 import {ResponseMessage} from '../../common/helper/response-message';
 import {Subject, Subscription} from 'rxjs';
-import {faCheck} from '@fortawesome/free-solid-svg-icons';
+import {faCheck, faTachometerAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-user',
@@ -24,6 +24,8 @@ export class UserComponent implements OnInit, OnDestroy {
   userList: User[];
   faCheck = faCheck;
   private unsubscribe$: Subscription[] = [];
+  protected readonly faUsers = faUsers;
+  protected readonly faTachometerAlt = faTachometerAlt;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -75,4 +77,12 @@ export class UserComponent implements OnInit, OnDestroy {
     }));
   }
 
+  resendConfirmationLink(userId: string) {
+    this.userService.resendConfirmationLink(userId).pipe(takeUntil(this.unsubscribe$)).subscribe({
+      next: value => {
+        this.alertService.success(value.text, true);
+      },
+      error: err => console.log('Himmel', err)
+    });
+  }
 }

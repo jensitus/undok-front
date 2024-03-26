@@ -3,6 +3,7 @@ import {UserService} from '../../../../../auth/services/user.service';
 import {User} from '../../../../../auth/model/user';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {faTachometerAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-show-users',
@@ -19,4 +20,6 @@ export class ShowUsersComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
+    protected readonly faUsers = faUsers;
+    protected readonly faTachometerAlt = faTachometerAlt;
 }
