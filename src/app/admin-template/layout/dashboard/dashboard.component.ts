@@ -8,6 +8,7 @@ import {faComments, faShoppingCart, faSurprise, faTasks, faUsers} from '@fortawe
 import {EmployerService} from '../../../client/service/employer.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {AlertService} from '../components/alert/services/alert.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,7 +36,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private commonService: CommonService,
     private clientService: ClientService,
-    private employerService: EmployerService
+    private employerService: EmployerService,
+    private alertService: AlertService
   ) {
     this.alerts.push(
       {
@@ -84,21 +86,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   getNumberOfCounselings() {
-    this.clientService.numberOfCounselings().subscribe(res => {
-      this.counselingCount = res;
+    this.clientService.numberOfCounselings().subscribe({
+      next: value => {
+        this.counselingCount = value;
+      },
+      error: err => {
+        this.alertService.error(err.error.text);
+      }
     });
   }
 
   getNumberOfClients() {
-    this.clientService.numberOfClients().subscribe(clientCount => {
-      this.clientCount = clientCount;
-    });
+    this.clientService.numberOfClients().subscribe({
+        next: clientCount => {
+          this.clientCount = clientCount;
+        }
+      }
+    );
   }
 
   getNumberOfEmployers() {
-    this.employerService.getNumberOfEmployers().pipe(takeUntil(this.unsubscribe$)).subscribe(employerCount => {
-      this.employerCount = employerCount;
-    });
+    this.employerService.getNumberOfEmployers().pipe(takeUntil(this.unsubscribe$)).subscribe({
+        next: employerCount => {
+          this.employerCount = employerCount;
+        }
+      }
+    );
   }
 
 }

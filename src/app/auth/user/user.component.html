@@ -32,7 +32,7 @@
                 ADMIN
               </span>
               <span *ngIf="!user.admin">
-                USER
+                {{user.roles[0].name}}
               </span>
             </div>
           </div>
@@ -62,7 +62,7 @@
             <div class="col">
               <b class="text-secondary">set admin</b>
             </div>
-            <div class="col text-right" *ngIf="currentUser.email !== user.email">
+            <div class="col text-right" *ngIf="currentUser.email !== user.email && !user.locked">
               <input type="checkbox" (click)="setAdmin(user.id, user.admin)">
             </div>
             <div class="col text-right" *ngIf="currentUser.email === user.email">
