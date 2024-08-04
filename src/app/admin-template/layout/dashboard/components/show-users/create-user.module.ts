@@ -7,6 +7,7 @@ import { UserListComponent } from './user-list/user-list.component';
 import {ShowUsersComponent} from './show-users.component';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {AlertModule} from '../../../components/alert/alert.module';
+import {PageHeaderModule} from '../../../../shared';
 
 const routes: Routes = [
   {path: '', component: ShowUsersComponent}
@@ -19,7 +20,8 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         FormsModule,
         FontAwesomeModule,
-        AlertModule
+        AlertModule,
+        PageHeaderModule
     ]
 })
 export class CreateUserModule { }

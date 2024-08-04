@@ -1,6 +1,6 @@
 <app-page-header [firstPoint]="'dashboard'" [firstIcon]="faTachometerAlt" [firstLink]="'/dashboard'"
                  [secondPoint]="'clients'" [secondIcon]="faUsers" [secondLink]="'/clients/client-list'"
-                 [endPoint]="'client'">
+                 [endPoint]="client.person.firstName ? client.person.firstName + ' ' + client.person.lastName : client.keyword">
 </app-page-header>
 <div *ngIf="client">
   <div class="row">

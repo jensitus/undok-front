@@ -7,6 +7,7 @@ import {Observable} from 'rxjs';
 import {SetAdminDto} from '../../admin-template/layout/dashboard/components/show-users/model/set-admin-dto';
 import {ResponseMessage} from '../../common/helper/response-message';
 import {SecondFactorForm} from '../model/second-factor-form';
+import {LockUser} from '../user/user.component';
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +64,14 @@ export class UserService {
 
   sendSecondFactorToken(secondFactorForm: SecondFactorForm): Observable<any> {
     return this.http.post<any>(this.apiUrl + '/service/second-factor-auth/second-factor', secondFactorForm);
+  }
+
+  resendConfirmationLink(userId: string): Observable<any> {
+    return this.http.post<any>(this.apiUrl + '/service/users/resend-confirmation-link', userId);
+  }
+
+  lockUser(lockUser: LockUser): Observable<ResponseMessage> {
+    return this.http.post<ResponseMessage>(this.apiUrl + '/service/users/' + lockUser.id + '/lock', lockUser);
   }
 
 }

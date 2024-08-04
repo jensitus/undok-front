@@ -1,32 +1,42 @@
-<div class="row">
-  <div class="col-md-3 text-primary">
-    <b>username</b>
-  </div>
-  <div class="col-md-5 text-primary">
-    <b>email</b>
-  </div>
-  <div class="col-md-2 text-center text-primary">
-    <b>admin</b>
-  </div>
-  <div class="col-md-2">
-
-  </div>
-</div>
-<div *ngFor="let u of userList">
-  <div class="row mt-2">
-    <div class="col-md-3">
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th>
+      username
+    </th>
+    <th>
+      email
+    </th>
+    <th>
+      admin
+    </th>
+    <th>
+      locked
+    </th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let u of userList; index as i">
+    <th scope="row">{{i+1}}</th>
+    <td>
       <a [routerLink]="['/users', u.username]" [routerLinkActive]="['router-link-active']">
         <span>{{ u.username }}</span>
       </a>
-    </div>
-    <div class="col-md-5">
-      {{u.email}}
-    </div>
-    <div class="col-md-2 text-center">
+    </td>
+    <td>{{ u.email }}</td>
+    <td>
       <span *ngIf="u.admin">
         <fa-icon class="text-danger" [icon]="faCheck"></fa-icon>
       </span>
-    </div>
+    </td>
+    <td>
+      {{u.locked}}
+    </td>
+    <td>
 
-  </div>
-</div>
+    </td>
+  </tr>
+  </tbody>
+</table>
