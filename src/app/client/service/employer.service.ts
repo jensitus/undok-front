@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {ClientEmployerForm} from '../model/client-employer-form';
 import {Employer} from '../model/employer';
+import {isNull, isUndefined} from '../../common/helper/comparison-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class EmployerService {
 
   getAllEmployers(clientId: string): Observable<any> {
     let url: string;
-    if (clientId === undefined || clientId === null) {
+    if (isUndefined(clientId) || isNull(clientId)) {
       url = '/service/undok/employers/all/';
     } else {
       url = '/service/undok/employers/all/?client_id=' + clientId;

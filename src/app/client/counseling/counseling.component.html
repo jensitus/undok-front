@@ -101,7 +101,7 @@
           <label class="text-secondary">Anliegen:</label>
           <textarea type="text" name="activity" [(ngModel)]="counseling.concern" placeholder="concern"
                     class="form-control" rows="10"></textarea>
-          {{CONCERN_MAX_LENGTH - counseling.concern?.length}}
+          {{ CONCERN_MAX_LENGTH - counseling.concern?.length }}
         </div>
       </div>
       <div class="col-md-2">
@@ -113,6 +113,8 @@
         </div>
       </div>
     </div>
+
+    <!-- LEGAL CATEGORY   -->
     <div class="row mt-4 fade-in" *ngIf="!editLegalCategory">
       <div class="col-md-10">
         <label class="text-secondary">Rechtsschutzkategorie:</label>&nbsp;
@@ -122,8 +124,8 @@
       </div>
       <div class="col-md-2">
         <div class="set-cursor-pointer"
-            (click)="addLegalCategory()"
-            *ngIf="counseling.counselingDate">
+             (click)="addLegalCategory()"
+             *ngIf="counseling.counselingDate">
           edit
         </div>
       </div>
@@ -164,7 +166,7 @@
           <label>Aktivität</label>
           <textarea type="text" name="activity" [(ngModel)]="counseling.activity" placeholder="activity"
                     class="form-control" rows="10"></textarea>
-          {{ACTIVITY_MAX_LENGTH - counseling.activity?.length}}
+          {{ ACTIVITY_MAX_LENGTH - counseling.activity?.length }}
         </div>
       </div>
       <div class="col-md-2">
@@ -177,6 +179,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Activity Category-->
     <div class="row mt-4 fade-in" *ngIf="!editActivityCategory">
       <div class="col-md-10">
         <label class="text-secondary">Aktivitätskategorie:</label>&nbsp;
@@ -209,6 +213,42 @@
         </div>
       </div>
     </div>
+
+    <!-- Required Time -->
+
+    <div class="row mt-4 fade-in" *ngIf="!editRequiredTime">
+
+      <div class="col-md-4">
+        <label class="text-secondary">Beratungsdauer:</label>&nbsp;
+        <span>{{ counselingDuration }}</span>
+      </div>
+      <div class="col-md-6"></div>
+
+
+      <div class="col-md-2">
+        <span class="set-cursor-pointer" (click)="chooseEditRequiredTime()">edit</span>
+      </div>
+    </div>
+
+    <div class="row mt-4 fade-in" *ngIf="editRequiredTime">
+      <div class="col-md-4">
+        <label class="text-secondary">Beratungsdauer:</label>&nbsp;
+        <span>{{ counselingDuration }}</span>
+      </div>
+      <div class="col-md-2 fade-in" *ngIf="editRequiredTime">
+        <input type="time"
+               [(ngModel)]="counselingDuration"
+               class="form-control-sm">
+      </div>
+      <div class="col-md-4 fade-in" *ngIf="editRequiredTime">
+        <button class="btn btn-sm btn-outline-secondary" (click)="saveRequiredTime()">save</button>
+      </div>
+      <div class="col-md-2">
+        <span class="set-cursor-pointer" (click)="chooseEditRequiredTime()">close</span>
+      </div>
+    </div>
+
+
     <div class="mt-4">
       <small>
         <label class="text-secondary">Registriert von:</label>&nbsp;
@@ -231,12 +271,17 @@
   </div>
   <div class="row mt-3" *ngIf="counseling.comment != null">
     <div class="col-md-6">
-      {{counseling.comment}}
+      {{ counseling.comment }}
     </div>
   </div>
   <div *ngIf="counseling.comment === null" class="row mt-3 ml-2">
-            <button class="btn btn-sm btn-outline-dark" (click)="openEditCounseling(edit_comment)">Add Comment</button>
-          </div>
+    <div class="col-md-2">
+      <button class="btn btn-sm btn-outline-dark"
+              (click)="openEditCounseling(edit_comment)">
+        Add Comment
+      </button>
+    </div>
+  </div>
   <div class="row mt-3" *ngIf="counseling.comment != null">
     <div class="col">
       <button class="btn btn-sm btn-outline-dark" (click)="openEditCounseling(edit_comment)">edit comment</button>
@@ -247,7 +292,7 @@
   </div>
 </ng-container>
 
-<ng-template #edit_counseling let-modal>
+<!--<ng-template #edit_counseling let-modal>
   <div class="modal-header">
     <h4 class="modal-title">Beratung bearbeiten</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -262,7 +307,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-</ng-template>
+</ng-template>-->
 
 <ng-template #edit_comment let-modal>
   <div class="modal-header">

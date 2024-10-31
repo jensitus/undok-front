@@ -24,11 +24,11 @@
           <div class="row">
             <div class="col mt-1">
               <label class="text-secondary">Name:</label>
-              {{client.person.firstName}} {{client.person.lastName}}
+              {{ client.person.firstName }} {{ client.person.lastName }}
             </div>
             <div class="col mt-1">
               <label class="text-secondary">Keyword:</label>
-              {{client.keyword}}
+              {{ client.keyword }}
             </div>
           </div>
           <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="row mt-3">
@@ -37,7 +37,7 @@
                 <label class="text-secondary">Email:</label>
               </div>
               <div class="col-md-7">
-                {{client.person.email}}
+                {{ client.person.email }}
               </div>
             </div>
             <div class="row">
@@ -45,7 +45,7 @@
                 <label class="text-secondary">Telephon:</label>
               </div>
               <div class="col-md-7">
-                {{client.person.telephone}}
+                {{ client.person.telephone }}
               </div>
             </div>
             <div class="row">
@@ -53,7 +53,7 @@
                 <label class="text-secondary">Geburtstag:</label>
               </div>
               <div class="col-md-7">
-                {{client.person.dateOfBirth | date: 'dd.MM.yyyy'}}
+                {{ client.person.dateOfBirth | date: 'dd.MM.yyyy' }}
               </div>
             </div>
             <div class="row">
@@ -61,7 +61,7 @@
                 <label class="text-secondary">Nationalität:</label>
               </div>
               <div class="col-md-7">
-                {{client.nationality}}
+                {{ client.nationality }}
               </div>
             </div>
             <div class="row">
@@ -69,7 +69,7 @@
                 <label class="text-secondary">Gender:</label>
               </div>
               <div class="col-md-7">
-                {{client.person.gender}}
+                {{ client.person.gender }}
               </div>
             </div>
             <div class="row">
@@ -77,7 +77,7 @@
                 <label class="text-secondary">Aufenthaltstitel:</label>
               </div>
               <div class="col-md-7">
-                {{client.currentResidentStatus}}
+                {{ client.currentResidentStatus }}
               </div>
             </div>
             <div class="row">
@@ -85,7 +85,7 @@
                 <label class="text-secondary">Arbeitsmarktzugang:</label>
               </div>
               <div class="col-md-7">
-                {{client.labourMarketAccess}}
+                {{ client.labourMarketAccess }}
               </div>
             </div>
             <div class="row">
@@ -93,7 +93,7 @@
                 <label class="text-secondary">Sprache:</label>
               </div>
               <div class="col-md-7">
-                {{client.language}}
+                {{ client.language }}
               </div>
             </div>
             <div class="row">
@@ -116,7 +116,7 @@
                 </label>
               </div>
               <div class="col-md-7">
-                {{client.socialInsuranceNumber}}
+                {{ client.socialInsuranceNumber }}
               </div>
             </div>
           </div>
@@ -132,7 +132,7 @@
               <label class="text-secondary">Straße:</label>
             </div>
             <div class="col-md-8">
-              {{client.person.address.street}}
+              {{ client.person.address.street }}
             </div>
           </div>
           <div class="row">
@@ -140,7 +140,7 @@
               <label class="text-secondary">PLZ & City:</label>
             </div>
             <div class="col-md-8">
-              {{client.person.address.zipCode}} {{client.person.address.city}}
+              {{ client.person.address.zipCode }} {{ client.person.address.city }}
             </div>
           </div>
           <div class="row">
@@ -148,7 +148,7 @@
               <label class="text-secondary">Country:</label>
             </div>
             <div class="col-md-8">
-              {{client.person.address.country}}
+              {{ client.person.address.country }}
             </div>
           </div>
           <div class="row">
@@ -156,7 +156,7 @@
               <label class="text-secondary">Familienstand:</label>
             </div>
             <div class="col-md-8">
-              {{client.maritalStatus}}
+              {{ client.maritalStatus }}
             </div>
           </div>
           <div class="row">
@@ -177,7 +177,7 @@
               <label class="text-secondary">Branche:</label>
             </div>
             <div class="col-md-8">
-              {{client.sector}}
+              {{ client.sector }}
             </div>
           </div>
           <div class="row">
@@ -185,7 +185,7 @@
               <label class="text-secondary">Gewerkschaft:</label>
             </div>
             <div class="col-md-8">
-              {{client.union}}
+              {{ client.union }}
             </div>
           </div>
           <div class="row">
@@ -206,7 +206,7 @@
               <label class="text-secondary">Position:</label>
             </div>
             <div class="col-md-8">
-              {{client.position}}
+              {{ client.position }}
             </div>
           </div>
           <div class="row">
@@ -214,7 +214,7 @@
               <label class="text-secondary">Organisation:</label>
             </div>
             <div class="col-md-8">
-              {{client.organization}}
+              {{ client.organization }}
             </div>
           </div>
           <hr>
@@ -223,7 +223,7 @@
               <label class="text-secondary">Bildung:</label>
             </div>
             <div class="col-md-6">
-              {{client.education}}
+              {{ client.education }}
             </div>
           </div>
           <div class="row">
@@ -231,7 +231,7 @@
               <label class="text-secondary">Woher kennt uns die Person:</label>
             </div>
             <div class="col-md-6">
-              {{client.howHasThePersonHeardFromUs}}
+              {{ client.howHasThePersonHeardFromUs }}
             </div>
           </div>
           <div class="row">
@@ -253,7 +253,7 @@
       </div>
       <div class="row mt-1">
         <div class="col text-lg-start">
-          <a class="btn btn-sm btn-outline-primary m-3" [routerLink]="['edit']">edit</a>
+          <a class="btn btn-sm btn-outline-secondary m-3" [routerLink]="['edit']">edit</a>
 
           <app-delete [id_to_delete]="client.person.id" [type]="deleteTypeClient"
                       [delete_object_name]="client.keyword"></app-delete>
@@ -265,54 +265,55 @@
                                        [clientId]="client.id"></app-show-counselings-per-client>
     </div>
   </div>
+
+  <ng-template #content_create_counseling let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Beratung anlegen</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-create-counseling></app-create-counseling>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #edit_client let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Edit Client</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <!--  <div class="modal-body">
+        <app-edit-client [client]="client"></app-edit-client>
+      </div>-->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #list_employer let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">List Employer</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-show-employers-list [clientId]="client.id"></app-show-employers-list>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </ng-template>
+
 </div>
-
-<ng-template #content_create_counseling let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">Beratung anlegen</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <app-create-counseling></app-create-counseling>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-</ng-template>
-
-<ng-template #edit_client let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">Edit Client</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <app-edit-client [client]="client"></app-edit-client>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-</ng-template>
-
-<ng-template #list_employer let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">List Employer</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-    </button>
-  </div>
-  <div class="modal-body">
-    <app-show-employers-list [clientId]="client.id"></app-show-employers-list>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-</ng-template>

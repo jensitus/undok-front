@@ -45,9 +45,11 @@ export class CounselingComponent implements OnInit, OnDestroy {
   deSelectedCategories: JoinCategory[] = [];
   faBars = faBars;
   time: Time = {hour: 13, minute: 30};
+  counselingDuration: string;
   dateObject: NgbDateStruct;
   counselingDate: string;
   editCounselingDate = false;
+  editRequiredTime = false;
 
   constructor(
     private counselingService: CounselingService,
@@ -96,9 +98,22 @@ export class CounselingComponent implements OnInit, OnDestroy {
         this.counseling.activityCategories = categories;
       }));
       this.setDateObject();
+      this.counselingDuration = this.getCounselingDuration(this.counseling.requiredTime);
     }, error => {
-      this.router.navigate(['/clients', this.clientId]);
+      this.router.navigate(['/clients', this.clientId]).then();
     }));
+  }
+
+  getCounselingDuration(requiredTime: number): string {
+    if (requiredTime) {
+      return this.addLeadingZeros(Math.floor(requiredTime / 60), 2) + ':' +  Math.floor(requiredTime % 60);
+    } else {
+     return '00:00';
+    }
+  }
+
+  addLeadingZeros(num, length) {
+    return String(num).padStart(length, '0');
   }
 
   openDeleteConfirmationModal(content) {
@@ -202,12 +217,9 @@ export class CounselingComponent implements OnInit, OnDestroy {
   update(type: string) {
     this.loading = true;
     if (this.dateObject) {
-      console.log('DATE OBJECT UPDATE', this.dateObject);
       this.counselingDate = this.dateTimeService.mergeDateAndTime(this.dateObject, this.time);
       this.counseling.counselingDate = this.counselingDate;
     }
-    console.log('counselingDate', this.counselingDate);
-    console.log('counseling', this.counseling);
     this.subscription$.push(this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe(res => {
       this.getCounseling();
     }));
@@ -229,6 +241,25 @@ export class CounselingComponent implements OnInit, OnDestroy {
 
   chooseEditCounselingDate() {
     this.editCounselingDate = !this.editCounselingDate;
+  }
+
+  chooseEditRequiredTime() {
+    this.editRequiredTime = !this.editRequiredTime;
+  }
+
+  saveRequiredTime() {
+    const hours = parseInt(this.counselingDuration.split(':')[0], 0);
+    const minutes = parseInt(this.counselingDuration.split(':')[1], 0);
+    const duration = hours * 60 + minutes;
+    this.subscription$.push(
+      this.counselingService.setCounselingDuration(this.counselingId, duration).subscribe({
+        next: (res) => {
+          this.chooseEditRequiredTime();
+        }, error: (err) => {
+          console.log(err);
+        }
+      })
+    );
   }
 
   setDateObject() {

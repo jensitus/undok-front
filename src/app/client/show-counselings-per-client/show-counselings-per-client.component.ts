@@ -19,12 +19,12 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
   @Input() clientId: string;
   private closeResult = '';
   private subscriptions: Subscription[] = [];
+  counselingDuration: string;
 
   constructor(
     private modalService: NgbModal,
     private counselingService: CounselingService,
     private commonService: CommonService,
-    private categoryService: CategoryService
   ) {
   }
 
@@ -50,6 +50,18 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
     }
   }
 
+  getCounselingDuration(requiredTime: number): string {
+    if (requiredTime) {
+      return this.addLeadingZeros(Math.floor(requiredTime / 60), 2) + ':' +  Math.floor(requiredTime % 60);
+    } else {
+      return '00:00';
+    }
+  }
+
+  addLeadingZeros(num, length) {
+    return String(num).padStart(length, '0');
+  }
+
   getCreateCounselingSubject() {
     this.subscriptions.push(this.commonService.createCounselingSubject.subscribe((counselingSubject) => {
       if (counselingSubject === true) {
@@ -60,14 +72,6 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
 
   openEditCounseling(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${ShowCounselingsPerClientComponent.getDismissReason(reason)}`;
-    });
-  }
-
-  openDeleteConfirmationModal(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${ShowCounselingsPerClientComponent.getDismissReason(reason)}`;

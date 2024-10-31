@@ -11,7 +11,7 @@ import {DeleteTypes} from '../delete/delete-types';
 import {CategoryTypes} from '../model/category-types';
 import {Counseling} from '../model/counseling';
 import {CategoryService} from '../service/category.service';
-import {faEarListen, faBars, faCampground, faCoffee, faPowerOff, faTachometerAlt, faUser, faUsers, faTasks, faSurprise, faSave} from '@fortawesome/free-solid-svg-icons';
+import {faTachometerAlt, faUser, faUsers} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-show-single-client',
@@ -34,6 +34,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   @ViewChild('edit_client') editClient: ElementRef;
   faTachometerAlt = faTachometerAlt;
   protected readonly faUser = faUser;
+  protected readonly faUsers = faUsers;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -96,21 +97,22 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     });
   }
 
-  openEditModal(edit_client) {
-    this.modalService.open(edit_client, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
-    });
-  }
+  /*  openEditModal(edit_client) {
+      this.modalService.open(edit_client, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
+      });
+    }*/
 
   getClient() {
-    this.subscription$.push(this.clientService.getSingleClient(this.id).subscribe(res => {
-      this.client = res;
-      console.log(this.client);
-      this.getCategories();
-      this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
-    }));
+    this.subscription$.push(
+      this.clientService.getSingleClient(this.id).subscribe(res => {
+        this.client = res;
+        this.getCategories();
+        this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
+      })
+    );
   }
 
   getCategories() {
@@ -187,5 +189,4 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     );
   }
 
-  protected readonly faUsers = faUsers;
 }

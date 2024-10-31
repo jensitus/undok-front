@@ -31,13 +31,17 @@
             </span>
           </div>
           <div>
+            <label class="text-secondary">Beratungsdauer:</label>&nbsp;
+            <span>{{getCounselingDuration(counseling.requiredTime)}}</span>
+          </div>
+          <div>
             <label class="text-secondary">Registriert von:</label>&nbsp;
             <span [innerHTML]="counseling.registeredBy"></span>
           </div>
           <div>
-            <!--<button class="btn btn-sm btn-outline-warning" (click)="openDeleteConfirmationModal(confirmDelete)">delete</button>-->
-            <a class="btn btn-sm btn-outline-primary"
-               [routerLink]="['/clients/' + clientId + '/counselings/' + counseling.id]">link</a>
+            <a [routerLink]="['/clients/' + clientId + '/counselings/' + counseling.id]">
+              link
+            </a>
           </div>
           <div *ngIf="counseling.comment === null" class="mt-2">
             <button class="btn btn-sm btn-outline-dark" (click)="openEditCounseling(edit_comment)">Add Comment</button>
@@ -50,7 +54,7 @@
             </div>
             <div class="row">
               <div class="col">
-                {{counseling.comment}}
+                {{ counseling.comment }}
               </div>
             </div>
             <div class="mt-2">
