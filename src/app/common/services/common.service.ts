@@ -10,7 +10,7 @@ import {AlertService} from '../../admin-template/layout/components/alert/service
 })
 export class CommonService {
 
-  currentUser: User;
+  currentUser: User | undefined;
   data: any;
 
   constructor(
@@ -20,43 +20,54 @@ export class CommonService {
   ) {
   }
 
-  public demoSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
-  public createUserSubject: BehaviorSubject<boolean> = new BehaviorSubject(null);
+  public demoSubject: BehaviorSubject<null> = new BehaviorSubject(null);
+  public createUserSubject: BehaviorSubject<null> = new BehaviorSubject(null);
+  // @ts-ignore
   public createCounselingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  // @ts-ignore
   public createEmployerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  // @ts-ignore
   public reloadSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  // @ts-ignore
   public employerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  // @ts-ignore
   public alertSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  // @ts-ignore
   public deleteSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
-  setDeleteSubject(value) {
+  setDeleteSubject(value: boolean) {
     if (value) {
       this.deleteSubject.next(value);
     } else {
+      // @ts-ignore
       this.deleteSubject.next(null);
     }
   }
 
-  setReloadSubject(value) {
+  setReloadSubject(value: boolean) {
     if (value) {
       this.reloadSubject.next(value);
     } else {
+      // @ts-ignore
       this.reloadSubject.next(null);
     }
   }
 
-  setAlertSubject(value) {
+  setAlertSubject(value: string) {
     if (value) {
       this.alertSubject.next(value);
     } else {
+      // @ts-ignore
       this.alertSubject.next(null);
     }
   }
 
-  setDemoSubject(value) {
+  setDemoSubject(value: boolean) {
     if (value) {
+      // @ts-ignore
       this.demoSubject.next(value);
     } else {
+      // @ts-ignore
       this.demoSubject.next(null);
     }
   }
@@ -76,37 +87,42 @@ export class CommonService {
   }
 
   private getCurrentUser() {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(<string>localStorage.getItem('currentUser'));
   }
 
-  setCreateUserSubject(value) {
+  setCreateUserSubject(value: boolean) {
     if (value) {
+      // @ts-ignore
       this.createUserSubject.next(value);
     } else {
+      // @ts-ignore
       this.createUserSubject.next(null);
     }
   }
 
-  setCreateCounselingSubject(value) {
+  setCreateCounselingSubject(value: boolean) {
     if (value) {
       this.createCounselingSubject.next(value);
     } else {
+      // @ts-ignore
       this.createCounselingSubject.next(null);
     }
   }
 
-  setCreateEmployerSubject(value) {
+  setCreateEmployerSubject(value: boolean) {
     if (value) {
       this.createEmployerSubject.next(value);
     } else {
+      // @ts-ignore
       this.createEmployerSubject.next(null);
     }
   }
 
-  setEmployerSubject(value) {
+  setEmployerSubject(value: boolean) {
     if (value) {
       this.employerSubject.next(value);
     } else {
+      // @ts-ignore
       this.employerSubject.next(null);
     }
   }

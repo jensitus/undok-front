@@ -15,13 +15,13 @@ export class UploadService {
     private http: HttpClient
   ) { }
 
-  schickDasBild (bild) {
+  schickDasBild (bild: string | Blob) {
     const formData = new FormData();
     formData.append('file', bild);
     return this.http.post(`${this.apiUrl}/service/app/files`, formData);
   }
 
-  schickTheVideo(videoFiles) {
+  schickTheVideo(videoFiles: string[]) {
     this.videoFiles = videoFiles;
     const frmData = new FormData();
     for (let i = 0; i < this.videoFiles.length; i++) {

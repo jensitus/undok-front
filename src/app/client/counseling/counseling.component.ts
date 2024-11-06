@@ -15,6 +15,7 @@ import {Label} from '../model/label';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {Time} from '../model/time';
 import {DateTimeService} from '../service/date-time.service';
+import {DurationService} from '../service/duration.service';
 
 @Component({
   selector: 'app-counseling',
@@ -59,6 +60,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
     private router: Router,
     private alertService: AlertService,
     public dateTimeService: DateTimeService,
+    private durationService: DurationService,
   ) {
   }
 
@@ -98,22 +100,10 @@ export class CounselingComponent implements OnInit, OnDestroy {
         this.counseling.activityCategories = categories;
       }));
       this.setDateObject();
-      this.counselingDuration = this.getCounselingDuration(this.counseling.requiredTime);
+      this.counselingDuration = this.durationService.getCounselingDuration(this.counseling.requiredTime);
     }, error => {
       this.router.navigate(['/clients', this.clientId]).then();
     }));
-  }
-
-  getCounselingDuration(requiredTime: number): string {
-    if (requiredTime) {
-      return this.addLeadingZeros(Math.floor(requiredTime / 60), 2) + ':' +  Math.floor(requiredTime % 60);
-    } else {
-     return '00:00';
-    }
-  }
-
-  addLeadingZeros(num, length) {
-    return String(num).padStart(length, '0');
   }
 
   openDeleteConfirmationModal(content) {

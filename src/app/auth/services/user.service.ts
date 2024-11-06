@@ -38,7 +38,7 @@ export class UserService {
     return this.http.put(this.apiUrl + '/service/auth/reset_password/' + token + '?email=' + email, user);
   }
 
-  checkAuthToken(token: string) {
+    checkAuthToken(token: string | undefined) {
     return this.http.post(this.apiUrl + '/service/users/auth/check_auth_token', token);
   }
 

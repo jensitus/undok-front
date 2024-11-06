@@ -34,7 +34,7 @@ export class ClientService {
     return this.http.get<AllClient[]>(this.apiUrl + '/service/undok/clients/all/');
   }
 
-  getSingleClient(id: string): Observable<any> {
+    getSingleClient(id: string | undefined): Observable<any> {
     return this.http.get<Person>(this.apiUrl + '/service/undok/clients/' + id);
   }
 

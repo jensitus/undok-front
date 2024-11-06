@@ -22,9 +22,8 @@ const URL = 'http://localhost:8080/service/app/files';
 })
 export class UploadComponent implements OnInit {
 
-  selectedFile: ImageSnippet;
-  uploadForm: UntypedFormGroup;
-  isDropOver: boolean;
+  selectedFile: ImageSnippet | undefined;
+  uploadForm: UntypedFormGroup | undefined;
   videoFiles: string[] = [];
   sMsg = '';
 
@@ -44,13 +43,18 @@ export class UploadComponent implements OnInit {
   }
 
   private onSuccess() {
+    // @ts-ignore
     this.selectedFile.pending = false;
+    // @ts-ignore
     this.selectedFile.status = 'ok';
   }
 
   private onError() {
+    // @ts-ignore
     this.selectedFile.pending = false;
+    // @ts-ignore
     this.selectedFile.status = 'fail';
+    // @ts-ignore
     this.selectedFile.src = '';
   }
 
@@ -79,7 +83,7 @@ export class UploadComponent implements OnInit {
   //   });
   // }
 
-  getFileDetails(e) {
+  getFileDetails(e: { target: { files: string | any[]; }; }) {
     console.log(e.target.files);
     for (let i = 0; i < e.target.files.length; i++) {
       this.videoFiles.push(e.target.files[i]);

@@ -12,6 +12,9 @@ import {CategoryTypes} from '../model/category-types';
 import {Counseling} from '../model/counseling';
 import {CategoryService} from '../service/category.service';
 import {faTachometerAlt, faUser, faUsers} from '@fortawesome/free-solid-svg-icons';
+import {isUndefined} from '../../common/helper/comparison-utils';
+import {DurationService} from '../service/duration.service';
+
 
 @Component({
   selector: 'app-show-single-client',
@@ -21,20 +24,22 @@ import {faTachometerAlt, faUser, faUsers} from '@fortawesome/free-solid-svg-icon
 export class ShowSingleClientComponent implements OnInit, OnDestroy {
 
   deleteTypeClient: DeleteTypes = DeleteTypes.CLIENT;
-  counselings: Counseling[];
-  private id: string;
+  counselings: Counseling[] | undefined;
+  private id: string | undefined;
   private subscription$: Subscription[] = [];
-  person: Person;
-  client: Client;
+  person: Person | undefined;
+  client: Client | undefined;
   private closeResult = '';
   public isCollapsed = false;
-  @ViewChild('content_create_counseling') contentCreateCounseling: ElementRef;
-  @ViewChild('create_employer') createEmployer: ElementRef;
-  @ViewChild('list_employer') assignEmployer: ElementRef;
-  @ViewChild('edit_client') editClient: ElementRef;
+  @ViewChild('content_create_counseling') contentCreateCounseling: ElementRef | undefined;
+  @ViewChild('create_employer') createEmployer: ElementRef | undefined;
+  @ViewChild('list_employer') assignEmployer: ElementRef | undefined;
+  @ViewChild('edit_client') editClient: ElementRef | undefined;
   faTachometerAlt = faTachometerAlt;
   protected readonly faUser = faUser;
   protected readonly faUsers = faUsers;
+  totalCounselingDuration = 0;
+  totalHumanReadableDuration: string | undefined;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -43,7 +48,8 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     private sidebarService: SidebarService,
     private router: Router,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private durationService: DurationService,
   ) {
   }
 
@@ -81,7 +87,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.sidebarService.setClientButtonSubject(false);
   }
 
-  openEmployer(content) {
+  openEmployer(content: ElementRef | undefined) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -89,7 +95,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     });
   }
 
-  openNewCounseling(content_create_counseling) {
+  openNewCounseling(content_create_counseling: ElementRef | undefined) {
     this.modalService.open(content_create_counseling, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -97,39 +103,49 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     });
   }
 
-  /*  openEditModal(edit_client) {
-      this.modalService.open(edit_client, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
-        this.closeResult = `Closed with: ${result}`;
-      }, (reason) => {
-        this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
-      });
-    }*/
+  getTotalCounselingDuration() {
+    if (!isUndefined(this.client)) {
+      for (const counseling of this.client.counselings) {
+        console.log(counseling.requiredTime);
+        console.log(' + + + + ');
+        this.totalCounselingDuration = this.totalCounselingDuration + counseling.requiredTime;
+        console.log(this.totalCounselingDuration);
+      }
+    }
+    if (this.totalCounselingDuration > 0) {
+      this.totalHumanReadableDuration = this.durationService.getCounselingDuration(this.totalCounselingDuration);
+    }
+  }
 
   getClient() {
     this.subscription$.push(
       this.clientService.getSingleClient(this.id).subscribe(res => {
         this.client = res;
         this.getCategories();
+        // @ts-ignore
         this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
+        this.getTotalCounselingDuration();
       })
     );
   }
 
   getCategories() {
-    this.client.counselings.forEach((c) => {
-      this.subscription$.push(
-        this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, c.id).subscribe({
-          next: (categories) => {
-            c.legalCategory = categories;
-          }
-        }));
-      this.subscription$.push(
-        this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.ACTIVITY, c.id).subscribe({
-          next: (categories) => {
-            c.activityCategories = categories;
-          }
-        }));
-    });
+    if (!isUndefined(this.client)) {
+      this.client.counselings.forEach((c) => {
+        this.subscription$.push(
+          this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, c.id).subscribe({
+            next: (categories) => {
+              c.legalCategory = categories;
+            }
+          }));
+        this.subscription$.push(
+          this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.ACTIVITY, c.id).subscribe({
+            next: (categories) => {
+              c.activityCategories = categories;
+            }
+          }));
+      });
+    }
   }
 
   getDemoSubject() {
@@ -180,13 +196,16 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   checkIfClientIsToBeEdited() {
-    this.subscription$.push(
-      this.sidebarService.editClientSubject.subscribe(editClient => {
-        if (editClient === true) {
-          this.router.navigate([`clients/${this.client.id}/edit`]);
-        }
-      })
-    );
+    if (!isUndefined(this.client)) {
+      const clientId = this.client.id;
+      this.subscription$.push(
+        this.sidebarService.editClientSubject.subscribe(editClient => {
+          if (editClient) {
+            this.router.navigate([`clients/${clientId}/edit`]).then();
+          }
+        })
+      );
+    }
   }
 
 }

@@ -70,15 +70,11 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
   activityLength = this.ACTIVITY_LENGTH;
 
   joinCategories: JoinCategory[] = [];
-  joinCategory: JoinCategory;
+  joinCategory: JoinCategory | undefined;
   private dropdownEvents: DropdownItem[] = [];
 
   constructor(
     private clientService: ClientService,
-    private ngbFormatterService: NgbFormatterService,
-    private dateAdapter: NgbDateAdapter<string>,
-    private commonService: CommonService,
-    public dateTimeService: DateTimeService,
     private categoryService: CategoryService,
     private activatedRoute: ActivatedRoute,
     private router: Router
@@ -98,16 +94,16 @@ export class CreateCounselingComponent implements OnInit, OnDestroy {
     }));
   }
 
-  concernLengthChange(val) {
+  concernLengthChange(val: string | any[]) {
     this.concernLength = this.CONCERN_LENGTH - val.length;
   }
 
-  activityLengthChange(val) {
+  activityLengthChange(val: string | any[]) {
     this.activityLength = this.ACTIVITY_LENGTH - val.length;
   }
 
   private getCurrentUser() {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(<string>localStorage.getItem('currentUser'));
     this.registeredBy = this.currentUser.username;
   }
 

@@ -7,6 +7,7 @@ import {CounselingService} from '../service/counseling.service';
 import {Subscription} from 'rxjs';
 import {CategoryService} from '../service/category.service';
 import {CategoryTypes} from '../model/category-types';
+import {DurationService} from '../service/duration.service';
 
 @Component({
   selector: 'app-show-counselings-per-client',
@@ -21,10 +22,12 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   counselingDuration: string;
 
+
   constructor(
     private modalService: NgbModal,
     private counselingService: CounselingService,
     private commonService: CommonService,
+    public durationService: DurationService,
   ) {
   }
 
@@ -51,15 +54,7 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
   }
 
   getCounselingDuration(requiredTime: number): string {
-    if (requiredTime) {
-      return this.addLeadingZeros(Math.floor(requiredTime / 60), 2) + ':' +  Math.floor(requiredTime % 60);
-    } else {
-      return '00:00';
-    }
-  }
-
-  addLeadingZeros(num, length) {
-    return String(num).padStart(length, '0');
+    return this.durationService.getCounselingDuration(requiredTime);
   }
 
   getCreateCounselingSubject() {
@@ -87,4 +82,6 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
   no() {
     this.modalService.dismissAll();
   }
+
+  protected readonly DurationService = DurationService;
 }

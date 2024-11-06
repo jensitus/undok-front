@@ -24,7 +24,7 @@ export class NgbFormatterService {
 
   constructor() { }
 
-  parse(value: string): NgbDateStruct {
+/*  parse(value: string): { month: null; year: number; day: null } | null {
     if (value) {
       const dateParts = value.trim().split('/');
       if (dateParts.length === 1 && isNumber(dateParts[0])) {
@@ -36,7 +36,7 @@ export class NgbFormatterService {
       }
     }
     return null;
-  }
+  }*/
 
   format(date: NgbDateStruct): string {
     let stringDate = '';

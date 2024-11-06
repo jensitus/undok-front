@@ -13,13 +13,7 @@
       <div class="card">
         <div class="card-body">
           <div class="row">
-            <!--<div class="col text-end">
-              <button type="button" class="btn btn-sm btn-link" (click)="collapse.toggle()"
-                      [attr.aria-expanded]="!isCollapsed"
-                      aria-controls="collapseExample">
-                collapse
-              </button>
-            </div>-->
+
           </div>
           <div class="row">
             <div class="col mt-1">
@@ -246,7 +240,6 @@
                   nein
                 </span>
             </div>
-
           </div>
 
         </div>
@@ -257,6 +250,14 @@
 
           <app-delete [id_to_delete]="client.person.id" [type]="deleteTypeClient"
                       [delete_object_name]="client.keyword"></app-delete>
+        </div>
+        <div class="col mt-4">
+          <span class="text-secondary text-left">
+            Gesamtberatungsdauer:
+          </span>
+          <span>
+            {{ totalHumanReadableDuration }}
+          </span>
         </div>
       </div>
     </div>
@@ -317,3 +318,4 @@
   </ng-template>
 
 </div>
+

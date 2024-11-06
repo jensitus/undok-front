@@ -9,7 +9,7 @@ import {Uploaded} from '../model/uploaded';
 })
 export class FilelistComponent implements OnInit {
 
-  fileList: Uploaded[];
+  fileList: Uploaded[] | undefined;
 
   constructor(
     private uploadService: UploadService
