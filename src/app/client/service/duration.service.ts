@@ -15,6 +15,14 @@ export class DurationService {
     }
   }
 
+  getCounselingsDurationForEditing(requiredTime: number): string {
+    if (requiredTime) {
+      return this.addLeadingZeros(Math.floor(requiredTime / 60), 2) + ':' +  Math.floor(requiredTime % 60);
+    } else {
+      return '';
+    }
+  }
+
   addLeadingZeros(num, length) {
     return String(num).padStart(length, '0');
   }

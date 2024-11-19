@@ -15,13 +15,13 @@
     </a>-->
     <a [routerLink]="['/list-users']" *ngIf="currentUser.admin" [routerLinkActive]="['router-link-active']"
        class="list-group-item">
-      <fa-icon class="text-info" [icon]="faCampground"></fa-icon>&nbsp;
+      <fa-icon class="text-secondary" [icon]="faCampground"></fa-icon>&nbsp;
       <span>{{ 'list users' }}</span>
     </a>
 
     <a [routerLink]="['/clients/csv-download-list']" *ngIf="currentUser.admin" [routerLinkActive]="['router-link-active']"
        class="list-group-item">
-      <fa-icon class="text-danger" [icon]="faSave"></fa-icon>&nbsp;
+      <fa-icon class="text-secondary" [icon]="faSave"></fa-icon>&nbsp;
       <span>{{ 'daily CSVs' }}</span>
     </a>
 

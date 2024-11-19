@@ -43,6 +43,7 @@ export class TwoFactorComponent implements OnInit, OnDestroy {
       userId: this.currentUser.id,
       token: this.twoFactorToken
     };
+    console.log(this.secondFactorForm);
     this.subscription$.push(this.userService.sendSecondFactorToken(this.secondFactorForm).subscribe((result) => {
       console.log('result', result);
       this.secondFactorUser = result.userDto;

@@ -9,7 +9,7 @@ export interface AllCounseling {
   activity: string;
   activityCategory: string;
   registeredBy: string;
-  counselingDate: string;
+  counselingDate: Date;
   clientId: string;
   clientFullName: string;
   comment?: string;

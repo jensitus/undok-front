@@ -100,7 +100,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
         this.counseling.activityCategories = categories;
       }));
       this.setDateObject();
-      this.counselingDuration = this.durationService.getCounselingDuration(this.counseling.requiredTime);
+      this.counselingDuration = this.durationService.getCounselingsDurationForEditing(this.counseling.requiredTime);
     }, error => {
       this.router.navigate(['/clients', this.clientId]).then();
     }));
