@@ -14,6 +14,7 @@ import {CategoryService} from '../service/category.service';
 import {faTachometerAlt, faUser, faUsers} from '@fortawesome/free-solid-svg-icons';
 import {isUndefined} from '../../common/helper/comparison-utils';
 import {DurationService} from '../service/duration.service';
+import {Label} from '../model/label';
 
 
 @Component({
@@ -40,6 +41,9 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   protected readonly faUsers = faUsers;
   totalCounselingDuration = 0;
   totalHumanReadableDuration: string | undefined;
+  cat_case = CategoryTypes.CASE;
+  protected readonly Label = Label;
+  case: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -208,4 +212,8 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     }
   }
 
+  selectCase(event: string) {
+    this.case = event;
+    console.log(this.case);
+  }
 }

@@ -3,5 +3,6 @@ export enum CategoryTypes {
   ACTIVITY = 'ACTIVITY',
   AUFENTHALTSTITEL = 'Aufenthaltstitel',
   SECTOR = 'Branche',
-  LEGAL = 'LEGAL'
+  LEGAL = 'LEGAL',
+  CASE = 'CASE',
 }

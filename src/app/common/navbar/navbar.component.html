@@ -4,7 +4,7 @@
       <a [routerLink]="['/']" class="text-danger"> undok.at </a>
     </span>
     <span class="brand" *ngIf="titlePrefix">
-      <a [routerLink]="['/']"> {{titlePrefix}} @ undok </a>
+      <a [routerLink]="['/']"> {{titlePrefix}} &#64; undok </a>
     </span>
     <span *ngIf="currentUser != null" class="nav-user-man">
       <a [routerLink]="['/users', currentUser.username]" [innerHTML]="currentUser.username" class="navbar-link"></a>

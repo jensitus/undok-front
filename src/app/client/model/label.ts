@@ -3,5 +3,6 @@ export enum Label {
   ACTIVITY = 'Aktivitätskategorie',
   RESIDENT_STATUS = 'Aufenthaltstitel',
   GENDER = 'gender',
-  SECTOR = 'branche'
+  SECTOR = 'branche',
+  CASE = 'case'
 }
