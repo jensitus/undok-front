@@ -1,15 +1,37 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {NavigationEnd, Router} from '@angular/router';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {NavigationEnd, Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {User} from '../../../../auth/model/user';
-import {faEarListen, faBars, faCampground, faCoffee, faPowerOff, faTachometerAlt, faUser, faUsers, faTasks, faSurprise, faSave} from '@fortawesome/free-solid-svg-icons';
+import {
+  faBars,
+  faCampground,
+  faCoffee,
+  faEarListen,
+  faPowerOff,
+  faSave,
+  faSurprise,
+  faTachometerAlt,
+  faTasks,
+  faUser,
+  faUsers
+} from '@fortawesome/free-solid-svg-icons';
 import {SidebarService} from '../../../shared/services/sidebar.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {NgClass, NgIf} from '@angular/common';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
+  imports: [
+    NgClass,
+    RouterLink,
+    FaIconComponent,
+    RouterLinkActive,
+    NgIf
+  ],
+  standalone: true
 })
 export class SidebarComponent implements OnInit {
   isActive: boolean;

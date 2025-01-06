@@ -34,19 +34,28 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {DecimalPipe} from '@angular/common';
 import {BackButtonDirective} from './common/back-button.directive';
 import {TwoFactorComponent} from './auth/two-factor/two-factor.component';
+import {SidebarComponent} from './admin-template/layout/components/sidebar/sidebar.component';
 
 const app_routes: Routes = [
-  {path: 'home', redirectTo: 'login', pathMatch: 'full'},
+  {path: 'home', component: HomeComponent, pathMatch: 'full'},
   {path: '', redirectTo: 'login', pathMatch: 'full'},
-  // { path: '', loadChildren: () => import('./admin-template/layout/layout.module').then(m => m.LayoutModule), canActivate: [AuthGuard] },
+  { path: '', loadChildren: () => import('./admin-template/layout/layout.module').then(m => m.LayoutModule), canActivate: [AuthGuard] },
   {path: 'login', component: LoginComponent},
   {path: 'second-factor', component: TwoFactorComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'forgot', component: ForgotPasswordComponent},
   {path: 'auth/reset_password/:token/edit', component: ResetPasswordComponent},
   {path: 'auth/:token/confirm/:email', component: ConfirmAccountComponent},
-  {path: 'upload', component: UploadComponent},
-  {path: 'filelist', component: FilelistComponent}
+  // {path: 'upload', component: UploadComponent},
+  // {path: 'filelist', component: FilelistComponent},
+  // // {path: '', redirectTo: 'dashboard', pathMatch: 'prefix'},
+  // {path: 'dashboard', loadChildren: () => import('./admin-template/layout/dashboard/dashboard.module').then(m => m.DashboardModule)},
+  // {path: 'users/:username', component: UserComponent},
+  // {path: 'users/:username/edit', component: EditUserComponent},
+  // {path: 'users/:username/changepw', component: ChangePasswordComponent},
+  // {path: 'list-users', loadChildren: () => import('./admin-template/layout/dashboard/components/show-users/create-user.module').then(m => m.CreateUserModule)},
+  // { path: 'charts', loadChildren: () => import('./admin-template/layout/charts/charts.module').then(m => m.ChartsModule) },
+  // {path: 'clients', loadChildren: () => import('./client/client.module').then(c => c.ClientModule)}
 ];
 
 @NgModule({
@@ -78,7 +87,8 @@ const app_routes: Routes = [
     LayoutModule,
     AlertModule,
     PageHeaderModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    SidebarComponent
   ],
   providers: [
     AuthGuard,
