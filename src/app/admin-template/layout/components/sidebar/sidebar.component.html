@@ -49,19 +49,14 @@
     </a>
     </span>
 
-    <a *ngIf="showClientButtons || showCreateEmployerButton" class="list-group-item" [routerLink]="['clients/create/employer']">
+<!--    <a *ngIf="showClientButtons || showCreateEmployerButton" class="list-group-item" [routerLink]="['clients/create/employer']">
       <fa-icon class="text-primary" [icon]="faSurprise"></fa-icon>&nbsp;
       <span>{{ 'neue arbeitgeber:in' }}</span>
-    </a>
+    </a>-->
 
     <a *ngIf="showClientButtons" class="list-group-item" (click)="assignEmployer()">
       <fa-icon class="text-primary" [icon]="faSurprise"></fa-icon>&nbsp;
       <span>{{ 'arbeitgeber:in zuweisen' }}</span>
-    </a>
-
-    <a *ngIf="showClientButtons" class="list-group-item" (click)="editClient()">
-      <fa-icon class="text-success" [icon]="faUsers"></fa-icon>&nbsp;
-      <span>{{ 'klient:in bearbeiten' }}</span>
     </a>
 
     <div class="header-fields">

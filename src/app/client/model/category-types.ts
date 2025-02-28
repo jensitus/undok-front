@@ -5,4 +5,5 @@ export enum CategoryTypes {
   SECTOR = 'Branche',
   LEGAL = 'LEGAL',
   CASE = 'CASE',
+  REFERRED_TO = 'weitervermitteln',
 }

@@ -4,5 +4,6 @@ export enum Label {
   RESIDENT_STATUS = 'Aufenthaltstitel',
   GENDER = 'gender',
   SECTOR = 'branche',
-  CASE = 'case'
+  CASE = 'case',
+  REFERRED_TO = 'vermitteln',
 }

@@ -41,9 +41,8 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   protected readonly faUsers = faUsers;
   totalCounselingDuration = 0;
   totalHumanReadableDuration: string | undefined;
-  cat_case = CategoryTypes.CASE;
   protected readonly Label = Label;
-  case: string;
+  protected closeCase = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -68,17 +67,19 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription$.push(this.activatedRoute.params.subscribe(params => {
-      this.id = params['id'];
-      this.getClient();
-      this.getDemoSubject();
-      // this.getCreateEmployerSubject();
-      this.getReloadClientSubject();
-      this.checkIfNewCounselingIsNeeded();
-      this.checkIfNewEmployerIsNeeded();
-      this.checkIfEmployerIsToBeAssigned();
-      this.checkIfClientIsToBeEdited();
-    }));
+    this.subscription$.push(
+      this.activatedRoute.params.subscribe(params => {
+        this.id = params['id'];
+        this.getClient();
+        this.getDemoSubject();
+        // this.getCreateEmployerSubject();
+        this.getReloadClientSubject();
+        this.checkIfNewCounselingIsNeeded();
+        this.checkIfNewEmployerIsNeeded();
+        this.checkIfEmployerIsToBeAssigned();
+        this.checkIfClientIsToBeEdited();
+      }))
+    ;
     this.sidebarService.setClientButtonSubject(true);
   }
 
@@ -99,6 +100,14 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     });
   }
 
+  openCloseCaseModal(close_case: any) {
+    this.modalService.open(close_case, {ariaLabelledBy: 'modal-basic-title', size: 'md'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
+    });
+  }
+
   openNewCounseling(content_create_counseling: ElementRef | undefined) {
     this.modalService.open(content_create_counseling, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -110,10 +119,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   getTotalCounselingDuration() {
     if (!isUndefined(this.client)) {
       for (const counseling of this.client.counselings) {
-        console.log(counseling.requiredTime);
-        console.log(' + + + + ');
         this.totalCounselingDuration = this.totalCounselingDuration + counseling.requiredTime;
-        console.log(this.totalCounselingDuration);
       }
     }
     if (this.totalCounselingDuration > 0) {
@@ -212,8 +218,14 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     }
   }
 
-  selectCase(event: string) {
-    this.case = event;
-    console.log(this.case);
+  closeOrOpenCase(): void {
+    this.closeCase = !this.closeCase;
   }
+
+  closeModal(event: boolean) {
+    if (event) {
+      this.modalService.dismissAll();
+    }
+  }
+
 }

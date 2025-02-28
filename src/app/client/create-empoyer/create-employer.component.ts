@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {EmployerForm} from '../model/employer-form';
-import {Subject, Subscription} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {Subscription} from 'rxjs';
 import {CommonService} from '../../common/services/common.service';
 import {EmployerService} from '../service/employer.service';
 import {Location} from '@angular/common';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-employer',
@@ -33,7 +33,8 @@ export class CreateEmployerComponent implements OnInit, OnDestroy {
   constructor(
     private commonService: CommonService,
     private employerService: EmployerService,
-    private location: Location
+    private location: Location,
+    private router: Router,
   ) {
   }
 
@@ -63,10 +64,12 @@ export class CreateEmployerComponent implements OnInit, OnDestroy {
       employerCountry: this.employerCountry
     };
     this.loading = true;
-    this.unsubscribe$.push(this.employerService.createEmployer(this.employerForm).subscribe(result => {
-      this.commonService.setCreateEmployerSubject(true);
-      this.location.back();
-    }));
+    this.unsubscribe$.push(
+      this.employerService.createEmployer(this.employerForm).subscribe(result => {
+        this.commonService.setCreateEmployerSubject(true);
+        this.router.navigate(['/clients/employers']);
+      })
+    );
   }
 
 }

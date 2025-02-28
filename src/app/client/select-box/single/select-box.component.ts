@@ -6,11 +6,22 @@ import {CategoryService} from '../../service/category.service';
 import {CategoryTypes} from '../../model/category-types';
 import {CommonService} from '../../../common/services/common.service';
 import {Label} from '../../model/label';
+import {AddCategoryComponent} from '../add-category/add-category.component';
+import {NgSelectModule} from '@ng-select/ng-select';
+import {FormsModule} from '@angular/forms';
+import {NgForOf} from '@angular/common';
 
 
 @Component({
   selector: 'app-select-box',
+  standalone: true,
   templateUrl: './select-box.component.html',
+  imports: [
+    AddCategoryComponent,
+    NgSelectModule,
+    FormsModule,
+    NgForOf
+  ],
   styleUrls: ['./select-box.component.css']
 })
 export class SelectBoxComponent implements OnInit, OnDestroy {
@@ -32,7 +43,8 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
   constructor(
     private categoryService: CategoryService,
     private commonService: CommonService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.getReloadSubject();
@@ -46,11 +58,13 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
   }
 
   getReloadSubject() {
-    this.subscription$.push(this.commonService.reloadSubject.subscribe(reload => {
-      if (reload === true) {
-        this.loadCategoriesByCategoryType();
-      }
-    }));
+    this.subscription$.push(
+      this.commonService.reloadSubject.subscribe(reload => {
+        if (reload === true) {
+          this.loadCategoriesByCategoryType();
+        }
+      })
+    );
   }
 
   onCategoryValueChange(): void {
@@ -58,9 +72,11 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
   }
 
   loadCategoriesByCategoryType(): void {
-    this.subscription$.push(this.categoryService.getCategories(this.categoryType).subscribe(cat => {
-      this.categoriesToSelect = cat;
-    }));
+    this.subscription$.push(
+      this.categoryService.getCategories(this.categoryType).subscribe(cat => {
+        this.categoriesToSelect = cat;
+      })
+    );
   }
 
   selectCategory() {

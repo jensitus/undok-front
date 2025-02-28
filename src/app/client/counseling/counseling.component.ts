@@ -16,6 +16,7 @@ import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {Time} from '../model/time';
 import {DateTimeService} from '../service/date-time.service';
 import {DurationService} from '../service/duration.service';
+import {error} from 'protractor';
 
 @Component({
   selector: 'app-counseling',
@@ -51,6 +52,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
   counselingDate: string;
   editCounselingDate = false;
   editRequiredTime = false;
+  counselingDateRequired = false;
 
   constructor(
     private counselingService: CounselingService,
@@ -210,9 +212,18 @@ export class CounselingComponent implements OnInit, OnDestroy {
       this.counselingDate = this.dateTimeService.mergeDateAndTime(this.dateObject, this.time);
       this.counseling.counselingDate = this.counselingDate;
     }
-    this.subscription$.push(this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe(res => {
-      this.getCounseling();
-    }));
+    this.subscription$.push(
+      this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe({
+        next: () => {
+          this.getCounseling();
+        },
+        error: err => {
+          if (err.status === 428) {
+            this.counselingDateRequired = true;
+          }
+        }
+      })
+    );
     this.editCounselingDate = false;
     this.editActivity = false;
     this.editConcern = false;

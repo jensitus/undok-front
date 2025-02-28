@@ -30,18 +30,19 @@ import {CounselingComponent} from './counseling/counseling.component';
 import {NewLinePipe} from './new-line.pipe';
 import {ShowSingleEmployerComponent} from './show-single-employer/show-single-employer.component';
 import {EditEmployerComponent} from './edit-employer/edit-employer.component';
-import {SelectBoxComponent} from './select-box/single/select-box.component';
 import {DeleteComponent} from './delete/delete.component';
 import {DeleteModalComponent} from './delete/delete-modal/delete-modal.component';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import {MultiSelectBoxComponent} from './select-box/multi/multi-select-box.component';
 import {ShowCounselingComponent} from './show-counseling/show-counseling.component';
-import {AddCategoryComponent} from './select-box/add-category/add-category.component';
 import {BackUpComponent} from './back-up/back-up.component';
-import { EditCategoriesComponent } from './edit-categories/edit-categories.component';
-import { EditCategoryComponent } from './edit-category/edit-category.component';
+import {EditCategoriesComponent} from './edit-categories/edit-categories.component';
+import {EditCategoryComponent} from './edit-category/edit-category.component';
 import {PageHeaderModule} from '../admin-template/shared';
 import {NgSelectModule} from '@ng-select/ng-select';
+import {CloseCaseComponent} from './case/close-case/close-case.component';
+import {SelectBoxComponent} from './select-box/single/select-box.component';
+import {ReopenCaseComponent} from './case/reopen-case/reopen-case.component';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
@@ -81,29 +82,30 @@ const appRoutes: Routes = [
     NewLinePipe,
     ShowSingleEmployerComponent,
     EditEmployerComponent,
-    SelectBoxComponent,
     DeleteComponent,
     DeleteModalComponent,
     MultiSelectBoxComponent,
     ShowCounselingComponent,
-    AddCategoryComponent,
     BackUpComponent,
     EditCategoriesComponent,
     EditCategoryComponent
   ],
-    imports: [
-        NgMultiSelectDropDownModule.forRoot(),
-        CommonModule,
-        RouterModule.forChild(appRoutes),
-        FormsModule,
-        NgbModule,
-        FontAwesomeModule,
-        AlertModule,
-        PageHeaderModule,
-        NgSelectModule
-    ],
-  exports: [
+  imports: [
+    NgMultiSelectDropDownModule.forRoot(),
+    CommonModule,
+    RouterModule.forChild(appRoutes),
+    FormsModule,
+    NgbModule,
+    FontAwesomeModule,
+    AlertModule,
+    PageHeaderModule,
+    NgSelectModule,
+    CloseCaseComponent,
+    SelectBoxComponent,
+    ReopenCaseComponent
   ],
+    exports: [
+    ],
   providers: [DecimalPipe]
 })
 export class ClientModule {

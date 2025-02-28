@@ -56,14 +56,6 @@ export class SidebarService {
     }
   }
 
-  setEditClientSubject(value) {
-    if (value) {
-      this.editClientSubject.next(value);
-    } else {
-      this.editClientSubject.next(null);
-    }
-  }
-
   setCreateEmployerButtonSubject(value) {
     if (value) {
       this.createEmployerButtonSubject.next(value);
