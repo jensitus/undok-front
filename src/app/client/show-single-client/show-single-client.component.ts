@@ -228,4 +228,11 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     }
   }
 
+  closeCaseModal(event: boolean) {
+    if (event) {
+      this.modalService.dismissAll();
+      this.closeOrOpenCase();
+    }
+  }
+
 }

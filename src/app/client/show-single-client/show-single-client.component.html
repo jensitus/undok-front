@@ -36,7 +36,7 @@
     </div>
     <div class="row">
       <div class="col-xl-5">
-        @if (client.closedCases) {
+        @if (closeCase) {
           <div class="mt-1 mb-2">
             <app-reopen-case [inputCase]="client.closedCases[client.closedCases.length -1]"
                              (caseEitherNewOrReOpened)="closeModal($event)"/>
@@ -293,7 +293,7 @@
           </span>
           </div>
         </div>
-        @if (client.openCase) {
+        @if (!closeCase) {
 
           <div class="row mt-1 mb-5">
             <div class="row">
@@ -302,18 +302,17 @@
               </div>
             </div>
             <div class="row">
-              <div class="col">
+<!--              <div class="col">
                 @if (closeCase) {
                   <app-close-case [inputCase]="client.openCase" [closeCaseProperty]="true"/>
                 }
-              </div>
+              </div>-->
             </div>
           </div>
         }
       </div>
       <div class="col-xl-7">
-        <app-show-counselings-per-client [counselings]="client.counselings"
-                                         [clientId]="client.id"></app-show-counselings-per-client>
+        <app-show-counselings-per-client [clientId]="client.id"></app-show-counselings-per-client>
       </div>
     </div>
 
@@ -326,7 +325,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <app-close-case (caseClosed)="closeModal($event)" [inputCase]="client.openCase"
+        <app-close-case (caseClosed)="closeCaseModal($event)" [inputCase]="client.openCase"
                         [closeCaseProperty]="true"/>
       </div>
       <div class="modal-footer">

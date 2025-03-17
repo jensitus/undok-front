@@ -34,6 +34,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   showNavigationArrows = false;
   showNavigationIndicators = false;
   images = [
+    {title: 'Schneeberg', short: 'schneeberg', src: 'assets/images/schneeberg.jpg', alt: 'Im Vordergrung Wien, im Hintergrung der Schneeberg'},
     {title: 'Møn - Dänemark', short: 'Møn', src: 'assets/images/sonnenblumenfeld.jpg', alt: 'Sonnenblumenfeld in Dänemark'},
     {title: 'Sonnenaufgang an der Elbe', short: 'Sunrise', src: 'assets/images/klangschale-Elbe.jpeg', alt: 'Sonnenaufgang an der Elbe bei Neu Darchau'},
     {title: 'Semmering Gegend', short: 'Semmering', src: 'assets/images/dsc-schneeberg-background.jpeg', alt: 'Schneebergblick in der Semmering Gegend'},

@@ -40,4 +40,8 @@ export class CounselingService {
     return this.http.put<Counseling>(this.apiUrl + this.COUNSELING_URL + counselingId + '/set-required-time', duration);
   }
 
+  getCounselingsByClientId(clientId: string): Observable<Counseling[]> {
+    return this.http.get<Counseling[]>(this.apiUrl + this.COUNSELING_URL + 'by-client/' + clientId);
+  }
+
 }
