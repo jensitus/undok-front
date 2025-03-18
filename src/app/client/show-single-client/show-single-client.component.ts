@@ -131,31 +131,11 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.subscription$.push(
       this.clientService.getSingleClient(this.id).subscribe(res => {
         this.client = res;
-        this.getCategories();
         // @ts-ignore
         this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
         this.getTotalCounselingDuration();
       })
     );
-  }
-
-  getCategories() {
-    if (!isUndefined(this.client)) {
-      this.client.counselings.forEach((c) => {
-        this.subscription$.push(
-          this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, c.id).subscribe({
-            next: (categories) => {
-              c.legalCategory = categories;
-            }
-          }));
-        this.subscription$.push(
-          this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.ACTIVITY, c.id).subscribe({
-            next: (categories) => {
-              c.activityCategories = categories;
-            }
-          }));
-      });
-    }
   }
 
   getDemoSubject() {
