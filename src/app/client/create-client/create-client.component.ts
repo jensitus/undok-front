@@ -14,6 +14,9 @@ import {CITIZENSHIPS} from '../model/citizenships';
 import {CategoryTypes} from '../model/category-types';
 import {Label} from '../model/label';
 import {AUSTRIA} from '../defaults/defaults';
+import {DropdownItem} from '../model/dropdown-item';
+import {EntityTypes} from '../model/entity-types';
+import {JoinCategory} from '../model/join-category';
 
 @Component({
   selector: 'app-create-client',
@@ -77,6 +80,10 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   protected readonly Label = Label;
   protected readonly faUsers = faUsers;
   protected readonly faTachometerAlt = faTachometerAlt;
+  jobFunctionType: CategoryTypes = CategoryTypes.JOB_FUNCTION;
+  jobFunctionLabel: Label;
+  joinCategories: JoinCategory[] = [];
+  joinCategory: JoinCategory;
 
 
   constructor(
@@ -174,4 +181,16 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     this.sector = event;
   }
 
+  showCategoryValue(event: DropdownItem[], jobFunctionType: CategoryTypes) {
+    this.joinCategories = [];
+    event.forEach(e => {
+      this.joinCategory = {
+        categoryId: e.itemId,
+        categoryType: jobFunctionType,
+        entityId: undefined, // this.counseling.id,
+        entityType: EntityTypes.COUNSELING
+      };
+      this.joinCategories.push(this.joinCategory);
+    });
+  }
 }

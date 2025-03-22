@@ -1,3 +1,4 @@
 export enum EntityTypes {
-  COUNSELING = 'COUNSELING'
+  COUNSELING = 'COUNSELING',
+  CLIENT = 'CLIENT',
 }

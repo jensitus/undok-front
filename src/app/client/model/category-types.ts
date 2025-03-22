@@ -6,4 +6,5 @@ export enum CategoryTypes {
   LEGAL = 'LEGAL',
   CASE = 'CASE',
   REFERRED_TO = 'weitervermitteln',
+  JOB_FUNCTION = 'JOB_FUNCTION',
 }

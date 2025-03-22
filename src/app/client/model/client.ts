@@ -1,6 +1,7 @@
 import {Counseling} from './counseling';
 import {Person} from './person';
 import {Case} from './case';
+import {Category} from './category';
 
 export interface Client {
   id: string;
@@ -26,5 +27,6 @@ export interface Client {
   socialInsuranceNumber: string;
   closedCases?: Case[];
   openCase?: Case;
+  jobFunctions?: Category[];
 
 }

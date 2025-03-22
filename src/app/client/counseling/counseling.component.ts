@@ -147,11 +147,13 @@ export class CounselingComponent implements OnInit, OnDestroy {
   }
 
   getDeleteSubject() {
-    this.subscription$.push(this.commonService.deleteSubject.subscribe(result => {
-      if (result === true) {
-        this.router.navigate(['/clients/', this.counseling.clientId]);
-      }
-    }));
+    this.subscription$.push(
+      this.commonService.deleteSubject.subscribe(result => {
+        if (result === true) {
+          this.router.navigate(['/clients/', this.counseling.clientId]);
+        }
+      })
+    );
   }
 
   addActivityCategory() {
@@ -185,11 +187,15 @@ export class CounselingComponent implements OnInit, OnDestroy {
       };
       this.deSelectedCategories.push(deselect);
     });
-    this.subscription$.push(this.categoryService.deleteJoinCategories(this.deSelectedCategories).subscribe(res => {
-    }));
-    this.subscription$.push(this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
-      this.commonService.setReloadSubject(true);
-    }));
+    this.subscription$.push(
+      this.categoryService.deleteJoinCategories(this.deSelectedCategories).subscribe(res => {
+      })
+    );
+    this.subscription$.push(
+      this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
+        this.commonService.setReloadSubject(true);
+      })
+    );
     switch (categoryType) {
       case CategoryTypes.ACTIVITY:
         this.addActivityCategory();

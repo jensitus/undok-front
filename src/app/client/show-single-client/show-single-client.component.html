@@ -274,7 +274,12 @@
                 </span>
               </div>
             </div>
-
+            <div>
+              <label class="text-secondary">Tätigkeiten:</label>&nbsp;
+              <span *ngFor="let jobFunction of client.jobFunctions">
+              <span [innerHTML]="jobFunction.name"></span>&nbsp;
+            </span>
+            </div>
           </div>
         </div>
         <div class="row mt-1">
@@ -294,27 +299,67 @@
           </div>
         </div>
         @if (!closeCase) {
-
-          <div class="row mt-1 mb-5">
+          <div class="row mt-1">
             <div class="row">
               <div class="col">
-                <button class="btn btn-link" (click)="openCloseCaseModal(close_case)">Fall abschließen?</button>
+                <button class="btn btn-link" (click)="openCloseCaseModal(close_case)">
+                  <small>Fall abschließen?</small>
+                </button>
               </div>
             </div>
             <div class="row">
-<!--              <div class="col">
-                @if (closeCase) {
-                  <app-close-case [inputCase]="client.openCase" [closeCaseProperty]="true"/>
-                }
-              </div>-->
             </div>
           </div>
         }
+        <div class="row mb-5">
+          <div class="row">
+            <div class="col">
+              <button class="btn btn-link" (click)="openJobFunctionModal(job_function)">
+                <small>Tätigkeiten</small>
+              </button>
+            </div>
+          </div>
+          <div class="row">
+          </div>
+        </div>
       </div>
       <div class="col-xl-7">
         <app-show-counselings-per-client [clientId]="client.id"></app-show-counselings-per-client>
       </div>
     </div>
+
+    <ng-template #job_function let-modal>
+      <div class="modal-header">
+        <h5>Tätigkeiten</h5>
+        <button type="button" class="btn btn-lg btn-outline-dark" aria-label="Close"
+                (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <app-multi [categoryType]="jobFunctionCategoryType"
+                       [label]="jobFunctionLabel"
+                       (categoryValue)="showCategoryValue($event, jobFunctionCategoryType)"
+                       (deSelectedEmit)="showDeSelected($event)"
+                       [selectedCategories]="client.jobFunctions">
+            </app-multi>
+          </div>
+          <div class="col-md-2 mt-4">
+            <button class="btn btn-sm btn-outline-success"
+                    (click)="saveCategories(jobFunctionCategoryType)">
+              submit
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </ng-template>
 
     <ng-template #close_case let-modal>
       <div class="modal-header">

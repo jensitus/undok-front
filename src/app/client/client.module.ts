@@ -43,6 +43,7 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {CloseCaseComponent} from './case/close-case/close-case.component';
 import {SelectBoxComponent} from './select-box/single/select-box.component';
 import {ReopenCaseComponent} from './case/reopen-case/reopen-case.component';
+import {AddCategoryComponent} from './select-box/add-category/add-category.component';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
@@ -90,20 +91,21 @@ const appRoutes: Routes = [
     EditCategoriesComponent,
     EditCategoryComponent
   ],
-  imports: [
-    NgMultiSelectDropDownModule.forRoot(),
-    CommonModule,
-    RouterModule.forChild(appRoutes),
-    FormsModule,
-    NgbModule,
-    FontAwesomeModule,
-    AlertModule,
-    PageHeaderModule,
-    NgSelectModule,
-    CloseCaseComponent,
-    SelectBoxComponent,
-    ReopenCaseComponent
-  ],
+    imports: [
+        NgMultiSelectDropDownModule.forRoot(),
+        CommonModule,
+        RouterModule.forChild(appRoutes),
+        FormsModule,
+        NgbModule,
+        FontAwesomeModule,
+        AlertModule,
+        PageHeaderModule,
+        NgSelectModule,
+        CloseCaseComponent,
+        SelectBoxComponent,
+        ReopenCaseComponent,
+        AddCategoryComponent
+    ],
     exports: [
     ],
   providers: [DecimalPipe]

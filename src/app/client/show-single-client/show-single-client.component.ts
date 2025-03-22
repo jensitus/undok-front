@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ClientService} from '../service/client.service';
 import {Subscription} from 'rxjs';
@@ -15,6 +15,10 @@ import {faTachometerAlt, faUser, faUsers} from '@fortawesome/free-solid-svg-icon
 import {isUndefined} from '../../common/helper/comparison-utils';
 import {DurationService} from '../service/duration.service';
 import {Label} from '../model/label';
+import {DropdownItem} from '../model/dropdown-item';
+import {Category} from '../model/category';
+import {JoinCategory} from '../model/join-category';
+import {EntityTypes} from '../model/entity-types';
 
 
 @Component({
@@ -43,6 +47,13 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   totalHumanReadableDuration: string | undefined;
   protected readonly Label = Label;
   protected closeCase = false;
+  jobFunctionCategoryType: CategoryTypes = CategoryTypes.JOB_FUNCTION;
+  jobFunctionLabel: Label = Label.JOB_FUNCTION;
+  jobFunctionCategories: Category[];
+  deSelectedItems: DropdownItem[] = [];
+  private deSelectedCategories: JoinCategory[] = [];
+  private joinCategories: JoinCategory[] = [];
+  private joinCategory: JoinCategory;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -215,4 +226,57 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     }
   }
 
+  openJobFunctionModal(job_function: TemplateRef<any>) {
+    this.modalService.open(job_function, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
+    });
+  }
+
+  showCategoryValue(event: DropdownItem[], categoryType: CategoryTypes) {
+    this.joinCategories = [];
+    event.forEach(e => {
+      this.joinCategory = {
+        categoryId: e.itemId,
+        categoryType: categoryType,
+        entityId: this.client.id,
+        entityType: EntityTypes.CLIENT
+      };
+      this.joinCategories.push(this.joinCategory);
+    });
+  }
+
+  showDeSelected(event: DropdownItem[]) {
+    this.deSelectedItems = event;
+  }
+
+  saveCategories(categoryType: CategoryTypes) {
+      this.deSelectedItems.forEach((deSelected) => {
+        const deselect: JoinCategory = {
+          entityType: EntityTypes.CLIENT,
+          entityId: this.client.id,
+          categoryType: categoryType,
+          categoryId: deSelected.itemId
+        };
+        this.deSelectedCategories.push(deselect);
+      });
+      this.subscription$.push(
+        this.categoryService.deleteJoinCategories(this.deSelectedCategories).subscribe({
+          next: () => {
+
+          }, error: (error) => {
+            console.log(error);
+          }
+        })
+      );
+      this.subscription$.push(
+        this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
+          this.commonService.setReloadSubject(true);
+        })
+      );
+      this.deSelectedCategories = [];
+      this.joinCategories = [];
+
+  }
 }

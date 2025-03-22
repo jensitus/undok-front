@@ -6,4 +6,5 @@ export enum Label {
   SECTOR = 'branche',
   CASE = 'case',
   REFERRED_TO = 'vermitteln',
+  JOB_FUNCTION = 'Tätigkeiten',
 }
