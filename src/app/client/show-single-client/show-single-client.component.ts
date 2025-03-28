@@ -142,6 +142,9 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.subscription$.push(
       this.clientService.getSingleClient(this.id).subscribe(res => {
         this.client = res;
+        if (this.client.openCase === null) {
+          this.closeOrOpenCase();
+        }
         // @ts-ignore
         this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
         this.getTotalCounselingDuration();
