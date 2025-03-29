@@ -30,14 +30,29 @@
             </div>
           </div>
         </div>
+        <div class="col">
+          <div>
+            <div>
+              <a [routerLink]="['/clients/create/employer']" class="btn btn-lg btn-outline-success">Arbeitgeber:in anlegen</a>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="row mt-3">
         <div class="col-lg-10">
           <div class="card">
-            <div class="card-header">
-              Semmering Gegend
-            </div>
-            <img src="assets/images/dsc-schneeberg-background.jpeg" class="card-img-top">
+            <ngb-carousel>
+              <ng-template ngbSlide *ngFor="let image of images">
+                <div class="card-header">
+                  {{ image.title }}
+                </div>
+                <div class="card-body">
+                  <div class="wrapper">
+                    <img [src]="image.src" width="100%" [alt]="image.alt">
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-carousel>
           </div>
           <!--
           <app-doughnut></app-doughnut>

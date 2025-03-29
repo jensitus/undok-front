@@ -1,318 +1,436 @@
-<app-page-header [firstPoint]="'dashboard'" [firstIcon]="faTachometerAlt" [firstLink]="'/dashboard'"
-                 [secondPoint]="'clients'" [secondIcon]="faUsers" [secondLink]="'/clients/client-list'"
-                 [endPoint]="client.person.firstName ? client.person.firstName + ' ' + client.person.lastName : client.keyword">
-</app-page-header>
-<div *ngIf="client">
-  <div class="row">
-    <div class="col">
-      <h2 style="font-size: x-large; font-weight: bold">Klient:in</h2>
+@if (client) {
+  <app-page-header [firstPoint]="'dashboard'" [firstIcon]="faTachometerAlt" [firstLink]="'/dashboard'"
+                   [secondPoint]="'clients'" [secondIcon]="faUsers" [secondLink]="'/clients/client-list'"
+                   [endPoint]="client.person.firstName ? client.person.firstName + ' ' + client.person.lastName : client.keyword">
+  </app-page-header>
+}
+@if (!client) {
+  <div class="card" aria-hidden="true">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title placeholder-glow">
+        <span class="placeholder col-6"></span>
+      </h5>
+      <p class="card-text placeholder-glow">
+        <span class="placeholder col-7"></span>
+        <span class="placeholder col-4"></span>
+        <span class="placeholder col-4"></span>
+        <span class="placeholder col-6"></span>
+        <span class="placeholder col-8"></span>
+      </p>
+      <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true"></a>
     </div>
   </div>
-  <div class="row">
-    <div class="col-xl-5">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <!--<div class="col text-end">
-              <button type="button" class="btn btn-sm btn-link" (click)="collapse.toggle()"
-                      [attr.aria-expanded]="!isCollapsed"
-                      aria-controls="collapseExample">
-                collapse
-              </button>
-            </div>-->
+} @else {
+  <div>
+    <div class="row">
+      <div class="col">
+        <h2 style="font-size: x-large; font-weight: bold">
+          @if (client.person.firstName) {
+            {{ client.person.firstName }} {{ client.person.lastName }}
+          } @else {
+            {{ client.keyword }}
+          }
+        </h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-5">
+        @if (closeCase) {
+          <div class="mt-1 mb-2">
+            <app-reopen-case [inputCase]="client.closedCases[client.closedCases.length -1]"
+                             (caseEitherNewOrReOpened)="closeModal($event)"/>
           </div>
-          <div class="row">
-            <div class="col mt-1">
-              <label class="text-secondary">Name:</label>
-              {{client.person.firstName}} {{client.person.lastName}}
-            </div>
-            <div class="col mt-1">
-              <label class="text-secondary">Keyword:</label>
-              {{client.keyword}}
-            </div>
-          </div>
-          <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="row mt-3">
+
+        }
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-5">
+        <div class="card">
+          <div class="card-body">
             <div class="row">
-              <div class="col-md-5">
-                <label class="text-secondary">Email:</label>
+              <div class="col mt-1">
+                <label class="text-secondary">Name:</label>
               </div>
-              <div class="col-md-7">
-                {{client.person.email}}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-5">
-                <label class="text-secondary">Telephon:</label>
-              </div>
-              <div class="col-md-7">
-                {{client.person.telephone}}
+              <div class="col mt-1">
+                <label class="text-secondary">Keyword:</label>
+                {{ client.keyword }}
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-5">
-                <label class="text-secondary">Geburtstag:</label>
+            <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" class="row mt-3">
+              <div class="row">
+                <div class="col-md-5">
+                  <label class="text-secondary">Email:</label>
+                </div>
+                <div class="col-md-7">
+                  {{ client.person.email }}
+                </div>
               </div>
-              <div class="col-md-7">
-                {{client.person.dateOfBirth | date: 'dd.MM.yyyy'}}
+              <div class="row">
+                <div class="col-md-5">
+                  <label class="text-secondary">Telephon:</label>
+                </div>
+                <div class="col-md-7">
+                  {{ client.person.telephone }}
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-5">
-                <label class="text-secondary">Nationalität:</label>
+              <div class="row">
+                <div class="col-md-5">
+                  <label class="text-secondary">Geburtstag:</label>
+                </div>
+                <div class="col-md-7">
+                  {{ client.person.dateOfBirth | date: 'dd.MM.yyyy' }}
+                </div>
               </div>
-              <div class="col-md-7">
-                {{client.nationality}}
+              <div class="row">
+                <div class="col-md-5">
+                  <label class="text-secondary">Nationalität:</label>
+                </div>
+                <div class="col-md-7">
+                  {{ client.nationality }}
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-5">
-                <label class="text-secondary">Gender:</label>
+              <div class="row">
+                <div class="col-md-5">
+                  <label class="text-secondary">Gender:</label>
+                </div>
+                <div class="col-md-7">
+                  {{ client.person.gender }}
+                </div>
               </div>
-              <div class="col-md-7">
-                {{client.person.gender}}
+              <div class="row">
+                <div class="col-md-5">
+                  <label class="text-secondary">Aufenthaltstitel:</label>
+                </div>
+                <div class="col-md-7">
+                  {{ client.currentResidentStatus }}
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-5">
-                <label class="text-secondary">Aufenthaltstitel:</label>
+              <div class="row">
+                <div class="col-md-5">
+                  <label class="text-secondary">Arbeitsmarktzugang:</label>
+                </div>
+                <div class="col-md-7">
+                  {{ client.labourMarketAccess }}
+                </div>
               </div>
-              <div class="col-md-7">
-                {{client.currentResidentStatus}}
+              <div class="row">
+                <div class="col-md-5">
+                  <label class="text-secondary">Sprache:</label>
+                </div>
+                <div class="col-md-7">
+                  {{ client.language }}
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-5">
-                <label class="text-secondary">Arbeitsmarktzugang:</label>
-              </div>
-              <div class="col-md-7">
-                {{client.labourMarketAccess}}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-5">
-                <label class="text-secondary">Sprache:</label>
-              </div>
-              <div class="col-md-7">
-                {{client.language}}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-5">
-                <label class="text-secondary">Dolmetch erforderlich:</label>
-              </div>
-              <div class="col-md-7">
+              <div class="row">
+                <div class="col-md-5">
+                  <label class="text-secondary">Dolmetch erforderlich:</label>
+                </div>
+                <div class="col-md-7">
                 <span *ngIf="client.interpreterNecessary">
                     ja
                 </span>
-                <span *ngIf="client.interpreterNecessary === false">
+                  <span *ngIf="client.interpreterNecessary === false">
                     nein
+                </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-5">
+                  <label class="text-secondary">
+                    SV-Nummer:
+                  </label>
+                </div>
+                <div class="col-md-7">
+                  {{ client.socialInsuranceNumber }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <app-show-client-employers [clientId]="client.id"></app-show-client-employers>
+        </div>
+        <div class="card mt-1">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4">
+                <label class="text-secondary">Straße:</label>
+              </div>
+              <div class="col-md-8">
+                {{ client.person.address.street }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label class="text-secondary">PLZ & City:</label>
+              </div>
+              <div class="col-md-8">
+                {{ client.person.address.zipCode }} {{ client.person.address.city }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label class="text-secondary">Country:</label>
+              </div>
+              <div class="col-md-8">
+                {{ client.person.address.country }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label class="text-secondary">Familienstand:</label>
+              </div>
+              <div class="col-md-8">
+                {{ client.maritalStatus }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+
+              </div>
+              <div class="col-md-8">
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mt-1">
+          <div class="card-body">
+
+            <div class="row">
+              <div class="col-md-4">
+                <label class="text-secondary">Branche:</label>
+              </div>
+              <div class="col-md-8">
+                {{ client.sector }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label class="text-secondary">Gewerkschaft:</label>
+              </div>
+              <div class="col-md-8">
+                {{ client.union }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label class="text-secondary">Mitgliedschaft</label>
+              </div>
+              <div class="col-md-8">
+                <span *ngIf="client.membership === true">
+                      ja
+                </span>
+                <span *ngIf="client.membership === false">
+                      nein
                 </span>
               </div>
             </div>
             <div class="row">
-              <div class="col-md-5">
-                <label class="text-secondary">
-                  SV-Nummer:
-                </label>
+              <div class="col-md-4">
+                <label class="text-secondary">Position:</label>
               </div>
-              <div class="col-md-7">
-                {{client.socialInsuranceNumber}}
+              <div class="col-md-8">
+                {{ client.position }}
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <app-show-client-employers [clientId]="client.id"></app-show-client-employers>
-      </div>
-      <div class="card mt-1">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-4">
-              <label class="text-secondary">Straße:</label>
+            <div class="row">
+              <div class="col-md-4">
+                <label class="text-secondary">Organisation:</label>
+              </div>
+              <div class="col-md-8">
+                {{ client.organization }}
+              </div>
             </div>
-            <div class="col-md-8">
-              {{client.person.address.street}}
+            <hr>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="text-secondary">Bildung:</label>
+              </div>
+              <div class="col-md-6">
+                {{ client.education }}
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4">
-              <label class="text-secondary">PLZ & City:</label>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="text-secondary">Woher kennt uns die Person:</label>
+              </div>
+              <div class="col-md-6">
+                {{ client.howHasThePersonHeardFromUs }}
+              </div>
             </div>
-            <div class="col-md-8">
-              {{client.person.address.zipCode}} {{client.person.address.city}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4">
-              <label class="text-secondary">Country:</label>
-            </div>
-            <div class="col-md-8">
-              {{client.person.address.country}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4">
-              <label class="text-secondary">Familienstand:</label>
-            </div>
-            <div class="col-md-8">
-              {{client.maritalStatus}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4">
-
-            </div>
-            <div class="col-md-8">
-
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card mt-1">
-        <div class="card-body">
-
-          <div class="row">
-            <div class="col-md-4">
-              <label class="text-secondary">Branche:</label>
-            </div>
-            <div class="col-md-8">
-              {{client.sector}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4">
-              <label class="text-secondary">Gewerkschaft:</label>
-            </div>
-            <div class="col-md-8">
-              {{client.union}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4">
-              <label class="text-secondary">Mitgliedschaft</label>
-            </div>
-            <div class="col-md-8">
-                <span *ngIf="client.membership === true">
-                      ja
-                </span>
-              <span *ngIf="client.membership === false">
-                      nein
-                </span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4">
-              <label class="text-secondary">Position:</label>
-            </div>
-            <div class="col-md-8">
-              {{client.position}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4">
-              <label class="text-secondary">Organisation:</label>
-            </div>
-            <div class="col-md-8">
-              {{client.organization}}
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col-md-6">
-              <label class="text-secondary">Bildung:</label>
-            </div>
-            <div class="col-md-6">
-              {{client.education}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <label class="text-secondary">Woher kennt uns die Person:</label>
-            </div>
-            <div class="col-md-6">
-              {{client.howHasThePersonHeardFromUs}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <label class="text-secondary">gefährdet bei Geltendmachung:</label>
-            </div>
-            <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label class="text-secondary">gefährdet bei Geltendmachung:</label>
+              </div>
+              <div class="col-md-6">
                 <span *ngIf="client.vulnerableWhenAssertingRights">
                   ja
                 </span>
-              <span *ngIf="client.vulnerableWhenAssertingRights === false">
+                <span *ngIf="client.vulnerableWhenAssertingRights === false">
                   nein
                 </span>
+              </div>
             </div>
-
+            <div>
+              <label class="text-secondary">Tätigkeiten:</label>&nbsp;
+              <span *ngFor="let jobFunction of client.jobFunctions">
+              <span [innerHTML]="jobFunction.name"></span>&nbsp;
+            </span>
+            </div>
           </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col text-lg-start">
+            <a class="btn btn-sm btn-outline-secondary m-3" [routerLink]="['edit']">edit</a>
 
+            <app-delete [id_to_delete]="client.person.id" [type]="deleteTypeClient"
+                        [delete_object_name]="client.keyword"></app-delete>
+          </div>
+          <div class="col mt-4">
+          <span class="text-secondary text-left">
+            Gesamtberatungsdauer:
+          </span>
+            <span>
+            {{ totalHumanReadableDuration }}
+          </span>
+          </div>
+        </div>
+        @if (!closeCase) {
+          <div class="row mt-1">
+            <div class="row">
+              <div class="col">
+                <button class="btn btn-link" (click)="openCloseCaseModal(close_case)">
+                  <small>Fall abschließen?</small>
+                </button>
+              </div>
+            </div>
+            <div class="row">
+            </div>
+          </div>
+        }
+        <div class="row mb-5">
+          <div class="row">
+            <div class="col">
+              <button class="btn btn-link" (click)="openJobFunctionModal(job_function)">
+                <small>Tätigkeiten</small>
+              </button>
+            </div>
+          </div>
+          <div class="row">
+          </div>
         </div>
       </div>
-      <div class="row mt-1">
-        <div class="col text-lg-start">
-          <a class="btn btn-sm btn-outline-primary m-3" [routerLink]="['edit']">edit</a>
-
-          <app-delete [id_to_delete]="client.person.id" [type]="deleteTypeClient"
-                      [delete_object_name]="client.keyword"></app-delete>
-        </div>
+      <div class="col-xl-7">
+        <app-show-counselings-per-client [clientId]="client.id"></app-show-counselings-per-client>
       </div>
     </div>
-    <div class="col-xl-7">
-      <app-show-counselings-per-client [counselings]="client.counselings"
-                                       [clientId]="client.id"></app-show-counselings-per-client>
-    </div>
-  </div>
-</div>
 
-<ng-template #content_create_counseling let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">Beratung anlegen</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <app-create-counseling></app-create-counseling>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-</ng-template>
+    <ng-template #job_function let-modal>
+      <div class="modal-header">
+        <h5>Tätigkeiten</h5>
+        <button type="button" class="btn btn-lg btn-outline-dark" aria-label="Close"
+                (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <app-multi [categoryType]="jobFunctionCategoryType"
+                       [label]="jobFunctionLabel"
+                       (categoryValue)="showCategoryValue($event, jobFunctionCategoryType)"
+                       (deSelectedEmit)="showDeSelected($event)"
+                       [selectedCategories]="client.jobFunctions">
+            </app-multi>
+          </div>
+          <div class="col-md-2 mt-4">
+            <button class="btn btn-sm btn-outline-success"
+                    (click)="saveCategories(jobFunctionCategoryType)">
+              submit
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </ng-template>
 
-<ng-template #edit_client let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">Edit Client</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <app-edit-client [client]="client"></app-edit-client>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-</ng-template>
+    <ng-template #close_case let-modal>
+      <div class="modal-header">
+        <h5>Fall schließen und Klient:in weiter vermitteln</h5>
+        <button type="button" class="btn btn-lg btn-outline-dark" aria-label="Close"
+                (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-close-case (caseClosed)="closeCaseModal($event)" [inputCase]="client.openCase"
+                        [closeCaseProperty]="true"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </ng-template>
 
-<ng-template #list_employer let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">List Employer</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-    </button>
+    <ng-template #content_create_counseling let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Beratung anlegen</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-create-counseling></app-create-counseling>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </ng-template>
+
+    <ng-template #edit_client let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Client</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!--  <div class="modal-body">
+          <app-edit-client [client]="client"></app-edit-client>
+        </div>-->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </ng-template>
+
+    <ng-template #list_employer let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">List Employer</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-show-employers-list [clientId]="client.id"></app-show-employers-list>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </ng-template>
+
+
   </div>
-  <div class="modal-body">
-    <app-show-employers-list [clientId]="client.id"></app-show-employers-list>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-</ng-template>
+
+}

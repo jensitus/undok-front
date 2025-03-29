@@ -4,9 +4,7 @@ import {ClientService} from '../service/client.service';
 import {Subject} from 'rxjs';
 import {MARITAL_STATUS} from '../model/marital-status';
 import {faBars, faTachometerAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
-import {NgbFormatterService} from '../../common/services/ngb-formatter.service';
-import {NgbDateAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
-import {CommonService} from '../../common/services/common.service';
+import {NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
 import {ResidentStatus} from '../model/resident-status.enum';
@@ -16,6 +14,9 @@ import {CITIZENSHIPS} from '../model/citizenships';
 import {CategoryTypes} from '../model/category-types';
 import {Label} from '../model/label';
 import {AUSTRIA} from '../defaults/defaults';
+import {DropdownItem} from '../model/dropdown-item';
+import {EntityTypes} from '../model/entity-types';
+import {JoinCategory} from '../model/join-category';
 
 @Component({
   selector: 'app-create-client',
@@ -79,6 +80,10 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   protected readonly Label = Label;
   protected readonly faUsers = faUsers;
   protected readonly faTachometerAlt = faTachometerAlt;
+  jobFunctionType: CategoryTypes = CategoryTypes.JOB_FUNCTION;
+  jobFunctionLabel: Label;
+  joinCategories: JoinCategory[] = [];
+  joinCategory: JoinCategory;
 
 
   constructor(
@@ -176,4 +181,16 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     this.sector = event;
   }
 
+  showCategoryValue(event: DropdownItem[], jobFunctionType: CategoryTypes) {
+    this.joinCategories = [];
+    event.forEach(e => {
+      this.joinCategory = {
+        categoryId: e.itemId,
+        categoryType: jobFunctionType,
+        entityId: undefined, // this.counseling.id,
+        entityType: EntityTypes.COUNSELING
+      };
+      this.joinCategories.push(this.joinCategory);
+    });
+  }
 }

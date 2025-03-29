@@ -1,12 +1,13 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {Counseling} from '../model/counseling';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
-import {EditCounselingComponent} from '../edit-counseling/edit-counseling.component';
 import {CounselingService} from '../service/counseling.service';
 import {Subscription} from 'rxjs';
-import {CategoryService} from '../service/category.service';
+import {DurationService} from '../service/duration.service';
+import {isUndefined} from '../../common/helper/comparison-utils';
 import {CategoryTypes} from '../model/category-types';
+import {CategoryService} from '../service/category.service';
 
 @Component({
   selector: 'app-show-counselings-per-client',
@@ -15,18 +16,20 @@ import {CategoryTypes} from '../model/category-types';
 })
 export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
 
-  @Input() counselings: Counseling[];
-  @Input() clientId: string;
-  private closeResult = '';
-  private subscriptions: Subscription[] = [];
 
   constructor(
     private modalService: NgbModal,
     private counselingService: CounselingService,
     private commonService: CommonService,
-    private categoryService: CategoryService
+    public durationService: DurationService,
   ) {
   }
+
+  counselings: Counseling[];
+  @Input() clientId: string;
+  private closeResult = '';
+  private subscriptions: Subscription[] = [];
+  private categoryService = inject(CategoryService);
 
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -40,6 +43,7 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCreateCounselingSubject();
+    this.getCounselingsByClientId();
   }
 
   ngOnDestroy(): void {
@@ -48,6 +52,10 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
         s.unsubscribe();
       });
     }
+  }
+
+  getCounselingDuration(requiredTime: number): string {
+    return this.durationService.getCounselingDuration(requiredTime);
   }
 
   getCreateCounselingSubject() {
@@ -66,21 +74,53 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
     });
   }
 
-  openDeleteConfirmationModal(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${ShowCounselingsPerClientComponent.getDismissReason(reason)}`;
-    });
-  }
-
   yes(id: string) {
-    this.subscriptions.push(this.counselingService.deleteCounseling(id).subscribe(result => {
-      this.commonService.setCreateCounselingSubject(true);
-    }));
+    this.subscriptions.push(
+      this.counselingService.deleteCounseling(id).subscribe(result => {
+        this.commonService.setCreateCounselingSubject(true);
+      })
+    );
   }
 
   no() {
     this.modalService.dismissAll();
   }
+
+  closeCommentModal() {
+    this.getCounselingsByClientId();
+    this.modalService.dismissAll();
+  }
+
+  getCounselingsByClientId() {
+    this.subscriptions.push(
+      this.counselingService.getCounselingsByClientId(this.clientId).subscribe({
+        next: (counselings) => {
+          this.counselings = counselings;
+          this.getCategories();
+        }, error: err => {
+          console.log(err);
+        }
+      })
+    );
+  }
+
+  getCategories() {
+    this.counselings.forEach((c) => {
+        this.subscriptions.push(
+          this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, c.id).subscribe({
+            next: (categories) => {
+              c.legalCategory = categories;
+            }
+          }));
+        this.subscriptions.push(
+          this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.ACTIVITY, c.id).subscribe({
+            next: (categories) => {
+              c.activityCategories = categories;
+            }
+          }));
+      }
+    );
+
+  }
+
 }

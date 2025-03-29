@@ -177,12 +177,8 @@ export class ClientTableService implements OnDestroy {
     return of({clients: c, total});
   }
 
-  // public getClients(customers: AllClient[]) {
-  //   this.customers = customers;
-  // }
-
   getAllClients(): Observable<AllClient[]> {
-    return this.http.get<AllClient[]>(this.apiUrl + this.UNDOK_CLIENTS + '/all/');
+    return this.http.get<AllClient[]>(this.apiUrl + this.UNDOK_CLIENTS + '/all');
   }
 
   getDeleteClientSubject() {

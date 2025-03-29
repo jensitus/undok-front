@@ -31,12 +31,8 @@ export class ErrorInterceptor implements HttpInterceptor {
           this.router.navigate(['/login']);
         }
       } else if (err.status === 403) {
-        if (err.error.text) {
-          this.alertService.error(err.error.text, true);
-        } else {
-          this.alertService.error('Forbidden', true);
-        }
         this.authenticationService.logout();
+        this.alertService.error('please login again', true);
         this.router.navigate(['/login']);
       } else if (err.status === 451) {
         this.alertService.error(err.error.text);

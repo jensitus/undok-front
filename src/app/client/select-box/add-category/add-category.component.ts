@@ -5,6 +5,9 @@ import {Category} from '../../model/category';
 import {CategoryService} from '../../service/category.service';
 import {CommonService} from '../../../common/services/common.service';
 import {Label} from '../../model/label';
+import {NgbCollapse} from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule} from '@angular/forms';
+import {NgIf} from '@angular/common';
 
 export enum Crud {
   CREATE,
@@ -15,7 +18,13 @@ export enum Crud {
 
 @Component({
   selector: 'app-add-category',
+  standalone: true,
   templateUrl: './add-category.component.html',
+  imports: [
+    NgbCollapse,
+    FormsModule,
+    NgIf
+  ],
   styleUrls: ['./add-category.component.css']
 })
 export class AddCategoryComponent implements OnInit, OnDestroy {

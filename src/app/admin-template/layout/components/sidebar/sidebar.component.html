@@ -1,4 +1,5 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
+
   <div class="list-group mt-5">
     <a [routerLink]="['/users', currentUser.username]" [routerLinkActive]="['router-link-active']"
        class="list-group-item">
@@ -15,13 +16,13 @@
     </a>-->
     <a [routerLink]="['/list-users']" *ngIf="currentUser.admin" [routerLinkActive]="['router-link-active']"
        class="list-group-item">
-      <fa-icon class="text-info" [icon]="faCampground"></fa-icon>&nbsp;
+      <fa-icon class="text-secondary" [icon]="faCampground"></fa-icon>&nbsp;
       <span>{{ 'list users' }}</span>
     </a>
 
     <a [routerLink]="['/clients/csv-download-list']" *ngIf="currentUser.admin" [routerLinkActive]="['router-link-active']"
        class="list-group-item">
-      <fa-icon class="text-danger" [icon]="faSave"></fa-icon>&nbsp;
+      <fa-icon class="text-secondary" [icon]="faSave"></fa-icon>&nbsp;
       <span>{{ 'daily CSVs' }}</span>
     </a>
 
@@ -48,19 +49,14 @@
     </a>
     </span>
 
-    <a *ngIf="showClientButtons || showCreateEmployerButton" class="list-group-item" [routerLink]="['clients/create/employer']">
+<!--    <a *ngIf="showClientButtons || showCreateEmployerButton" class="list-group-item" [routerLink]="['clients/create/employer']">
       <fa-icon class="text-primary" [icon]="faSurprise"></fa-icon>&nbsp;
       <span>{{ 'neue arbeitgeber:in' }}</span>
-    </a>
+    </a>-->
 
     <a *ngIf="showClientButtons" class="list-group-item" (click)="assignEmployer()">
       <fa-icon class="text-primary" [icon]="faSurprise"></fa-icon>&nbsp;
       <span>{{ 'arbeitgeber:in zuweisen' }}</span>
-    </a>
-
-    <a *ngIf="showClientButtons" class="list-group-item" (click)="editClient()">
-      <fa-icon class="text-success" [icon]="faUsers"></fa-icon>&nbsp;
-      <span>{{ 'klient:in bearbeiten' }}</span>
     </a>
 
     <div class="header-fields">

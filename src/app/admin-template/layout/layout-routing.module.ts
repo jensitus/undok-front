@@ -11,8 +11,6 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       {path: '', redirectTo: 'dashboard', pathMatch: 'prefix'},
-      // {path: 'home', component: HomeComponent},
-      // {path: '', redirectTo: 'home', pathMatch: 'full'}
       {path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)},
       {path: 'users/:username', component: UserComponent},
       {path: 'users/:username/edit', component: EditUserComponent},

@@ -42,4 +42,13 @@ export class DateTimeService {
     return dateObject.year + '-' + month + '-' + day + 'T' + this.localTimeHour + ':' + this.localTimeMinute;
   }
 
+  // formatTime(hours: number, minutes: number): number {
+  //   return this.pad(hours, 2) this.pad(hours, 2);
+  // }
+  //
+  // private pad(value: number, length: number): number {
+  //    const s = (value + '').padStart(length, '0');
+  //    return parseInt(s, 0);
+  // }
+
 }

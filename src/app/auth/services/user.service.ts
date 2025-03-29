@@ -38,7 +38,7 @@ export class UserService {
     return this.http.put(this.apiUrl + '/service/auth/reset_password/' + token + '?email=' + email, user);
   }
 
-  checkAuthToken(token: string) {
+    checkAuthToken(token: string | undefined) {
     return this.http.post(this.apiUrl + '/service/users/auth/check_auth_token', token);
   }
 
@@ -50,7 +50,6 @@ export class UserService {
 
   confirmAccount(token: string, email: string): Observable<ResponseMessage> {
     const url = this.apiUrl + '/service/auth/' + token + '/confirm/' + email;
-    console.log('URL: ', url);
     return this.http.get<ResponseMessage>(this.apiUrl + '/service/auth/' + token + '/confirm/' + email);
   }
 
@@ -63,6 +62,7 @@ export class UserService {
   }
 
   sendSecondFactorToken(secondFactorForm: SecondFactorForm): Observable<any> {
+
     return this.http.post<any>(this.apiUrl + '/service/second-factor-auth/second-factor', secondFactorForm);
   }
 

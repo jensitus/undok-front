@@ -9,6 +9,7 @@ import {EmployerService} from '../../../client/service/employer.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {AlertService} from '../components/alert/services/alert.service';
+import {NgbCarouselConfig} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,14 +31,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
   faSurprise = faSurprise;
   faUser = faUsers;
   private unsubscribe$ = new Subject();
-
+  showNavigationArrows = false;
+  showNavigationIndicators = false;
+  images = [
+    {title: 'Schneeberg', short: 'schneeberg', src: 'assets/images/schneeberg.jpg', alt: 'Im Vordergrung Wien, im Hintergrung der Schneeberg'},
+    {title: 'Møn - Dänemark', short: 'Møn', src: 'assets/images/sonnenblumenfeld.jpg', alt: 'Sonnenblumenfeld in Dänemark'},
+    {title: 'Sonnenaufgang an der Elbe', short: 'Sunrise', src: 'assets/images/klangschale-Elbe.jpeg', alt: 'Sonnenaufgang an der Elbe bei Neu Darchau'},
+    {title: 'Semmering Gegend', short: 'Semmering', src: 'assets/images/dsc-schneeberg-background.jpeg', alt: 'Schneebergblick in der Semmering Gegend'},
+  ];
 
   constructor(
     private router: Router,
     private commonService: CommonService,
     private clientService: ClientService,
     private employerService: EmployerService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    config: NgbCarouselConfig
   ) {
     this.alerts.push(
       {
@@ -57,6 +66,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 voluptatum veritatis quod aliquam! Rerum placeat necessitatibus, vitae dolorum`
       }
     );
+    config.interval = 20000;
+    config.showNavigationArrows = false;
+    config.showNavigationIndicators = false;
   }
 
   ngOnInit() {

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ClientService} from '../service/client.service';
 import {Subscription} from 'rxjs';
@@ -11,7 +11,15 @@ import {DeleteTypes} from '../delete/delete-types';
 import {CategoryTypes} from '../model/category-types';
 import {Counseling} from '../model/counseling';
 import {CategoryService} from '../service/category.service';
-import {faEarListen, faBars, faCampground, faCoffee, faPowerOff, faTachometerAlt, faUser, faUsers, faTasks, faSurprise, faSave} from '@fortawesome/free-solid-svg-icons';
+import {faTachometerAlt, faUser, faUsers} from '@fortawesome/free-solid-svg-icons';
+import {isUndefined} from '../../common/helper/comparison-utils';
+import {DurationService} from '../service/duration.service';
+import {Label} from '../model/label';
+import {DropdownItem} from '../model/dropdown-item';
+import {Category} from '../model/category';
+import {JoinCategory} from '../model/join-category';
+import {EntityTypes} from '../model/entity-types';
+
 
 @Component({
   selector: 'app-show-single-client',
@@ -21,19 +29,31 @@ import {faEarListen, faBars, faCampground, faCoffee, faPowerOff, faTachometerAlt
 export class ShowSingleClientComponent implements OnInit, OnDestroy {
 
   deleteTypeClient: DeleteTypes = DeleteTypes.CLIENT;
-  counselings: Counseling[];
-  private id: string;
+  counselings: Counseling[] | undefined;
+  private id: string | undefined;
   private subscription$: Subscription[] = [];
-  person: Person;
-  client: Client;
+  person: Person | undefined;
+  client: Client | undefined;
   private closeResult = '';
   public isCollapsed = false;
-  @ViewChild('content_create_counseling') contentCreateCounseling: ElementRef;
-  @ViewChild('create_employer') createEmployer: ElementRef;
-  @ViewChild('list_employer') assignEmployer: ElementRef;
-  @ViewChild('edit_client') editClient: ElementRef;
+  @ViewChild('content_create_counseling') contentCreateCounseling: ElementRef | undefined;
+  @ViewChild('create_employer') createEmployer: ElementRef | undefined;
+  @ViewChild('list_employer') assignEmployer: ElementRef | undefined;
+  @ViewChild('edit_client') editClient: ElementRef | undefined;
   faTachometerAlt = faTachometerAlt;
   protected readonly faUser = faUser;
+  protected readonly faUsers = faUsers;
+  totalCounselingDuration = 0;
+  totalHumanReadableDuration: string | undefined;
+  protected readonly Label = Label;
+  protected closeCase = false;
+  jobFunctionCategoryType: CategoryTypes = CategoryTypes.JOB_FUNCTION;
+  jobFunctionLabel: Label = Label.JOB_FUNCTION;
+  jobFunctionCategories: Category[];
+  deSelectedItems: DropdownItem[] = [];
+  private deSelectedCategories: JoinCategory[] = [];
+  private joinCategories: JoinCategory[] = [];
+  private joinCategory: JoinCategory;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -42,7 +62,8 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     private sidebarService: SidebarService,
     private router: Router,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private durationService: DurationService,
   ) {
   }
 
@@ -57,17 +78,19 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription$.push(this.activatedRoute.params.subscribe(params => {
-      this.id = params['id'];
-      this.getClient();
-      this.getDemoSubject();
-      // this.getCreateEmployerSubject();
-      this.getReloadClientSubject();
-      this.checkIfNewCounselingIsNeeded();
-      this.checkIfNewEmployerIsNeeded();
-      this.checkIfEmployerIsToBeAssigned();
-      this.checkIfClientIsToBeEdited();
-    }));
+    this.subscription$.push(
+      this.activatedRoute.params.subscribe(params => {
+        this.id = params['id'];
+        this.getClient();
+        this.getDemoSubject();
+        // this.getCreateEmployerSubject();
+        this.getReloadClientSubject();
+        this.checkIfNewCounselingIsNeeded();
+        this.checkIfNewEmployerIsNeeded();
+        this.checkIfEmployerIsToBeAssigned();
+        this.checkIfClientIsToBeEdited();
+      }))
+    ;
     this.sidebarService.setClientButtonSubject(true);
   }
 
@@ -80,7 +103,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.sidebarService.setClientButtonSubject(false);
   }
 
-  openEmployer(content) {
+  openEmployer(content: ElementRef | undefined) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -88,7 +111,15 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     });
   }
 
-  openNewCounseling(content_create_counseling) {
+  openCloseCaseModal(close_case: any) {
+    this.modalService.open(close_case, {ariaLabelledBy: 'modal-basic-title', size: 'md'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
+    });
+  }
+
+  openNewCounseling(content_create_counseling: ElementRef | undefined) {
     this.modalService.open(content_create_counseling, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -96,38 +127,29 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     });
   }
 
-  openEditModal(edit_client) {
-    this.modalService.open(edit_client, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
-    });
+  getTotalCounselingDuration() {
+    if (!isUndefined(this.client)) {
+      for (const counseling of this.client.counselings) {
+        this.totalCounselingDuration = this.totalCounselingDuration + counseling.requiredTime;
+      }
+    }
+    if (this.totalCounselingDuration > 0) {
+      this.totalHumanReadableDuration = this.durationService.getCounselingDuration(this.totalCounselingDuration);
+    }
   }
 
   getClient() {
-    this.subscription$.push(this.clientService.getSingleClient(this.id).subscribe(res => {
-      this.client = res;
-      console.log(this.client);
-      this.getCategories();
-      this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
-    }));
-  }
-
-  getCategories() {
-    this.client.counselings.forEach((c) => {
-      this.subscription$.push(
-        this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, c.id).subscribe({
-          next: (categories) => {
-            c.legalCategory = categories;
-          }
-        }));
-      this.subscription$.push(
-        this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.ACTIVITY, c.id).subscribe({
-          next: (categories) => {
-            c.activityCategories = categories;
-          }
-        }));
-    });
+    this.subscription$.push(
+      this.clientService.getSingleClient(this.id).subscribe(res => {
+        this.client = res;
+        if (this.client.openCase === null) {
+          this.closeOrOpenCase();
+        }
+        // @ts-ignore
+        this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
+        this.getTotalCounselingDuration();
+      })
+    );
   }
 
   getDemoSubject() {
@@ -178,14 +200,86 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   checkIfClientIsToBeEdited() {
-    this.subscription$.push(
-      this.sidebarService.editClientSubject.subscribe(editClient => {
-        if (editClient === true) {
-          this.router.navigate([`clients/${this.client.id}/edit`]);
-        }
-      })
-    );
+    if (!isUndefined(this.client)) {
+      const clientId = this.client.id;
+      this.subscription$.push(
+        this.sidebarService.editClientSubject.subscribe(editClient => {
+          if (editClient) {
+            this.router.navigate([`clients/${clientId}/edit`]).then();
+          }
+        })
+      );
+    }
   }
 
-  protected readonly faUsers = faUsers;
+  closeOrOpenCase(): void {
+    this.closeCase = !this.closeCase;
+  }
+
+  closeModal(event: boolean) {
+    if (event) {
+      this.modalService.dismissAll();
+    }
+  }
+
+  closeCaseModal(event: boolean) {
+    if (event) {
+      this.modalService.dismissAll();
+      this.closeOrOpenCase();
+    }
+  }
+
+  openJobFunctionModal(job_function: TemplateRef<any>) {
+    this.modalService.open(job_function, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
+    });
+  }
+
+  showCategoryValue(event: DropdownItem[], categoryType: CategoryTypes) {
+    this.joinCategories = [];
+    event.forEach(e => {
+      this.joinCategory = {
+        categoryId: e.itemId,
+        categoryType: categoryType,
+        entityId: this.client.id,
+        entityType: EntityTypes.CLIENT
+      };
+      this.joinCategories.push(this.joinCategory);
+    });
+  }
+
+  showDeSelected(event: DropdownItem[]) {
+    this.deSelectedItems = event;
+  }
+
+  saveCategories(categoryType: CategoryTypes) {
+      this.deSelectedItems.forEach((deSelected) => {
+        const deselect: JoinCategory = {
+          entityType: EntityTypes.CLIENT,
+          entityId: this.client.id,
+          categoryType: categoryType,
+          categoryId: deSelected.itemId
+        };
+        this.deSelectedCategories.push(deselect);
+      });
+      this.subscription$.push(
+        this.categoryService.deleteJoinCategories(this.deSelectedCategories).subscribe({
+          next: () => {
+
+          }, error: (error) => {
+            console.log(error);
+          }
+        })
+      );
+      this.subscription$.push(
+        this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
+          this.commonService.setReloadSubject(true);
+        })
+      );
+      this.deSelectedCategories = [];
+      this.joinCategories = [];
+
+  }
 }

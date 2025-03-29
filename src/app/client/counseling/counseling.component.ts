@@ -15,6 +15,8 @@ import {Label} from '../model/label';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {Time} from '../model/time';
 import {DateTimeService} from '../service/date-time.service';
+import {DurationService} from '../service/duration.service';
+import {error} from 'protractor';
 
 @Component({
   selector: 'app-counseling',
@@ -45,9 +47,12 @@ export class CounselingComponent implements OnInit, OnDestroy {
   deSelectedCategories: JoinCategory[] = [];
   faBars = faBars;
   time: Time = {hour: 13, minute: 30};
+  counselingDuration: string;
   dateObject: NgbDateStruct;
   counselingDate: string;
   editCounselingDate = false;
+  editRequiredTime = false;
+  counselingDateRequired = false;
 
   constructor(
     private counselingService: CounselingService,
@@ -57,6 +62,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
     private router: Router,
     private alertService: AlertService,
     public dateTimeService: DateTimeService,
+    private durationService: DurationService,
   ) {
   }
 
@@ -96,8 +102,9 @@ export class CounselingComponent implements OnInit, OnDestroy {
         this.counseling.activityCategories = categories;
       }));
       this.setDateObject();
+      this.counselingDuration = this.durationService.getCounselingsDurationForEditing(this.counseling.requiredTime);
     }, error => {
-      this.router.navigate(['/clients', this.clientId]);
+      this.router.navigate(['/clients', this.clientId]).then();
     }));
   }
 
@@ -140,11 +147,13 @@ export class CounselingComponent implements OnInit, OnDestroy {
   }
 
   getDeleteSubject() {
-    this.subscription$.push(this.commonService.deleteSubject.subscribe(result => {
-      if (result === true) {
-        this.router.navigate(['/clients/', this.counseling.clientId]);
-      }
-    }));
+    this.subscription$.push(
+      this.commonService.deleteSubject.subscribe(result => {
+        if (result === true) {
+          this.router.navigate(['/clients/', this.counseling.clientId]);
+        }
+      })
+    );
   }
 
   addActivityCategory() {
@@ -178,11 +187,15 @@ export class CounselingComponent implements OnInit, OnDestroy {
       };
       this.deSelectedCategories.push(deselect);
     });
-    this.subscription$.push(this.categoryService.deleteJoinCategories(this.deSelectedCategories).subscribe(res => {
-    }));
-    this.subscription$.push(this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
-      this.commonService.setReloadSubject(true);
-    }));
+    this.subscription$.push(
+      this.categoryService.deleteJoinCategories(this.deSelectedCategories).subscribe(res => {
+      })
+    );
+    this.subscription$.push(
+      this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
+        this.commonService.setReloadSubject(true);
+      })
+    );
     switch (categoryType) {
       case CategoryTypes.ACTIVITY:
         this.addActivityCategory();
@@ -202,15 +215,21 @@ export class CounselingComponent implements OnInit, OnDestroy {
   update(type: string) {
     this.loading = true;
     if (this.dateObject) {
-      console.log('DATE OBJECT UPDATE', this.dateObject);
       this.counselingDate = this.dateTimeService.mergeDateAndTime(this.dateObject, this.time);
       this.counseling.counselingDate = this.counselingDate;
     }
-    console.log('counselingDate', this.counselingDate);
-    console.log('counseling', this.counseling);
-    this.subscription$.push(this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe(res => {
-      this.getCounseling();
-    }));
+    this.subscription$.push(
+      this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe({
+        next: () => {
+          this.getCounseling();
+        },
+        error: err => {
+          if (err.status === 428) {
+            this.counselingDateRequired = true;
+          }
+        }
+      })
+    );
     this.editCounselingDate = false;
     this.editActivity = false;
     this.editConcern = false;
@@ -229,6 +248,25 @@ export class CounselingComponent implements OnInit, OnDestroy {
 
   chooseEditCounselingDate() {
     this.editCounselingDate = !this.editCounselingDate;
+  }
+
+  chooseEditRequiredTime() {
+    this.editRequiredTime = !this.editRequiredTime;
+  }
+
+  saveRequiredTime() {
+    const hours = parseInt(this.counselingDuration.split(':')[0], 0);
+    const minutes = parseInt(this.counselingDuration.split(':')[1], 0);
+    const duration = hours * 60 + minutes;
+    this.subscription$.push(
+      this.counselingService.setCounselingDuration(this.counselingId, duration).subscribe({
+        next: (res) => {
+          this.chooseEditRequiredTime();
+        }, error: (err) => {
+          console.log(err);
+        }
+      })
+    );
   }
 
   setDateObject() {
