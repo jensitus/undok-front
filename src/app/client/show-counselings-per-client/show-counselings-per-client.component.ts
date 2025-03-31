@@ -30,6 +30,7 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
   private closeResult = '';
   private subscriptions: Subscription[] = [];
   private categoryService = inject(CategoryService);
+  protected counselingOrder = 'Asc';
 
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -93,7 +94,7 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
 
   getCounselingsByClientId() {
     this.subscriptions.push(
-      this.counselingService.getCounselingsByClientId(this.clientId).subscribe({
+      this.counselingService.getCounselingsByClientId(this.clientId, this.counselingOrder).subscribe({
         next: (counselings) => {
           this.counselings = counselings;
           this.getCategories();
@@ -123,4 +124,12 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
 
   }
 
+  changeCounselingOrder() {
+    if (this.counselingOrder === 'Asc') {
+      this.counselingOrder = 'Desc';
+    } else if (this.counselingOrder === 'Desc') {
+      this.counselingOrder = 'Asc';
+    }
+    this.getCounselingsByClientId();
+  }
 }

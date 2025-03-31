@@ -23,30 +23,31 @@
   </div>
 } @else {
   <div>
-    <div class="row">
-      <div class="col">
-        <h2 style="font-size: x-large; font-weight: bold">
-          @if (client.person.firstName) {
-            {{ client.person.firstName }} {{ client.person.lastName }}
-          } @else {
-            {{ client.keyword }}
-          }
-        </h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xl-5">
-        @if (closeCase) {
-          <div class="mt-1 mb-2">
-            <app-reopen-case [inputCase]="client.closedCases[client.closedCases.length -1]"
-                             (caseEitherNewOrReOpened)="closeModal($event)"/>
-          </div>
 
-        }
-      </div>
-    </div>
     <div class="row">
       <div class="col-xl-5">
+        <div class="row">
+          <div class="col">
+            <h2 style="font-size: x-large; font-weight: bold">
+              @if (client.person.firstName) {
+                {{ client.person.firstName }} {{ client.person.lastName }}
+              } @else {
+                {{ client.keyword }}
+              }
+            </h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-5">
+            @if (closeCase) {
+              <div class="mt-1 mb-2">
+                <app-reopen-case [inputCase]="client.closedCases[client.closedCases.length -1]"
+                                 (caseEitherNewOrReOpened)="closeModal($event)"/>
+              </div>
+
+            }
+          </div>
+        </div>
         <div class="card">
           <div class="card-body">
             <div class="row">
