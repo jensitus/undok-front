@@ -46,6 +46,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   totalCounselingDuration = 0;
   totalHumanReadableDuration: string | undefined;
   protected readonly Label = Label;
+  protected reOpenCase = false;
   protected closeCase = false;
   jobFunctionCategoryType: CategoryTypes = CategoryTypes.JOB_FUNCTION;
   jobFunctionLabel: Label = Label.JOB_FUNCTION;
@@ -142,8 +143,13 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.subscription$.push(
       this.clientService.getSingleClient(this.id).subscribe(res => {
         this.client = res;
-        if (this.client.openCase === null) {
-          this.closeOrOpenCase();
+        if (this.client.openCase === null && this.client.closedCases !== null) {
+          this.reOpenCase = true;
+        } else if (this.client.openCase === null && this.client.closedCases === null) {
+          this.reOpenCase = false;
+        }
+        if (this.client.openCase !== null) {
+          this.closeCase = true;
         }
         // @ts-ignore
         this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
@@ -213,7 +219,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   closeOrOpenCase(): void {
-    this.closeCase = !this.closeCase;
+    this.reOpenCase = !this.reOpenCase;
   }
 
   closeModal(event: boolean) {

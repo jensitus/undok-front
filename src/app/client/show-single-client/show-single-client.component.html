@@ -39,7 +39,7 @@
         </div>
         <div class="row">
           <div class="col-xl-5">
-            @if (closeCase) {
+            @if (reOpenCase) {
               <div class="mt-1 mb-2">
                 <app-reopen-case [inputCase]="client.closedCases[client.closedCases.length -1]"
                                  (caseEitherNewOrReOpened)="closeModal($event)"/>
@@ -299,7 +299,7 @@
           </span>
           </div>
         </div>
-        @if (!closeCase) {
+        @if (closeCase) {
           <div class="row mt-1">
             <div class="row">
               <div class="col">
