@@ -69,7 +69,6 @@ const appRoutes: Routes = [
     ShowCounselingsComponent,
     ShowCounselingsPerClientComponent,
     EditClientComponent,
-    ClientFormComponent,
     CreateEmployerComponent,
     ShowEmployersListComponent,
     ShowClientEmployersComponent,

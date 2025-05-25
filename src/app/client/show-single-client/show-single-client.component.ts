@@ -55,6 +55,8 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   private deSelectedCategories: JoinCategory[] = [];
   private joinCategories: JoinCategory[] = [];
   private joinCategory: JoinCategory;
+  cat_target_group: CategoryTypes = CategoryTypes.TARGET_GROUP;
+  targetGroup: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -129,11 +131,13 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   getTotalCounselingDuration() {
+    let sumOfCounselingDuration = 0;
     if (!isUndefined(this.client)) {
       for (const counseling of this.client.counselings) {
-        this.totalCounselingDuration = this.totalCounselingDuration + counseling.requiredTime;
+        sumOfCounselingDuration = sumOfCounselingDuration + counseling.requiredTime;
       }
     }
+    this.totalCounselingDuration = sumOfCounselingDuration;
     if (this.totalCounselingDuration > 0) {
       this.totalHumanReadableDuration = this.durationService.getCounselingDuration(this.totalCounselingDuration);
     }
@@ -243,6 +247,14 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     });
   }
 
+  openTargetGroupModal(target_group: TemplateRef<any>) {
+    this.modalService.open(target_group, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
+    });
+  }
+
   showCategoryValue(event: DropdownItem[], categoryType: CategoryTypes) {
     this.joinCategories = [];
     event.forEach(e => {
@@ -286,6 +298,5 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
       );
       this.deSelectedCategories = [];
       this.joinCategories = [];
-
   }
 }

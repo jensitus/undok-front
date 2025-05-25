@@ -9,7 +9,7 @@
     <h2 style="font-size: x-large; font-weight: bold">Create Client</h2>
   </div>
 </div>
-<form #createClientForm="ngForm" (ngSubmit)="submit()" class="mt-1">
+<!--form #createClientForm="ngForm" (ngSubmit)="submit()" class="mt-1"-->
   <div class="row">
     <div class="col-md-7">
 
@@ -40,21 +40,21 @@
       <div class="row">
         <div class="col-md-4">
 
-          <div class="form-group mb-2">
+<!--          <div class="form-group mb-2">
             <label>Geburtstag</label>
             <div class="input-group">
               <input class="form-control" type="date" [(ngModel)]="dateOfBirth" name="d">
             </div>
-          </div>
+          </div>-->
 
         </div>
 
         <div class="col-md-8">
 
-          <div class="form-group mb-2">
+          <!--<div class="form-group mb-2">
             <label>Straße</label>
             <input type="text" class="form-control" name="street" [(ngModel)]="street"/>
-          </div>
+          </div>-->
 
         </div>
 
@@ -62,10 +62,10 @@
       <div class="row">
         <div class="col-md-4">
 
-          <div class="form-group mb-2">
+<!--          <div class="form-group mb-2">
             <label>Postleitzahl</label>
             <input type="text" class="form-control" name="zipCode" [(ngModel)]="zipCode"/>
-          </div>
+          </div>-->
 
         </div>
 
@@ -77,13 +77,13 @@
         </div>
 
         <div class="col-md-4">
-          <div class="form-group mb-2">
+          <!--<div class="form-group mb-2">
             <label>Land</label>
             <select class="form-control" (click)="onCountryChange($event.target.value)">
               <option selected="selected">Österreich</option>
               <option *ngFor="let c of countries" [value]="c">{{c}}</option>
             </select>
-          </div>
+          </div>-->
         </div>
 
       </div>
@@ -95,33 +95,33 @@
           </div>
         </div>
         <div class="col-md-4">
-          <div class="form-group mb-2">
+          <!--<div class="form-group mb-2">
             <label>Sozialversicherungsnummer</label>
             <input type="text" class="form-control" name="contactData" [(ngModel)]="socialInsuranceNumber"/>
-          </div>
+          </div>-->
         </div>
         <div class="col-md-4">
-          <div class="form-group mb-2">
+          <!--<div class="form-group mb-2">
             <label>Bildung</label>
             <input type="text" class="form-control" name="education" [(ngModel)]="education"/>
-          </div>
+          </div>-->
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-8">
-          <div class="form-group mb-2">
+          <div class="form-group mb-2 mt-2">
             <label>Wo hat die Person von uns gehört?</label>
             <input type="text" class="form-control" name="howHasThePersonHeardFromUS"
-                   [(ngModel)]="howHasThePersonHeardFromUs" placeholder="how has the person heard from us"/>
+                   [(ngModel)]="howHasThePersonHeardFromUs" />
           </div>
         </div>
 
         <div class="col-md-4">
-          <div class="form-group mb-2">
+<!--          <div class="form-group mb-2">
             <label>Position</label>
             <input type="text" class="form-control" name="position" [(ngModel)]="position"/>
-          </div>
+          </div>-->
         </div>
       </div>
 
@@ -135,7 +135,7 @@
 
         <div class="col-md-4">
           <div class="form-group mb-2">
-            <label>Sprache</label>
+            <label>Beratungssprache</label>
             <input type="text" class="form-control" name="language" [(ngModel)]="language"/>
           </div>
         </div>
@@ -150,11 +150,7 @@
 
       <div class="row">
         <div class="col-md-4">
-          <div class="form-check mt-1">
-            <input type="checkbox" class="form-check-input" [(ngModel)]="vulnerableWhenAssertingRights"
-                   name="vulnerableWhenAssertingRights">
-            <label class="form-check-label">Gefährdet bei Geltendmachung</label>
-          </div>
+
         </div>
         <div class="col-md-4">
           <div class="form-check mt-1">
@@ -165,10 +161,10 @@
         </div>
 
         <div class="col-md-4">
-          <div class="form-check mt-1">
+<!--          <div class="form-check mt-1">
             <input type="checkbox" class="form-check-input" [(ngModel)]="membership" name="membership">
             <label class="form-check-label">Mitgliedschaft</label>
-          </div>
+          </div>-->
         </div>
       </div>
 
@@ -177,16 +173,16 @@
 
     <div class="col-md-3">
 
-      <div class="form-group mb-2">
+<!--      <div class="form-group mb-2">
         <label>Familienstatus</label>
         <select class="form-control" (change)="onMaritalChange($event.target.value)">
           <option></option>
           <option *ngFor="let marital of maStatus" [value]="marital">{{marital}}</option>
         </select>
-      </div>
+      </div>-->
 
       <div class="form-group mb-2">
-        <label>Staatsbürgerschaft</label>
+        <label>Staatsbürger:innenschaft</label>
         <select class="form-control" (change)="onCitizenshipChange($event.target.value)">
           <option></option>
           <option *ngFor="let citizenship of citizenships" [value]="citizenship">
@@ -195,8 +191,13 @@
         </select>
       </div>
 
+      <app-select-box (catValue)="selectTargetGroup($event)"
+                      [categoryType]="cat_target_group"
+                      [label]="Label.TARGET_GROUP" />
+
       <div>
-        <app-select-box (catValue)="selectGender($event)" [categoryType]="cat_gender"
+        <app-select-box (catValue)="selectGender($event)"
+                        [categoryType]="cat_gender"
                         [label]="Label.GENDER"></app-select-box>
       </div>
 
@@ -210,6 +211,12 @@
                         [label]="Label.RESIDENT_STATUS"></app-select-box>
       </div>
 
+      <div class="form-check mt-1">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="vulnerableWhenAssertingRights"
+               name="vulnerableWhenAssertingRights">
+        <label class="form-check-label">Verdacht Gefährdung bei Geltendmachung</label>
+      </div>
+
       <div>
         <div class="form-group mt-2">
           <label>Email</label>
@@ -217,10 +224,10 @@
         </div>
       </div>
       <div>
-        <div class="form-group mt-2">
+<!--        <div class="form-group mt-2">
           <label>organization</label>
           <input type="text" class="form-control" name="organization" [(ngModel)]="organization"/>
-        </div>
+        </div>-->
       </div>
 
     </div>
@@ -233,4 +240,4 @@
       </div>
     </div>
   </div>
-</form>
+<!--/form-->

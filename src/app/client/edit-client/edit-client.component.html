@@ -8,231 +8,11 @@
 </div>
 <!--form #createClientForm="ngForm" (ngSubmit)="submit()" class="mt-1"-->
 <div *ngIf="client">
-  <!--
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        <label><small>Vorname</small></label>
-        <input type="text" class="form-control" name="firstName" [(ngModel)]="client.person.firstName"/>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="form-group">
-        <label><small>Nachname</small></label>
-        <input type="text" class="form-control" name="lastName" [(ngModel)]="client.person.lastName"/>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        <label><small>Email</small></label>
-        <input type="email" class="form-control" name="email" [(ngModel)]="client.person.email"/>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="form-group">
-        <label><small>Telephon</small></label>
-        <input type="tel" class="form-control" name="telephon" [(ngModel)]="client.person.telephone"/>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label><small>Straße</small></label>
-        <input type="text" class="form-control" name="street" [(ngModel)]="client.person.address.street"/>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label><small>Plz</small></label>
-        <input type="text" class="form-control" name="zipCode" [(ngModel)]="client.person.address.zipCode"/>
-      </div>
-    </div>
-  </div>
 
   <div class="row">
     <div class="col">
-      <div class="form-group">
-        <label><small>Land</small></label>
-        <select id="country_select_" class="form-control" [(ngModel)]="country"
-                (click)="onCountryChange($event.target.value)">
-          <option *ngFor="let c of countries" [value]="c">{{c}}</option>
-        </select>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label><small>Stadt</small></label>
-        <input type="text" class="form-control" name="city" [(ngModel)]="client.person.address.city"/>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label><small>Schlüsselwort</small></label>
-        <input type="text" class="form-control" name="keyword" [(ngModel)]="client.keyword"/>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label><small>Bildung</small></label>
-        <input type="text" class="form-control" name="education" [(ngModel)]="client.education"/>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label><small>Von wo kam die Info über uns?</small></label>
-        <input type="text" class="form-control" name="howHasThePersonHeardFromUS"
-               [(ngModel)]="client.howHasThePersonHeardFromUs" placeholder="how has the person heard from us"/>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label><small>Geburtsdatum</small></label>
-        <div class="input-group">
-          <input class="form-control" type="date" [(ngModel)]="client.person.dateOfBirth" name="d">
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <input type="checkbox" class="form-check-inline" [(ngModel)]="client.interpreterNecessary"
-               name="interpreterNecessary">
-        <label><small>Übersetzer:in notwendig</small></label>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <input type="checkbox" class="form-check-inline" [(ngModel)]="client.vulnerableWhenAssertingRights"
-               name="vulnerableWhenAssertingRights">
-        <label class="form-check-label"><small>gefährdet bei Geltendmachung</small></label>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label><small>Familienstatus</small></label>
-        <select id="marital_select_" class="form-control" [(ngModel)]="marital"
-                (click)="onMaritalChange($event.target.value)">
-          <option *ngFor="let m of maritalStatus" [value]="m">
-            {{m}}
-          </option>
-        </select>
-      </div>
-    </div>
-
-    <div class="col">
-      <div class="form-group">
-        <label><small>Staatsbürger:innenschaft</small></label>
-        <select id="citizenship_select_" class="form-control" [(ngModel)]="nationality"
-                (change)="onCitizenshipChange($event.target.value)">
-          <option *ngFor="let citizenship of citizenships" [value]="citizenship">
-            {{citizenship}}
-          </option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label><small>Sprache</small></label>
-        <input type="text" class="form-control" name="language" [(ngModel)]="client.language"/>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <app-select-box [categoryType]="cat_gender"
-                        (catValue)="onGenderChange($event)"
-                        [cat_model]="client.person?.gender">
-        </app-select-box>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <app-select-box (catValue)="changeResidentStatus($event)"
-                      [cat_model]="client.currentResidentStatus"
-                      [categoryType]="cat_aufenthaltstitel">
-      </app-select-box>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label><small>Arbeitsmarktzugang</small></label>
-        <input type="text" class="form-control" name="labourMarketAccess" [(ngModel)]="client.labourMarketAccess"/>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label><small>Position</small></label>
-        <input type="text" class="form-control" name="position" [(ngModel)]="client.position"/>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label><small>Gewerkschaft</small></label>
-        <input type="text" class="form-control" name="union" [(ngModel)]="client.union"/>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <app-select-box [categoryType]="cat_sector"
-                      [cat_model]="client.sector"
-                      (catValue)="changeSector($event)">
-      </app-select-box>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <input type="checkbox" class="form-check-inline" [(ngModel)]="client.membership" name="membership">
-        <label class="form-check-label"><small>Mitgliedschaft</small></label>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label><small>organization</small></label>
-        <input type="text" class="form-control" name="organization" [(ngModel)]="client.organization"/>
-      </div>
-    </div>
-    <div class="col text-center">
-      <div class="form-group">
-        <button type="button" (click)="submit()" class="btn btn-outline-dark">update</button>
-      </div>
-    </div>
-  </div>
-</div>
--->
-  <!--/form-->
-  <!--
-
-      the fucking new
-
-
-  -->
-  <!-- new one -->
-
-  <div class="row">
-    <div class="col">
-      <h2 style="font-size: x-large; font-weight: bold">Edit Client <small style="font-size: medium; font-weight: lighter">{{client.keyword}}</small></h2>
+      <h2 style="font-size: x-large; font-weight: bold">Edit Client <small
+        style="font-size: medium; font-weight: lighter">{{ client.keyword }}</small></h2>
     </div>
   </div>
 
@@ -266,21 +46,21 @@
       <div class="row">
         <div class="col-md-4">
 
-          <div class="form-group mb-2">
+<!--          <div class="form-group mb-2">
             <label>Geburtstag</label>
             <div class="input-group">
               <input class="form-control" type="date" [(ngModel)]="client.person.dateOfBirth" name="d">
             </div>
-          </div>
+          </div>-->
 
         </div>
 
         <div class="col-md-8">
 
-          <div class="form-group mb-2">
+<!--          <div class="form-group mb-2">
             <label>Straße</label>
             <input type="text" class="form-control" name="street" [(ngModel)]="client.person.address.street"/>
-          </div>
+          </div>-->
 
         </div>
 
@@ -288,10 +68,10 @@
       <div class="row">
         <div class="col-md-4">
 
-          <div class="form-group mb-2">
-            <label>Postleitzahl</label>
-            <input type="text" class="form-control" name="zipCode" [(ngModel)]="client.person.address.zipCode"/>
-          </div>
+          <!--          <div class="form-group mb-2">
+                      <label>Postleitzahl</label>
+                      <input type="text" class="form-control" name="zipCode" [(ngModel)]="client.person.address.zipCode"/>
+                    </div>-->
 
         </div>
 
@@ -303,13 +83,13 @@
         </div>
 
         <div class="col-md-4">
-          <div class="form-group mb-2">
+<!--          <div class="form-group mb-2">
             <label>Land</label>
             <select id="country_select" class="form-control" [(ngModel)]="country"
                     (click)="onCountryChange($event.target.value)">
-              <option *ngFor="let c of countries" [value]="c">{{c}}</option>
+              <option *ngFor="let c of countries" [value]="c">{{ c }}</option>
             </select>
-          </div>
+          </div>-->
         </div>
 
       </div>
@@ -321,33 +101,33 @@
           </div>
         </div>
         <div class="col-md-4">
-          <div class="form-group mb-2">
-            <label>Sozialversicherungsnummer</label>
-            <input type="text" class="form-control" name="contactData" [(ngModel)]="client.socialInsuranceNumber"/>
-          </div>
+          <!--          <div class="form-group mb-2">
+                      <label>Sozialversicherungsnummer</label>
+                      <input type="text" class="form-control" name="contactData" [(ngModel)]="client.socialInsuranceNumber"/>
+                    </div>-->
         </div>
         <div class="col-md-4">
-          <div class="form-group mb-2">
+          <!--<div class="form-group mb-2">
             <label>Bildung</label>
             <input type="text" class="form-control" name="education" [(ngModel)]="client.education"/>
-          </div>
+          </div>-->
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-8">
-          <div class="form-group mb-2">
+          <div class="form-group mb-2 mt-2">
             <label>Wo hat die Person von uns gehört?</label>
             <input type="text" class="form-control" name="howHasThePersonHeardFromUS"
-                   [(ngModel)]="client.howHasThePersonHeardFromUs" placeholder="how has the person heard from us"/>
+                   [(ngModel)]="client.howHasThePersonHeardFromUs" />
           </div>
         </div>
 
         <div class="col-md-4">
-          <div class="form-group mb-2">
+          <!--<div class="form-group mb-2">
             <label>Position</label>
             <input type="text" class="form-control" name="position" [(ngModel)]="client.position"/>
-          </div>
+          </div>-->
         </div>
       </div>
 
@@ -361,7 +141,7 @@
 
         <div class="col-md-4">
           <div class="form-group mb-2">
-            <label>Sprache</label>
+            <label>Beratungssprache</label>
             <input type="text" class="form-control" name="language" [(ngModel)]="client.language"/>
           </div>
         </div>
@@ -376,11 +156,7 @@
 
       <div class="row">
         <div class="col-md-4">
-          <div class="form-check mt-1">
-            <input type="checkbox" class="form-check-input" [(ngModel)]="client.vulnerableWhenAssertingRights"
-                   name="vulnerableWhenAssertingRights">
-            <label class="form-check-label">Gefährdet bei Geltendmachung</label>
-          </div>
+
         </div>
         <div class="col-md-4">
           <div class="form-check mt-1">
@@ -391,10 +167,10 @@
         </div>
 
         <div class="col-md-4">
-          <div class="form-check mt-1">
+          <!--<div class="form-check mt-1">
             <input type="checkbox" class="form-check-input" [(ngModel)]="client.membership" name="membership">
             <label class="form-check-label">Mitgliedschaft</label>
-          </div>
+          </div>-->
         </div>
       </div>
 
@@ -403,22 +179,22 @@
 
     <div class="col-md-3">
 
-      <div class="form-group mb-2">
+<!--      <div class="form-group mb-2">
         <label for="marital_select">Familienstatus</label>
         <select id="marital_select" class="form-control" [(ngModel)]="marital"
                 (click)="onMaritalChange($event.target.value)">
           <option *ngFor="let m of maritalStatus" [value]="m">
-            {{m}}
+            {{ m }}
           </option>
         </select>
-      </div>
+      </div>-->
 
       <div class="form-group mb-2">
-        <label for="citizenship_select">Staatsbürgerschaft</label>
+        <label for="citizenship_select">Staatsbürger:innenschaft</label>
         <select id="citizenship_select" class="form-control" [(ngModel)]="nationality"
                 (change)="onCitizenshipChange($event.target.value)">
           <option *ngFor="let citizenship of citizenships" [value]="citizenship">
-            {{citizenship}}
+            {{ citizenship }}
           </option>
         </select>
       </div>
@@ -445,6 +221,12 @@
         </app-select-box>
       </div>
 
+      <div class="form-check mt-1">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="client.vulnerableWhenAssertingRights"
+               name="vulnerableWhenAssertingRights">
+        <label class="form-check-label">Verdacht Gefährdung bei Geltendmachung</label>
+      </div>
+
       <div>
         <div class="form-group mt-2">
           <label>Email</label>
@@ -452,10 +234,10 @@
         </div>
       </div>
       <div>
-        <div class="form-group mt-2">
+<!--        <div class="form-group mt-2">
           <label>organization</label>
           <input type="text" class="form-control" name="organization" [(ngModel)]="client.organization"/>
-        </div>
+        </div>-->
       </div>
 
     </div>

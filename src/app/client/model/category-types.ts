@@ -7,4 +7,5 @@ export enum CategoryTypes {
   CASE = 'CASE',
   REFERRED_TO = 'weitervermitteln',
   JOB_FUNCTION = 'JOB_FUNCTION',
+  TARGET_GROUP = 'Zielgruppe',
 }

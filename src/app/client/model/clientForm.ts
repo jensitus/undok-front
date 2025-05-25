@@ -31,4 +31,6 @@ export interface ClientForm {
   zipCode: string;
   city: string;
   country: string;
+
+  targetGroup?: string;
 }

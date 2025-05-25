@@ -6,10 +6,8 @@ import {MARITAL_STATUS} from '../model/marital-status';
 import {faBars, faTachometerAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
 import {NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 import {Router} from '@angular/router';
-import {takeUntil} from 'rxjs/operators';
 import {ResidentStatus} from '../model/resident-status.enum';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
-import {COUNTRIES_AT} from '../model/countriesAT';
 import {CITIZENSHIPS} from '../model/citizenships';
 import {CategoryTypes} from '../model/category-types';
 import {Label} from '../model/label';
@@ -17,6 +15,8 @@ import {AUSTRIA} from '../defaults/defaults';
 import {DropdownItem} from '../model/dropdown-item';
 import {EntityTypes} from '../model/entity-types';
 import {JoinCategory} from '../model/join-category';
+import {Client} from '../model/client';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-client',
@@ -24,6 +24,8 @@ import {JoinCategory} from '../model/join-category';
   styleUrls: ['./create-client.component.css']
 })
 export class CreateClientComponent implements OnInit, OnDestroy {
+
+  client: Client | undefined;
 
   clientForm: ClientForm;
   private unsubscribe$ = new Subject();
@@ -62,7 +64,6 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   zipCode: string;
   city: string;
   country = AUSTRIA;
-  countries = COUNTRIES_AT;
   citizenships = CITIZENSHIPS;
 
   nationality: string;
@@ -80,10 +81,11 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   protected readonly Label = Label;
   protected readonly faUsers = faUsers;
   protected readonly faTachometerAlt = faTachometerAlt;
-  jobFunctionType: CategoryTypes = CategoryTypes.JOB_FUNCTION;
-  jobFunctionLabel: Label;
+
   joinCategories: JoinCategory[] = [];
   joinCategory: JoinCategory;
+  cat_target_group: CategoryTypes = CategoryTypes.TARGET_GROUP;
+  targetGroup: string;
 
 
   constructor(
@@ -132,31 +134,17 @@ export class CreateClientComponent implements OnInit, OnDestroy {
       union: this.union,
       membership: this.membership,
       organization: this.organization,
-      socialInsuranceNumber: this.socialInsuranceNumber
+      socialInsuranceNumber: this.socialInsuranceNumber,
+      targetGroup: this.targetGroup,
     };
     this.clientService.createClient(this.clientForm).pipe(takeUntil(this.unsubscribe$)).subscribe({
       next: (result) => {
         this.router.navigate(['/clients/', result.id]);
         this.loading = false;
       }, error: (error) => {
-        this.alertService.error(error.error);
+        this.alertService.error(error.error.text);
       }
-    })
-    ;
-  }
-
-  onMaritalChange(marital): void {
-    this.m = marital;
-  }
-
-  onCountryChange(country) {
-    switch (country) {
-      case 'Countries':
-        this.country = 'Unknown';
-        break;
-      default:
-        this.country = country;
-    }
+    });
   }
 
   onCitizenshipChange(country) {
@@ -171,6 +159,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
 
   selectGender(event: any) {
     this.gender = event;
+    console.log('gender', this.gender);
   }
 
   selectResidentStatus(event: any) {
@@ -193,4 +182,9 @@ export class CreateClientComponent implements OnInit, OnDestroy {
       this.joinCategories.push(this.joinCategory);
     });
   }
+
+  selectTargetGroup(event: string) {
+    this.targetGroup = event;
+  }
+
 }
