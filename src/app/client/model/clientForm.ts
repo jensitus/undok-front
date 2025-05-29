@@ -33,4 +33,5 @@ export interface ClientForm {
   country: string;
 
   targetGroup?: string;
+  workingRelationship?: string;
 }

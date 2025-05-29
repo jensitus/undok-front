@@ -28,5 +28,6 @@ export interface Client {
   closedCases?: Case[];
   openCase?: Case;
   jobFunctions?: Category[];
+  workingRelationship?: string;
 
 }

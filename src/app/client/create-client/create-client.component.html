@@ -218,6 +218,11 @@
       </div>
 
       <div>
+        <app-select-box [categoryType]="cat_working_relationship" (catValue)="selectWorkingRelationship($event)"
+                        [label]="Label.WORKING_RELATIONSHIP"></app-select-box>
+      </div>
+
+      <div>
         <div class="form-group mt-2">
           <label>Email</label>
           <input type="email" class="form-control" name="email" [(ngModel)]="email"/>

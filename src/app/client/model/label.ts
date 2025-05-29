@@ -7,5 +7,6 @@ export enum Label {
   CASE = 'case',
   REFERRED_TO = 'vermitteln',
   JOB_FUNCTION = 'Tätigkeiten',
-  TARGET_GROUP = 'Zielgruppe'
+  TARGET_GROUP = 'Zielgruppe',
+  WORKING_RELATIONSHIP = 'Arbeitsverhältnis'
 }

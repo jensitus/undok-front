@@ -86,6 +86,8 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   joinCategory: JoinCategory;
   cat_target_group: CategoryTypes = CategoryTypes.TARGET_GROUP;
   targetGroup: string;
+  cat_working_relationship: CategoryTypes = CategoryTypes.WORKING_RELATIONSHIP;
+  workingRelationship: string;
 
 
   constructor(
@@ -136,6 +138,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
       organization: this.organization,
       socialInsuranceNumber: this.socialInsuranceNumber,
       targetGroup: this.targetGroup,
+      workingRelationship: this.workingRelationship
     };
     this.clientService.createClient(this.clientForm).pipe(takeUntil(this.unsubscribe$)).subscribe({
       next: (result) => {
@@ -187,4 +190,7 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     this.targetGroup = event;
   }
 
+  selectWorkingRelationship(event: string) {
+    this.workingRelationship = event;
+  }
 }

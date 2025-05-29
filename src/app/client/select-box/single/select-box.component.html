@@ -1,6 +1,6 @@
 <ng-container>
   <div class="form-group">
-    <label>{{categoryType}}</label>
+    <label>{{label}}</label>
     <ng-select [(ngModel)]="cat_model"
                (change)="selectCategory()">
       <ng-option *ngFor="let c of categoriesToSelect"

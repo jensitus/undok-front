@@ -8,4 +8,5 @@ export enum CategoryTypes {
   REFERRED_TO = 'weitervermitteln',
   JOB_FUNCTION = 'JOB_FUNCTION',
   TARGET_GROUP = 'Zielgruppe',
+  WORKING_RELATIONSHIP = 'WORKING_RELATIONSHIP',
 }
