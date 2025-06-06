@@ -1,233 +1,261 @@
-<form [formGroup]="form">
-  <div class="row">
-    <div class="col-md-7">
+<div class="row">
+  <div class="col-md-7">
 
-      <div class="form-group mb-2">
-        <label for="keyword">Schlüsselwort</label>
-        <input id="keyword" type="text" class="form-control" name="keyword" formControlName="keyword"/>
-      </div>
+    <div class="form-group mb-2">
+      <label for="keyword">Schlüsselwort</label>
+      <input id="keyword" type="text" class="form-control" name="keyword" [(ngModel)]="clientForm.keyword"/>
+    </div>
 
-      <div class="row">
-        <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-6">
 
-          <div class="form-group mb-2">
-            <label>Vorname</label>
-            <input type="text" class="form-control" name="firstName" formControlName="firstName"/>
-          </div>
-
-        </div>
-        <div class="col-md-6">
-
-          <div class="form-group mb-2">
-            <label>Nachname</label>
-            <input type="text" class="form-control" name="lastName" formControlName="lastName"/>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-4">
-
-          <!--          <div class="form-group mb-2">
-                      <label>Geburtstag</label>
-                      <div class="input-group">
-                        <input class="form-control" type="date" [(ngModel)]="dateOfBirth" name="d">
-                      </div>
-                    </div>-->
-
-        </div>
-
-        <div class="col-md-8">
-
-          <!--<div class="form-group mb-2">
-            <label>Straße</label>
-            <input type="text" class="form-control" name="street" [(ngModel)]="street"/>
-          </div>-->
-
+        <div class="form-group mb-2">
+          <label>Vorname</label>
+          <input type="text" class="form-control" name="firstName" [(ngModel)]="clientForm.firstName"/>
         </div>
 
       </div>
-      <div class="row">
-        <div class="col-md-4">
+      <div class="col-md-6">
 
-          <!--          <div class="form-group mb-2">
-                      <label>Postleitzahl</label>
-                      <input type="text" class="form-control" name="zipCode" [(ngModel)]="zipCode"/>
-                    </div>-->
-
+        <div class="form-group mb-2">
+          <label>Nachname</label>
+          <input type="text" class="form-control" name="lastName" [(ngModel)]="clientForm.lastName"/>
         </div>
 
-        <div class="col-md-4">
-          <div class="form-group mb-2">
-            <label>Stadt</label>
-            <input type="text" class="form-control" name="city" formControlName="city"/>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+
+        <!--          <div class="form-group mb-2">
+                    <label>Geburtstag</label>
+                    <div class="input-group">
+                      <input class="form-control" type="date" [(ngModel)]="dateOfBirth" name="d">
+                    </div>
+                  </div>-->
+
+      </div>
+
+      <div class="col-md-8">
+
+        <!--<div class="form-group mb-2">
+          <label>Straße</label>
+          <input type="text" class="form-control" name="street" [(ngModel)]="street"/>
+        </div>-->
+
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Telephon</label>
+          <input type="tel" class="form-control" name="telephone" [(ngModel)]="clientForm.telephone"/>
+        </div>
+
+
+        <!--          <div class="form-group mb-2">
+                    <label>Postleitzahl</label>
+                    <input type="text" class="form-control" name="zipCode" [(ngModel)]="zipCode"/>
+                  </div>-->
+
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group mb-2">
+          <label>Stadt</label>
+          <input type="text" class="form-control" name="city" [(ngModel)]="clientForm.city"/>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+
+        <div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-control" name="email" [(ngModel)]="clientForm.email"/>
           </div>
         </div>
 
-        <div class="col-md-4">
-          <!--<div class="form-group mb-2">
-            <label>Land</label>
-            <select class="form-control" (click)="onCountryChange($event.target.value)">
-              <option selected="selected">Österreich</option>
-              <option *ngFor="let c of countries" [value]="c">{{c}}</option>
+        <!--<div class="form-group mb-2">
+          <label>Land</label>
+          <select class="form-control" (click)="onCountryChange($event.target.value)">
+            <option selected="selected">Österreich</option>
+            <option *ngFor="let c of countries" [value]="c">{{c}}</option>
+          </select>
+        </div>-->
+      </div>
+
+    </div>
+    <div class="row">
+
+      <div class="col-md-4">
+        <!--<div class="form-group mb-2">
+          <label>Sozialversicherungsnummer</label>
+          <input type="text" class="form-control" name="contactData" [(ngModel)]="socialInsuranceNumber"/>
+        </div>-->
+      </div>
+      <div class="col-md-4">
+        <!--<div class="form-group mb-2">
+          <label>Bildung</label>
+          <input type="text" class="form-control" name="education" [(ngModel)]="education"/>
+        </div>-->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8">
+        <div class="form-group mb-2 mt-2">
+          <label>Wo hat die Person von uns gehört?</label>
+          <input type="text" class="form-control" name="howHasThePersonHeardFromUS"
+                 [(ngModel)]="clientForm.howHasThePersonHeardFromUs"/>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <!--          <div class="form-group mb-2">
+                    <label>Position</label>
+                    <input type="text" class="form-control" name="position" [(ngModel)]="position"/>
+                  </div>-->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group mb-2">
+          <label>Arbeitsmarktzugang</label>
+          <input type="text" class="form-control" name="labourMarketAccess" [(ngModel)]="clientForm.labourMarketAccess"/>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group mb-2">
+          <label>Beratungssprache</label>
+          <input type="text" class="form-control" name="language" [(ngModel)]="clientForm.language"/>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group mb-2">
+          <label>Gewerkschaft</label>
+          <input type="text" class="form-control" name="union" [(ngModel)]="clientForm.union"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+
+      </div>
+      <div class="col-md-4">
+        <div class="form-check mt-1">
+          <input type="checkbox" class="form-check-input" id="interpreter" [(ngModel)]="clientForm.interpreterNecessary"
+                 name="interpreterNecessary">
+          <label class="form-check-label" for="interpreter">Dolmetsch erforderlich</label>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <!--          <div class="form-check mt-1">
+                    <input type="checkbox" class="form-check-input" [(ngModel)]="membership" name="membership">
+                    <label class="form-check-label">Mitgliedschaft</label>
+                  </div>-->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div>
+          <app-select-box [categoryType]="cat_working_relationship"
+                          (catValue)="selectWorkingRelationship($event)"
+                          [cat_model]="clientForm.workingRelationship"
+                          [label]="Label.WORKING_RELATIONSHIP"></app-select-box>
+        </div>
+      </div>
+      <div class="col-md-4 mt-3">
+        <div class="form-check mt-1">
+          <input type="checkbox" class="form-check-input" [(ngModel)]="clientForm.humanTrafficking"
+                 name="humanTrafficking">
+          <label class="form-check-label">Verdacht auf Menschenhandel</label>
+        </div>
+        <div class="form-check mt-1">
+          <input type="checkbox" class="form-check-input" [(ngModel)]="clientForm.jobCenterBlock"
+                 name="jobCenterBlock">
+          <label class="form-check-label">AMS Sperre</label>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="col-md-3">
+
+    <!--      <div class="form-group mb-2">
+            <label>Familienstatus</label>
+            <select class="form-control" (change)="onMaritalChange($event.target.value)">
+              <option></option>
+              <option *ngFor="let marital of maStatus" [value]="marital">{{marital}}</option>
             </select>
           </div>-->
-        </div>
 
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="form-group">
-            <label>Telephon</label>
-            <input type="tel" class="form-control" name="telephone" formControlName="telephone"/>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <!--<div class="form-group mb-2">
-            <label>Sozialversicherungsnummer</label>
-            <input type="text" class="form-control" name="contactData" [(ngModel)]="socialInsuranceNumber"/>
-          </div>-->
-        </div>
-        <div class="col-md-4">
-          <!--<div class="form-group mb-2">
-            <label>Bildung</label>
-            <input type="text" class="form-control" name="education" [(ngModel)]="education"/>
-          </div>-->
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-8">
-          <div class="form-group mb-2 mt-2">
-            <label>Wo hat die Person von uns gehört?</label>
-            <input type="text" class="form-control" name="howHasThePersonHeardFromUS"
-                   formControlName="howHasThePersonHeardFromUs" />
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <!--          <div class="form-group mb-2">
-                      <label>Position</label>
-                      <input type="text" class="form-control" name="position" [(ngModel)]="position"/>
-                    </div>-->
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-4">
-          <div class="form-group mb-2">
-            <label>Arbeitsmarktzugang</label>
-            <input type="text" class="form-control" name="labourMarketAccess" formControlName="labourMarketAccess"/>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="form-group mb-2">
-            <label>Beratungssprache</label>
-            <input type="text" class="form-control" name="language" formControlName="language"/>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="form-group mb-2">
-            <label>Gewerkschaft</label>
-            <input type="text" class="form-control" name="union" formControlName="union"/>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-4">
-
-        </div>
-        <div class="col-md-4">
-          <div class="form-check mt-1">
-            <input type="checkbox" class="form-check-input" id="interpreter" formControlName="interpreterNecessary"
-                   name="interpreterNecessary">
-            <label class="form-check-label" for="interpreter">Dolmetsch erforderlich</label>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <!--          <div class="form-check mt-1">
-                      <input type="checkbox" class="form-check-input" [(ngModel)]="membership" name="membership">
-                      <label class="form-check-label">Mitgliedschaft</label>
-                    </div>-->
-        </div>
-      </div>
-
-
+    <div class="form-group mb-2">
+      <label>Staatsbürger:innenschaft</label>
+      <select class="form-control" (change)="onCitizenshipChange($event.target.value)">
+        <option>{{clientForm.nationality}}</option>
+        <option *ngFor="let citizenship of citizenships" [value]="citizenship">
+          {{ citizenship }}
+        </option>
+      </select>
     </div>
 
-    <div class="col-md-3">
+    <app-select-box (catValue)="selectTargetGroup($event)"
+                    [categoryType]="cat_target_group"
+                    [cat_model]="clientForm.targetGroup"
+                    [label]="Label.TARGET_GROUP"/>
 
-      <!--      <div class="form-group mb-2">
-              <label>Familienstatus</label>
-              <select class="form-control" (change)="onMaritalChange($event.target.value)">
-                <option></option>
-                <option *ngFor="let marital of maStatus" [value]="marital">{{marital}}</option>
-              </select>
-            </div>-->
+    <div>
+      <app-select-box (catValue)="selectGender($event)"
+                      [categoryType]="cat_gender"
+                      [cat_model]="clientForm.gender"
+                      [label]="Label.GENDER"></app-select-box>
+    </div>
 
-      <div class="form-group mb-2">
-        <label>Staatsbürger:innenschaft</label>
-        <select formControlName="nationality" class="form-control" (change)="onCitizenshipChange($event.target.value)">
-          <option></option>
-          <option *ngFor="let citizenship of citizenships" [value]="citizenship">
-            {{citizenship}}
-          </option>
-        </select>
-      </div>
+    <div>
+      <app-select-box [categoryType]="cat_sector"
+                      (catValue)="selectSector($event)"
+                      [cat_model]="clientForm.sector"
+                      [label]="Label.SECTOR"></app-select-box>
+    </div>
 
-      <div>
-        <app-select-box (catValue)="selectGender($event)"
-                        [cat_model]="'gender'"
-                        [categoryType]="cat_gender"
-                        [label]="Label.GENDER"></app-select-box>
-      </div>
+    <div>
+      <app-select-box [categoryType]="cat_aufenthaltstitel"
+                      (catValue)="selectResidentStatus($event)"
+                      [cat_model]="clientForm.currentResidentStatus"
+                      [label]="Label.RESIDENT_STATUS"></app-select-box>
+    </div>
 
-      <div>
-        <app-select-box [categoryType]="cat_sector"
-                        [cat_model]="'sector'"
-                        (catValue)="selectSector($event)"
-                        [label]="Label.SECTOR"></app-select-box>
-      </div>
+    <div class="form-check mt-1">
+      <input type="checkbox" class="form-check-input" [(ngModel)]="clientForm.vulnerableWhenAssertingRights"
+             name="vulnerableWhenAssertingRights">
+      <label class="form-check-label">Verdacht Gefährdung bei Geltendmachung</label>
+    </div>
 
-      <div>
-        <app-select-box [categoryType]="cat_aufenthaltstitel"
-                        [cat_model]="'aufenthaltstitel'"
-                        (catValue)="selectResidentStatus($event)"
-                        [label]="Label.RESIDENT_STATUS"></app-select-box>
-      </div>
+    <div>
+      <!--        <div class="form-group mt-2">
+                <label>organization</label>
+                <input type="text" class="form-control" name="organization" [(ngModel)]="organization"/>
+              </div>-->
+    </div>
 
-      <div class="form-check mt-1">
-        <input type="checkbox" class="form-check-input" formControlName="vulnerableWhenAssertingRights"
-               name="vulnerableWhenAssertingRights">
-        <label class="form-check-label">Verdacht Gefährdung bei Geltendmachung</label>
-      </div>
+  </div>
+</div>
 
-      <div>
-        <div class="form-group mt-2">
-          <label>Email</label>
-          <input type="email" class="form-control" name="email" formControlName="email"/>
-        </div>
-      </div>
-      <div>
-        <!--        <div class="form-group mt-2">
-                  <label>organization</label>
-                  <input type="text" class="form-control" name="organization" [(ngModel)]="organization"/>
-                </div>-->
-      </div>
-
+<div class="row">
+  <div class="col">
+    <div class="form-group mt-3">
+      <button type="button" class="btn btn-lg btn-success" (click)="submit()" [disabled]="loading">Save</button>
     </div>
   </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="form-group mt-3">
-        <button type="button" class="btn btn-lg btn-success" (click)="submit()" [disabled]="loading">Save</button>
-      </div>
-    </div>
-  </div>
-</form>
+</div>

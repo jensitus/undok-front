@@ -32,24 +32,19 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   readonly DELIMITER = '-';
   enumKeys = [];
   loading = false;
-  cat_gender: CategoryTypes = CategoryTypes.CAT_GENDER;
-  cat_aufenthaltstitel: CategoryTypes = CategoryTypes.AUFENTHALTSTITEL;
-  cat_sector: CategoryTypes = CategoryTypes.SECTOR;
+
 
   // Person:
   firstName: string;
   lastName: string;
   dateOfBirth: string;
-  socialInsuranceNumber: string;
   email: string;
   telephone: string;
   gender: string;
 
   // client:
-  maStatus = MARITAL_STATUS;
   maritalStatus: string;
   m: string;
-  marital: string;
 
   faBars = faBars;
   howHasThePersonHeardFromUs: string;
@@ -64,11 +59,9 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   zipCode: string;
   city: string;
   country = AUSTRIA;
-  citizenships = CITIZENSHIPS;
 
   nationality: string;
   language: string;
-  residentStatusLOV = Object.values(ResidentStatus);
   currentResidentStatus: string;
   formerResidentStatus: string;
   labourMarketAccess: string;
@@ -81,14 +74,6 @@ export class CreateClientComponent implements OnInit, OnDestroy {
   protected readonly Label = Label;
   protected readonly faUsers = faUsers;
   protected readonly faTachometerAlt = faTachometerAlt;
-
-  joinCategories: JoinCategory[] = [];
-  joinCategory: JoinCategory;
-  cat_target_group: CategoryTypes = CategoryTypes.TARGET_GROUP;
-  targetGroup: string;
-  cat_working_relationship: CategoryTypes = CategoryTypes.WORKING_RELATIONSHIP;
-  workingRelationship: string;
-
 
   constructor(
     private clientService: ClientService,
@@ -106,41 +91,8 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
   }
 
-  submit(): void {
-    console.log('input type date', this.dateOfBirth);
-    this.loading = true;
-    const theRealDate = this.dateAdapter.fromModel(this.dateOfBirth);
-    this.clientForm = {
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      telephone: this.telephone,
-      gender: this.gender,
-      maritalStatus: this.m,
-      dateOfBirth: this.dateOfBirth, // this.ngbFormatterService.format(theRealDate),
-      howHasThePersonHeardFromUs: this.howHasThePersonHeardFromUs,
-      interpreterNecessary: this.interpreterNecessary,
-      vulnerableWhenAssertingRights: this.vulnerableWhenAssertingRights,
-      keyword: this.keyword,
-      education: this.education,
-      street: this.street,
-      zipCode: this.zipCode,
-      city: this.city,
-      country: this.country,
-      nationality: this.nationality,
-      language: this.language,
-      currentResidentStatus: this.currentResidentStatus,
-      labourMarketAccess: this.labourMarketAccess,
-      position: this.position,
-      sector: this.sector,
-      union: this.union,
-      membership: this.membership,
-      organization: this.organization,
-      socialInsuranceNumber: this.socialInsuranceNumber,
-      targetGroup: this.targetGroup,
-      workingRelationship: this.workingRelationship
-    };
-    this.clientService.createClient(this.clientForm).pipe(takeUntil(this.unsubscribe$)).subscribe({
+  submitClientForm(event: ClientForm) {
+    this.clientService.createClient(event).pipe(takeUntil(this.unsubscribe$)).subscribe({
       next: (result) => {
         this.router.navigate(['/clients/', result.id]);
         this.loading = false;
@@ -148,49 +100,5 @@ export class CreateClientComponent implements OnInit, OnDestroy {
         this.alertService.error(error.error.text);
       }
     });
-  }
-
-  onCitizenshipChange(country) {
-    switch (country) {
-      case 'Countries':
-        this.nationality = 'Unknown';
-        break;
-      default:
-        this.nationality = country;
-    }
-  }
-
-  selectGender(event: any) {
-    this.gender = event;
-    console.log('gender', this.gender);
-  }
-
-  selectResidentStatus(event: any) {
-    this.currentResidentStatus = event;
-  }
-
-  selectSector(event: any) {
-    this.sector = event;
-  }
-
-  showCategoryValue(event: DropdownItem[], jobFunctionType: CategoryTypes) {
-    this.joinCategories = [];
-    event.forEach(e => {
-      this.joinCategory = {
-        categoryId: e.itemId,
-        categoryType: jobFunctionType,
-        entityId: undefined, // this.counseling.id,
-        entityType: EntityTypes.COUNSELING
-      };
-      this.joinCategories.push(this.joinCategory);
-    });
-  }
-
-  selectTargetGroup(event: string) {
-    this.targetGroup = event;
-  }
-
-  selectWorkingRelationship(event: string) {
-    this.workingRelationship = event;
   }
 }

@@ -90,21 +90,22 @@ const appRoutes: Routes = [
     EditCategoriesComponent,
     EditCategoryComponent
   ],
-    imports: [
-        NgMultiSelectDropDownModule.forRoot(),
-        CommonModule,
-        RouterModule.forChild(appRoutes),
-        FormsModule,
-        NgbModule,
-        FontAwesomeModule,
-        AlertModule,
-        PageHeaderModule,
-        NgSelectModule,
-        CloseCaseComponent,
-        SelectBoxComponent,
-        ReopenCaseComponent,
-        AddCategoryComponent
-    ],
+  imports: [
+    NgMultiSelectDropDownModule.forRoot(),
+    CommonModule,
+    RouterModule.forChild(appRoutes),
+    FormsModule,
+    NgbModule,
+    FontAwesomeModule,
+    AlertModule,
+    PageHeaderModule,
+    NgSelectModule,
+    CloseCaseComponent,
+    SelectBoxComponent,
+    ReopenCaseComponent,
+    AddCategoryComponent,
+    ClientFormComponent
+  ],
     exports: [
     ],
   providers: [DecimalPipe]

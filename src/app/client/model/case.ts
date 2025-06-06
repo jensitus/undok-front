@@ -11,4 +11,8 @@ export interface Case {
   endTime?: Date;
   referredTo?: string;
   clientId: string;
+  targetGroup?: string;
+  workingRelationship?: string;
+  humanTrafficking?: boolean;
+  jobCenterBlock?: boolean;
 }

@@ -8,6 +8,7 @@ import {CounselingForm} from '../model/counseling-form';
 import {Client} from '../model/client';
 import {CountryData} from '../../admin-template/layout/charts/doughnut/country-data';
 import {AllClient} from '../model/all-client';
+import {ResponseMessage} from '../../common/helper/response-message';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +27,9 @@ export class ClientService {
     return this.http.post<any>(this.apiUrl + '/service/undok/clients/create', client);
   }
 
-  updateClient(clientId: string, client: Client): Observable<Person> {
-    return this.http.put<Person>(this.apiUrl + '/service/undok/clients/' + clientId + '/update', client);
+  updateClient(clientId: string, client: ClientForm): Observable<ResponseMessage> {
+    console.log(client);
+    return this.http.post<ResponseMessage>(this.apiUrl + '/service/undok/clients/' + clientId + '/update', client);
   }
 
   getAllClientsPaginated(): Observable<AllClient[]> {

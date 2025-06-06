@@ -1,3 +1,4 @@
+<app-alert></app-alert>
 @if (client) {
   <app-page-header [firstPoint]="'dashboard'" [firstIcon]="faTachometerAlt" [firstLink]="'/dashboard'"
                    [secondPoint]="'clients'" [secondIcon]="faUsers" [secondLink]="'/clients/client-list'"
@@ -78,10 +79,10 @@
               </div>
               <div class="row">
                 <div class="col-md-5">
-                  <label class="text-secondary">Geburtstag:</label>
+                  <label class="text-secondary">Stadt:</label>
                 </div>
                 <div class="col-md-7">
-                  {{ client.person.dateOfBirth | date: 'dd.MM.yyyy' }}
+                  {{ client.person.address.city }}
                 </div>
               </div>
               <div class="row">
@@ -100,14 +101,7 @@
                   {{ client.person.gender }}
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-5">
-                  <label class="text-secondary">Aufenthaltstitel:</label>
-                </div>
-                <div class="col-md-7">
-                  {{ client.currentResidentStatus }}
-                </div>
-              </div>
+
               <div class="row">
                 <div class="col-md-5">
                   <label class="text-secondary">Arbeitsmarktzugang:</label>
@@ -137,16 +131,6 @@
                 </span>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-5">
-                  <label class="text-secondary">
-                    SV-Nummer:
-                  </label>
-                </div>
-                <div class="col-md-7">
-                  {{ client.socialInsuranceNumber }}
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -155,103 +139,21 @@
         </div>
         <div class="card mt-1">
           <div class="card-body">
-            <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">Straße:</label>
-              </div>
-              <div class="col-md-8">
-                {{ client.person.address.street }}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">PLZ & City:</label>
-              </div>
-              <div class="col-md-8">
-                {{ client.person.address.zipCode }} {{ client.person.address.city }}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">Country:</label>
-              </div>
-              <div class="col-md-8">
-                {{ client.person.address.country }}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">Familienstand:</label>
-              </div>
-              <div class="col-md-8">
-                {{ client.maritalStatus }}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-
-              </div>
-              <div class="col-md-8">
-
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card mt-1">
-          <div class="card-body">
 
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <label class="text-secondary">Branche:</label>
               </div>
-              <div class="col-md-8">
+              <div class="col-md-6">
                 {{ client.sector }}
               </div>
             </div>
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <label class="text-secondary">Gewerkschaft:</label>
               </div>
-              <div class="col-md-8">
+              <div class="col-md-6">
                 {{ client.union }}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">Mitgliedschaft</label>
-              </div>
-              <div class="col-md-8">
-                <span *ngIf="client.membership === true">
-                      ja
-                </span>
-                <span *ngIf="client.membership === false">
-                      nein
-                </span>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">Position:</label>
-              </div>
-              <div class="col-md-8">
-                {{ client.position }}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">Organisation:</label>
-              </div>
-              <div class="col-md-8">
-                {{ client.organization }}
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-md-6">
-                <label class="text-secondary">Bildung:</label>
-              </div>
-              <div class="col-md-6">
-                {{ client.education }}
               </div>
             </div>
             <div class="row">
@@ -260,6 +162,63 @@
               </div>
               <div class="col-md-6">
                 {{ client.howHasThePersonHeardFromUs }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="text-secondary">Arbeitsverhältnis:</label>
+              </div>
+              <div class="col-md-6">
+                {{ client.openCase.workingRelationship }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="text-secondary">Menschenhandel:</label>
+              </div>
+              <div class="col-md-6">
+                <div class="col-md-8">
+                  @if (client.openCase.humanTrafficking === true) {
+                    <span>
+                      ja
+                    </span>
+                  }
+                  @if (client.openCase.humanTrafficking === false || client.openCase.humanTrafficking === null || client.openCase.humanTrafficking === undefined) {
+                    <span>
+                      nein
+                    </span>
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="text-secondary">AMS Sperre:</label>
+              </div>
+              <div class="col-md-6">
+                @if (client.openCase.jobCenterBlock === true) {
+                  <span>
+                      ja
+                  </span>
+                }
+                @if (client.openCase.jobCenterBlock === false || client.openCase.jobCenterBlock === null || client.openCase.jobCenterBlock === undefined) {
+                  <span>
+                      nein
+                  </span>
+                }
+              </div>
+            </div>
+
+            <hr>
+            <div class="row">
+
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="text-secondary">Aufenthaltstitel:</label>
+              </div>
+              <div class="col-md-6">
+                {{ client.currentResidentStatus }}
               </div>
             </div>
             <div class="row">
@@ -273,6 +232,14 @@
                 <span *ngIf="client.vulnerableWhenAssertingRights === false">
                   nein
                 </span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="text-secondary">Zielgruppe:</label>
+              </div>
+              <div class="col-md-6">
+                {{ client.openCase.targetGroup }}
               </div>
             </div>
             <div>
@@ -323,15 +290,7 @@
           <div class="row">
           </div>
         </div>
-        <div class="row mb-5">
-          <div class="row">
-            <div class="col">
-              <button class="btn btn-link" (click)="openTargetGroupModal(target_group)">
-                <small>Beratung anlegen</small>
-              </button>
-            </div>
-          </div>
-        </div>
+
       </div>
       <div class="col-xl-7">
         <app-show-counselings-per-client [clientId]="client.id"></app-show-counselings-per-client>

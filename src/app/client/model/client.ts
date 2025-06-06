@@ -29,5 +29,7 @@ export interface Client {
   openCase?: Case;
   jobFunctions?: Category[];
   workingRelationship?: string;
+  humanTrafficking?: boolean;
+  jobCenterBlock?: boolean;
 
 }

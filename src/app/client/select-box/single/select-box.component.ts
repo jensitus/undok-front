@@ -69,7 +69,6 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
   }
 
   onCategoryValueChange(): void {
-    console.log('categoryName', this.categoryName);
     this.catValue.emit(this.categoryName);
   }
 
