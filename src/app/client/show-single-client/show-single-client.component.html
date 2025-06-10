@@ -183,10 +183,13 @@
                       ja
                     </span>
                   }
-                  @if (client.openCase.humanTrafficking === false || client.openCase.humanTrafficking === null || client.openCase.humanTrafficking === undefined) {
+                  @if (client.openCase.humanTrafficking === false) {
                     <span>
                       nein
                     </span>
+                  }
+                  @if (client.openCase.humanTrafficking === null || client.openCase.humanTrafficking === undefined) {
+                    <span></span>
                   }
                 </div>
               </div>
@@ -200,11 +203,12 @@
                   <span>
                       ja
                   </span>
-                }
-                @if (client.openCase.jobCenterBlock === false || client.openCase.jobCenterBlock === null || client.openCase.jobCenterBlock === undefined) {
+                } @else if (client.openCase.jobCenterBlock === false) {
                   <span>
                       nein
                   </span>
+                } @else if (client.openCase.jobCenterBlock === null || client.openCase.jobCenterBlock === undefined) {
+                  <span></span>
                 }
               </div>
             </div>
@@ -231,6 +235,9 @@
                 </span>
                 <span *ngIf="client.vulnerableWhenAssertingRights === false">
                   nein
+                </span>
+                <span *ngIf="client.vulnerableWhenAssertingRights === null || client.vulnerableWhenAssertingRights === undefined">
+
                 </span>
               </div>
             </div>

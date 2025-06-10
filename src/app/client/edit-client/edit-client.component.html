@@ -11,8 +11,19 @@
 
   <div class="row">
     <div class="col">
-      <h2 style="font-size: x-large; font-weight: bold">Edit Client <small
-        style="font-size: medium; font-weight: lighter">{{ client.keyword }}</small></h2>
+      @if (client.person.firstName || client.person.lastName) {
+        <h2 style="font-size: x-large; font-weight: bold">
+          {{ client.person.firstName }} {{ client.person.lastName }}
+          <small style="font-size: medium; font-weight: lighter">
+            {{ client.keyword }}
+          </small>
+        </h2>
+      } @else if (!client.person.firstName || !client.person.lastName) {
+        <h2 style="font-size: x-large; font-weight: bold">
+          {{ client.keyword }}
+        </h2>
+      }
+
     </div>
   </div>
 

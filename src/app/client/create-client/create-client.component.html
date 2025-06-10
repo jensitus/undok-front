@@ -9,6 +9,19 @@
     <h2 style="font-size: x-large; font-weight: bold">Create Client</h2>
   </div>
 </div>
+<div class="row">
+  <div class="col-md-4">
+    <div class="form-group mb-2">
+      <label for="keyword">Schlüsselwort</label>
+      <input id="keyword" type="text" class="form-control" name="keyword" [(ngModel)]="keyword"/>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <button class="btn btn-sm btn-success" (click)="submitClientForm()">save</button>
+  </div>
+</div>
 
 <!--<div class="row">
   <div class="col-md-7">
@@ -265,4 +278,4 @@
 </div>-->
 <!--/form-->
 
-<app-client-form (submitted)="submitClientForm($event)"></app-client-form>
+<!-- app-client-form (submitted)="submitClientForm($event)"></app-client-form -->

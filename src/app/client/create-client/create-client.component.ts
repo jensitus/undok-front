@@ -91,10 +91,10 @@ export class CreateClientComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
   }
 
-  submitClientForm(event: ClientForm) {
-    this.clientService.createClient(event).pipe(takeUntil(this.unsubscribe$)).subscribe({
+  submitClientForm() {
+    this.clientService.createClient({keyword: this.keyword}).pipe(takeUntil(this.unsubscribe$)).subscribe({
       next: (result) => {
-        this.router.navigate(['/clients/', result.id]);
+        this.router.navigate(['/clients/' + result.id + '/edit']);
         this.loading = false;
       }, error: (error) => {
         this.alertService.error(error.error.text);

@@ -3,7 +3,7 @@ import {Client} from '../model/client';
 import {FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Label} from '../model/label';
 import {CITIZENSHIPS} from '../model/citizenships';
-import {NgForOf} from '@angular/common';
+import {JsonPipe, NgForOf} from '@angular/common';
 import {SelectBoxComponent} from '../select-box/single/select-box.component';
 import {CategoryTypes} from '../model/category-types';
 import {ClientForm} from '../model/clientForm';
@@ -21,7 +21,8 @@ import {Router} from '@angular/router';
     FormsModule,
     NgForOf,
     SelectBoxComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    JsonPipe
   ],
   styleUrls: ['./client-form.component.css']
 })
@@ -118,12 +119,12 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
       labourMarketAccess: client.labourMarketAccess ? client.labourMarketAccess : null,
       interpreterNecessary: client.interpreterNecessary ? client.interpreterNecessary : false,
       howHasThePersonHeardFromUs: client.howHasThePersonHeardFromUs ? client.howHasThePersonHeardFromUs : null,
-      vulnerableWhenAssertingRights: client.vulnerableWhenAssertingRights ? client.vulnerableWhenAssertingRights : false,
+      vulnerableWhenAssertingRights: client.vulnerableWhenAssertingRights ? client.vulnerableWhenAssertingRights : null,
       nationality: client.nationality ? client.nationality : null,
       language: client.language ? client.language : null,
       currentResidentStatus: client.currentResidentStatus ? client.currentResidentStatus : null,
-      jobCenterBlock: client.openCase.jobCenterBlock ? client.openCase.jobCenterBlock : false,
-      humanTrafficking: client.openCase.humanTrafficking ? client.openCase.humanTrafficking : false,
+      jobCenterBlock: client.openCase.jobCenterBlock ? client.openCase.jobCenterBlock : null,
+      humanTrafficking: client.openCase.humanTrafficking ? client.openCase.humanTrafficking : null,
       gender: client.person.gender ? client.person.gender : null,
       sector: client.sector ? client.sector : null,
       union: client.union ? client.union : null,
