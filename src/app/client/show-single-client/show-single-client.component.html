@@ -252,8 +252,14 @@
             <div>
               <label class="text-secondary">Tätigkeiten:</label>&nbsp;
               <span *ngFor="let jobFunction of client.jobFunctions">
-              <span [innerHTML]="jobFunction.name"></span>&nbsp;
-            </span>
+                <span [innerHTML]="jobFunction.name"></span>&nbsp;
+              </span>
+            </div>
+            <div>
+              <label class="text-secondary">Beratungssprachen:</label>&nbsp;
+              <span *ngFor="let language of client.openCase.counselingLanguages">
+                <span [innerHTML]="language.name"></span>&nbsp;
+              </span>
             </div>
           </div>
         </div>

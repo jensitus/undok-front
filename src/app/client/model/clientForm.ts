@@ -1,3 +1,6 @@
+import {Category} from './category';
+import {JoinCategory} from './join-category';
+
 export interface ClientForm {
   // Person:
   firstName?: string;
@@ -36,4 +39,9 @@ export interface ClientForm {
   workingRelationship?: string;
   humanTrafficking?: boolean;
   jobCenterBlock?: boolean;
+
+  jobMarketAccessSelected?: JoinCategory[];
+  jobMarketAccessDeSelected?: JoinCategory[];
+  counselingLanguageSelected?: JoinCategory[];
+  counselingLanguageDeSelected?: JoinCategory[];
 }

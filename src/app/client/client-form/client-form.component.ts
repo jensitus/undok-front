@@ -7,11 +7,14 @@ import {JsonPipe, NgForOf} from '@angular/common';
 import {SelectBoxComponent} from '../select-box/single/select-box.component';
 import {CategoryTypes} from '../model/category-types';
 import {ClientForm} from '../model/clientForm';
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
-import {ClientService} from '../service/client.service';
-import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
-import {Router} from '@angular/router';
+import {DropdownItem} from '../model/dropdown-item';
+import {EntityTypes} from '../model/entity-types';
+import {JoinCategory} from '../model/join-category';
+import {Category} from '../model/category';
+import {SelectModule} from '../select-box/select/select.module';
+import {NgSelectModule} from '@ng-select/ng-select';
+import {Subscription} from 'rxjs';
+import {CategoryService} from '../service/category.service';
 
 @Component({
   selector: 'app-client-form',
@@ -22,27 +25,45 @@ import {Router} from '@angular/router';
     NgForOf,
     SelectBoxComponent,
     ReactiveFormsModule,
-    JsonPipe
+    JsonPipe,
+    SelectModule,
+    NgSelectModule,
   ],
   styleUrls: ['./client-form.component.css']
 })
 export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
 
-  constructor() { }
+  constructor() {
+  }
+
+  selectedJobMarketAccess: Category[] = [];
+  selectedCounselingLanguages: Category[] = [];
+  cars = [
+    {id: 1, name: 'Volvo'},
+    {id: 2, name: 'Saab', disabled: true},
+    {id: 3, name: 'Opel'},
+    {id: 4, name: 'Audi'},
+  ];
+  jobMarketAccessCategoriesToSelect: Category[];
+  counselingLanguagesCategoriesToSelect: Category[];
 
   @Input() client: Client;
   @Output() submitted = new EventEmitter<ClientForm>();
   form: FormGroup;
   clientForm: ClientForm;
+  protected readonly CategoryTypes = CategoryTypes;
 
   protected readonly Label = Label;
   protected readonly citizenships = CITIZENSHIPS;
-  cat_gender: CategoryTypes = CategoryTypes.CAT_GENDER;
-  cat_sector: CategoryTypes = CategoryTypes.SECTOR;
-  cat_aufenthaltstitel: CategoryTypes = CategoryTypes.AUFENTHALTSTITEL;
   loading = false;
-  cat_target_group: CategoryTypes = CategoryTypes.TARGET_GROUP;
   cat_working_relationship: CategoryTypes = CategoryTypes.WORKING_RELATIONSHIP;
+
+  private subscription$: Subscription[] = [];
+
+  deSelectedItems: DropdownItem[] = [];
+  jobMarketAccessSelected: Category[] = [];
+  jobMarketAccessType: CategoryTypes = CategoryTypes.JOB_MARKET_ACCESS;
+  private categoryService = inject(CategoryService);
 
   ngOnInit(): void {
     if (this.client) {
@@ -68,6 +89,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
         workingRelationship: null,
       };
     }
+    this.loadCategoriesByCategoryType();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -81,6 +103,9 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
 
   submit() {
     this.loading = true;
+    this.showCategoryValue(this.selectedCounselingLanguages, CategoryTypes.COUNSELING_LANGUAGE);
+    this.showCategoryValue(this.selectedJobMarketAccess, CategoryTypes.JOB_MARKET_ACCESS);
+    console.log('client Form ', this.clientForm);
     this.submitted.emit(this.clientForm);
   }
 
@@ -131,6 +156,71 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
       targetGroup: client.openCase.targetGroup ? client.openCase.targetGroup : null,
       workingRelationship: client.openCase.workingRelationship ? client.openCase.workingRelationship : null,
     };
+  }
+
+  showCategoryValue(event: Category[], categoryType: CategoryTypes) {
+    switch (categoryType) {
+      case (CategoryTypes.COUNSELING_LANGUAGE):
+        this.clientForm.counselingLanguageSelected = [];
+        let joinCategoryCounselingLanguage: JoinCategory = null;
+        event.forEach(e => {
+          joinCategoryCounselingLanguage = {
+            categoryId: e.id,
+            categoryType: categoryType,
+            entityId: this.client.openCase.id,
+            entityType: EntityTypes.CASE
+          };
+          this.clientForm.counselingLanguageSelected.push(joinCategoryCounselingLanguage);
+        });
+        break;
+      case (CategoryTypes.JOB_MARKET_ACCESS):
+        this.clientForm.jobMarketAccessSelected = [];
+        let jobMarketAccessJoinCategory: JoinCategory = null;
+        event.forEach(e => {
+          jobMarketAccessJoinCategory = {
+            categoryId: e.id,
+            categoryType: categoryType,
+            entityId: this.client.openCase.id,
+            entityType: EntityTypes.CASE
+          };
+          this.clientForm.jobMarketAccessSelected.push(jobMarketAccessJoinCategory);
+        });
+        break;
+    }
+    console.log('this.clientForm.jobMarketAccessSelected', this.clientForm.jobMarketAccessSelected);
+    console.log('this.clientForm.counselingLanguageSelected', this.clientForm.counselingLanguageSelected);
+  }
+
+  showDeSelected(event: DropdownItem[], categoryType: CategoryTypes) {
+    switch (categoryType) {
+      case (CategoryTypes.COUNSELING_LANGUAGE):
+        this.clientForm.counselingLanguageDeSelected = [];
+        event.forEach(e => {
+          const deselectCounselingLanguage: JoinCategory = {
+            categoryId: e.itemId,
+            categoryType: categoryType,
+            entityId: this.client.id,
+            entityType: EntityTypes.CLIENT
+          };
+          this.clientForm.counselingLanguageDeSelected.push(deselectCounselingLanguage);
+        });
+        break;
+    }
+    // this.deSelectedItems = event;
+    console.log('this.clientForm.counselingLanguageDeSelected', this.clientForm.counselingLanguageDeSelected);
+  }
+
+  loadCategoriesByCategoryType(): void {
+    this.subscription$.push(
+      this.categoryService.getCategories(CategoryTypes.JOB_MARKET_ACCESS).subscribe(cat => {
+        this.jobMarketAccessCategoriesToSelect = cat;
+      })
+    );
+    this.subscription$.push(
+      this.categoryService.getCategories(CategoryTypes.COUNSELING_LANGUAGE).subscribe(cat => {
+        this.counselingLanguagesCategoriesToSelect = cat;
+      })
+    );
   }
 
 }

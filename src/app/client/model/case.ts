@@ -1,4 +1,5 @@
 import {Counseling} from './counseling';
+import {Category} from './category';
 
 export interface Case {
   id?: string;
@@ -15,4 +16,5 @@ export interface Case {
   workingRelationship?: string;
   humanTrafficking?: boolean;
   jobCenterBlock?: boolean;
+  counselingLanguages?: Category[];
 }

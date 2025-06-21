@@ -32,7 +32,6 @@ import {ShowSingleEmployerComponent} from './show-single-employer/show-single-em
 import {EditEmployerComponent} from './edit-employer/edit-employer.component';
 import {DeleteComponent} from './delete/delete.component';
 import {DeleteModalComponent} from './delete/delete-modal/delete-modal.component';
-import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import {MultiSelectBoxComponent} from './select-box/multi/multi-select-box.component';
 import {ShowCounselingComponent} from './show-counseling/show-counseling.component';
 import {BackUpComponent} from './back-up/back-up.component';
@@ -44,6 +43,7 @@ import {CloseCaseComponent} from './case/close-case/close-case.component';
 import {SelectBoxComponent} from './select-box/single/select-box.component';
 import {ReopenCaseComponent} from './case/reopen-case/reopen-case.component';
 import {AddCategoryComponent} from './select-box/add-category/add-category.component';
+import {SelectModule} from './select-box/select/select.module';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
@@ -84,14 +84,12 @@ const appRoutes: Routes = [
     EditEmployerComponent,
     DeleteComponent,
     DeleteModalComponent,
-    MultiSelectBoxComponent,
     ShowCounselingComponent,
     BackUpComponent,
     EditCategoriesComponent,
     EditCategoryComponent
   ],
   imports: [
-    NgMultiSelectDropDownModule.forRoot(),
     CommonModule,
     RouterModule.forChild(appRoutes),
     FormsModule,
@@ -104,7 +102,8 @@ const appRoutes: Routes = [
     SelectBoxComponent,
     ReopenCaseComponent,
     AddCategoryComponent,
-    ClientFormComponent
+    ClientFormComponent,
+    SelectModule
   ],
     exports: [
     ],

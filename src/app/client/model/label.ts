@@ -8,5 +8,7 @@ export enum Label {
   REFERRED_TO = 'vermitteln',
   JOB_FUNCTION = 'Tätigkeiten',
   TARGET_GROUP = 'Zielgruppe',
-  WORKING_RELATIONSHIP = 'Arbeitsverhältnis'
+  WORKING_RELATIONSHIP = 'Arbeitsverhältnis',
+  JOB_MARKET_ACCESS = 'job_market_access',
+  COUNSELING_LANGUAGE = 'Beratungssprache'
 }

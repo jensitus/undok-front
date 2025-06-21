@@ -211,26 +211,26 @@
     </div>
 
     <app-select-box (catValue)="selectTargetGroup($event)"
-                    [categoryType]="cat_target_group"
+                    [categoryType]="CategoryTypes.TARGET_GROUP"
                     [cat_model]="clientForm.targetGroup"
                     [label]="Label.TARGET_GROUP"/>
 
     <div>
       <app-select-box (catValue)="selectGender($event)"
-                      [categoryType]="cat_gender"
+                      [categoryType]="CategoryTypes.CAT_GENDER"
                       [cat_model]="clientForm.gender"
                       [label]="Label.GENDER"></app-select-box>
     </div>
 
     <div>
-      <app-select-box [categoryType]="cat_sector"
+      <app-select-box [categoryType]="CategoryTypes.SECTOR"
                       (catValue)="selectSector($event)"
                       [cat_model]="clientForm.sector"
                       [label]="Label.SECTOR"></app-select-box>
     </div>
 
     <div>
-      <app-select-box [categoryType]="cat_aufenthaltstitel"
+      <app-select-box [categoryType]="CategoryTypes.AUFENTHALTSTITEL"
                       (catValue)="selectResidentStatus($event)"
                       [cat_model]="clientForm.currentResidentStatus"
                       [label]="Label.RESIDENT_STATUS"></app-select-box>
@@ -252,14 +252,44 @@
   </div>
 </div>
 
+<div class="row mt-3">
+  <div class="col-md-3">
+    <app-multi [categoryType]="jobMarketAccessType"
+               [label]="Label.JOB_MARKET_ACCESS"
+               (categoryValue)="showCategoryValue($event, CategoryTypes.JOB_MARKET_ACCESS)"
+               (deSelectedEmit)="showDeSelected($event, CategoryTypes.JOB_MARKET_ACCESS)"
+               [selectedCategories]="jobMarketAccessSelected">
+    </app-multi>
+  </div>
+  <div class="col-md-3">
+    <label>{{Label.COUNSELING_LANGUAGE}}</label>
+    <ng-select [multiple]="true" [(ngModel)]="selectedCounselingLanguages">
+      @for (category of counselingLanguagesCategoriesToSelect; track category) {
+        <ng-option [value]="category">{{ category.name }}</ng-option>
+      }
+    </ng-select>
+  </div>
+  <div class="col-md-3">
+    <label>{{Label.JOB_MARKET_ACCESS}}</label>
+    <ng-select [multiple]="true" [(ngModel)]="selectedJobMarketAccess">
+      @for (category of jobMarketAccessCategoriesToSelect; track category) {
+        <ng-option [value]="category">{{ category.name }}</ng-option>
+      }
+    </ng-select>
+  </div>
+</div>
+
 <div class="row">
   <div class="col">
-    <div class="form-group mt-3">
+    <div class="form-group mt-3 mb-5">
       <button type="button" class="btn btn-lg btn-success" (click)="submit()" [disabled]="loading">Save</button>
     </div>
   </div>
 </div>
 
-<div>
-  {{clientForm | json}}
+<div class="mt-5 mb-5">
+</div>
+
+<div class="mt-5 mb-5" style="height: 100px">
+
 </div>
