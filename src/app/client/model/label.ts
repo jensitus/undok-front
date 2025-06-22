@@ -9,6 +9,7 @@ export enum Label {
   JOB_FUNCTION = 'Tätigkeiten',
   TARGET_GROUP = 'Zielgruppe',
   WORKING_RELATIONSHIP = 'Arbeitsverhältnis',
-  JOB_MARKET_ACCESS = 'job_market_access',
-  COUNSELING_LANGUAGE = 'Beratungssprache'
+  JOB_MARKET_ACCESS = 'Arbeitsmarktzugang',
+  COUNSELING_LANGUAGE = 'Beratungssprache',
+  ORIGIN_OF_ATTENTION = 'Wo hat die Person von uns gehört'
 }

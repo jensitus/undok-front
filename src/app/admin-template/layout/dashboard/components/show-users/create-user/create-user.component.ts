@@ -24,7 +24,6 @@ export class CreateUserComponent implements OnInit {
   email: string;
   admin = false;
   createUserForm: CreateUserForm;
-  randomstring: string;
   responseMessage: ResponseMessage;
   confUrl: string;
 
@@ -38,19 +37,16 @@ export class CreateUserComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.admin);
   }
 
   onSubmit() {
     this.submitted = true;
-    console.log('onSubmit');
     this.createUserForm = {
       username: this.username,
       email: this.email,
       admin: this.admin
     };
     this.loading = true;
-    console.log('this.user', this.createUserForm);
     this.authService.createUserViaAdmin(this.createUserForm).pipe(first()).subscribe(data => {
         this.alertService.success('Registration successful', true);
         this.loading = false;
@@ -59,7 +55,6 @@ export class CreateUserComponent implements OnInit {
         this.email = null;
         this.responseMessage = data;
         this.confUrl = this.responseMessage.text;
-        console.log(this.confUrl);
       }, error => {
       this.alertService.error(error.error.text, true);
     });

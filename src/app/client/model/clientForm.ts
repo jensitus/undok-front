@@ -44,4 +44,9 @@ export interface ClientForm {
   jobMarketAccessDeSelected?: JoinCategory[];
   counselingLanguageSelected?: JoinCategory[];
   counselingLanguageDeSelected?: JoinCategory[];
+  originOfAttentionSelected?: JoinCategory[];
+
+  selectedJobMarketAccess?: Category[];
+  selectedCounselingLanguages?: Category[];
+  selectedOriginOfAttention?: Category[];
 }

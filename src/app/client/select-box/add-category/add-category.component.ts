@@ -32,6 +32,7 @@ export class AddCategoryComponent implements OnInit, OnDestroy {
   @Input() categoryType: CategoryTypes;
   @Input() label: Label;
   @Input() crud: Crud | undefined;
+  @Input() stringLabel: string;
   private subscription$: Subscription[] = [];
   categoryExists: string = null;
   categoryIsCollapsed = true;

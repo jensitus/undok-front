@@ -254,26 +254,26 @@
 
 <div class="row mt-3">
   <div class="col-md-3">
-    <app-multi [categoryType]="jobMarketAccessType"
-               [label]="Label.JOB_MARKET_ACCESS"
-               (categoryValue)="showCategoryValue($event, CategoryTypes.JOB_MARKET_ACCESS)"
-               (deSelectedEmit)="showDeSelected($event, CategoryTypes.JOB_MARKET_ACCESS)"
-               [selectedCategories]="jobMarketAccessSelected">
-    </app-multi>
+    <label>{{Label.ORIGIN_OF_ATTENTION}}</label>
+    <ng-select [multiple]="true" [(ngModel)]="originOfAttentionModel">
+      @for (category of originOfAttentionCategoriesToSelect; track category) {
+        <ng-option [value]="category.id">{{ category.name }}</ng-option>
+      }
+    </ng-select>
   </div>
   <div class="col-md-3">
     <label>{{Label.COUNSELING_LANGUAGE}}</label>
-    <ng-select [multiple]="true" [(ngModel)]="selectedCounselingLanguages">
+    <ng-select [multiple]="true" [(ngModel)]="counselingLanguageModel">
       @for (category of counselingLanguagesCategoriesToSelect; track category) {
-        <ng-option [value]="category">{{ category.name }}</ng-option>
+        <ng-option [value]="category.id">{{ category.name }}</ng-option>
       }
     </ng-select>
   </div>
   <div class="col-md-3">
     <label>{{Label.JOB_MARKET_ACCESS}}</label>
-    <ng-select [multiple]="true" [(ngModel)]="selectedJobMarketAccess">
+    <ng-select [multiple]="true" [(ngModel)]="jobMarketAccessModel">
       @for (category of jobMarketAccessCategoriesToSelect; track category) {
-        <ng-option [value]="category">{{ category.name }}</ng-option>
+        <ng-option [value]="category.id">{{ category.name }}</ng-option>
       }
     </ng-select>
   </div>
@@ -288,8 +288,4 @@
 </div>
 
 <div class="mt-5 mb-5">
-</div>
-
-<div class="mt-5 mb-5" style="height: 100px">
-
 </div>

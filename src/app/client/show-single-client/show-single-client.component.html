@@ -261,6 +261,18 @@
                 <span [innerHTML]="language.name"></span>&nbsp;
               </span>
             </div>
+            <div>
+              <label class="text-secondary">Arbeitsmarktzugang:</label>&nbsp;
+              <span *ngFor="let access of client.openCase.jobMarketAccess">
+                <span [innerHTML]="access.name"></span>&nbsp;
+              </span>
+            </div>
+            <div>
+              <label class="text-secondary">Wo hat die Person von uns gehört:</label>&nbsp;
+              <span *ngFor="let access of client.openCase.originOfAttention">
+                <span [innerHTML]="access.name"></span>&nbsp;
+              </span>
+            </div>
           </div>
         </div>
         <div class="row mt-1">

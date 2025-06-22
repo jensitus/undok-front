@@ -6,7 +6,11 @@
           [attr.aria-expanded]="!categoryIsCollapsed"
           aria-controls="collapseExample">
     <div class="label-text-size">
+      @if (label) {
        {{label}} neu
+      } @else if (stringLabel) {
+        {{stringLabel}} neu
+      }
     </div>
   </button>
   <div #collapse="ngbCollapse" [(ngbCollapse)]="categoryIsCollapsed">

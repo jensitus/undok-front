@@ -17,4 +17,6 @@ export interface Case {
   humanTrafficking?: boolean;
   jobCenterBlock?: boolean;
   counselingLanguages?: Category[];
+  jobMarketAccess?: Category[];
+  originOfAttention?: Category[];
 }

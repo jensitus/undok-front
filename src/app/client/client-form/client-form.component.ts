@@ -7,7 +7,6 @@ import {JsonPipe, NgForOf} from '@angular/common';
 import {SelectBoxComponent} from '../select-box/single/select-box.component';
 import {CategoryTypes} from '../model/category-types';
 import {ClientForm} from '../model/clientForm';
-import {DropdownItem} from '../model/dropdown-item';
 import {EntityTypes} from '../model/entity-types';
 import {JoinCategory} from '../model/join-category';
 import {Category} from '../model/category';
@@ -36,16 +35,9 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
   constructor() {
   }
 
-  selectedJobMarketAccess: Category[] = [];
-  selectedCounselingLanguages: Category[] = [];
-  cars = [
-    {id: 1, name: 'Volvo'},
-    {id: 2, name: 'Saab', disabled: true},
-    {id: 3, name: 'Opel'},
-    {id: 4, name: 'Audi'},
-  ];
   jobMarketAccessCategoriesToSelect: Category[];
   counselingLanguagesCategoriesToSelect: Category[];
+  originOfAttentionCategoriesToSelect: Category[];
 
   @Input() client: Client;
   @Output() submitted = new EventEmitter<ClientForm>();
@@ -60,34 +52,17 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
 
   private subscription$: Subscription[] = [];
 
-  deSelectedItems: DropdownItem[] = [];
-  jobMarketAccessSelected: Category[] = [];
-  jobMarketAccessType: CategoryTypes = CategoryTypes.JOB_MARKET_ACCESS;
   private categoryService = inject(CategoryService);
+  counselingLanguageModel = [];
+  jobMarketAccessModel = [];
+  originOfAttentionModel = [];
 
   ngOnInit(): void {
     if (this.client) {
       this.clientForm = this.mapClient(this.client);
+      this.fillNgModels();
     } else {
-      this.clientForm = {
-        keyword: null,
-        firstName: null,
-        lastName: null,
-        gender: null,
-        labourMarketAccess: null,
-        interpreterNecessary: false,
-        howHasThePersonHeardFromUs: null,
-        vulnerableWhenAssertingRights: false,
-        nationality: null,
-        language: null,
-        sector: null,
-        union: null,
-        currentResidentStatus: null,
-        jobCenterBlock: false,
-        humanTrafficking: false,
-        targetGroup: null,
-        workingRelationship: null,
-      };
+      this.initializeClientForm();
     }
     this.loadCategoriesByCategoryType();
   }
@@ -99,13 +74,16 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.subscription$.forEach((s) => {
+      s.unsubscribe();
+    });
   }
 
   submit() {
     this.loading = true;
-    this.showCategoryValue(this.selectedCounselingLanguages, CategoryTypes.COUNSELING_LANGUAGE);
-    this.showCategoryValue(this.selectedJobMarketAccess, CategoryTypes.JOB_MARKET_ACCESS);
-    console.log('client Form ', this.clientForm);
+    this.showCategoryValue(this.counselingLanguageModel, CategoryTypes.COUNSELING_LANGUAGE);
+    this.showCategoryValue(this.jobMarketAccessModel, CategoryTypes.JOB_MARKET_ACCESS);
+    this.showCategoryValue(this.originOfAttentionModel, CategoryTypes.ORIGIN_OF_ATTENTION);
     this.submitted.emit(this.clientForm);
   }
 
@@ -158,18 +136,13 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
     };
   }
 
-  showCategoryValue(event: Category[], categoryType: CategoryTypes) {
+  showCategoryValue(event: string[], categoryType: CategoryTypes) {
     switch (categoryType) {
       case (CategoryTypes.COUNSELING_LANGUAGE):
         this.clientForm.counselingLanguageSelected = [];
         let joinCategoryCounselingLanguage: JoinCategory = null;
         event.forEach(e => {
-          joinCategoryCounselingLanguage = {
-            categoryId: e.id,
-            categoryType: categoryType,
-            entityId: this.client.openCase.id,
-            entityType: EntityTypes.CASE
-          };
+          joinCategoryCounselingLanguage = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
           this.clientForm.counselingLanguageSelected.push(joinCategoryCounselingLanguage);
         });
         break;
@@ -177,50 +150,82 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
         this.clientForm.jobMarketAccessSelected = [];
         let jobMarketAccessJoinCategory: JoinCategory = null;
         event.forEach(e => {
-          jobMarketAccessJoinCategory = {
-            categoryId: e.id,
-            categoryType: categoryType,
-            entityId: this.client.openCase.id,
-            entityType: EntityTypes.CASE
-          };
+          jobMarketAccessJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
           this.clientForm.jobMarketAccessSelected.push(jobMarketAccessJoinCategory);
         });
         break;
+      case (CategoryTypes.ORIGIN_OF_ATTENTION):
+        this.clientForm.originOfAttentionSelected = [];
+        let originOfAttentionJoinCategory: JoinCategory = null;
+        event.forEach(e => {
+          originOfAttentionJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
+          this.clientForm.originOfAttentionSelected.push(originOfAttentionJoinCategory);
+        });
     }
-    console.log('this.clientForm.jobMarketAccessSelected', this.clientForm.jobMarketAccessSelected);
-    console.log('this.clientForm.counselingLanguageSelected', this.clientForm.counselingLanguageSelected);
   }
 
-  showDeSelected(event: DropdownItem[], categoryType: CategoryTypes) {
-    switch (categoryType) {
-      case (CategoryTypes.COUNSELING_LANGUAGE):
-        this.clientForm.counselingLanguageDeSelected = [];
-        event.forEach(e => {
-          const deselectCounselingLanguage: JoinCategory = {
-            categoryId: e.itemId,
-            categoryType: categoryType,
-            entityId: this.client.id,
-            entityType: EntityTypes.CLIENT
-          };
-          this.clientForm.counselingLanguageDeSelected.push(deselectCounselingLanguage);
-        });
-        break;
-    }
-    // this.deSelectedItems = event;
-    console.log('this.clientForm.counselingLanguageDeSelected', this.clientForm.counselingLanguageDeSelected);
+  private createJoinCategory(categoryId: string, categoryType: CategoryTypes, entityId: string, entityType: EntityTypes): JoinCategory {
+    return {
+      categoryId: categoryId,
+      categoryType: categoryType,
+      entityId: this.client.openCase.id,
+      entityType: entityType
+    };
   }
 
   loadCategoriesByCategoryType(): void {
     this.subscription$.push(
       this.categoryService.getCategories(CategoryTypes.JOB_MARKET_ACCESS).subscribe(cat => {
         this.jobMarketAccessCategoriesToSelect = cat;
+        console.log(this.jobMarketAccessCategoriesToSelect);
       })
     );
     this.subscription$.push(
       this.categoryService.getCategories(CategoryTypes.COUNSELING_LANGUAGE).subscribe(cat => {
         this.counselingLanguagesCategoriesToSelect = cat;
+        console.log(this.counselingLanguagesCategoriesToSelect);
       })
     );
+    this.subscription$.push(
+      this.categoryService.getCategories(CategoryTypes.ORIGIN_OF_ATTENTION).subscribe(cat => {
+        this.originOfAttentionCategoriesToSelect = cat;
+        console.log(this.originOfAttentionCategoriesToSelect);
+      })
+    );
+  }
+
+  fillNgModels() {
+    this.client.openCase.counselingLanguages.forEach(category => {
+      this.counselingLanguageModel.push(category.id);
+    });
+    this.client.openCase.jobMarketAccess.forEach(category => {
+      this.jobMarketAccessModel.push(category.id);
+    });
+    this.client.openCase.originOfAttention.forEach(category => {
+      this.originOfAttentionModel.push(category.id);
+    });
+  }
+
+  initializeClientForm() {
+    this.clientForm = {
+      keyword: null,
+      firstName: null,
+      lastName: null,
+      gender: null,
+      labourMarketAccess: null,
+      interpreterNecessary: false,
+      howHasThePersonHeardFromUs: null,
+      vulnerableWhenAssertingRights: false,
+      nationality: null,
+      language: null,
+      sector: null,
+      union: null,
+      currentResidentStatus: null,
+      jobCenterBlock: false,
+      humanTrafficking: false,
+      targetGroup: null,
+      workingRelationship: null,
+    };
   }
 
 }
