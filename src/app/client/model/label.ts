@@ -11,5 +11,6 @@ export enum Label {
   WORKING_RELATIONSHIP = 'Arbeitsverhältnis',
   JOB_MARKET_ACCESS = 'Arbeitsmarktzugang',
   COUNSELING_LANGUAGE = 'Beratungssprache',
-  ORIGIN_OF_ATTENTION = 'Wo hat die Person von uns gehört'
+  ORIGIN_OF_ATTENTION = 'Wo hat die Person von uns gehört',
+  UNDOCUMENTED_WORK = 'undokumentierte Arbeit'
 }

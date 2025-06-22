@@ -19,4 +19,5 @@ export interface Case {
   counselingLanguages?: Category[];
   jobMarketAccess?: Category[];
   originOfAttention?: Category[];
+  undocumentedWork?: Category[];
 }

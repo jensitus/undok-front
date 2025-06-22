@@ -158,10 +158,10 @@
             </div>
             <div class="row">
               <div class="col-md-6">
-                <label class="text-secondary">Woher kennt uns die Person:</label>
+                <!--label class="text-secondary">Woher kennt uns die Person:</label-->
               </div>
               <div class="col-md-6">
-                {{ client.howHasThePersonHeardFromUs }}
+                <!--{{ client.howHasThePersonHeardFromUs }}-->
               </div>
             </div>
             <div class="row">
@@ -270,6 +270,12 @@
             <div>
               <label class="text-secondary">Wo hat die Person von uns gehört:</label>&nbsp;
               <span *ngFor="let access of client.openCase.originOfAttention">
+                <span [innerHTML]="access.name"></span>&nbsp;
+              </span>
+            </div>
+            <div>
+              <label class="text-secondary">undokumentierte Arbeit:</label>&nbsp;
+              <span *ngFor="let access of client.openCase.undocumentedWork">
                 <span [innerHTML]="access.name"></span>&nbsp;
               </span>
             </div>

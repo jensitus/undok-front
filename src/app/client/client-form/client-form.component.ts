@@ -38,6 +38,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
   jobMarketAccessCategoriesToSelect: Category[];
   counselingLanguagesCategoriesToSelect: Category[];
   originOfAttentionCategoriesToSelect: Category[];
+  undocumentedWorkCategoriesToSelect: Category[];
 
   @Input() client: Client;
   @Output() submitted = new EventEmitter<ClientForm>();
@@ -56,6 +57,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
   counselingLanguageModel = [];
   jobMarketAccessModel = [];
   originOfAttentionModel = [];
+  undocumentedWorkModel = [];
 
   ngOnInit(): void {
     if (this.client) {
@@ -84,6 +86,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
     this.showCategoryValue(this.counselingLanguageModel, CategoryTypes.COUNSELING_LANGUAGE);
     this.showCategoryValue(this.jobMarketAccessModel, CategoryTypes.JOB_MARKET_ACCESS);
     this.showCategoryValue(this.originOfAttentionModel, CategoryTypes.ORIGIN_OF_ATTENTION);
+    this.showCategoryValue(this.undocumentedWorkModel, CategoryTypes.UNDOCUMENTED_WORK);
     this.submitted.emit(this.clientForm);
   }
 
@@ -161,6 +164,15 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
           originOfAttentionJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
           this.clientForm.originOfAttentionSelected.push(originOfAttentionJoinCategory);
         });
+        break;
+      case (CategoryTypes.UNDOCUMENTED_WORK):
+        this.clientForm.undocumentedWorkSelected = [];
+        let undocumentedWorkJoinCategory: JoinCategory = null;
+        event.forEach(e => {
+          undocumentedWorkJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
+          this.clientForm.undocumentedWorkSelected.push(undocumentedWorkJoinCategory);
+        });
+        break;
     }
   }
 
@@ -192,6 +204,12 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
         console.log(this.originOfAttentionCategoriesToSelect);
       })
     );
+    this.subscription$.push(
+      this.categoryService.getCategories(CategoryTypes.UNDOCUMENTED_WORK).subscribe(cat => {
+        this.undocumentedWorkCategoriesToSelect = cat;
+        console.log(this.undocumentedWorkCategoriesToSelect);
+      })
+    );
   }
 
   fillNgModels() {
@@ -203,6 +221,9 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
     });
     this.client.openCase.originOfAttention.forEach(category => {
       this.originOfAttentionModel.push(category.id);
+    });
+    this.client.openCase.undocumentedWork.forEach(category => {
+      this.undocumentedWorkModel.push(category.id);
     });
   }
 

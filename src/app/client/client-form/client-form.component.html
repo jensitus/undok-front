@@ -278,6 +278,16 @@
     </ng-select>
   </div>
 </div>
+<div class="row mt-3">
+  <div class="col-md-3">
+    <label>{{Label.UNDOCUMENTED_WORK}}</label>
+    <ng-select [multiple]="true" [(ngModel)]="undocumentedWorkModel">
+      @for (category of undocumentedWorkCategoriesToSelect; track category) {
+        <ng-option [value]="category.id">{{ category.name }}</ng-option>
+      }
+    </ng-select>
+  </div>
+</div>
 
 <div class="row">
   <div class="col">

@@ -45,8 +45,10 @@ export interface ClientForm {
   counselingLanguageSelected?: JoinCategory[];
   counselingLanguageDeSelected?: JoinCategory[];
   originOfAttentionSelected?: JoinCategory[];
+  undocumentedWorkSelected?: JoinCategory[];
 
   selectedJobMarketAccess?: Category[];
   selectedCounselingLanguages?: Category[];
   selectedOriginOfAttention?: Category[];
+  undocumentedWork?: Category[];
 }
