@@ -147,13 +147,17 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.subscription$.push(
       this.clientService.getSingleClient(this.id).subscribe(res => {
         this.client = res;
+        console.log('this.client', this.client);
         if (this.client.openCase === null && this.client.closedCases !== null) {
           this.reOpenCase = true;
+          console.log(1);
         } else if (this.client.openCase === null && this.client.closedCases === null) {
           this.reOpenCase = false;
+          console.log(2);
         }
         if (this.client.openCase !== null) {
           this.closeCase = true;
+          console.log(3);
         }
         // @ts-ignore
         this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);

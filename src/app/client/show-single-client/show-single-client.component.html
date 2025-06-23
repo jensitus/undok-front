@@ -169,7 +169,9 @@
                 <label class="text-secondary">Arbeitsverhältnis:</label>
               </div>
               <div class="col-md-6">
-                {{ client.openCase.workingRelationship }}
+                @if (client.openCase) {
+                  {{ client.openCase.workingRelationship }}
+                }
               </div>
             </div>
             <div class="row">
@@ -178,18 +180,20 @@
               </div>
               <div class="col-md-6">
                 <div class="col-md-8">
-                  @if (client.openCase.humanTrafficking === true) {
-                    <span>
+                  @if (client.openCase) {
+                    @if (client.openCase.humanTrafficking === true) {
+                      <span>
                       ja
                     </span>
-                  }
-                  @if (client.openCase.humanTrafficking === false) {
-                    <span>
+                    }
+                    @if (client.openCase.humanTrafficking === false) {
+                      <span>
                       nein
                     </span>
-                  }
-                  @if (client.openCase.humanTrafficking === null || client.openCase.humanTrafficking === undefined) {
-                    <span></span>
+                    }
+                    @if (client.openCase.humanTrafficking === null || client.openCase.humanTrafficking === undefined) {
+                      <span></span>
+                    }
                   }
                 </div>
               </div>
@@ -199,16 +203,18 @@
                 <label class="text-secondary">AMS Sperre:</label>
               </div>
               <div class="col-md-6">
-                @if (client.openCase.jobCenterBlock === true) {
-                  <span>
+                @if (client.openCase) {
+                  @if (client.openCase.jobCenterBlock === true) {
+                    <span>
                       ja
                   </span>
-                } @else if (client.openCase.jobCenterBlock === false) {
-                  <span>
+                  } @else if (client.openCase.jobCenterBlock === false) {
+                    <span>
                       nein
                   </span>
-                } @else if (client.openCase.jobCenterBlock === null || client.openCase.jobCenterBlock === undefined) {
-                  <span></span>
+                  } @else if (client.openCase.jobCenterBlock === null || client.openCase.jobCenterBlock === undefined) {
+                    <span></span>
+                  }
                 }
               </div>
             </div>
@@ -236,7 +242,8 @@
                 <span *ngIf="client.vulnerableWhenAssertingRights === false">
                   nein
                 </span>
-                <span *ngIf="client.vulnerableWhenAssertingRights === null || client.vulnerableWhenAssertingRights === undefined">
+                <span
+                  *ngIf="client.vulnerableWhenAssertingRights === null || client.vulnerableWhenAssertingRights === undefined">
 
                 </span>
               </div>
@@ -246,7 +253,9 @@
                 <label class="text-secondary">Zielgruppe:</label>
               </div>
               <div class="col-md-6">
-                {{ client.openCase.targetGroup }}
+                @if (client.openCase) {
+                  {{ client.openCase.targetGroup }}
+                }
               </div>
             </div>
             <div>
@@ -257,27 +266,35 @@
             </div>
             <div>
               <label class="text-secondary">Beratungssprachen:</label>&nbsp;
-              <span *ngFor="let language of client.openCase.counselingLanguages">
-                <span [innerHTML]="language.name"></span>&nbsp;
-              </span>
+              @if (client.openCase) {
+                <span *ngFor="let language of client.openCase.counselingLanguages">
+                  <span [innerHTML]="language.name"></span>&nbsp;
+                </span>
+              }
             </div>
             <div>
               <label class="text-secondary">Arbeitsmarktzugang:</label>&nbsp;
-              <span *ngFor="let access of client.openCase.jobMarketAccess">
-                <span [innerHTML]="access.name"></span>&nbsp;
-              </span>
+              @if (client.openCase) {
+                <span *ngFor="let access of client.openCase.jobMarketAccess">
+                  <span [innerHTML]="access.name"></span>&nbsp;
+                </span>
+              }
             </div>
             <div>
               <label class="text-secondary">Wo hat die Person von uns gehört:</label>&nbsp;
-              <span *ngFor="let access of client.openCase.originOfAttention">
-                <span [innerHTML]="access.name"></span>&nbsp;
-              </span>
+              @if (client.openCase) {
+                <span *ngFor="let access of client.openCase.originOfAttention">
+                  <span [innerHTML]="access.name"></span>&nbsp;
+                </span>
+              }
             </div>
             <div>
               <label class="text-secondary">undokumentierte Arbeit:</label>&nbsp;
-              <span *ngFor="let access of client.openCase.undocumentedWork">
-                <span [innerHTML]="access.name"></span>&nbsp;
-              </span>
+              @if (client.openCase) {
+                <span *ngFor="let access of client.openCase.undocumentedWork">
+                  <span [innerHTML]="access.name"></span>&nbsp;
+                </span>
+              }
             </div>
           </div>
         </div>
@@ -399,8 +416,10 @@
         </button>
       </div>
       <div class="modal-body">
-        <app-close-case (caseClosed)="closeCaseModal($event)" [inputCase]="client.openCase"
-                        [closeCaseProperty]="true"/>
+        @if (client.openCase) {
+          <app-close-case (caseClosed)="closeCaseModal($event)" [inputCase]="client.openCase"
+                          [closeCaseProperty]="true"/>
+        }
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
