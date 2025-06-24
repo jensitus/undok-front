@@ -296,6 +296,14 @@
                 </span>
               }
             </div>
+            <div>
+              <label class="text-secondary">{{Label.COMPLAINT + ':'}}</label>&nbsp;
+              @if (client.openCase) {
+                <span *ngFor="let access of client.openCase.complaints">
+                  <span [innerHTML]="access.name"></span>&nbsp;
+                </span>
+              }
+            </div>
           </div>
         </div>
         <div class="row mt-1">

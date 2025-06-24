@@ -41,14 +41,14 @@ export interface ClientForm {
   jobCenterBlock?: boolean;
 
   jobMarketAccessSelected?: JoinCategory[];
-  jobMarketAccessDeSelected?: JoinCategory[];
   counselingLanguageSelected?: JoinCategory[];
-  counselingLanguageDeSelected?: JoinCategory[];
   originOfAttentionSelected?: JoinCategory[];
   undocumentedWorkSelected?: JoinCategory[];
+  complaintsSelected?: JoinCategory[];
 
   selectedJobMarketAccess?: Category[];
   selectedCounselingLanguages?: Category[];
   selectedOriginOfAttention?: Category[];
   undocumentedWork?: Category[];
+  complaints?: Category[];
 }

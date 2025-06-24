@@ -20,4 +20,5 @@ export interface Case {
   jobMarketAccess?: Category[];
   originOfAttention?: Category[];
   undocumentedWork?: Category[];
+  complaints?: Category[];
 }

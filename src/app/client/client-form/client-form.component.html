@@ -287,6 +287,14 @@
       }
     </ng-select>
   </div>
+  <div class="col-md-3">
+    <label>{{Label.COMPLAINT}}</label>
+    <ng-select [multiple]="true" [(ngModel)]="complaintsModel">
+      @for (category of complaintsToSelected; track category) {
+        <ng-option [value]="category.id">{{ category.name }}</ng-option>
+      }
+    </ng-select>
+  </div>
 </div>
 
 <div class="row">

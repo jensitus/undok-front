@@ -12,5 +12,6 @@ export enum Label {
   JOB_MARKET_ACCESS = 'Arbeitsmarktzugang',
   COUNSELING_LANGUAGE = 'Beratungssprache',
   ORIGIN_OF_ATTENTION = 'Wo hat die Person von uns gehört',
-  UNDOCUMENTED_WORK = 'undokumentierte Arbeit'
+  UNDOCUMENTED_WORK = 'undokumentierte Arbeit',
+  COMPLAINT = 'Beschwerde'
 }

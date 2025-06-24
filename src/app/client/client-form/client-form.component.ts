@@ -39,6 +39,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
   counselingLanguagesCategoriesToSelect: Category[];
   originOfAttentionCategoriesToSelect: Category[];
   undocumentedWorkCategoriesToSelect: Category[];
+  complaintsToSelected: Category[];
 
   @Input() client: Client;
   @Output() submitted = new EventEmitter<ClientForm>();
@@ -58,6 +59,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
   jobMarketAccessModel = [];
   originOfAttentionModel = [];
   undocumentedWorkModel = [];
+  complaintsModel = [];
 
   ngOnInit(): void {
     if (this.client) {
@@ -87,6 +89,8 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
     this.showCategoryValue(this.jobMarketAccessModel, CategoryTypes.JOB_MARKET_ACCESS);
     this.showCategoryValue(this.originOfAttentionModel, CategoryTypes.ORIGIN_OF_ATTENTION);
     this.showCategoryValue(this.undocumentedWorkModel, CategoryTypes.UNDOCUMENTED_WORK);
+    this.showCategoryValue(this.complaintsModel, CategoryTypes.COMPLAINT);
+    console.log('this.clientForm', this.clientForm);
     this.submitted.emit(this.clientForm);
   }
 
@@ -173,7 +177,16 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
           this.clientForm.undocumentedWorkSelected.push(undocumentedWorkJoinCategory);
         });
         break;
+        case (CategoryTypes.COMPLAINT):
+          this.clientForm.complaintsSelected = [];
+          let complaintJoinCategory: JoinCategory = null;
+          event.forEach(e => {
+            complaintJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
+            this.clientForm.complaintsSelected.push(complaintJoinCategory);
+          });
+          break;
     }
+    console.log('clientForm.complaintsSelected', this.clientForm.complaintsSelected);
   }
 
   private createJoinCategory(categoryId: string, categoryType: CategoryTypes, entityId: string, entityType: EntityTypes): JoinCategory {
@@ -210,6 +223,11 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
         console.log(this.undocumentedWorkCategoriesToSelect);
       })
     );
+    this.subscription$.push(
+      this.categoryService.getCategories(CategoryTypes.COMPLAINT).subscribe(cat => {
+        this.complaintsToSelected = cat;
+      })
+    );
   }
 
   fillNgModels() {
@@ -224,6 +242,9 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
     });
     this.client.openCase.undocumentedWork.forEach(category => {
       this.undocumentedWorkModel.push(category.id);
+    });
+    this.client.openCase.complaints.forEach(category => {
+      this.complaintsModel.push(category.id);
     });
   }
 
