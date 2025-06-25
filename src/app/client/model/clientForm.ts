@@ -45,10 +45,12 @@ export interface ClientForm {
   originOfAttentionSelected?: JoinCategory[];
   undocumentedWorkSelected?: JoinCategory[];
   complaintsSelected?: JoinCategory[];
+  industryUnionSelected?: JoinCategory[];
 
   selectedJobMarketAccess?: Category[];
   selectedCounselingLanguages?: Category[];
   selectedOriginOfAttention?: Category[];
   undocumentedWork?: Category[];
   complaints?: Category[];
+  industryUnion?: Category[];
 }

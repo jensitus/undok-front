@@ -23,6 +23,10 @@ export class EditCategoriesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.getCategories();
+  }
+
+  getCategories() {
     this.subscription$.push(
       this.categoryService.getAllCategories().subscribe({
         next: result => {
@@ -60,4 +64,7 @@ export class EditCategoriesComponent implements OnInit, OnDestroy {
     }
   }
 
+  reload() {
+    this.getCategories();
+  }
 }

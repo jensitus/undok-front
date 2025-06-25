@@ -9,7 +9,8 @@
   </div>
   <div class="col-md-4">
     <app-add-category [stringLabel]="catMapEntry.key"
-                      [categoryType]="CategoryTypes[catMapEntry?.value[0]?.type] ? CategoryTypes[catMapEntry?.value[0]?.type] : catMapEntry.key">
+                      [categoryType]="CategoryTypes[catMapEntry?.value[0]?.type] ? CategoryTypes[catMapEntry?.value[0]?.type] : catMapEntry.key"
+                      (submitted)="reload()">
     </app-add-category>
   </div>
   <div *ngFor="let c of catMapEntry.value">

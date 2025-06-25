@@ -13,5 +13,6 @@ export enum Label {
   COUNSELING_LANGUAGE = 'Beratungssprache',
   ORIGIN_OF_ATTENTION = 'Wo hat die Person von uns gehört',
   UNDOCUMENTED_WORK = 'undokumentierte Arbeit',
-  COMPLAINT = 'Beschwerde'
+  COMPLAINT = 'Beschwerde',
+  INDUSTRY_UNION = 'Branche/Gewerkschaft'
 }

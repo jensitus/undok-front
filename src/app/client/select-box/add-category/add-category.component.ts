@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {CategoryTypes} from '../../model/category-types';
 import {Subscription} from 'rxjs';
 import {Category} from '../../model/category';
@@ -33,6 +33,7 @@ export class AddCategoryComponent implements OnInit, OnDestroy {
   @Input() label: Label;
   @Input() crud: Crud | undefined;
   @Input() stringLabel: string;
+  @Output() submitted = new EventEmitter<boolean>();
   private subscription$: Subscription[] = [];
   categoryExists: string = null;
   categoryIsCollapsed = true;
@@ -68,6 +69,7 @@ export class AddCategoryComponent implements OnInit, OnDestroy {
           this.newCategory = null;
           this.categoryIsCollapsed = true;
           this.commonService.setReloadSubject(true);
+          this.submitted.emit(true);
         },
         error: (err) => {
           this.categoryExists = err.error;

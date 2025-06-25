@@ -304,6 +304,14 @@
                 </span>
               }
             </div>
+            <div>
+              <label class="text-secondary">{{Label.INDUSTRY_UNION + ':'}}</label>&nbsp;
+              @if (client.openCase) {
+                <span *ngFor="let access of client.openCase.industryUnion">
+                  <span [innerHTML]="access.name"></span>&nbsp;
+                </span>
+              }
+            </div>
           </div>
         </div>
         <div class="row mt-1">

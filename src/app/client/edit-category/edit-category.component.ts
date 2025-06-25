@@ -1,6 +1,7 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {CategoryService} from '../service/category.service';
 import {Subscription} from 'rxjs';
+import {ClientForm} from '../model/clientForm';
 
 @Component({
   selector: 'app-edit-category',

@@ -21,4 +21,5 @@ export interface Case {
   originOfAttention?: Category[];
   undocumentedWork?: Category[];
   complaints?: Category[];
+  industryUnion?: Category[];
 }

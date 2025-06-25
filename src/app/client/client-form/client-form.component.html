@@ -28,21 +28,9 @@
     <div class="row">
       <div class="col-md-4">
 
-        <!--          <div class="form-group mb-2">
-                    <label>Geburtstag</label>
-                    <div class="input-group">
-                      <input class="form-control" type="date" [(ngModel)]="dateOfBirth" name="d">
-                    </div>
-                  </div>-->
-
       </div>
 
       <div class="col-md-8">
-
-        <!--<div class="form-group mb-2">
-          <label>Straße</label>
-          <input type="text" class="form-control" name="street" [(ngModel)]="street"/>
-        </div>-->
 
       </div>
 
@@ -53,12 +41,6 @@
           <label>Telephon</label>
           <input type="tel" class="form-control" name="telephone" [(ngModel)]="clientForm.telephone"/>
         </div>
-
-
-        <!--          <div class="form-group mb-2">
-                    <label>Postleitzahl</label>
-                    <input type="text" class="form-control" name="zipCode" [(ngModel)]="zipCode"/>
-                  </div>-->
 
       </div>
 
@@ -78,29 +60,14 @@
           </div>
         </div>
 
-        <!--<div class="form-group mb-2">
-          <label>Land</label>
-          <select class="form-control" (click)="onCountryChange($event.target.value)">
-            <option selected="selected">Österreich</option>
-            <option *ngFor="let c of countries" [value]="c">{{c}}</option>
-          </select>
-        </div>-->
       </div>
 
     </div>
     <div class="row">
 
       <div class="col-md-4">
-        <!--<div class="form-group mb-2">
-          <label>Sozialversicherungsnummer</label>
-          <input type="text" class="form-control" name="contactData" [(ngModel)]="socialInsuranceNumber"/>
-        </div>-->
       </div>
       <div class="col-md-4">
-        <!--<div class="form-group mb-2">
-          <label>Bildung</label>
-          <input type="text" class="form-control" name="education" [(ngModel)]="education"/>
-        </div>-->
       </div>
     </div>
 
@@ -114,10 +81,6 @@
       </div>
 
       <div class="col-md-4">
-        <!--          <div class="form-group mb-2">
-                    <label>Position</label>
-                    <input type="text" class="form-control" name="position" [(ngModel)]="position"/>
-                  </div>-->
       </div>
     </div>
 
@@ -157,10 +120,6 @@
       </div>
 
       <div class="col-md-4">
-        <!--          <div class="form-check mt-1">
-                    <input type="checkbox" class="form-check-input" [(ngModel)]="membership" name="membership">
-                    <label class="form-check-label">Mitgliedschaft</label>
-                  </div>-->
       </div>
     </div>
 
@@ -191,14 +150,6 @@
   </div>
 
   <div class="col-md-3">
-
-    <!--      <div class="form-group mb-2">
-            <label>Familienstatus</label>
-            <select class="form-control" (change)="onMaritalChange($event.target.value)">
-              <option></option>
-              <option *ngFor="let marital of maStatus" [value]="marital">{{marital}}</option>
-            </select>
-          </div>-->
 
     <div class="form-group mb-2">
       <label>Staatsbürger:innenschaft</label>
@@ -291,6 +242,14 @@
     <label>{{Label.COMPLAINT}}</label>
     <ng-select [multiple]="true" [(ngModel)]="complaintsModel">
       @for (category of complaintsToSelected; track category) {
+        <ng-option [value]="category.id">{{ category.name }}</ng-option>
+      }
+    </ng-select>
+  </div>
+  <div class="col-md-3">
+    <label>{{Label.INDUSTRY_UNION}}</label>
+    <ng-select [multiple]="true" [(ngModel)]="industryUnionModel">
+      @for (category of industryUnionToSelected; track category) {
         <ng-option [value]="category.id">{{ category.name }}</ng-option>
       }
     </ng-select>

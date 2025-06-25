@@ -40,6 +40,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
   originOfAttentionCategoriesToSelect: Category[];
   undocumentedWorkCategoriesToSelect: Category[];
   complaintsToSelected: Category[];
+  industryUnionToSelected: Category[];
 
   @Input() client: Client;
   @Output() submitted = new EventEmitter<ClientForm>();
@@ -60,6 +61,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
   originOfAttentionModel = [];
   undocumentedWorkModel = [];
   complaintsModel = [];
+  industryUnionModel = [];
 
   ngOnInit(): void {
     if (this.client) {
@@ -90,7 +92,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
     this.showCategoryValue(this.originOfAttentionModel, CategoryTypes.ORIGIN_OF_ATTENTION);
     this.showCategoryValue(this.undocumentedWorkModel, CategoryTypes.UNDOCUMENTED_WORK);
     this.showCategoryValue(this.complaintsModel, CategoryTypes.COMPLAINT);
-    console.log('this.clientForm', this.clientForm);
+    this.showCategoryValue(this.industryUnionModel, CategoryTypes.INDUSTRY_UNION);
     this.submitted.emit(this.clientForm);
   }
 
@@ -185,8 +187,14 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
             this.clientForm.complaintsSelected.push(complaintJoinCategory);
           });
           break;
+          case (CategoryTypes.INDUSTRY_UNION):
+            this.clientForm.industryUnionSelected = [];
+            let industryUnionJoinCategory: JoinCategory = null;
+            event.forEach(e => {
+              industryUnionJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
+              this.clientForm.industryUnionSelected.push(industryUnionJoinCategory);
+            });
     }
-    console.log('clientForm.complaintsSelected', this.clientForm.complaintsSelected);
   }
 
   private createJoinCategory(categoryId: string, categoryType: CategoryTypes, entityId: string, entityType: EntityTypes): JoinCategory {
@@ -202,30 +210,31 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
     this.subscription$.push(
       this.categoryService.getCategories(CategoryTypes.JOB_MARKET_ACCESS).subscribe(cat => {
         this.jobMarketAccessCategoriesToSelect = cat;
-        console.log(this.jobMarketAccessCategoriesToSelect);
       })
     );
     this.subscription$.push(
       this.categoryService.getCategories(CategoryTypes.COUNSELING_LANGUAGE).subscribe(cat => {
         this.counselingLanguagesCategoriesToSelect = cat;
-        console.log(this.counselingLanguagesCategoriesToSelect);
       })
     );
     this.subscription$.push(
       this.categoryService.getCategories(CategoryTypes.ORIGIN_OF_ATTENTION).subscribe(cat => {
         this.originOfAttentionCategoriesToSelect = cat;
-        console.log(this.originOfAttentionCategoriesToSelect);
       })
     );
     this.subscription$.push(
       this.categoryService.getCategories(CategoryTypes.UNDOCUMENTED_WORK).subscribe(cat => {
         this.undocumentedWorkCategoriesToSelect = cat;
-        console.log(this.undocumentedWorkCategoriesToSelect);
       })
     );
     this.subscription$.push(
       this.categoryService.getCategories(CategoryTypes.COMPLAINT).subscribe(cat => {
         this.complaintsToSelected = cat;
+      })
+    );
+    this.subscription$.push(
+      this.categoryService.getCategories(CategoryTypes.INDUSTRY_UNION).subscribe(cat => {
+        this.industryUnionToSelected = cat;
       })
     );
   }
@@ -245,6 +254,9 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
     });
     this.client.openCase.complaints.forEach(category => {
       this.complaintsModel.push(category.id);
+    });
+    this.client.openCase.industryUnion.forEach(category => {
+      this.industryUnionModel.push(category.id);
     });
   }
 
