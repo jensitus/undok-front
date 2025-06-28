@@ -8,6 +8,8 @@ import {Label} from '../../model/label';
 import {NgbCollapse} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 import {NgIf} from '@angular/common';
+import {AlertModule} from '../../../admin-template/layout/components/alert/alert.module';
+import {AlertService} from '../../../admin-template/layout/components/alert/services/alert.service';
 
 export enum Crud {
   CREATE,
@@ -23,27 +25,32 @@ export enum Crud {
   imports: [
     NgbCollapse,
     FormsModule,
-    NgIf
+    NgIf,
+    AlertModule
   ],
   styleUrls: ['./add-category.component.css']
 })
 export class AddCategoryComponent implements OnInit, OnDestroy {
+
+  constructor(
+    private categoryService: CategoryService,
+    private commonService: CommonService,
+    private alertService: AlertService
+  ) {
+  }
 
   @Input() categoryType: CategoryTypes;
   @Input() label: Label;
   @Input() crud: Crud | undefined;
   @Input() stringLabel: string;
   @Output() submitted = new EventEmitter<boolean>();
+  @Output() error = new EventEmitter<string>();
   private subscription$: Subscription[] = [];
   categoryExists: string = null;
   categoryIsCollapsed = true;
   newCategory: string = null;
 
-  constructor(
-    private categoryService: CategoryService,
-    private commonService: CommonService
-  ) {
-  }
+  protected readonly Label = Label;
 
   ngOnInit(): void {
     if (this.crud === undefined) {
@@ -72,11 +79,10 @@ export class AddCategoryComponent implements OnInit, OnDestroy {
           this.submitted.emit(true);
         },
         error: (err) => {
-          this.categoryExists = err.error;
+          this.categoryExists = err.error.text;
+          this.error.emit(err.error.text);
         }
       })
     );
   }
-
-  protected readonly Label = Label;
 }

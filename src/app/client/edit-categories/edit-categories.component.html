@@ -1,3 +1,4 @@
+<app-alert></app-alert>
 <div class="row">
   <div class="col">
     <h4>Kategorien</h4>
@@ -10,7 +11,7 @@
   <div class="col-md-4">
     <app-add-category [stringLabel]="catMapEntry.key"
                       [categoryType]="CategoryTypes[catMapEntry?.value[0]?.type] ? CategoryTypes[catMapEntry?.value[0]?.type] : catMapEntry.key"
-                      (submitted)="reload()">
+                      (submitted)="reload()" (error)="showError($event)">
     </app-add-category>
   </div>
   <div *ngFor="let c of catMapEntry.value">

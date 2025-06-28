@@ -4,6 +4,7 @@ import {CategoryService} from '../service/category.service';
 import {CategoryTypes} from '../model/category-types';
 import {Category} from '../model/category';
 import {Label} from '../model/label';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 
 @Component({
   selector: 'app-edit-categories',
@@ -19,7 +20,8 @@ export class EditCategoriesComponent implements OnInit, OnDestroy {
   protected readonly CategoryTypes = CategoryTypes;
 
   constructor(
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private alertService: AlertService
   ) {
   }
 
@@ -67,5 +69,10 @@ export class EditCategoriesComponent implements OnInit, OnDestroy {
 
   reload() {
     this.getCategories();
+    this.alertService.success('Category successfully added');
+  }
+
+  showError(event) {
+    this.alertService.error(event);
   }
 }
