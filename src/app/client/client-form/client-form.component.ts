@@ -34,7 +34,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor() {
   }
-
+  COMMENT_MAX_LENGTH =  2024;
   jobMarketAccessCategoriesToSelect: Category[];
   counselingLanguagesCategoriesToSelect: Category[];
   originOfAttentionCategoriesToSelect: Category[];
@@ -142,6 +142,8 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
       union: client.union ? client.union : null,
       targetGroup: client.openCase.targetGroup ? client.openCase.targetGroup : null,
       workingRelationship: client.openCase.workingRelationship ? client.openCase.workingRelationship : null,
+      furtherContact: client.furtherContact ? client.furtherContact : null,
+      comment: client.comment ? client.comment : null,
     };
   }
 

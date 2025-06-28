@@ -104,31 +104,18 @@
 
               <div class="row">
                 <div class="col-md-5">
-                  <label class="text-secondary">Arbeitsmarktzugang:</label>
+                  <label class="text-secondary">weiterer Kontakt:</label>
                 </div>
                 <div class="col-md-7">
-                  {{ client.labourMarketAccess }}
+                  {{ client.furtherContact }}
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-5">
-                  <label class="text-secondary">Sprache:</label>
+                  <label class="text-secondary">Kommentar:</label>
                 </div>
                 <div class="col-md-7">
-                  {{ client.language }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-5">
-                  <label class="text-secondary">Dolmetch erforderlich:</label>
-                </div>
-                <div class="col-md-7">
-                <span *ngIf="client.interpreterNecessary">
-                    ja
-                </span>
-                  <span *ngIf="client.interpreterNecessary === false">
-                    nein
-                </span>
+                  {{ client.comment }}
                 </div>
               </div>
             </div>
@@ -140,22 +127,6 @@
         <div class="card mt-1">
           <div class="card-body">
 
-            <div class="row">
-              <div class="col-md-6">
-                <label class="text-secondary">Branche:</label>
-              </div>
-              <div class="col-md-6">
-                {{ client.sector }}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <label class="text-secondary">Gewerkschaft:</label>
-              </div>
-              <div class="col-md-6">
-                {{ client.union }}
-              </div>
-            </div>
             <div class="row">
               <div class="col-md-6">
                 <!--label class="text-secondary">Woher kennt uns die Person:</label-->
@@ -272,6 +243,19 @@
                 </span>
               }
             </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label class="text-secondary">Dolmetch erforderlich:</label>
+              </div>
+              <div class="col-md-7">
+                  <span *ngIf="client.interpreterNecessary">
+                    ja
+                  </span>
+                <span *ngIf="client.interpreterNecessary === false">
+                    nein
+                  </span>
+              </div>
+            </div>
             <div>
               <label class="text-secondary">Arbeitsmarktzugang:</label>&nbsp;
               @if (client.openCase) {
@@ -297,7 +281,7 @@
               }
             </div>
             <div>
-              <label class="text-secondary">{{Label.COMPLAINT + ':'}}</label>&nbsp;
+              <label class="text-secondary">{{ Label.COMPLAINT + ':' }}</label>&nbsp;
               @if (client.openCase) {
                 <span *ngFor="let access of client.openCase.complaints">
                   <span [innerHTML]="access.name"></span>&nbsp;
@@ -305,7 +289,7 @@
               }
             </div>
             <div>
-              <label class="text-secondary">{{Label.INDUSTRY_UNION + ':'}}</label>&nbsp;
+              <label class="text-secondary">{{ Label.INDUSTRY_UNION + ':' }}</label>&nbsp;
               @if (client.openCase) {
                 <span *ngFor="let access of client.openCase.industryUnion">
                   <span [innerHTML]="access.name"></span>&nbsp;
@@ -334,19 +318,19 @@
           </span>
           </div>
         </div>
-<!--        @if (closeCase) {
-          <div class="row mt-1">
-            <div class="row">
-              <div class="col">
-                <button class="btn btn-link" (click)="openCloseCaseModal(close_case)">
-                  <small>Fall abschließen?</small>
-                </button>
-              </div>
-            </div>
-            <div class="row">
-            </div>
-          </div>
-        }-->
+        <!--        @if (closeCase) {
+                  <div class="row mt-1">
+                    <div class="row">
+                      <div class="col">
+                        <button class="btn btn-link" (click)="openCloseCaseModal(close_case)">
+                          <small>Fall abschließen?</small>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                    </div>
+                  </div>
+                }-->
         <div class="row mb-5">
           <div class="row">
             <div class="col">

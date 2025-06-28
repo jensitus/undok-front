@@ -32,4 +32,7 @@ export interface Client {
   humanTrafficking?: boolean;
   jobCenterBlock?: boolean;
 
+  furtherContact?: string;
+  comment?: string;
+
 }

@@ -53,4 +53,7 @@ export interface ClientForm {
   undocumentedWork?: Category[];
   complaints?: Category[];
   industryUnion?: Category[];
+
+  furtherContact?: string;
+  comment?: string;
 }
