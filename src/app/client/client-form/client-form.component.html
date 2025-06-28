@@ -99,33 +99,28 @@
       </select>
     </div>
 
-    <app-select-box (catValue)="selectTargetGroup($event)"
-                    [categoryType]="CategoryTypes.TARGET_GROUP"
-                    [cat_model]="clientForm.targetGroup"
-                    [label]="Label.TARGET_GROUP"/>
+    <div class="mb-4">
+      <app-select-box (catValue)="selectTargetGroup($event)"
+                      [categoryType]="CategoryTypes.TARGET_GROUP"
+                      [cat_model]="clientForm.targetGroup"
+                      [label]="Label.TARGET_GROUP"/>
+    </div>
 
-    <div>
+    <div class="mb-4">
       <app-select-box (catValue)="selectGender($event)"
-                      [categoryType]="CategoryTypes.CAT_GENDER"
+                      [categoryType]="CategoryTypes.GENDER"
                       [cat_model]="clientForm.gender"
                       [label]="Label.GENDER"></app-select-box>
     </div>
 
-    <div>
-      <app-select-box [categoryType]="CategoryTypes.SECTOR"
-                      (catValue)="selectSector($event)"
-                      [cat_model]="clientForm.sector"
-                      [label]="Label.SECTOR"></app-select-box>
-    </div>
-
-    <div>
+    <div class="mb-4">
       <app-select-box [categoryType]="CategoryTypes.AUFENTHALTSTITEL"
                       (catValue)="selectResidentStatus($event)"
                       [cat_model]="clientForm.currentResidentStatus"
-                      [label]="Label.RESIDENT_STATUS"></app-select-box>
+                      [label]="Label.AUFENTHALTSTITEL"></app-select-box>
     </div>
 
-    <div class="form-check mt-1">
+    <div class="form-check mt-3">
       <input type="checkbox" class="form-check-input" [(ngModel)]="clientForm.vulnerableWhenAssertingRights"
              name="vulnerableWhenAssertingRights">
       <label class="form-check-label">Verdacht Gefährdung bei Geltendmachung</label>

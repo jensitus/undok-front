@@ -78,4 +78,5 @@ export class AddCategoryComponent implements OnInit, OnDestroy {
     );
   }
 
+  protected readonly Label = Label;
 }

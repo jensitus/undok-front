@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs';
 import {CategoryService} from '../service/category.service';
 import {CategoryTypes} from '../model/category-types';
 import {Category} from '../model/category';
+import {Label} from '../model/label';
 
 @Component({
   selector: 'app-edit-categories',
@@ -54,13 +55,13 @@ export class EditCategoriesComponent implements OnInit, OnDestroy {
           catArray.push(c);
         }
       });
-      if (value === 'ACTIVITY') {
-        this.catMap.set('Aktivitätskategorie', catArray);
-      } else if (value === 'LEGAL') {
-        this.catMap.set('Rechtsschutzkategorie', catArray);
-      } else {
-        this.catMap.set(value, catArray);
-      }
+      // if (value === 'ACTIVITY') {
+      //   this.catMap.set('Aktivitätskategorie', catArray);
+      // } else if (value === 'LEGAL') {
+      //   this.catMap.set('Rechtsschutzkategorie', catArray);
+      // } else {
+        this.catMap.set(Label[catType], catArray);
+      // }
     }
   }
 

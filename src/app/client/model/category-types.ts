@@ -1,5 +1,5 @@
 export enum CategoryTypes {
-  CAT_GENDER = 'gender',
+  GENDER = 'gender',
   ACTIVITY = 'ACTIVITY',
   AUFENTHALTSTITEL = 'Aufenthaltstitel',
   SECTOR = 'Branche',

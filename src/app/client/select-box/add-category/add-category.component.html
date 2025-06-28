@@ -14,7 +14,10 @@
     </div>
   </button>
   <div #collapse="ngbCollapse" [(ngbCollapse)]="categoryIsCollapsed">
-    <input type="text" name="newCategory" [(ngModel)]="newCategory" placeholder="{{categoryType}}"
+    <input type="text"
+           name="newCategory"
+           [(ngModel)]="newCategory"
+           placeholder="{{Label[categoryType]}}"
            class="form-control"/>
     <button class="btn btn-sm btn-outline-primary" type="button"
             (click)="addNewCategory(categoryType)"
