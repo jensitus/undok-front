@@ -57,13 +57,7 @@ export class EditCategoriesComponent implements OnInit, OnDestroy {
           catArray.push(c);
         }
       });
-      // if (value === 'ACTIVITY') {
-      //   this.catMap.set('Aktivitätskategorie', catArray);
-      // } else if (value === 'LEGAL') {
-      //   this.catMap.set('Rechtsschutzkategorie', catArray);
-      // } else {
         this.catMap.set(Label[catType], catArray);
-      // }
     }
   }
 
