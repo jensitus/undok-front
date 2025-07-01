@@ -2,7 +2,7 @@ export enum CategoryTypes {
   GENDER = 'gender',
   ACTIVITY = 'ACTIVITY',
   AUFENTHALTSTITEL = 'Aufenthaltstitel',
-  SECTOR = 'Branche',
+  SECTOR = 'SECTOR',
   LEGAL = 'LEGAL',
   CASE = 'CASE',
   REFERRED_TO = 'REFERRED_TO',

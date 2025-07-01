@@ -13,17 +13,18 @@ import {AlertService} from '../../admin-template/layout/components/alert/service
 })
 export class EditCategoriesComponent implements OnInit, OnDestroy {
 
-  private subscription$: Subscription[] = [];
-  categories: Category[];
-  catMap = new Map<string, Category[]>();
-
-  protected readonly CategoryTypes = CategoryTypes;
-
   constructor(
     private categoryService: CategoryService,
     private alertService: AlertService
   ) {
   }
+
+  private subscription$: Subscription[] = [];
+  categories: Category[];
+  catMap = new Map<string, Category[]>();
+
+  protected readonly CategoryTypes = CategoryTypes;
+  protected readonly Label = Label;
 
   ngOnInit(): void {
     this.getCategories();
@@ -56,8 +57,9 @@ export class EditCategoriesComponent implements OnInit, OnDestroy {
         if (c.type === value) {
           catArray.push(c);
         }
+        console.log(c);
       });
-        this.catMap.set(Label[catType], catArray);
+        this.catMap.set(catType, catArray);
     }
   }
 
