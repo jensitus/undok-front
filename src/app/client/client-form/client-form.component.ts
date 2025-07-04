@@ -34,13 +34,16 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor() {
   }
-  COMMENT_MAX_LENGTH =  2024;
+
+  COMMENT_MAX_LENGTH = 2024;
   jobMarketAccessCategoriesToSelect: Category[];
   counselingLanguagesCategoriesToSelect: Category[];
   originOfAttentionCategoriesToSelect: Category[];
   undocumentedWorkCategoriesToSelect: Category[];
   complaintsToSelected: Category[];
-  industryUnionToSelected: Category[];
+  industryUnionToSelect: Category[];
+  jobFunctionToSelect: Category[];
+  sectorToSelect: Category[];
 
   @Input() client: Client;
   @Output() submitted = new EventEmitter<ClientForm>();
@@ -62,6 +65,8 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
   undocumentedWorkModel = [];
   complaintsModel = [];
   industryUnionModel = [];
+  jobFunctionModel = [];
+  sectorModel = [];
 
   ngOnInit(): void {
     if (this.client) {
@@ -93,15 +98,13 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
     this.showCategoryValue(this.undocumentedWorkModel, CategoryTypes.UNDOCUMENTED_WORK);
     this.showCategoryValue(this.complaintsModel, CategoryTypes.COMPLAINT);
     this.showCategoryValue(this.industryUnionModel, CategoryTypes.INDUSTRY_UNION);
+    this.showCategoryValue(this.jobFunctionModel, CategoryTypes.JOB_FUNCTION);
+    this.showCategoryValue(this.sectorModel, CategoryTypes.SECTOR);
     this.submitted.emit(this.clientForm);
   }
 
   selectGender(event: string) {
     this.clientForm.gender = event;
-  }
-
-  selectSector(event: string) {
-    this.clientForm.sector = event;
   }
 
   selectResidentStatus(event: string) {
@@ -138,7 +141,6 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
       jobCenterBlock: client.openCase.jobCenterBlock ? client.openCase.jobCenterBlock : null,
       humanTrafficking: client.openCase.humanTrafficking ? client.openCase.humanTrafficking : null,
       gender: client.person.gender ? client.person.gender : null,
-      sector: client.sector ? client.sector : null,
       union: client.union ? client.union : null,
       targetGroup: client.openCase.targetGroup ? client.openCase.targetGroup : null,
       workingRelationship: client.openCase.workingRelationship ? client.openCase.workingRelationship : null,
@@ -181,21 +183,37 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
           this.clientForm.undocumentedWorkSelected.push(undocumentedWorkJoinCategory);
         });
         break;
-        case (CategoryTypes.COMPLAINT):
-          this.clientForm.complaintsSelected = [];
-          let complaintJoinCategory: JoinCategory = null;
+      case (CategoryTypes.COMPLAINT):
+        this.clientForm.complaintsSelected = [];
+        let complaintJoinCategory: JoinCategory = null;
+        event.forEach(e => {
+          complaintJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
+          this.clientForm.complaintsSelected.push(complaintJoinCategory);
+        });
+        break;
+      case (CategoryTypes.INDUSTRY_UNION):
+        this.clientForm.industryUnionSelected = [];
+        let industryUnionJoinCategory: JoinCategory = null;
+        event.forEach(e => {
+          industryUnionJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
+          this.clientForm.industryUnionSelected.push(industryUnionJoinCategory);
+        });
+        break;
+      case (CategoryTypes.JOB_FUNCTION):
+        this.clientForm.jobFunctionSelected = [];
+        let jobFunctionJoinCategory: JoinCategory = null;
+        event.forEach(e => {
+          jobFunctionJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
+          this.clientForm.jobFunctionSelected.push(jobFunctionJoinCategory);
+        });
+        break;
+        case (CategoryTypes.SECTOR):
+          this.clientForm.sectorSelected = [];
+          let sectorJoinCategory: JoinCategory = null;
           event.forEach(e => {
-            complaintJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
-            this.clientForm.complaintsSelected.push(complaintJoinCategory);
+            sectorJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
+            this.clientForm.sectorSelected.push(sectorJoinCategory);
           });
-          break;
-          case (CategoryTypes.INDUSTRY_UNION):
-            this.clientForm.industryUnionSelected = [];
-            let industryUnionJoinCategory: JoinCategory = null;
-            event.forEach(e => {
-              industryUnionJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
-              this.clientForm.industryUnionSelected.push(industryUnionJoinCategory);
-            });
     }
   }
 
@@ -236,29 +254,45 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
     );
     this.subscription$.push(
       this.categoryService.getCategories(CategoryTypes.INDUSTRY_UNION).subscribe(cat => {
-        this.industryUnionToSelected = cat;
+        this.industryUnionToSelect = cat;
+      })
+    );
+    this.subscription$.push(
+      this.categoryService.getCategories(CategoryTypes.JOB_FUNCTION).subscribe(cat => {
+        this.jobFunctionToSelect = cat;
+      })
+    );
+    this.subscription$.push(
+      this.categoryService.getCategories(CategoryTypes.SECTOR).subscribe(cat => {
+        this.sectorToSelect = cat;
       })
     );
   }
 
   fillNgModels() {
-    this.client.openCase.counselingLanguages.forEach(category => {
+    this.client.openCase.counselingLanguages?.forEach(category => {
       this.counselingLanguageModel.push(category.id);
     });
-    this.client.openCase.jobMarketAccess.forEach(category => {
+    this.client.openCase.jobMarketAccess?.forEach(category => {
       this.jobMarketAccessModel.push(category.id);
     });
-    this.client.openCase.originOfAttention.forEach(category => {
+    this.client.openCase.originOfAttention?.forEach(category => {
       this.originOfAttentionModel.push(category.id);
     });
-    this.client.openCase.undocumentedWork.forEach(category => {
+    this.client.openCase.undocumentedWork?.forEach(category => {
       this.undocumentedWorkModel.push(category.id);
     });
-    this.client.openCase.complaints.forEach(category => {
+    this.client.openCase.complaints?.forEach(category => {
       this.complaintsModel.push(category.id);
     });
-    this.client.openCase.industryUnion.forEach(category => {
+    this.client.openCase.industryUnion?.forEach(category => {
       this.industryUnionModel.push(category.id);
+    });
+    this.client.openCase.jobFunction?.forEach(category => {
+      this.jobFunctionModel.push(category.id);
+    });
+    this.client.openCase.sector?.forEach(category => {
+      this.sectorModel.push(category.id);
     });
   }
 

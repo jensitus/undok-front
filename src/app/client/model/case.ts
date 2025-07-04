@@ -22,4 +22,6 @@ export interface Case {
   undocumentedWork?: Category[];
   complaints?: Category[];
   industryUnion?: Category[];
+  jobFunction?: Category[];
+  sector?: Category[];
 }

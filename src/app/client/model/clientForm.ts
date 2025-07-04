@@ -23,7 +23,6 @@ export interface ClientForm {
   formerResidentStatus?: string;
   labourMarketAccess?: string;
   position?: string;
-  sector?: string;
   union?: string;
   membership?: boolean;
   organization?: string;
@@ -46,6 +45,8 @@ export interface ClientForm {
   undocumentedWorkSelected?: JoinCategory[];
   complaintsSelected?: JoinCategory[];
   industryUnionSelected?: JoinCategory[];
+  jobFunctionSelected?: JoinCategory[];
+  sectorSelected?: JoinCategory[];
 
   selectedJobMarketAccess?: Category[];
   selectedCounselingLanguages?: Category[];
@@ -53,6 +54,8 @@ export interface ClientForm {
   undocumentedWork?: Category[];
   complaints?: Category[];
   industryUnion?: Category[];
+  jobFunction?: Category[];
+  sector?: Category[];
 
   furtherContact?: string;
   comment?: string;

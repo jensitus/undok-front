@@ -231,7 +231,7 @@
             </div>
             <div>
               <label class="text-secondary">Tätigkeiten:</label>&nbsp;
-              <span *ngFor="let jobFunction of client.jobFunctions">
+              <span *ngFor="let jobFunction of client.openCase.jobFunction">
                 <span [innerHTML]="jobFunction.name"></span>&nbsp;
               </span>
             </div>
@@ -292,6 +292,14 @@
               <label class="text-secondary">{{ Label.INDUSTRY_UNION + ':' }}</label>&nbsp;
               @if (client.openCase) {
                 <span *ngFor="let access of client.openCase.industryUnion">
+                  <span [innerHTML]="access.name"></span>&nbsp;
+                </span>
+              }
+            </div>
+            <div>
+              <label class="text-secondary">{{ Label.SECTOR + ':' }}</label>&nbsp;
+              @if (client.openCase) {
+                <span *ngFor="let access of client.openCase.sector">
                   <span [innerHTML]="access.name"></span>&nbsp;
                 </span>
               }

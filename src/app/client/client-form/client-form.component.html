@@ -191,7 +191,28 @@
   <div class="col-md-3">
     <label>{{ Label.INDUSTRY_UNION }}</label>
     <ng-select [multiple]="true" [(ngModel)]="industryUnionModel">
-      @for (category of industryUnionToSelected; track category) {
+      @for (category of industryUnionToSelect; track category) {
+        <ng-option [value]="category.id">{{ category.name }}</ng-option>
+      }
+    </ng-select>
+  </div>
+  <div class="col-md-3">
+
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-md-3">
+    <label>{{ Label.JOB_FUNCTION }}</label>
+    <ng-select [multiple]="true" [(ngModel)]="jobFunctionModel">
+      @for (category of jobFunctionToSelect; track category) {
+        <ng-option [value]="category.id">{{ category.name }}</ng-option>
+      }
+    </ng-select>
+  </div>
+  <div class="col-md-3">
+    <label>{{ Label.SECTOR }}</label>
+    <ng-select [multiple]="true" [(ngModel)]="sectorModel">
+      @for (category of sectorToSelect; track category) {
         <ng-option [value]="category.id">{{ category.name }}</ng-option>
       }
     </ng-select>
