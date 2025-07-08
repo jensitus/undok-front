@@ -235,13 +235,13 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     }
   }
 
-  openJobFunctionModal(job_function: TemplateRef<any>) {
-    this.modalService.open(job_function, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
-    });
-  }
+  // openJobFunctionModal(job_function: TemplateRef<any>) {
+  //   this.modalService.open(job_function, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+  //     this.closeResult = `Closed with: ${result}`;
+  //   }, (reason) => {
+  //     this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
+  //   });
+  // }
 
   openTargetGroupModal(target_group: TemplateRef<any>) {
     this.modalService.open(target_group, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
