@@ -1,32 +1,18 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ClientForm} from '../model/clientForm';
 import {Subscription} from 'rxjs';
 import {ClientService} from '../service/client.service';
-import {NgbFormatterService} from '../../common/services/ngb-formatter.service';
-import {NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
-import {CommonService} from '../../common/services/common.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Client} from '../model/client';
-import {ResidentStatus} from '../model/resident-status.enum';
-import {COUNTRIES_AT} from '../model/countriesAT';
 import {MARITAL_STATUS} from '../model/marital-status';
-import {CITIZENSHIPS} from '../model/citizenships';
 import {CategoryTypes} from '../model/category-types';
-import {
-  faEarListen,
-  faBars,
-  faCampground,
-  faCoffee,
-  faPowerOff,
-  faTachometerAlt,
-  faUser,
-  faUsers,
-  faTasks,
-  faSurprise,
-  faSave,
-  faPencilAlt
-} from '@fortawesome/free-solid-svg-icons';
+import {faBars, faPencilAlt, faTachometerAlt, faUser, faUsers} from '@fortawesome/free-solid-svg-icons';
 import {Label} from '../model/label';
+import {ClientForm} from '../model/clientForm';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import {DropdownItem} from '../model/dropdown-item';
+import {EntityTypes} from '../model/entity-types';
+import {JoinCategory} from '../model/join-category';
+import {Category} from '../model/category';
 
 @Component({
   selector: 'app-edit-client',
@@ -34,9 +20,20 @@ import {Label} from '../model/label';
   styleUrls: ['./edit-client.component.css']
 })
 export class EditClientComponent implements OnInit, OnDestroy {
+  private joinCategories: JoinCategory[] = [];
+  private joinCategory: JoinCategory;
+  deSelectedItems: DropdownItem[] = [];
+  jobMarketAccessSelected: Category[];
+
+  constructor(
+    private clientService: ClientService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private alertService: AlertService,
+  ) {
+  }
 
   client: Client | undefined;
-
   client_id: string;
   private unsubscribe$: Subscription[] = [];
   firstName: string;
@@ -60,25 +57,13 @@ export class EditClientComponent implements OnInit, OnDestroy {
   city: string;
   nationality: string;
   country: string;
-  countries = COUNTRIES_AT;
-  citizenships = CITIZENSHIPS;
   currentResidentStatus: string;
 
   loading = false;
-  cat_gender: CategoryTypes = CategoryTypes.CAT_GENDER;
-  cat_aufenthaltstitel: CategoryTypes = CategoryTypes.AUFENTHALTSTITEL;
-  cat_sector: CategoryTypes = CategoryTypes.SECTOR;
 
-  constructor(
-    private clientService: ClientService,
-    private commonService: CommonService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) {
-  }
+  protected readonly Label = Label;
 
   ngOnInit(): void {
-
     this.unsubscribe$.push(
       this.activatedRoute.params.subscribe({
         next: (params) => {
@@ -106,48 +91,39 @@ export class EditClientComponent implements OnInit, OnDestroy {
     }
   }
 
-  onCountryChange(country) {
-    switch (country) {
-      case 'Countries':
-        this.client.person.address.country = 'Unknown';
-        break;
-      default:
-        this.client.person.address.country = country;
-    }
-  }
-
-  onCitizenshipChange(country): void {
-    this.client.nationality = country;
-  }
-
-  onMaritalChange(marital): void {
-    this.client.maritalStatus = marital;
-  }
-
   submit(): void {
+
+  }
+
+  showSubmitted(event: ClientForm) {
     this.unsubscribe$.push(
-      this.clientService.updateClient(this.client.id, this.client).subscribe({
-        next: () => {
+      this.clientService.updateClient(this.client.id, event).subscribe({
+        next: (response) => {
           this.loading = true;
-          this.commonService.setDemoSubject(true);
           this.loading = false;
+          this.alertService.success(response.text, true);
           this.router.navigate(['clients/', this.client_id]);
         }
       })
     );
   }
 
-  onGenderChange(event: string) {
-    this.client.person.gender = event;
+  showCategoryValue(event: DropdownItem[], jobMarketAccessType: CategoryTypes) {
+    this.joinCategories = [];
+    event.forEach(e => {
+      this.joinCategory = {
+        categoryId: e.itemId,
+        categoryType: jobMarketAccessType,
+        entityId: this.client.id,
+        entityType: EntityTypes.CLIENT
+      };
+      this.joinCategories.push(this.joinCategory);
+    });
+    console.log('this.joinCategories', this.joinCategories);
   }
 
-  changeResidentStatus(event: string) {
-    this.client.currentResidentStatus = event;
+  showDeSelected(event: DropdownItem[]) {
+    this.deSelectedItems = event;
+    console.log('this.deSelectedItems', this.deSelectedItems);
   }
-
-  changeSector(event: string) {
-    this.client.sector = event;
-  }
-
-  protected readonly Label = Label;
 }

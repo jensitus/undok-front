@@ -3,6 +3,8 @@ import {Subscription} from 'rxjs';
 import {CategoryService} from '../service/category.service';
 import {CategoryTypes} from '../model/category-types';
 import {Category} from '../model/category';
+import {Label} from '../model/label';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 
 @Component({
   selector: 'app-edit-categories',
@@ -11,18 +13,24 @@ import {Category} from '../model/category';
 })
 export class EditCategoriesComponent implements OnInit, OnDestroy {
 
+  constructor(
+    private categoryService: CategoryService,
+    private alertService: AlertService
+  ) {
+  }
+
   private subscription$: Subscription[] = [];
   categories: Category[];
   catMap = new Map<string, Category[]>();
 
   protected readonly CategoryTypes = CategoryTypes;
-
-  constructor(
-    private categoryService: CategoryService
-  ) {
-  }
+  protected readonly Label = Label;
 
   ngOnInit(): void {
+    this.getCategories();
+  }
+
+  getCategories() {
     this.subscription$.push(
       this.categoryService.getAllCategories().subscribe({
         next: result => {
@@ -49,15 +57,18 @@ export class EditCategoriesComponent implements OnInit, OnDestroy {
         if (c.type === value) {
           catArray.push(c);
         }
+        console.log(c);
       });
-      if (value === 'ACTIVITY') {
-        this.catMap.set('Aktivitätskategorie', catArray);
-      } else if (value === 'LEGAL') {
-        this.catMap.set('Rechtsschutzkategorie', catArray);
-      } else {
-        this.catMap.set(value, catArray);
-      }
+        this.catMap.set(catType, catArray);
     }
   }
 
+  reload() {
+    this.getCategories();
+    this.alertService.success('Category successfully added');
+  }
+
+  showError(event) {
+    this.alertService.error(event);
+  }
 }

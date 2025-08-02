@@ -1,3 +1,4 @@
+<app-alert></app-alert>
 @if (client) {
   <app-page-header [firstPoint]="'dashboard'" [firstIcon]="faTachometerAlt" [firstLink]="'/dashboard'"
                    [secondPoint]="'clients'" [secondIcon]="faUsers" [secondLink]="'/clients/client-list'"
@@ -78,10 +79,10 @@
               </div>
               <div class="row">
                 <div class="col-md-5">
-                  <label class="text-secondary">Geburtstag:</label>
+                  <label class="text-secondary">Stadt:</label>
                 </div>
                 <div class="col-md-7">
-                  {{ client.person.dateOfBirth | date: 'dd.MM.yyyy' }}
+                  {{ client.person.address.city }}
                 </div>
               </div>
               <div class="row">
@@ -100,51 +101,21 @@
                   {{ client.person.gender }}
                 </div>
               </div>
+
               <div class="row">
                 <div class="col-md-5">
-                  <label class="text-secondary">Aufenthaltstitel:</label>
+                  <label class="text-secondary">weiterer Kontakt:</label>
                 </div>
                 <div class="col-md-7">
-                  {{ client.currentResidentStatus }}
+                  {{ client.furtherContact }}
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-5">
-                  <label class="text-secondary">Arbeitsmarktzugang:</label>
+                  <label class="text-secondary">Kommentar:</label>
                 </div>
                 <div class="col-md-7">
-                  {{ client.labourMarketAccess }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-5">
-                  <label class="text-secondary">Sprache:</label>
-                </div>
-                <div class="col-md-7">
-                  {{ client.language }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-5">
-                  <label class="text-secondary">Dolmetch erforderlich:</label>
-                </div>
-                <div class="col-md-7">
-                <span *ngIf="client.interpreterNecessary">
-                    ja
-                </span>
-                  <span *ngIf="client.interpreterNecessary === false">
-                    nein
-                </span>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-5">
-                  <label class="text-secondary">
-                    SV-Nummer:
-                  </label>
-                </div>
-                <div class="col-md-7">
-                  {{ client.socialInsuranceNumber }}
+                  {{ client.comment }}
                 </div>
               </div>
             </div>
@@ -155,111 +126,80 @@
         </div>
         <div class="card mt-1">
           <div class="card-body">
-            <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">Straße:</label>
-              </div>
-              <div class="col-md-8">
-                {{ client.person.address.street }}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">PLZ & City:</label>
-              </div>
-              <div class="col-md-8">
-                {{ client.person.address.zipCode }} {{ client.person.address.city }}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">Country:</label>
-              </div>
-              <div class="col-md-8">
-                {{ client.person.address.country }}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">Familienstand:</label>
-              </div>
-              <div class="col-md-8">
-                {{ client.maritalStatus }}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-
-              </div>
-              <div class="col-md-8">
-
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card mt-1">
-          <div class="card-body">
 
             <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">Branche:</label>
+              <div class="col-md-6">
+                <!--label class="text-secondary">Woher kennt uns die Person:</label-->
               </div>
-              <div class="col-md-8">
-                {{ client.sector }}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">Gewerkschaft:</label>
-              </div>
-              <div class="col-md-8">
-                {{ client.union }}
+              <div class="col-md-6">
+                <!--{{ client.howHasThePersonHeardFromUs }}-->
               </div>
             </div>
             <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">Mitgliedschaft</label>
+              <div class="col-md-6">
+                <label class="text-secondary">Arbeitsverhältnis:</label>
               </div>
-              <div class="col-md-8">
-                <span *ngIf="client.membership === true">
+              <div class="col-md-6">
+                @if (client.openCase) {
+                  {{ client.openCase.workingRelationship }}
+                }
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="text-secondary">Menschenhandel:</label>
+              </div>
+              <div class="col-md-6">
+                <div class="col-md-8">
+                  @if (client.openCase) {
+                    @if (client.openCase.humanTrafficking === true) {
+                      <span>
                       ja
-                </span>
-                <span *ngIf="client.membership === false">
+                    </span>
+                    }
+                    @if (client.openCase.humanTrafficking === false) {
+                      <span>
                       nein
-                </span>
+                    </span>
+                    }
+                    @if (client.openCase.humanTrafficking === null || client.openCase.humanTrafficking === undefined) {
+                      <span></span>
+                    }
+                  }
+                </div>
               </div>
             </div>
             <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">Position:</label>
+              <div class="col-md-6">
+                <label class="text-secondary">AMS Sperre:</label>
               </div>
-              <div class="col-md-8">
-                {{ client.position }}
+              <div class="col-md-6">
+                @if (client.openCase) {
+                  @if (client.openCase.jobCenterBlock === true) {
+                    <span>
+                      ja
+                  </span>
+                  } @else if (client.openCase.jobCenterBlock === false) {
+                    <span>
+                      nein
+                  </span>
+                  } @else if (client.openCase.jobCenterBlock === null || client.openCase.jobCenterBlock === undefined) {
+                    <span></span>
+                  }
+                }
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-4">
-                <label class="text-secondary">Organisation:</label>
-              </div>
-              <div class="col-md-8">
-                {{ client.organization }}
-              </div>
-            </div>
+
             <hr>
             <div class="row">
-              <div class="col-md-6">
-                <label class="text-secondary">Bildung:</label>
-              </div>
-              <div class="col-md-6">
-                {{ client.education }}
-              </div>
+
             </div>
             <div class="row">
               <div class="col-md-6">
-                <label class="text-secondary">Woher kennt uns die Person:</label>
+                <label class="text-secondary">Aufenthaltstitel:</label>
               </div>
               <div class="col-md-6">
-                {{ client.howHasThePersonHeardFromUs }}
+                {{ client.currentResidentStatus }}
               </div>
             </div>
             <div class="row">
@@ -273,19 +213,106 @@
                 <span *ngIf="client.vulnerableWhenAssertingRights === false">
                   nein
                 </span>
+                <span
+                  *ngIf="client.vulnerableWhenAssertingRights === null || client.vulnerableWhenAssertingRights === undefined">
+
+                </span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="text-secondary">Zielgruppe:</label>
+              </div>
+              <div class="col-md-6">
+                @if (client.openCase) {
+                  {{ client.openCase.targetGroup }}
+                }
               </div>
             </div>
             <div>
               <label class="text-secondary">Tätigkeiten:</label>&nbsp;
-              <span *ngFor="let jobFunction of client.jobFunctions">
-              <span [innerHTML]="jobFunction.name"></span>&nbsp;
-            </span>
+              <span *ngFor="let jobFunction of client.openCase.jobFunction">
+                <span [innerHTML]="jobFunction.name"></span>&nbsp;
+              </span>
+            </div>
+            <div>
+              <label class="text-secondary">Beratungssprachen:</label>&nbsp;
+              @if (client.openCase) {
+                <span *ngFor="let language of client.openCase.counselingLanguages">
+                  <span [innerHTML]="language.name"></span>&nbsp;
+                </span>
+              }
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <label class="text-secondary">Dolmetch erforderlich:</label>
+              </div>
+              <div class="col-md-7">
+                  <span *ngIf="client.interpreterNecessary">
+                    ja
+                  </span>
+                <span *ngIf="client.interpreterNecessary === false">
+                    nein
+                  </span>
+              </div>
+            </div>
+            <div>
+              <label class="text-secondary">Arbeitsmarktzugang:</label>&nbsp;
+              @if (client.openCase) {
+                <span *ngFor="let access of client.openCase.jobMarketAccess">
+                  <span [innerHTML]="access.name"></span>&nbsp;
+                </span>
+              }
+            </div>
+            <div>
+              <label class="text-secondary">Wo hat die Person von uns gehört:</label>&nbsp;
+              @if (client.openCase) {
+                <span *ngFor="let access of client.openCase.originOfAttention">
+                  <span [innerHTML]="access.name"></span>&nbsp;
+                </span>
+              }
+            </div>
+            <div>
+              <label class="text-secondary">undokumentierte Arbeit:</label>&nbsp;
+              @if (client.openCase) {
+                <span *ngFor="let access of client.openCase.undocumentedWork">
+                  <span [innerHTML]="access.name"></span>&nbsp;
+                </span>
+              }
+            </div>
+            <div>
+              <label class="text-secondary">{{ Label.COMPLAINT + ':' }}</label>&nbsp;
+              @if (client.openCase) {
+                <span *ngFor="let access of client.openCase.complaints">
+                  <span [innerHTML]="access.name"></span>&nbsp;
+                </span>
+              }
+            </div>
+            <div>
+              <label class="text-secondary">{{ Label.INDUSTRY_UNION + ':' }}</label>&nbsp;
+              @if (client.openCase) {
+                <span *ngFor="let access of client.openCase.industryUnion">
+                  <span [innerHTML]="access.name"></span>&nbsp;
+                </span>
+              }
+            </div>
+            <div>
+              <label class="text-secondary">{{ Label.SECTOR + ':' }}</label>&nbsp;
+              @if (client.openCase) {
+                <span *ngFor="let access of client.openCase.sector">
+                  <span [innerHTML]="access.name"></span>&nbsp;
+                </span>
+              }
             </div>
           </div>
         </div>
         <div class="row mt-1">
           <div class="col text-lg-start">
-            <a class="btn btn-sm btn-outline-secondary m-3" [routerLink]="['edit']">edit</a>
+            <button class="btn btn-sm btn-outline-secondary m-3"
+                    [disabled]="client.openCase === null"
+                    [routerLink]="['edit']">
+              edit
+            </button>
 
             <app-delete [id_to_delete]="client.person.id" [type]="deleteTypeClient"
                         [delete_object_name]="client.keyword"></app-delete>
@@ -299,68 +326,25 @@
           </span>
           </div>
         </div>
-        @if (closeCase) {
-          <div class="row mt-1">
-            <div class="row">
-              <div class="col">
-                <button class="btn btn-link" (click)="openCloseCaseModal(close_case)">
-                  <small>Fall abschließen?</small>
-                </button>
-              </div>
-            </div>
-            <div class="row">
-            </div>
-          </div>
-        }
-        <div class="row mb-5">
-          <div class="row">
-            <div class="col">
-              <button class="btn btn-link" (click)="openJobFunctionModal(job_function)">
-                <small>Tätigkeiten</small>
-              </button>
-            </div>
-          </div>
-          <div class="row">
-          </div>
-        </div>
+        <!--        @if (closeCase) {
+                  <div class="row mt-1">
+                    <div class="row">
+                      <div class="col">
+                        <button class="btn btn-link" (click)="openCloseCaseModal(close_case)">
+                          <small>Fall abschließen?</small>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                    </div>
+                  </div>
+                }-->
+
       </div>
       <div class="col-xl-7">
         <app-show-counselings-per-client [clientId]="client.id"></app-show-counselings-per-client>
       </div>
     </div>
-
-    <ng-template #job_function let-modal>
-      <div class="modal-header">
-        <h5>Tätigkeiten</h5>
-        <button type="button" class="btn btn-lg btn-outline-dark" aria-label="Close"
-                (click)="modal.dismiss('Cross click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col">
-            <app-multi [categoryType]="jobFunctionCategoryType"
-                       [label]="jobFunctionLabel"
-                       (categoryValue)="showCategoryValue($event, jobFunctionCategoryType)"
-                       (deSelectedEmit)="showDeSelected($event)"
-                       [selectedCategories]="client.jobFunctions">
-            </app-multi>
-          </div>
-          <div class="col-md-2 mt-4">
-            <button class="btn btn-sm btn-outline-success"
-                    (click)="saveCategories(jobFunctionCategoryType)">
-              submit
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-    </ng-template>
 
     <ng-template #close_case let-modal>
       <div class="modal-header">
@@ -371,8 +355,10 @@
         </button>
       </div>
       <div class="modal-body">
-        <app-close-case (caseClosed)="closeCaseModal($event)" [inputCase]="client.openCase"
-                        [closeCaseProperty]="true"/>
+        @if (client.openCase) {
+          <app-close-case (caseClosed)="closeCaseModal($event)" [inputCase]="client.openCase"
+                          [closeCaseProperty]="true"/>
+        }
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">

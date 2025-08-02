@@ -80,7 +80,6 @@ export class CommonService {
     }
     this.userService.checkAuthToken(this.currentUser.accessToken).subscribe(data => {
       this.data = data;
-      console.log('authToken', this.data);
     }, error => {
       console.log('error token check', error.message);
     });

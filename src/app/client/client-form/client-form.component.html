@@ -1,1 +1,231 @@
-<p>client-form works!</p>
+<div class="row">
+  <div class="col-md-7">
+
+    <div class="form-group mb-2">
+      <label for="keyword">Schlüsselwort</label>
+      <input id="keyword" type="text" class="form-control" name="keyword" [(ngModel)]="clientForm.keyword"/>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+
+        <div class="form-group mb-2">
+          <label>Vorname</label>
+          <input type="text" class="form-control" name="firstName" [(ngModel)]="clientForm.firstName"/>
+        </div>
+
+      </div>
+      <div class="col-md-6">
+
+        <div class="form-group mb-2">
+          <label>Nachname</label>
+          <input type="text" class="form-control" name="lastName" [(ngModel)]="clientForm.lastName"/>
+        </div>
+
+      </div>
+    </div>
+    <div class="row mb-5">
+      <div class="col-md-4">
+
+        <div class="form-group mb-2">
+          <label>Stadt</label>
+          <input type="text" class="form-control" name="city" [(ngModel)]="clientForm.city"/>
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" class="form-control" name="email" [(ngModel)]="clientForm.email"/>
+        </div>
+
+        <div class="form-group">
+          <label>Telephon</label>
+          <input type="tel" class="form-control" name="telephone" [(ngModel)]="clientForm.telephone"/>
+        </div>
+
+        <div class="form-group">
+          <label>Weiterer Kontakt</label>
+          <input type="text" class="form-control" name="additionalContact" [(ngModel)]="clientForm.furtherContact"/>
+        </div>
+
+      </div>
+
+      <div class="col-md-8">
+        <div class="form-group">
+          <label>Kommentar</label>
+          <textarea type="text" name="activity" [(ngModel)]="clientForm.comment" placeholder="comment"
+                    class="form-control" rows="8"></textarea>
+          {{ COMMENT_MAX_LENGTH - clientForm.comment?.length }}
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-5">
+        <div>
+          <app-select-box [categoryType]="cat_working_relationship"
+                          (catValue)="selectWorkingRelationship($event)"
+                          [cat_model]="clientForm.workingRelationship"
+                          [label]="Label.WORKING_RELATIONSHIP"></app-select-box>
+        </div>
+      </div>
+      <div class="col-md-4 mt-3">
+        <div class="form-check mt-1">
+          <input type="checkbox" class="form-check-input" [(ngModel)]="clientForm.humanTrafficking"
+                 name="humanTrafficking">
+          <label class="form-check-label">Verdacht auf Menschenhandel</label>
+        </div>
+        <div class="form-check mt-1">
+          <input type="checkbox" class="form-check-input" [(ngModel)]="clientForm.jobCenterBlock"
+                 name="jobCenterBlock">
+          <label class="form-check-label">AMS Sperre</label>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="col-md-3">
+
+    <div class="form-group mb-2">
+      <label>Staatsbürger:innenschaft</label>
+      <select class="form-control" (change)="onCitizenshipChange($event.target.value)">
+        <option>{{ clientForm.nationality }}</option>
+        <option *ngFor="let citizenship of citizenships" [value]="citizenship">
+          {{ citizenship }}
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <app-select-box (catValue)="selectTargetGroup($event)"
+                      [categoryType]="CategoryTypes.TARGET_GROUP"
+                      [cat_model]="clientForm.targetGroup"
+                      [label]="Label.TARGET_GROUP"/>
+    </div>
+
+    <div class="mb-4">
+      <app-select-box (catValue)="selectGender($event)"
+                      [categoryType]="CategoryTypes.GENDER"
+                      [cat_model]="clientForm.gender"
+                      [label]="Label.GENDER"></app-select-box>
+    </div>
+
+    <div class="mb-4">
+      <app-select-box [categoryType]="CategoryTypes.AUFENTHALTSTITEL"
+                      (catValue)="selectResidentStatus($event)"
+                      [cat_model]="clientForm.currentResidentStatus"
+                      [label]="Label.AUFENTHALTSTITEL"></app-select-box>
+    </div>
+
+    <div class="form-check mt-3">
+      <input type="checkbox" class="form-check-input" [(ngModel)]="clientForm.vulnerableWhenAssertingRights"
+             name="vulnerableWhenAssertingRights">
+      <label class="form-check-label">Verdacht Gefährdung bei Geltendmachung</label>
+    </div>
+
+    <div>
+      <!--        <div class="form-group mt-2">
+                <label>organization</label>
+                <input type="text" class="form-control" name="organization" [(ngModel)]="organization"/>
+              </div>-->
+    </div>
+
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-md-3">
+    <label>{{ Label.ORIGIN_OF_ATTENTION }}</label>
+    <ng-select [multiple]="true" [(ngModel)]="originOfAttentionModel">
+      @for (category of originOfAttentionCategoriesToSelect; track category) {
+        <ng-option [value]="category.id">{{ category.name }}</ng-option>
+      }
+    </ng-select>
+  </div>
+  <div class="col-md-3">
+    <div>
+      <label>{{ Label.COUNSELING_LANGUAGE }}</label>
+      <ng-select [multiple]="true" [(ngModel)]="counselingLanguageModel">
+        @for (category of counselingLanguagesCategoriesToSelect; track category) {
+          <ng-option [value]="category.id">{{ category.name }}</ng-option>
+        }
+      </ng-select>
+    </div>
+    <div>
+      <div class="form-check mt-1">
+        <input type="checkbox" class="form-check-input" id="interpreter" [(ngModel)]="clientForm.interpreterNecessary"
+               name="interpreterNecessary">
+        <label class="form-check-label" for="interpreter">Dolmetsch erforderlich</label>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <label>{{ Label.JOB_MARKET_ACCESS }}</label>
+    <ng-select [multiple]="true" [(ngModel)]="jobMarketAccessModel">
+      @for (category of jobMarketAccessCategoriesToSelect; track category) {
+        <ng-option [value]="category.id">{{ category.name }}</ng-option>
+      }
+    </ng-select>
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-md-3">
+    <label>{{ Label.UNDOCUMENTED_WORK }}</label>
+    <ng-select [multiple]="true" [(ngModel)]="undocumentedWorkModel">
+      @for (category of undocumentedWorkCategoriesToSelect; track category) {
+        <ng-option [value]="category.id">{{ category.name }}</ng-option>
+      }
+    </ng-select>
+  </div>
+  <div class="col-md-3">
+    <label>{{ Label.COMPLAINT }}</label>
+    <ng-select [multiple]="true" [(ngModel)]="complaintsModel">
+      @for (category of complaintsToSelected; track category) {
+        <ng-option [value]="category.id">{{ category.name }}</ng-option>
+      }
+    </ng-select>
+  </div>
+  <div class="col-md-3">
+    <label>{{ Label.INDUSTRY_UNION }}</label>
+    <ng-select [multiple]="true" [(ngModel)]="industryUnionModel">
+      @for (category of industryUnionToSelect; track category) {
+        <ng-option [value]="category.id">{{ category.name }}</ng-option>
+      }
+    </ng-select>
+  </div>
+  <div class="col-md-3">
+
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-md-3">
+    <label>{{ Label.JOB_FUNCTION }}</label>
+    <ng-select [multiple]="true" [(ngModel)]="jobFunctionModel">
+      @for (category of jobFunctionToSelect; track category) {
+        <ng-option [value]="category.id">{{ category.name }}</ng-option>
+      }
+    </ng-select>
+  </div>
+  <div class="col-md-3">
+    <label>{{ Label.SECTOR }}</label>
+    <ng-select [multiple]="true" [(ngModel)]="sectorModel">
+      @for (category of sectorToSelect; track category) {
+        <ng-option [value]="category.id">{{ category.name }}</ng-option>
+      }
+    </ng-select>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="form-group mt-3 mb-5">
+      <button type="button" class="btn btn-lg btn-success" (click)="submit()" [disabled]="loading">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="mt-5 mb-5">
+</div>

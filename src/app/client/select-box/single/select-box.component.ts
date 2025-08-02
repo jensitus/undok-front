@@ -8,7 +8,7 @@ import {CommonService} from '../../../common/services/common.service';
 import {Label} from '../../model/label';
 import {AddCategoryComponent} from '../add-category/add-category.component';
 import {NgSelectModule} from '@ng-select/ng-select';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgForOf} from '@angular/common';
 
 
@@ -20,14 +20,15 @@ import {NgForOf} from '@angular/common';
     AddCategoryComponent,
     NgSelectModule,
     FormsModule,
-    NgForOf
+    NgForOf,
+    ReactiveFormsModule
   ],
   styleUrls: ['./select-box.component.css']
 })
 export class SelectBoxComponent implements OnInit, OnDestroy {
 
   @Input() categoryType: CategoryTypes;
-  @Input() cat_model: any;
+  @Input() cat_model: any | undefined;
   @Input() label: Label;
   categoryName: string;
 

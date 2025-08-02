@@ -107,6 +107,7 @@ export const CITIZENSHIPS: string[] = [
   'Komoren',
   'Kongo',
   'Demokratische Republik Kongo',
+  'Kosovo',
   'Kroatien',
   'Kuba',
   'Kuwait',

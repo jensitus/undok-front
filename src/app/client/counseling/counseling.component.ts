@@ -171,6 +171,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
       };
       this.joinCategories.push(this.joinCategory);
     });
+    console.log('this.joinCategories', this.joinCategories);
   }
 
   showDeSelected(event: DropdownItem[]) {

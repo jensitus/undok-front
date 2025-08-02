@@ -33,6 +33,7 @@ export class SidebarService {
   }
 
   setNewCounselingSubject(value) {
+    console.log('value', value);
     if (value) {
       this.newCounselingSubject.next(value);
     } else {
