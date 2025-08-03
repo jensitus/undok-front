@@ -4,7 +4,6 @@ export enum CategoryTypes {
   AUFENTHALTSTITEL = 'Aufenthaltstitel',
   SECTOR = 'SECTOR',
   LEGAL = 'LEGAL',
-  CASE = 'CASE',
   REFERRED_TO = 'REFERRED_TO',
   JOB_FUNCTION = 'JOB_FUNCTION',
   TARGET_GROUP = 'TARGET_GROUP',
