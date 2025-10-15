@@ -141,6 +141,7 @@ export const CITIZENSHIPS: string[] = [
   'Moldavien',
   'Monaco',
   'Mongolei',
+  'Montenegro',
   'Montserrat',
   'Namibia',
   'Nauru',
