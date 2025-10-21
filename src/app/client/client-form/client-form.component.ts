@@ -146,6 +146,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
       workingRelationship: client.openCase.workingRelationship ? client.openCase.workingRelationship : null,
       furtherContact: client.furtherContact ? client.furtherContact : null,
       comment: client.comment ? client.comment : null,
+      alert: client.alert ? client.alert : null,
     };
   }
 
@@ -315,6 +316,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
       humanTrafficking: false,
       targetGroup: null,
       workingRelationship: null,
+      alert: false,
     };
   }
 

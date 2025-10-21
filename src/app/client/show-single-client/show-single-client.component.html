@@ -1,10 +1,22 @@
 <app-alert></app-alert>
-@if (client) {
-  <app-page-header [firstPoint]="'dashboard'" [firstIcon]="faTachometerAlt" [firstLink]="'/dashboard'"
-                   [secondPoint]="'clients'" [secondIcon]="faUsers" [secondLink]="'/clients/client-list'"
-                   [endPoint]="client.person.firstName ? client.person.firstName + ' ' + client.person.lastName : client.keyword">
-  </app-page-header>
+
+@if (show) {
+  <div class="row">
+    <div class="col-xl-5">
+      <ngb-alert [type]="'warning'" (closed)="close()">
+        <b>This client has an alert</b>
+      </ngb-alert>
+    </div>
+  </div>
+} @else {
+  @if (client) {
+    <app-page-header [firstPoint]="'dashboard'" [firstIcon]="faTachometerAlt" [firstLink]="'/dashboard'"
+                     [secondPoint]="'clients'" [secondIcon]="faUsers" [secondLink]="'/clients/client-list'"
+                     [endPoint]="client.person.firstName ? client.person.firstName + ' ' + client.person.lastName : client.keyword">
+    </app-page-header>
+  }
 }
+
 @if (!client) {
   <div class="card" aria-hidden="true">
     <img src="..." class="card-img-top" alt="...">

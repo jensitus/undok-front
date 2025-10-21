@@ -18,6 +18,7 @@ import {Label} from '../model/label';
 import {DropdownItem} from '../model/dropdown-item';
 import {JoinCategory} from '../model/join-category';
 import {EntityTypes} from '../model/entity-types';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 
 
 @Component({
@@ -26,6 +27,9 @@ import {EntityTypes} from '../model/entity-types';
   styleUrls: ['./show-single-client.component.css']
 })
 export class ShowSingleClientComponent implements OnInit, OnDestroy {
+
+  show = false;
+  autohide = true;
 
   deleteTypeClient: DeleteTypes = DeleteTypes.CLIENT;
   counselings: Counseling[] | undefined;
@@ -47,8 +51,6 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   protected readonly Label = Label;
   protected reOpenCase = false;
   protected closeCase = false;
-  jobFunctionCategoryType: CategoryTypes = CategoryTypes.JOB_FUNCTION;
-  jobFunctionLabel: Label = Label.JOB_FUNCTION;
   deSelectedItems: DropdownItem[] = [];
   private deSelectedCategories: JoinCategory[] = [];
   private joinCategories: JoinCategory[] = [];
@@ -63,6 +65,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     private router: Router,
     private categoryService: CategoryService,
     private durationService: DurationService,
+    private alertService: AlertService,
   ) {
   }
 
@@ -150,6 +153,9 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
         }
         if (this.client.openCase !== null) {
           this.closeCase = true;
+        }
+        if (this.client.alert === true) {
+          this.show = true;
         }
         // @ts-ignore
         this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
@@ -295,4 +301,10 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
       this.deSelectedCategories = [];
       this.joinCategories = [];
   }
+
+  close() {
+    this.show = !this.show;
+    // setTimeout(() => (this.show = true), 3000);
+  }
+
 }
