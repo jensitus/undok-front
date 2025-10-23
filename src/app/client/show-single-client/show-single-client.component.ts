@@ -19,6 +19,7 @@ import {DropdownItem} from '../model/dropdown-item';
 import {JoinCategory} from '../model/join-category';
 import {EntityTypes} from '../model/entity-types';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import {Task} from '../model/task';
 
 
 @Component({
@@ -39,10 +40,13 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   client: Client | undefined;
   private closeResult = '';
   public isCollapsed = false;
+  selectedTaskId: number | undefined;
+  @ViewChild('show_task') showTask: TemplateRef<any> | undefined;
   @ViewChild('content_create_counseling') contentCreateCounseling: ElementRef | undefined;
   @ViewChild('create_employer') createEmployer: ElementRef | undefined;
   @ViewChild('list_employer') assignEmployer: ElementRef | undefined;
   @ViewChild('edit_client') editClient: ElementRef | undefined;
+  @ViewChild('create_task') createTask: TemplateRef<any> | undefined;
   faTachometerAlt = faTachometerAlt;
   protected readonly faUser = faUser;
   protected readonly faUsers = faUsers;
@@ -305,6 +309,46 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   close() {
     this.show = !this.show;
     // setTimeout(() => (this.show = true), 3000);
+  }
+
+  openCreateTaskModal(content: any): void {
+    this.modalService.open(content, { size: 'lg' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
+    });
+  }
+
+  onTaskCreated(task: Task, modal: any): void {
+    console.log('Task created:', task);
+    modal.close('Task created');
+    // Optional: Show success message, refresh list, etc.
+    this.alertService.success('Task created successfully');
+    // Optional: Refresh task list if you have one
+    this.getClient(); // Refresh client data if needed
+  }
+
+  openShowTaskModal(taskId: number, content: any): void {
+    this.selectedTaskId = taskId;
+    this.modalService.open(content, { size: 'lg' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
+    });
+  }
+
+  onTaskUpdated(task: Task, modal: any): void {
+    console.log('Task updated:', task);
+    this.alertService.success('Task updated successfully');
+    modal.close('Task updated');
+    // Refresh your task list if needed
+  }
+
+  onTaskDeleted(taskId: number, modal: any): void {
+    console.log('Task deleted:', taskId);
+    this.alertService.success('Task deleted successfully');
+    modal.close('Task deleted');
+    // Refresh your task list if needed
   }
 
 }

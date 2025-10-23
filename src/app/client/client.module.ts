@@ -44,6 +44,8 @@ import {SelectBoxComponent} from './select-box/single/select-box.component';
 import {ReopenCaseComponent} from './case/reopen-case/reopen-case.component';
 import {AddCategoryComponent} from './select-box/add-category/add-category.component';
 import {SelectModule} from './select-box/select/select.module';
+import {CreateTaskComponent} from './create-task/create-task.component';
+import {ShowSingleTaskComponent} from './components/tasks/show-single-task/show-single-task.component';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
@@ -57,7 +59,8 @@ const appRoutes: Routes = [
   {path: 'employers/:id', component: ShowSingleEmployerComponent},
   {path: ':id/create-counseling', component: CreateCounselingComponent},
   {path: ':id/edit', component: EditClientComponent},
-  {path: ':client_id/counselings/:counseling_id', component: ShowCounselingComponent}
+  {path: ':client_id/counselings/:counseling_id', component: ShowCounselingComponent},
+  {path: 'tasks/:task_id', component: ShowSingleTaskComponent},
 ];
 
 @NgModule({
@@ -103,7 +106,9 @@ const appRoutes: Routes = [
     ReopenCaseComponent,
     AddCategoryComponent,
     ClientFormComponent,
-    SelectModule
+    SelectModule,
+    CreateTaskComponent,
+    ShowSingleTaskComponent
   ],
     exports: [
     ],

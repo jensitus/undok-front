@@ -326,6 +326,12 @@
               edit
             </button>
 
+            <button class="btn btn-sm btn-outline-primary m-3"
+                    [disabled]="client.openCase === null"
+                    (click)="openCreateTaskModal(createTask)">
+              Create Task
+            </button>
+
             <app-delete [id_to_delete]="client.person.id" [type]="deleteTypeClient"
                         [delete_object_name]="client.keyword"></app-delete>
           </div>
@@ -429,6 +435,35 @@
       </div>
     </ng-template>
 
+    <ng-template #create_task let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Create Task</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-create-task [caseId]="client.openCase.id"
+                         (taskCreated)="onTaskCreated($event, modal)">
+
+        </app-create-task>
+      </div>
+    </ng-template>
+
+    <ng-template #show_task let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Task Details</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-show-single-task
+          [taskId]="selectedTaskId"
+          (taskUpdated)="onTaskUpdated($event, modal)"
+          (taskDeleted)="onTaskDeleted($event, modal)"
+          (cancelled)="modal.dismiss('Cancel')">
+        </app-show-single-task>
+      </div>
+    </ng-template>
 
   </div>
 
