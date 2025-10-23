@@ -1,0 +1,109 @@
+<div class="card">
+  <div class="card-header">
+    <h4>Create New Task</h4>
+  </div>
+  <div class="card-body">
+    @if (submitError()) {
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ submitError() }}
+        <button type="button" class="btn-close" (click)="submitError.set(null)"></button>
+      </div>
+    }
+
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+      <!-- Case ID -->
+      <div class="mb-3">
+        <label for="caseId" class="form-label">Case ID <span class="text-danger">*</span></label>
+        <input
+          type="number"
+          class="form-control"
+          id="caseId"
+          formControlName="caseId"
+          [class.is-invalid]="isFieldInvalid('caseId')"
+        >
+        @if (isFieldInvalid('caseId')) {
+          <div class="invalid-feedback">
+            {{ getFieldError('caseId') }}
+          </div>
+        }
+      </div>
+
+      <!-- Title -->
+      <div class="mb-3">
+        <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          formControlName="title"
+          [class.is-invalid]="isFieldInvalid('title')"
+          placeholder="Enter task title"
+        >
+        @if (isFieldInvalid('title')) {
+          <div class="invalid-feedback">
+            {{ getFieldError('title') }}
+          </div>
+        }
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          class="form-control"
+          id="description"
+          formControlName="description"
+          rows="3"
+          placeholder="Enter task description (optional)"
+        ></textarea>
+      </div>
+
+      <!-- Status -->
+      <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        <select class="form-select" id="status" formControlName="status">
+          <option value="Open">Open</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+
+      <!-- Due Date -->
+      <div class="mb-3">
+        <label for="dueDate" class="form-label">Due Date</label>
+        <input
+          type="date"
+          class="form-control"
+          id="dueDate"
+          formControlName="dueDate"
+        >
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="d-flex gap-2">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="submitting() || taskForm.invalid"
+        >
+          @if (submitting()) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Creating...
+          } @else {
+            Create Task
+          }
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="onCancel()"
+          [disabled]="submitting()"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

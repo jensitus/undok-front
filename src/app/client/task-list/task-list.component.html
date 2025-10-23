@@ -1,0 +1,26 @@
+@if (taskService.loading()) {
+  <div>Loading tasks...</div>
+}
+
+@if (taskService.error()) {
+  <div class="alert alert-danger">{{ taskService.error() }}</div>
+}
+
+@for (task of taskService.tasks(); track task.id) {
+  <div class="row">
+    <div class="col-md-12 p-2">
+      <div>
+        <a [routerLink]="['/clients/tasks', task.id]">View Task</a>
+      </div>
+      <div>
+        <b>{{ task.title }}</b>
+      </div>
+      <div>
+        {{ task.description }}
+      </div>
+    </div>
+    <div class="col-12"><hr></div>
+  </div>
+}
+
+<p>Total tasks: {{ taskService.taskCount() }}</p>
