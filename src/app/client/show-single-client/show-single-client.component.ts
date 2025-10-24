@@ -40,7 +40,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   client: Client | undefined;
   private closeResult = '';
   public isCollapsed = false;
-  selectedTaskId: number | undefined;
+  selectedTaskId: string | undefined;
   @ViewChild('show_task') showTask: TemplateRef<any> | undefined;
   @ViewChild('content_create_counseling') contentCreateCounseling: ElementRef | undefined;
   @ViewChild('create_employer') createEmployer: ElementRef | undefined;
@@ -326,15 +326,6 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     this.alertService.success('Task created successfully');
     // Optional: Refresh task list if you have one
     this.getClient(); // Refresh client data if needed
-  }
-
-  openShowTaskModal(taskId: number, content: any): void {
-    this.selectedTaskId = taskId;
-    this.modalService.open(content, { size: 'lg' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
-    });
   }
 
   onTaskUpdated(task: Task, modal: any): void {

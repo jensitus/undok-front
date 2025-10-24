@@ -14,7 +14,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ChartsModule} from '../charts/charts.module';
 import {AlertModule} from '../components/alert/alert.module';
-import {TaskListComponent} from '../../../client/task-list/task-list.component';
+import {TaskListComponent} from '../../../client/components/tasks/task-list/task-list.component';
 
 @NgModule({
     imports: [

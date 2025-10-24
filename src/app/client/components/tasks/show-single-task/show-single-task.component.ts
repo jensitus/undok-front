@@ -7,6 +7,7 @@ import {CommonModule} from '@angular/common';
 import { faEdit, faSave, faTimes, faTrash, faTachometerAlt, faTasks } from '@fortawesome/free-solid-svg-icons';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {AlertService} from '../../../../admin-template/layout/components/alert/services/alert.service';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-show-single-task',
@@ -49,6 +50,7 @@ export class ShowSingleTaskComponent implements OnInit {
 
   // Reactive form
   taskForm: FormGroup;
+  private routeParams = toSignal(this.activatedRoute.params);
 
   constructor() {
     this.taskForm = this.fb.group({
@@ -61,12 +63,12 @@ export class ShowSingleTaskComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params => {
-      this.taskId = params['task_id'];
-      if (this.taskId) {
-        this.loadTask(String(this.taskId));
-      }
-    });
+    const params = this.routeParams();
+    const client_id = params?.['client_id'];
+    const taskId = params?.['task_id'];
+    if (taskId) {
+      this.loadTask(String(taskId));
+    }
   }
 
   loadTask(taskId: string): void {

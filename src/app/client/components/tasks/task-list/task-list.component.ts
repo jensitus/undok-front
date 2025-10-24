@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {TaskService} from '../service/task.service';
+import {TaskService} from '../../../service/task.service';
 import {RouterLink} from '@angular/router';
 
 @Component({
@@ -20,7 +20,7 @@ export class TaskListComponent implements OnInit {
     this.taskService.getAllTasks().subscribe();
   }
 
-  deleteTask(id: number) {
+  deleteTask(id: string) {
     this.taskService.deleteTask(id).subscribe();
   }
 

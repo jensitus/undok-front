@@ -1,7 +1,4 @@
 <div class="card">
-  <div class="card-header">
-    <h4>Create New Task</h4>
-  </div>
   <div class="card-body">
     @if (submitError()) {
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -13,14 +10,14 @@
     <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
       <!-- Case ID -->
       <div class="mb-3">
-        <label for="caseId" class="form-label">Case ID <span class="text-danger">*</span></label>
+        <!--<label for="caseId" class="form-label">Case ID <span class="text-danger">*</span></label>
         <input
           type="number"
           class="form-control"
           id="caseId"
           formControlName="caseId"
           [class.is-invalid]="isFieldInvalid('caseId')"
-        >
+        >-->
         @if (isFieldInvalid('caseId')) {
           <div class="invalid-feedback">
             {{ getFieldError('caseId') }}
@@ -101,7 +98,7 @@
           (click)="onCancel()"
           [disabled]="submitting()"
         >
-          Cancel
+          Reset Form
         </button>
       </div>
     </form>

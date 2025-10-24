@@ -10,7 +10,7 @@
           </li>
           <li class="breadcrumb-item">
             <fa-icon [icon]="faTasks" class="me-1"></fa-icon>
-            <a [routerLink]="['/tasks']">Tasks</a>
+            <a [routerLink]="['/clients', currentTask().clientId]">client</a>
           </li>
           <li class="breadcrumb-item active" aria-current="page">
             {{ currentTask()?.title }}
@@ -130,7 +130,7 @@
                       <label class="text-secondary fw-bold">Created By:</label>
                     </div>
                     <div class="col-md-9">
-                      <p class="mb-2">{{ currentTask()?.createdBy }}</p>
+                      <p class="mb-1">{{ currentTask()?.createdBy }}</p>
                     </div>
                   </div>
                 }

@@ -10,7 +10,7 @@
   <div class="row">
     <div class="col-md-12 p-2">
       <div>
-        <a [routerLink]="['/clients/tasks', task.id]">View Task</a>
+        <a [routerLink]="['/clients/' + task.clientId + '/tasks/' + task.id]">View Task</a>
       </div>
       <div>
         <b>{{ task.title }}</b>

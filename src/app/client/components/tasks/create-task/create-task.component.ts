@@ -1,8 +1,8 @@
 import {Component, inject, input, OnInit, output, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {TaskService} from '../service/task.service';
-import {Task} from '../model/task';
+import {TaskService} from '../../../service/task.service';
+import {Task} from '../../../model/task';
 
 @Component({
   selector: 'app-create-task',

@@ -1,5 +1,5 @@
 export interface Task {
-  id: number;
+  id: string;
   caseId: string;
   title: string;
   description?: string;
@@ -8,4 +8,5 @@ export interface Task {
   requiredTime?: number;
   createdBy?: string;
   createdAt?: Date;
+  clientId?: string;
 }

@@ -60,7 +60,7 @@ export class TaskService {
   }
 
   // Get tasks by case ID
-  getTasksByCaseId(caseId: number): Observable<Task[]> {
+  getTasksByCaseId(caseId: string): Observable<Task[]> {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
@@ -96,7 +96,7 @@ export class TaskService {
   }
 
   // Update task
-  updateTask(id: number, task: Partial<Task>): Observable<Task> {
+  updateTask(id: string, task: Partial<Task>): Observable<Task> {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
@@ -116,7 +116,7 @@ export class TaskService {
   }
 
   // Delete task
-  deleteTask(id: number): Observable<void> {
+  deleteTask(id: string): Observable<void> {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
