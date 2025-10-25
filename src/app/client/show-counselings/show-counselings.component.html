@@ -61,12 +61,12 @@
           {{counseling.counselingDate | date: 'dd.MM.yyyy HH:mm'}}
         </td>
         <td>
-          <ngb-highlight [result]="counseling.concern" [innerHTML]="counseling.concern"
+          <ngb-highlight [result]="counseling.concern" [innerHTML]="counseling.concern | linkify: {maxLength: 50, showProtocol: false}"
                          [term]="counselingTableService.searchTerm">
           </ngb-highlight>
         </td>
         <td>
-          <ngb-highlight [result]="counseling.activity" [innerHTML]="counseling.activity" [term]="counselingTableService.searchTerm"></ngb-highlight>
+          <ngb-highlight [result]="counseling.activity" [innerHTML]="counseling.activity | linkify: {maxLength: 50, showProtocol: false}" [term]="counselingTableService.searchTerm"></ngb-highlight>
         </td>
       </tr>
       </tbody>

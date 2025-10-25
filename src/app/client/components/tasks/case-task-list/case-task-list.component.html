@@ -53,7 +53,7 @@
               {{ task.title }}
             </a>
             <div *ngIf="task.description" class="small text-muted">
-              {{ task.description | slice:0:100 }}{{ task.description.length > 100 ? '...' : '' }}
+              {{ task.description | slice:0:75 }}{{ task.description.length > 75 ? '...' : '' }}
             </div>
           </td>
           <td>

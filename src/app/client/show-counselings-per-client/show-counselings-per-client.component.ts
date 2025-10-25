@@ -5,7 +5,6 @@ import {CommonService} from '../../common/services/common.service';
 import {CounselingService} from '../service/counseling.service';
 import {Subscription} from 'rxjs';
 import {DurationService} from '../service/duration.service';
-import {isUndefined} from '../../common/helper/comparison-utils';
 import {CategoryTypes} from '../model/category-types';
 import {CategoryService} from '../service/category.service';
 

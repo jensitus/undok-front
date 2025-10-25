@@ -11,7 +11,7 @@ import {DeleteTypes} from '../delete/delete-types';
 import {CategoryTypes} from '../model/category-types';
 import {Counseling} from '../model/counseling';
 import {CategoryService} from '../service/category.service';
-import {faTachometerAlt, faUser, faUsers} from '@fortawesome/free-solid-svg-icons';
+import {faEdit, faTachometerAlt, faUser, faUsers} from '@fortawesome/free-solid-svg-icons';
 import {isUndefined} from '../../common/helper/comparison-utils';
 import {DurationService} from '../service/duration.service';
 import {Label} from '../model/label';
@@ -28,6 +28,19 @@ import {Task} from '../model/task';
   styleUrls: ['./show-single-client.component.css']
 })
 export class ShowSingleClientComponent implements OnInit, OnDestroy {
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private clientService: ClientService,
+    private modalService: NgbModal,
+    private commonService: CommonService,
+    private sidebarService: SidebarService,
+    private router: Router,
+    private categoryService: CategoryService,
+    private durationService: DurationService,
+    private alertService: AlertService,
+  ) {
+  }
 
   show = false;
   autohide = true;
@@ -60,18 +73,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   private joinCategories: JoinCategory[] = [];
   private joinCategory: JoinCategory;
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private clientService: ClientService,
-    private modalService: NgbModal,
-    private commonService: CommonService,
-    private sidebarService: SidebarService,
-    private router: Router,
-    private categoryService: CategoryService,
-    private durationService: DurationService,
-    private alertService: AlertService,
-  ) {
-  }
+  protected readonly faEdit = faEdit;
 
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -341,5 +343,4 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     modal.close('Task deleted');
     // Refresh your task list if needed
   }
-
 }

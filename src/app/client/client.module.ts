@@ -47,6 +47,7 @@ import {SelectModule} from './select-box/select/select.module';
 import {CreateTaskComponent} from './components/tasks/create-task/create-task.component';
 import {ShowSingleTaskComponent} from './components/tasks/show-single-task/show-single-task.component';
 import {CaseTaskListComponent} from './components/tasks/case-task-list/case-task-list.component';
+import {LinkifyPipe} from '../common/helper/linkify.pipe';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
@@ -110,7 +111,8 @@ const appRoutes: Routes = [
     SelectModule,
     CreateTaskComponent,
     ShowSingleTaskComponent,
-    CaseTaskListComponent
+    CaseTaskListComponent,
+    LinkifyPipe
   ],
     exports: [
     ],

@@ -11,7 +11,7 @@ import {CommonService} from '../../common/services/common.service';
 })
 export class CreateCommentComponent implements OnInit, OnDestroy {
 
-  @Input() private clientId: string;
+  @Input() public clientId: string;
   @Input() public comment: string;
   @Input() public delete = false;
   @Output() public commentSaved: EventEmitter<boolean> = new EventEmitter();
