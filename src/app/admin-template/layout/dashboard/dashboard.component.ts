@@ -4,7 +4,7 @@ import {User} from '../../../auth/model/user';
 import {Router} from '@angular/router';
 import {CommonService} from '../../../common/services/common.service';
 import {ClientService} from '../../../client/service/client.service';
-import {faComments, faShoppingCart, faSurprise, faTasks, faUsers} from '@fortawesome/free-solid-svg-icons';
+import {faComments, faShoppingCart, faSurprise, faTachometerAlt, faTasks, faUsers} from '@fortawesome/free-solid-svg-icons';
 import {EmployerService} from '../../../client/service/employer.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -126,4 +126,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
     );
   }
 
+  protected readonly faTachometerAlt = faTachometerAlt;
 }

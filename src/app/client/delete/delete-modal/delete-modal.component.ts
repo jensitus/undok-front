@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeleteTypes} from '../delete-types';
+import {faTrash} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-delete-modal',
@@ -32,4 +33,6 @@ export class DeleteModalComponent implements OnInit {
       this.confirmed.emit(false);
     });
   }
+
+  protected readonly faTrash = faTrash;
 }

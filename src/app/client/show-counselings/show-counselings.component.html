@@ -41,34 +41,32 @@
     <table class="table table-striped mt-5">
       <thead>
       <tr>
+        <th scope="col">Keyword</th>
+        <th scope="col">Klient:in</th>
         <th scope="col">Datum</th>
         <th scope="col">Anliegen</th>
         <th scope="col">Aktivität</th>
-        <th scope="col">Keyword</th>
-        <th scope="col">Klient:in</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let counseling of counselings$ | async; index as i">
         <td class="width_10">
-          {{counseling.counselingDate | date: 'dd.MM.yyyy HH:mm'}}
-        </td>
-        <td class="width_20">
-          <ngb-highlight [result]="counseling.concern" [innerHTML]="counseling.concern"
-                         [term]="counselingTableService.searchTerm">
-          </ngb-highlight>
-        </td>
-        <td>
-          <ngb-highlight [result]="counseling.activity" [innerHTML]="counseling.activity" [term]="counselingTableService.searchTerm"></ngb-highlight>
-        </td>
-        <td>
-          <a [routerLink]="['/clients', counseling.clientId]">
-            <ngb-highlight [result]="counseling.keyword" [term]="counselingTableService.searchTerm"></ngb-highlight>
-          </a>
+          <a [routerLink]="['/clients', counseling.clientId]"><ngb-highlight [result]="counseling.keyword" [term]="counselingTableService.searchTerm"></ngb-highlight></a>
         </td>
         <td class="width_10">
           <ngb-highlight [result]="counseling.clientFullName"
                          [term]="counselingTableService.searchTerm"></ngb-highlight>
+        </td>
+        <td class="width_10">
+          {{counseling.counselingDate | date: 'dd.MM.yyyy HH:mm'}}
+        </td>
+        <td>
+          <ngb-highlight [result]="counseling.concern" [innerHTML]="counseling.concern | linkify: {maxLength: 50, showProtocol: false}"
+                         [term]="counselingTableService.searchTerm">
+          </ngb-highlight>
+        </td>
+        <td>
+          <ngb-highlight [result]="counseling.activity" [innerHTML]="counseling.activity | linkify: {maxLength: 50, showProtocol: false}" [term]="counselingTableService.searchTerm"></ngb-highlight>
         </td>
       </tr>
       </tbody>

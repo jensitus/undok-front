@@ -1,22 +1,22 @@
 <div class="row" *ngIf="!update">
-  <div class="col m-1">
+  <div class="col-md-8">
     {{categoryName}}
   </div>
-  <div class="col m-1">
+  <div class="col-md-4 text-right">
     <span class="set-cursor-pointer" (click)="updateCategory()"><small>edit</small></span>
   </div>
 </div>
 <div class="row" *ngIf="update">
-  <div class="col p-2">
+  <div class="col-md-6 p-2">
     <div class="form-group">
       <input type="text" [(ngModel)]="categoryName" class="form-control" />
       <label *ngIf="errorMessage !== null"><small class="text-danger">{{errorMessage}}</small></label>
     </div>
   </div>
-  <div class="col m-1">
+  <div class="col-md-3 m-1">
     <button class="btn btn-sm btn-outline-dark" (click)="editCategory()">click</button>
   </div>
-  <div class="col m-1">
+  <div class="col-md-3 m-1">
     <span class="set-cursor-pointer" (click)="updateCategory()"><small>edit</small></span>
   </div>
 </div>

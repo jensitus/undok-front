@@ -35,4 +35,6 @@ export interface Client {
   furtherContact?: string;
   comment?: string;
 
+  alert?: boolean;
+
 }

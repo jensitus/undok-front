@@ -132,7 +132,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
       city: client.person.address.city ? client.person.address.city : null,
       email: client.person.email ? client.person.email : null,
       labourMarketAccess: client.labourMarketAccess ? client.labourMarketAccess : null,
-      interpreterNecessary: client.interpreterNecessary ? client.interpreterNecessary : false,
+      interpreterNecessary: client.interpreterNecessary ? client.interpreterNecessary : null,
       howHasThePersonHeardFromUs: client.howHasThePersonHeardFromUs ? client.howHasThePersonHeardFromUs : null,
       vulnerableWhenAssertingRights: client.vulnerableWhenAssertingRights ? client.vulnerableWhenAssertingRights : null,
       nationality: client.nationality ? client.nationality : null,
@@ -146,6 +146,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
       workingRelationship: client.openCase.workingRelationship ? client.openCase.workingRelationship : null,
       furtherContact: client.furtherContact ? client.furtherContact : null,
       comment: client.comment ? client.comment : null,
+      alert: client.alert ? client.alert : null,
     };
   }
 
@@ -303,9 +304,9 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
       lastName: null,
       gender: null,
       labourMarketAccess: null,
-      interpreterNecessary: false,
+      interpreterNecessary: null,
       howHasThePersonHeardFromUs: null,
-      vulnerableWhenAssertingRights: false,
+      vulnerableWhenAssertingRights: null,
       nationality: null,
       language: null,
       sector: null,
@@ -315,6 +316,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
       humanTrafficking: false,
       targetGroup: null,
       workingRelationship: null,
+      alert: false,
     };
   }
 

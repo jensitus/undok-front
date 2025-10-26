@@ -59,4 +59,6 @@ export interface ClientForm {
 
   furtherContact?: string;
   comment?: string;
+
+  alert?: boolean;
 }

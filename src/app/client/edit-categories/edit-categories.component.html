@@ -1,22 +1,79 @@
-<app-alert></app-alert>
-<div class="row">
-  <div class="col">
-    <h4>Kategorien</h4>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <h2>Edit Categories</h2>
+    </div>
   </div>
-</div>
-<div class="row" *ngFor="let catMapEntry of catMap | keyvalue">
-  <div class="mt-3">
-    <b>{{ Label[catMapEntry.key] }}</b>
-  </div>
-  <div class="col-md-4">
-    <app-add-category [stringLabel]="catMapEntry.key"
-                      [categoryType]="CategoryTypes[catMapEntry.key]"
-                      (submitted)="reload()" (error)="showError($event)">
-    </app-add-category>
-  </div>
-  <div *ngFor="let c of catMapEntry.value">
-    <app-edit-category [categoryId]="c.id" [categoryName]="c.name"></app-edit-category>
-  </div>
-  <hr>
-</div>
 
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="text-center py-4">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error()) {
+    <div class="alert alert-danger" role="alert">
+      {{ error() }}
+    </div>
+  }
+
+  <!-- Categories Display -->
+  @if (!loading() && !error()) {
+    <div class="row">
+      @for (catType of getCategoryTypes(); track catType) {
+        <div class="col-md-6 mb-4">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">{{ Label[catType] || catType }}</h5>
+            </div>
+            <div class="card-body">
+              <app-add-category [stringLabel]="catType"
+                                [categoryType]="CategoryTypes[catType]"
+                                (submitted)="reload()" (error)="showError($event)">
+              </app-add-category>
+              <!--<ul class="list-group list-group-flush">-->
+                @for (category of getCategoriesByType(catType); track category.id) {
+                  <!--<li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="btn-group btn-group-sm">-->
+                      <app-edit-category [categoryId]="category.id" [categoryName]="category.name"></app-edit-category>
+                      <!--
+                                            <button class="btn btn-outline-primary"
+                                                    (click)="editCategory(category)"
+                                                    title="Edit">
+                                              Edit
+                                            </button>
+                                            <button class="btn btn-outline-danger"
+                                                    (click)="deleteCategory(category)"
+                                                    title="Delete">
+                                              Delete
+                                            </button>
+                                            -->
+                    <!--</div>
+                  </li>-->
+                } @empty {
+                  <li class="list-group-item text-muted">
+                    No categories found
+                  </li>
+                }
+              <!--</ul>-->
+
+              <!-- Add Category Button
+              <div class="mt-3">
+                <button class="btn btn-primary w-100"
+                        (click)="addCategory(catType)">
+                  Add {{ Label[catType] || catType }}
+                </button>
+              </div>
+              -->
+
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

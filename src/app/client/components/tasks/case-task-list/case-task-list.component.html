@@ -1,0 +1,143 @@
+
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">
+      <fa-icon [icon]="faTasks"></fa-icon>
+      Tasks for this Case
+    </h5>
+    <button (click)="openCreateTaskModal(createTask)" class="btn btn-sm btn-primary">
+      <fa-icon [icon]="faPlus"></fa-icon>
+      Add Task
+    </button>
+  </div>
+
+  <div class="card-body">
+    <!-- Loading State -->
+    <div *ngIf="taskService.loading()" class="text-center py-4">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="taskService.error()" class="alert alert-danger" role="alert">
+      {{ taskService.error() }}
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!taskService.loading() && taskService.tasks().length === 0" class="text-center py-4 text-muted">
+      <fa-icon [icon]="faTasks" size="3x" class="mb-3"></fa-icon>
+      <p>No tasks found for this case.</p>
+      <a (click)="openCreateTaskModal(createTask)" class="btn btn-primary">
+        <fa-icon [icon]="faPlus"></fa-icon>
+        Create First Task
+      </a>
+    </div>
+
+    <!-- Tasks List -->
+    <div *ngIf="!taskService.loading() && taskService.tasks().length > 0" class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Due Date</th>
+          <th>Required Time</th>
+          <th class="text-end">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let task of taskService.tasks()">
+          <td>
+            <a [routerLink]="['/clients/' + task.clientId + '/tasks', task.id]" class="text-decoration-none">
+              {{ task.title }}
+            </a>
+            <div *ngIf="task.description" class="small text-muted">
+              {{ task.description | slice:0:75 }}{{ task.description.length > 75 ? '...' : '' }}
+            </div>
+          </td>
+          <td>
+            <span *ngIf="editingStatusTaskId !== task.id" [class]="getStatusBadgeClass(task.status)">
+              {{ task.status || 'Open' }}
+            </span>
+            <select *ngIf="editingStatusTaskId === task.id"
+                    [(ngModel)]="editingStatus"
+                    class="form-select form-select-sm"
+                    (change)="updateTaskStatus(task.id)">
+              <option value="Open">Open</option>
+              <!--<option value="In Progress">In Progress</option>-->
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </td>
+          <td>{{ formatDate(task.dueDate) }}</td>
+          <td>
+            <span *ngIf="editingTimeTaskId !== task.id">
+              {{ formatRequiredTime(task.requiredTime) }}
+            </span>
+            <div *ngIf="editingTimeTaskId === task.id" class="d-flex align-items-center">
+              <input type="time"
+                     [(ngModel)]="editingTime"
+                     class="form-control form-control-sm me-2"
+                     style="width: 70px;">
+              <button class="btn btn-sm btn-outline-success me-1" (click)="updateTaskRequiredTime(task.id)">
+                <fa-icon [icon]="faFloppyDisk"></fa-icon>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary" (click)="cancelEditTime()">
+                <fa-icon [icon]="faXmark"></fa-icon>
+              </button>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group btn-group-sm" role="group">
+              <button *ngIf="editingStatusTaskId !== task.id"
+                      (click)="startEditStatus(task.id, task.status)"
+                      class="btn btn-outline-success"
+                      title="Change Status">
+                <fa-icon [icon]="faGears"></fa-icon>
+              </button>
+              <button *ngIf="editingStatusTaskId === task.id"
+                      (click)="endEditStatus()"
+                      class="btn btn-outline-danger"
+                      title="Change Status">
+                <fa-icon [icon]="faGears"></fa-icon>
+              </button>
+              <button *ngIf="editingTimeTaskId !== task.id"
+                      (click)="startEditTime(task.id, task.requiredTime)"
+                      class="btn btn-outline-secondary"
+                      title="Edit Required Time">
+                <fa-icon [icon]="faClock"></fa-icon>
+              </button>
+              <a [routerLink]="['/clients/' + task.clientId + '/tasks', task.id]" class="btn btn-outline-primary" title="View/Edit">
+                <fa-icon [icon]="faEdit"></fa-icon>
+              </a>
+              <!--<button (click)="deleteTask(task.id)" class="btn btn-outline-danger" title="Delete">
+                <fa-icon [icon]="faTrash"></fa-icon>
+              </button>-->
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Task Count -->
+    <div *ngIf="!taskService.loading() && taskService.tasks().length > 0" class="mt-3 text-muted small">
+      Total: {{ taskService.taskCount() }} task(s)
+    </div>
+  </div>
+</div>
+
+<ng-template #create_task let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Create Task</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-create-task [caseId]="caseId()"
+                     (taskCreated)="onTaskCreated($event, modal)">
+
+    </app-create-task>
+  </div>
+</ng-template>

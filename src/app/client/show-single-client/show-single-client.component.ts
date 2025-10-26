@@ -11,13 +11,15 @@ import {DeleteTypes} from '../delete/delete-types';
 import {CategoryTypes} from '../model/category-types';
 import {Counseling} from '../model/counseling';
 import {CategoryService} from '../service/category.service';
-import {faTachometerAlt, faUser, faUsers} from '@fortawesome/free-solid-svg-icons';
+import {faEdit, faTachometerAlt, faUser, faUsers} from '@fortawesome/free-solid-svg-icons';
 import {isUndefined} from '../../common/helper/comparison-utils';
 import {DurationService} from '../service/duration.service';
 import {Label} from '../model/label';
 import {DropdownItem} from '../model/dropdown-item';
 import {JoinCategory} from '../model/join-category';
 import {EntityTypes} from '../model/entity-types';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import {Task} from '../model/task';
 
 
 @Component({
@@ -26,33 +28,6 @@ import {EntityTypes} from '../model/entity-types';
   styleUrls: ['./show-single-client.component.css']
 })
 export class ShowSingleClientComponent implements OnInit, OnDestroy {
-
-  deleteTypeClient: DeleteTypes = DeleteTypes.CLIENT;
-  counselings: Counseling[] | undefined;
-  private id: string | undefined;
-  private subscription$: Subscription[] = [];
-  person: Person | undefined;
-  client: Client | undefined;
-  private closeResult = '';
-  public isCollapsed = false;
-  @ViewChild('content_create_counseling') contentCreateCounseling: ElementRef | undefined;
-  @ViewChild('create_employer') createEmployer: ElementRef | undefined;
-  @ViewChild('list_employer') assignEmployer: ElementRef | undefined;
-  @ViewChild('edit_client') editClient: ElementRef | undefined;
-  faTachometerAlt = faTachometerAlt;
-  protected readonly faUser = faUser;
-  protected readonly faUsers = faUsers;
-  totalCounselingDuration = 0;
-  totalHumanReadableDuration: string | undefined;
-  protected readonly Label = Label;
-  protected reOpenCase = false;
-  protected closeCase = false;
-  jobFunctionCategoryType: CategoryTypes = CategoryTypes.JOB_FUNCTION;
-  jobFunctionLabel: Label = Label.JOB_FUNCTION;
-  deSelectedItems: DropdownItem[] = [];
-  private deSelectedCategories: JoinCategory[] = [];
-  private joinCategories: JoinCategory[] = [];
-  private joinCategory: JoinCategory;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -63,8 +38,42 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     private router: Router,
     private categoryService: CategoryService,
     private durationService: DurationService,
+    private alertService: AlertService,
   ) {
   }
+
+  show = false;
+  autohide = true;
+
+  deleteTypeClient: DeleteTypes = DeleteTypes.CLIENT;
+  counselings: Counseling[] | undefined;
+  private id: string | undefined;
+  private subscription$: Subscription[] = [];
+  person: Person | undefined;
+  client: Client | undefined;
+  private closeResult = '';
+  public isCollapsed = false;
+  selectedTaskId: string | undefined;
+  @ViewChild('show_task') showTask: TemplateRef<any> | undefined;
+  @ViewChild('content_create_counseling') contentCreateCounseling: ElementRef | undefined;
+  @ViewChild('create_employer') createEmployer: ElementRef | undefined;
+  @ViewChild('list_employer') assignEmployer: ElementRef | undefined;
+  @ViewChild('edit_client') editClient: ElementRef | undefined;
+  @ViewChild('create_task') createTask: TemplateRef<any> | undefined;
+  faTachometerAlt = faTachometerAlt;
+  protected readonly faUser = faUser;
+  protected readonly faUsers = faUsers;
+  totalCounselingDuration = 0;
+  totalHumanReadableDuration: string | undefined;
+  protected readonly Label = Label;
+  protected reOpenCase = false;
+  protected closeCase = false;
+  deSelectedItems: DropdownItem[] = [];
+  private deSelectedCategories: JoinCategory[] = [];
+  private joinCategories: JoinCategory[] = [];
+  private joinCategory: JoinCategory;
+
+  protected readonly faEdit = faEdit;
 
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -151,6 +160,9 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
         if (this.client.openCase !== null) {
           this.closeCase = true;
         }
+        if (this.client.alert === true) {
+          this.show = true;
+        }
         // @ts-ignore
         this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
         this.getTotalCounselingDuration();
@@ -235,64 +247,9 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     }
   }
 
-  // openJobFunctionModal(job_function: TemplateRef<any>) {
-  //   this.modalService.open(job_function, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
-  //     this.closeResult = `Closed with: ${result}`;
-  //   }, (reason) => {
-  //     this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
-  //   });
-  // }
-
-  openTargetGroupModal(target_group: TemplateRef<any>) {
-    this.modalService.open(target_group, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
-    });
+  close() {
+    this.show = !this.show;
+    // setTimeout(() => (this.show = true), 3000);
   }
 
-  showCategoryValue(event: DropdownItem[], categoryType: CategoryTypes) {
-    this.joinCategories = [];
-    event.forEach(e => {
-      this.joinCategory = {
-        categoryId: e.itemId,
-        categoryType: categoryType,
-        entityId: this.client.id,
-        entityType: EntityTypes.CLIENT
-      };
-      this.joinCategories.push(this.joinCategory);
-    });
-  }
-
-  showDeSelected(event: DropdownItem[]) {
-    this.deSelectedItems = event;
-  }
-
-  saveCategories(categoryType: CategoryTypes) {
-      this.deSelectedItems.forEach((deSelected) => {
-        const deselect: JoinCategory = {
-          entityType: EntityTypes.CLIENT,
-          entityId: this.client.id,
-          categoryType: categoryType,
-          categoryId: deSelected.itemId
-        };
-        this.deSelectedCategories.push(deselect);
-      });
-      this.subscription$.push(
-        this.categoryService.deleteJoinCategories(this.deSelectedCategories).subscribe({
-          next: () => {
-
-          }, error: (error) => {
-            console.log(error);
-          }
-        })
-      );
-      this.subscription$.push(
-        this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
-          this.commonService.setReloadSubject(true);
-        })
-      );
-      this.deSelectedCategories = [];
-      this.joinCategories = [];
-  }
 }
