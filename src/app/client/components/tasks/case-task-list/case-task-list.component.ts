@@ -2,17 +2,21 @@ import {Component, effect, inject, input, OnInit, TemplateRef, ViewChild} from '
 import {CommonModule} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {faEdit, faPlus, faTasks, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {faEdit, faPlus, faTasks, faTrash, faGears, faClock} from '@fortawesome/free-solid-svg-icons';
 import {TaskService} from '../../../service/task.service';
 import {CreateTaskComponent} from '../create-task/create-task.component';
 import {Task} from '../../../model/task';
 import {AlertService} from '../../../../admin-template/layout/components/alert/services/alert.service';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule} from '@angular/forms';
+import {StatusUtility} from '../../../../common/helper/status-utility';
+import {faFloppyDisk} from '@fortawesome/free-solid-svg-icons/faFloppyDisk';
+import {faXmark} from '@fortawesome/free-solid-svg-icons/faXmark';
 
 @Component({
   selector: 'app-case-task-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, FontAwesomeModule, CreateTaskComponent],
+  imports: [CommonModule, RouterLink, FontAwesomeModule, CreateTaskComponent, FormsModule],
   templateUrl: './case-task-list.component.html',
   styleUrl: './case-task-list.component.css'
 })
@@ -37,11 +41,21 @@ export class CaseTaskListComponent implements OnInit {
   @ViewChild('create_task') createTask: TemplateRef<any> | undefined;
   private closeResult = '';
 
+  // Editing state
+  editingStatusTaskId: string | null = null;
+  editingStatus = '';
+  editingTimeTaskId: string | null = null;
+  editingTime = '';
+
   // Icons
   faEdit = faEdit;
   faTrash = faTrash;
   faPlus = faPlus;
   faTasks = faTasks;
+
+  protected readonly faGears = faGears;
+
+  protected readonly faClock = faClock;
 
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -76,17 +90,21 @@ export class CaseTaskListComponent implements OnInit {
   }
 
   getStatusBadgeClass(status: string | undefined): string {
-    switch (status?.toLowerCase()) {
-      case 'completed':
-        return 'badge bg-success';
-      case 'in progress':
-        return 'badge bg-primary';
-      case 'cancelled':
-        return 'badge bg-danger';
-      default:
-        return 'badge bg-secondary';
-    }
+    return StatusUtility.getStatusBadgeClass(status);
   }
+
+  // getStatusBadgeClass(status: string | undefined): string {
+  //   switch (status?.toLowerCase()) {
+  //     case 'completed':
+  //       return 'badge bg-success';
+  //     case 'in progress':
+  //       return 'badge bg-primary';
+  //     case 'cancelled':
+  //       return 'badge bg-danger';
+  //     default:
+  //       return 'badge bg-secondary';
+  //   }
+  // }
 
   formatDate(date: Date | string | undefined): string {
     if (!date) { return 'Not set'; }
@@ -111,4 +129,78 @@ export class CaseTaskListComponent implements OnInit {
     });
   }
 
+  startEditStatus(taskId: string, currentStatus: string | undefined): void {
+    this.editingStatusTaskId = taskId;
+    this.editingStatus = currentStatus || 'Open';
+  }
+
+  endEditStatus() {
+    this.editingStatusTaskId = null;
+    this.editingStatus = '';
+  }
+
+  startEditTime(taskId: string, currentRequiredTime: number | undefined): void {
+    this.editingTimeTaskId = taskId;
+    // Convert minutes to HH:mm format
+    if (currentRequiredTime) {
+      const hours = Math.floor(currentRequiredTime / 60);
+      const minutes = currentRequiredTime % 60;
+      this.editingTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    } else {
+      this.editingTime = '00:00';
+    }
+  }
+
+  updateTaskRequiredTime(taskId: string): void {
+    // Convert HH:mm to minutes
+    const [hoursStr, minutesStr] = this.editingTime.split(':');
+    const hours = parseInt(hoursStr, 10);
+    const minutes = parseInt(minutesStr, 10);
+    const totalMinutes = hours * 60 + minutes;
+
+    this.taskService.updateTask(taskId, { requiredTime: totalMinutes }).subscribe({
+      next: () => {
+        this.alertService.success('Required time updated successfully');
+        this.editingTimeTaskId = null;
+        this.editingTime = '';
+      },
+      error: (err) => {
+        console.error('Error updating required time:', err);
+        this.alertService.error('Failed to update required time');
+        this.editingTimeTaskId = null;
+        this.editingTime = '';
+      }
+    });
+  }
+
+  cancelEditTime(): void {
+    this.editingTimeTaskId = null;
+    this.editingTime = '';
+  }
+
+  formatRequiredTime(requiredTime: number | undefined): string {
+    if (!requiredTime) { return '-'; }
+    const hours = Math.floor(requiredTime / 60);
+    const minutes = requiredTime % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  }
+
+  updateTaskStatus(taskId: string): void {
+    this.taskService.updateTask(taskId, { status: this.editingStatus }).subscribe({
+      next: () => {
+        this.alertService.success('Task status updated successfully');
+        this.editingStatusTaskId = null;
+        this.editingStatus = '';
+      },
+      error: (err) => {
+        console.error('Error updating task status:', err);
+        this.alertService.error('Failed to update task status');
+        this.editingStatusTaskId = null;
+        this.editingStatus = '';
+      }
+    });
+  }
+
+  protected readonly faFloppyDisk = faFloppyDisk;
+  protected readonly faXmark = faXmark;
 }

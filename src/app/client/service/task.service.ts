@@ -31,7 +31,7 @@ export class TaskService {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
-    return this.http.get<Task[]>(this.apiUrl).pipe(
+    return this.http.get<Task[]>(this.apiUrl + '/active').pipe(
       tap(tasks => {
         this.tasksSignal.set(tasks);
         this.loadingSignal.set(false);

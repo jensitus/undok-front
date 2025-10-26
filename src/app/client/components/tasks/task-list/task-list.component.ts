@@ -1,6 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {TaskService} from '../../../service/task.service';
 import {RouterLink} from '@angular/router';
+import {StatusUtility} from '../../../../common/helper/status-utility';
 
 @Component({
   selector: 'app-task-list',
@@ -22,6 +23,10 @@ export class TaskListComponent implements OnInit {
 
   deleteTask(id: string) {
     this.taskService.deleteTask(id).subscribe();
+  }
+
+  getStatusBadgeClass(status: string | undefined): string {
+    return StatusUtility.getStatusBadgeClass(status);
   }
 
 }

@@ -115,14 +115,14 @@
                   </div>
                 </div>
 
-                <div class="row mb-3">
+                <!--<div class="row mb-3">
                   <div class="col-md-3">
                     <label class="text-secondary fw-bold">Case ID:</label>
                   </div>
                   <div class="col-md-9">
                     <p class="mb-2">{{ currentTask()?.caseId }}</p>
                   </div>
-                </div>
+                </div>-->
 
                 @if (currentTask()?.createdBy) {
                   <div class="row mb-3">
@@ -169,7 +169,7 @@
                   <label for="status" class="form-label">Status</label>
                   <select class="form-select" id="status" formControlName="status">
                     <option value="Open">Open</option>
-                    <option value="In Progress">In Progress</option>
+                    <!--<option value="In Progress">In Progress</option>-->
                     <option value="Completed">Completed</option>
                     <option value="Cancelled">Cancelled</option>
                   </select>
