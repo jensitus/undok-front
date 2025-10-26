@@ -96,17 +96,17 @@
                       title="Change Status">
                 <fa-icon [icon]="faGears"></fa-icon>
               </button>
+              <button *ngIf="editingStatusTaskId === task.id"
+                      (click)="endEditStatus()"
+                      class="btn btn-outline-danger"
+                      title="Change Status">
+                <fa-icon [icon]="faGears"></fa-icon>
+              </button>
               <button *ngIf="editingTimeTaskId !== task.id"
                       (click)="startEditTime(task.id, task.requiredTime)"
                       class="btn btn-outline-secondary"
                       title="Edit Required Time">
                 <fa-icon [icon]="faClock"></fa-icon>
-              </button>
-              <button *ngIf="editingStatusTaskId === task.id"
-                      (click)="endEditStatus()"
-                      class="btn btn-outline-info"
-                      title="Change Status">
-                <fa-icon [icon]="faGears"></fa-icon>
               </button>
               <a [routerLink]="['/clients/' + task.clientId + '/tasks', task.id]" class="btn btn-outline-primary" title="View/Edit">
                 <fa-icon [icon]="faEdit"></fa-icon>
