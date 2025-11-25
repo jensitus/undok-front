@@ -9,6 +9,7 @@ import {Client} from '../model/client';
 import {CountryData} from '../../admin-template/layout/charts/doughnut/country-data';
 import {AllClient} from '../model/all-client';
 import {ResponseMessage} from '../../common/helper/response-message';
+import {LanguageResult} from '../first-counseling-count/first-counseling-count.component';
 
 @Injectable({
   providedIn: 'root'
@@ -62,6 +63,18 @@ export class ClientService {
 
   getCountryDataForCharts(): Observable<CountryData> {
     return this.http.get<CountryData>(this.apiUrl + this.UNDOK_DASHBOARD + '/chart/country-chart-data');
+  }
+
+  // Counts clients whose first counseling lies within a given date-time range (inclusive)
+  // Expects ISO 8601 date-time strings (e.g., 2025-11-23T09:10)
+  countFirstCounselingInRange(fromIso: string, toIso: string): Observable<number> {
+    const url = this.apiUrl + '/service/undok/counselings/count-first-by-date-range';
+    return this.http.get<number>(url, {params: {from: fromIso, to: toIso}});
+  }
+
+  countLanguagesByDateRange(fromIso: string, toIso: string): Observable<LanguageResult[]> {
+    const url = this.apiUrl + '/service/undok/counselings/count-languages-by-date-range';
+    return this.http.get<LanguageResult[]>(url, {params: {from: fromIso, to: toIso}});
   }
 
 }

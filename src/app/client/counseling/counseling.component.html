@@ -40,7 +40,12 @@
               </div>
             </div>
             <div class="col-3">
-              <ngb-timepicker [(ngModel)]="time" name="time"></ngb-timepicker>
+              <!--<ngb-timepicker [(ngModel)]="time" name="time"></ngb-timepicker>-->
+              <div class="input-group">
+                <input type="number" class="form-control" [(ngModel)]="time.hour" min="0" max="23" placeholder="hh">
+                <span class="input-group-text">:</span>
+                <input type="number" class="form-control" [(ngModel)]="time.minute" min="0" max="59" placeholder="mm">
+              </div>
             </div>
           </div>
         </div>

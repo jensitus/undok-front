@@ -32,7 +32,6 @@ import {ShowSingleEmployerComponent} from './show-single-employer/show-single-em
 import {EditEmployerComponent} from './edit-employer/edit-employer.component';
 import {DeleteComponent} from './delete/delete.component';
 import {DeleteModalComponent} from './delete/delete-modal/delete-modal.component';
-import {MultiSelectBoxComponent} from './select-box/multi/multi-select-box.component';
 import {ShowCounselingComponent} from './show-counseling/show-counseling.component';
 import {BackUpComponent} from './back-up/back-up.component';
 import {EditCategoriesComponent} from './edit-categories/edit-categories.component';
@@ -48,6 +47,7 @@ import {CreateTaskComponent} from './components/tasks/create-task/create-task.co
 import {ShowSingleTaskComponent} from './components/tasks/show-single-task/show-single-task.component';
 import {CaseTaskListComponent} from './components/tasks/case-task-list/case-task-list.component';
 import {LinkifyPipe} from '../common/helper/linkify.pipe';
+import {FirstCounselingCountComponent} from './first-counseling-count/first-counseling-count.component';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
@@ -56,6 +56,7 @@ const appRoutes: Routes = [
   {path: 'create', component: CreateClientComponent},
   {path: 'client-list', component: ShowClientsComponent},
   {path: 'counselings', component: ShowCounselingsComponent},
+  {path: 'first-counseling-count', component: FirstCounselingCountComponent},
   {path: ':id', component: ShowSingleClientComponent},
   {path: 'create/employer', component: CreateEmployerComponent},
   {path: 'employers/:id', component: ShowSingleEmployerComponent},
@@ -92,7 +93,7 @@ const appRoutes: Routes = [
     ShowCounselingComponent,
     BackUpComponent,
     EditCategoriesComponent,
-    EditCategoryComponent
+    EditCategoryComponent,
   ],
   imports: [
     CommonModule,
@@ -114,8 +115,8 @@ const appRoutes: Routes = [
     CaseTaskListComponent,
     LinkifyPipe
   ],
-    exports: [
-    ],
+  exports: [
+  ],
   providers: [DecimalPipe]
 })
 export class ClientModule {
