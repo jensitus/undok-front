@@ -1,16 +1,21 @@
 import {Component, inject} from '@angular/core';
-import {NgbDateStruct, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {ClientService} from '../service/client.service';
 import {DateTimeService} from '../service/date-time.service';
 import {Time} from '../model/time';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {JsonPipe, NgIf} from '@angular/common';
-import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NgIf} from '@angular/common';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {DatePickerComponent} from '../../common/date-picker/date-picker.component';
+import {ReportService} from '../service/report.service';
 
 export interface LanguageResult {
   language: string;
+  count: number;
+}
+
+export interface NationalityCount {
+  nationality: string;
   count: number;
 }
 
@@ -20,12 +25,9 @@ export interface LanguageResult {
   templateUrl: './first-counseling-count.component.html',
   imports: [
     FormsModule,
-    NgbInputDatepicker,
     NgIf,
-    FaIconComponent,
     ReactiveFormsModule,
-    DatePickerComponent,
-    JsonPipe
+    DatePickerComponent
   ],
   styleUrls: ['./first-counseling-count.component.css']
 })
@@ -33,7 +35,7 @@ export class FirstCounselingCountComponent {
 
   taskForm: FormGroup;
 
-  constructor(private clientService: ClientService, public dateTimeService: DateTimeService) {
+  constructor() {
     this.taskForm = this.fb.group({
       dueDate: ['']
     });
@@ -44,23 +46,35 @@ export class FirstCounselingCountComponent {
   toTime: Time = {hour: 23, minute: 59};
 
   private fb = inject(FormBuilder);
+  private reportService = inject(ReportService);
+  private dateTimeService = inject(DateTimeService);
 
   loading = false;
   error: string | null = null;
-  result: number | null = null;
+
 
   protected readonly faBars = faBars;
-  dateObject: NgbDateStruct;
+
+  totalNumberOfClientsBoolean: boolean;
   firstCounselingOnly: boolean;
   languagesUsed: boolean;
-  languagesUsedResult: LanguageResult[];
+  nationalityCountBoolean: boolean;
+
+  totalNumberOfClientsError: string | null = null;
   languageError: string | null = null;
+  nationalityError: string | null = null;
+
+
+  languagesUsedResult: LanguageResult[] | null = null;
+  totalNumberOfClientsResult: number | null = null;
+  firstCounselingOnlyResult: number | null = null;
+  nationalitiesResult: NationalityCount[] | null = null;
 
   fetchCount(): void {
     console.log(this.languagesUsed);
     console.log(this.firstCounselingOnly);
     this.error = null;
-    this.result = null;
+    this.firstCounselingOnlyResult = null;
     if (!this.fromDate || !this.toDate) {
       this.error = 'Please select both From and To dates.';
       return;
@@ -72,10 +86,22 @@ export class FirstCounselingCountComponent {
       console.log(fromIso);
       console.log(toIso);
 
-      if (this.firstCounselingOnly) {
-        this.clientService.countFirstCounselingInRange(fromIso, toIso).subscribe({
+      if (this.totalNumberOfClientsBoolean) {
+        this.reportService.countNumberOfCounselingsByDateRange(fromIso, toIso).subscribe({
           next: (count) => {
-            this.result = count;
+            this.totalNumberOfClientsResult = count;
+            this.loading = false;
+          },
+          error: (err) => {
+            this.totalNumberOfClientsError = err?.error?.message || 'Failed to fetch the count.';
+          }
+        });
+      }
+
+      if (this.firstCounselingOnly) {
+        this.reportService.countFirstCounselingInRange(fromIso, toIso).subscribe({
+          next: (count) => {
+            this.firstCounselingOnlyResult = count;
             this.loading = false;
           },
           error: (err) => {
@@ -86,13 +112,25 @@ export class FirstCounselingCountComponent {
       }
 
       if (this.languagesUsed) {
-        this.clientService.countLanguagesByDateRange(fromIso, toIso).subscribe({
+        this.reportService.countLanguagesByDateRange(fromIso, toIso).subscribe({
           next: (result) => {
             this.languagesUsedResult = result;
             this.loading = false;
           },
           error: (err) => {
             this.error = err?.error?.message || 'Failed to fetch languages';
+          }
+        });
+      }
+
+      if (this.nationalityCountBoolean) {
+        this.reportService.countNationalitiesByDateRange(fromIso, toIso).subscribe({
+          next: (result) => {
+            this.nationalitiesResult = result;
+            this.loading = false;
+          },
+          error: (err) => {
+            this.nationalityError = err?.error?.message || 'Failed to fetch nationalities';
           }
         });
       }

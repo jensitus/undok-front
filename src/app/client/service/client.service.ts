@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ClientForm} from '../model/clientForm';
 import {Observable} from 'rxjs';
@@ -16,13 +16,11 @@ import {LanguageResult} from '../first-counseling-count/first-counseling-count.c
 })
 export class ClientService {
 
+  private http = inject(HttpClient);
+
   apiUrl = environment.api_url;
   UNDOK_CLIENTS = '/service/undok/clients';
   UNDOK_DASHBOARD = '/dashboard';
-
-  constructor(
-    private http: HttpClient
-  ) { }
 
   createClient(client: ClientForm): Observable<any> {
     return this.http.post<any>(this.apiUrl + '/service/undok/clients/create', client);
@@ -65,16 +63,6 @@ export class ClientService {
     return this.http.get<CountryData>(this.apiUrl + this.UNDOK_DASHBOARD + '/chart/country-chart-data');
   }
 
-  // Counts clients whose first counseling lies within a given date-time range (inclusive)
-  // Expects ISO 8601 date-time strings (e.g., 2025-11-23T09:10)
-  countFirstCounselingInRange(fromIso: string, toIso: string): Observable<number> {
-    const url = this.apiUrl + '/service/undok/counselings/count-first-by-date-range';
-    return this.http.get<number>(url, {params: {from: fromIso, to: toIso}});
-  }
 
-  countLanguagesByDateRange(fromIso: string, toIso: string): Observable<LanguageResult[]> {
-    const url = this.apiUrl + '/service/undok/counselings/count-languages-by-date-range';
-    return this.http.get<LanguageResult[]>(url, {params: {from: fromIso, to: toIso}});
-  }
 
 }
