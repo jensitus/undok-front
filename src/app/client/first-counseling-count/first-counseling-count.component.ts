@@ -19,6 +19,21 @@ export interface NationalityCount {
   count: number;
 }
 
+export interface GenderCount {
+  gender: string;
+  count: number;
+}
+
+export interface SectorCount {
+  sector: string;
+  count: number;
+}
+
+export interface ActivityCount {
+  activity: string;
+  count: number;
+}
+
 @Component({
   selector: 'app-first-counseling-count',
   standalone: true,
@@ -59,16 +74,25 @@ export class FirstCounselingCountComponent {
   firstCounselingOnly: boolean;
   languagesUsed: boolean;
   nationalityCountBoolean: boolean;
+  genderBoolean: boolean;
+  sectorBoolean: boolean;
+  activityBoolean: boolean;
 
   totalNumberOfClientsError: string | null = null;
   languageError: string | null = null;
   nationalityError: string | null = null;
+  genderError: string | null = null;
+  sectorError: string | null = null;
+  activityError: string | null = null;
 
 
   languagesUsedResult: LanguageResult[] | null = null;
   totalNumberOfClientsResult: number | null = null;
   firstCounselingOnlyResult: number | null = null;
   nationalitiesResult: NationalityCount[] | null = null;
+  gendersResult: GenderCount[] | null = null;
+  sectorResult: SectorCount[] | null = null;
+  activityResult: ActivityCount[] | null = null;
 
   fetchCount(): void {
     console.log(this.languagesUsed);
@@ -133,6 +157,42 @@ export class FirstCounselingCountComponent {
             this.nationalityError = err?.error?.message || 'Failed to fetch nationalities';
           }
         });
+      }
+
+      if (this.genderBoolean) {
+        this.reportService.countGender(fromIso, toIso).subscribe({
+          next: (result) => {
+            this.gendersResult = result;
+            this.loading = false;
+          },
+          error: (err) => {
+            this.genderError = err?.error?.message || 'Failed to fetch gender';
+          }
+        });
+      }
+
+      if (this.sectorBoolean) {
+        this.reportService.countSector(fromIso, toIso).subscribe({
+          next: (result) => {
+            this.sectorResult = result;
+            this.loading = false;
+          },
+          error: (err) => {
+            this.sectorError = err?.error?.message || 'Failed to fetch sector';
+          }
+        });
+
+        if (this.activityBoolean) {
+          this.reportService.countActivity(fromIso, toIso).subscribe({
+            next: (result) => {
+              this.activityResult = result;
+              this.loading = false;
+            },
+            error: (err) => {
+              this.activityError = err?.error?.message || 'Failed to fetch activity';
+            }
+          });
+        }
       }
 
     } catch (e) {

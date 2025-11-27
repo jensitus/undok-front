@@ -2,6 +2,8 @@ import {Component, Input, Output, EventEmitter, OnInit, inject} from '@angular/c
 import {NgbCalendar, NgbDateStruct, NgbInputDatepicker, NgbTimepicker, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 import {NgIf} from '@angular/common';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {faCalendar} from '@fortawesome/free-solid-svg-icons';
 
 export interface DateRange {
   fromDate: NgbDateStruct;
@@ -17,7 +19,8 @@ export interface DateRange {
     FormsModule,
     NgbTimepicker,
     NgbInputDatepicker,
-    NgIf
+    NgIf,
+    FaIconComponent
   ],
   templateUrl: './date-picker.component.html',
   styleUrl: './date-picker.component.css'
@@ -65,5 +68,5 @@ export class DatePickerComponent implements OnInit {
   }
 
 
-
+  protected readonly faCalendar = faCalendar;
 }

@@ -4,7 +4,7 @@
   <app-date-picker
     [mode]="'date'"
     (dateRangeChange)="onDateRangeSelected($event)"></app-date-picker>
-  <button class="btn btn-primary" (click)="fetchGenericCount()">Fetch Count</button>
+  <button class="btn btn-primary" (click)="fetchGenericCount()">Fetch Reports</button>
 
   <div class="form-check mt-4">
     <input class="form-check-input" type="checkbox" [(ngModel)]="totalNumberOfClientsBoolean" id="totalNumber">
@@ -56,7 +56,7 @@
     <div class="mt-3 alert alert-danger">{{ error }}</div>
   }
   @if (!error && firstCounselingOnlyResult !== null) {
-    <div *ngIf="!error && firstCounselingOnlyResult !== null" class="mt-3 alert alert-info">
+    <div class="mt-3 alert alert-info">
       Number of clients with first counseling in range: <strong>{{ firstCounselingOnlyResult }}</strong>
     </div>
   }
@@ -79,5 +79,73 @@
       }
     </strong>
   </div>
+
+  <div class="form-check mt-3">
+    <input class="form-check-input" type="checkbox" [(ngModel)]="genderBoolean" id="genderCount">
+    <label class="form-check-label" for="genderCount">
+      Get the genders and how many clients are assigned to each
+    </label>
+  </div>
+
+  @if (genderError) {
+    <div class="mt-3 alert alert-danger">{{ genderError }}</div>
+  }
+  @if (!genderError && gendersResult !== null) {
+    <div class="mt-3 alert alert-info">
+      genders and assignees: <br>
+      <strong>
+        @for (gender of gendersResult; track gender) {
+          <hr>
+          <span [innerHTML]="gender.gender"></span>:
+          <span [innerHTML]="gender.count"></span>
+        }
+      </strong>
+    </div>
+  }
+
+  <div class="form-check mt-3">
+    <input class="form-check-input" type="checkbox" [(ngModel)]="sectorBoolean" id="sectorCount">
+    <label class="form-check-label" for="sectorCount">
+      Get the sectors and how many clients are assigned to each
+    </label>
+  </div>
+
+  @if (sectorError) {
+    <div class="mt-3 alert alert-danger">{{ sectorError }}</div>
+  }
+  @if (!sectorError && sectorResult !== null) {
+    <div class="mt-3 alert alert-info">
+      sectors and assignees: <br>
+      <strong>
+        @for (sector of sectorResult; track sector) {
+          <hr>
+          <span [innerHTML]="sector.sector"></span>:
+          <span [innerHTML]="sector.count"></span>
+        }
+      </strong>
+    </div>
+  }
+
+  <div class="form-check mt-3">
+    <input class="form-check-input" type="checkbox" [(ngModel)]="activityBoolean" id="activityCount">
+    <label class="form-check-label" for="activityCount">
+      Get the counselingActivities and how many clients are assigned to each
+    </label>
+  </div>
+
+  @if (activityError) {
+    <div class="mt-3 alert alert-danger">{{ activityError }}</div>
+  }
+  @if (!activityError && activityResult !== null) {
+    <div class="mt-3 alert alert-info">
+      activities and assignees: <br>
+      <strong>
+        @for (activity of activityResult; track activity) {
+          <hr>
+          <span [innerHTML]="activity.activity"></span>:
+          <span [innerHTML]="activity.count"></span>
+        }
+      </strong>
+    </div>
+  }
 </div>
-<div style="height: 1000px;"></div>
