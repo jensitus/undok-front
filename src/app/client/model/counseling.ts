@@ -16,5 +16,5 @@ export interface Counseling {
   comment?: string;
   keyword: string;
   requiredTime: number;
-  counselingCase: Case;
+  counselingCase?: Case;
 }

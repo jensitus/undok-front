@@ -48,15 +48,17 @@ import {ShowSingleTaskComponent} from './components/tasks/show-single-task/show-
 import {CaseTaskListComponent} from './components/tasks/case-task-list/case-task-list.component';
 import {LinkifyPipe} from '../common/helper/linkify.pipe';
 import {FirstCounselingCountComponent} from './first-counseling-count/first-counseling-count.component';
+import {SearchComponent} from './search/search.component';
 
 const appRoutes: Routes = [
   {path: 'employers', component: ShowEmployersComponent},
+  {path: 'search', component: SearchComponent},
   {path: 'csv-download-list', component: BackUpComponent},
   {path: 'edit-categories', component: EditCategoriesComponent},
   {path: 'create', component: CreateClientComponent},
   {path: 'client-list', component: ShowClientsComponent},
   {path: 'counselings', component: ShowCounselingsComponent},
-  {path: 'first-counseling-count', component: FirstCounselingCountComponent},
+  {path: 'reports', component: FirstCounselingCountComponent},
   {path: ':id', component: ShowSingleClientComponent},
   {path: 'create/employer', component: CreateEmployerComponent},
   {path: 'employers/:id', component: ShowSingleEmployerComponent},

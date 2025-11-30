@@ -55,6 +55,7 @@ export class FirstCounselingCountComponent {
       dueDate: ['']
     });
   }
+
   fromDate: NgbDateStruct;
   toDate: NgbDateStruct;
   fromTime: Time = {hour: 0, minute: 0};
@@ -181,19 +182,20 @@ export class FirstCounselingCountComponent {
             this.sectorError = err?.error?.message || 'Failed to fetch sector';
           }
         });
-
-        if (this.activityBoolean) {
-          this.reportService.countActivity(fromIso, toIso).subscribe({
-            next: (result) => {
-              this.activityResult = result;
-              this.loading = false;
-            },
-            error: (err) => {
-              this.activityError = err?.error?.message || 'Failed to fetch activity';
-            }
-          });
-        }
       }
+
+      if (this.activityBoolean) {
+        this.reportService.countActivity(fromIso, toIso).subscribe({
+          next: (result) => {
+            this.activityResult = result;
+            this.loading = false;
+          },
+          error: (err) => {
+            this.activityError = err?.error?.message || 'Failed to fetch activity';
+          }
+        });
+      }
+
 
     } catch (e) {
       this.error = 'Failed to format dates.';

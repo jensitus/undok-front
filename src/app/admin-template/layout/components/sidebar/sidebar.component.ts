@@ -7,7 +7,7 @@ import {
   faCoffee,
   faEarListen,
   faPowerOff,
-  faSave,
+  faSave, faSearch,
   faSurprise,
   faTachometerAlt,
   faTasks,
@@ -170,4 +170,5 @@ export class SidebarComponent implements OnInit {
   //     }
   //   }
   // }
+  protected readonly faSearch = faSearch;
 }
