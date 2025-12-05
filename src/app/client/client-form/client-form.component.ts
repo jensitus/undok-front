@@ -3,7 +3,7 @@ import {Client} from '../model/client';
 import {FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Label} from '../model/label';
 import {CITIZENSHIPS} from '../model/citizenships';
-import {JsonPipe, NgForOf} from '@angular/common';
+import {NgForOf} from '@angular/common';
 import {SelectBoxComponent} from '../select-box/single/select-box.component';
 import {CategoryTypes} from '../model/category-types';
 import {ClientForm} from '../model/clientForm';
@@ -24,7 +24,6 @@ import {CategoryService} from '../service/category.service';
     NgForOf,
     SelectBoxComponent,
     ReactiveFormsModule,
-    JsonPipe,
     SelectModule,
     NgSelectModule,
   ],
@@ -126,11 +125,11 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
   mapClient(client: Client): ClientForm {
     return {
       keyword: client.keyword ? client.keyword : null,
-      firstName: client.person.firstName ? client.person.firstName : null,
-      lastName: client.person.lastName ? client.person.lastName : null,
-      telephone: client.person.telephone ? client.person.telephone : null,
-      city: client.person.address.city ? client.person.address.city : null,
-      email: client.person.email ? client.person.email : null,
+      firstName: client.firstName ? client.firstName : null,
+      lastName: client.lastName ? client.lastName : null,
+      telephone: client.telephone ? client.telephone : null,
+      city: client.city ? client.city : null,
+      email: client.email ? client.email : null,
       labourMarketAccess: client.labourMarketAccess ? client.labourMarketAccess : null,
       interpreterNecessary: client.interpreterNecessary ? client.interpreterNecessary : null,
       howHasThePersonHeardFromUs: client.howHasThePersonHeardFromUs ? client.howHasThePersonHeardFromUs : null,
@@ -140,7 +139,7 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
       currentResidentStatus: client.currentResidentStatus ? client.currentResidentStatus : null,
       jobCenterBlock: client.openCase.jobCenterBlock ? client.openCase.jobCenterBlock : null,
       humanTrafficking: client.openCase.humanTrafficking ? client.openCase.humanTrafficking : null,
-      gender: client.person.gender ? client.person.gender : null,
+      gender: client.gender ? client.gender : null,
       union: client.union ? client.union : null,
       targetGroup: client.openCase.targetGroup ? client.openCase.targetGroup : null,
       workingRelationship: client.openCase.workingRelationship ? client.openCase.workingRelationship : null,

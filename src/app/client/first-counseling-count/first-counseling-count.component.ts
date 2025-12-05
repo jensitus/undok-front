@@ -96,8 +96,6 @@ export class FirstCounselingCountComponent {
   activityResult: ActivityCount[] | null = null;
 
   fetchCount(): void {
-    console.log(this.languagesUsed);
-    console.log(this.firstCounselingOnly);
     this.error = null;
     this.firstCounselingOnlyResult = null;
     if (!this.fromDate || !this.toDate) {
@@ -108,8 +106,6 @@ export class FirstCounselingCountComponent {
       const fromIso = this.dateTimeService.mergeDateAndTime(this.fromDate, this.fromTime);
       const toIso = this.dateTimeService.mergeDateAndTime(this.toDate, this.toTime);
       this.loading = true;
-      console.log(fromIso);
-      console.log(toIso);
 
       if (this.totalNumberOfClientsBoolean) {
         this.reportService.countNumberOfCounselingsByDateRange(fromIso, toIso).subscribe({
@@ -196,7 +192,6 @@ export class FirstCounselingCountComponent {
         });
       }
 
-
     } catch (e) {
       this.error = 'Failed to format dates.';
     }
@@ -204,9 +199,9 @@ export class FirstCounselingCountComponent {
 
   onDateRangeSelected(event: any) {
 
-    console.log(event.fromDate);
+    console.log('event', event.fromDate);
     this.fromDate = event.fromDate;
-    console.log(event.toDate);
+    console.log('event', event.toDate);
     this.toDate = event.toDate;
 
   }

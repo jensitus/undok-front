@@ -1,108 +1,158 @@
 <div class="counseling-search-container">
-  <div class="search-header">
-    <h2>Counseling Search</h2>
-    <div class="search-box">
-      <input type="text"
-             [(ngModel)]="searchQuery"
-             (input)="onSearchChange()"
-             (keyup.enter)="onSearch()"
-             placeholder="Search counselings by concern or activity..."
-             class="search-input" />
-      <button (click)="onSearch()" class="search-button" [disabled]="isLoading">
-        <span *ngIf="!isLoading">Search</span>
-        <span *ngIf="isLoading">Searching...</span>
-      </button>
-      <button *ngIf="searchQuery"
-              (click)="clearSearch()"
-              class="clear-button"
-              title="Clear search">
-        ✕
-      </button>
-    </div>
+<div class="search-header">
+  <h2>Counseling Search</h2>
+  <div class="search-box">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      (input)="onSearchChange()"
+      (keyup.enter)="onSearch()"
+      placeholder="Search counselings by concern or activity..."
+      class="search-input"
+    />
+    <button (click)="onSearch()" class="search-button" [disabled]="isLoading">
+      <span *ngIf="!isLoading">Search</span>
+      <span *ngIf="isLoading">Searching...</span>
+    </button>
+    <button
+      *ngIf="searchQuery"
+      (click)="clearSearch()"
+      class="clear-button"
+      title="Clear search"
+    >
+      ✕
+    </button>
   </div>
 
-  <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
-  </div>
+  <!-- Filter Toggle Button -->
+  <button (click)="toggleFilters()" class="filter-toggle-button">
+    <span *ngIf="!showFilters">▼ Show Filters</span>
+    <span *ngIf="showFilters">▲ Hide Filters</span>
+  </button>
 
-  <div *ngIf="isLoading" class="loading-spinner">
-    <div class="spinner"></div>
-    <p>Searching...</p>
-  </div>
-
-  <div *ngIf="!isLoading && searchQuery && counselings.length === 0" class="no-results">
-    <p>No counselings found for "{{ searchQuery }}"</p>
-  </div>
-
-  <div *ngIf="!isLoading && counselings.length > 0" class="results-container">
-    <div class="results-header">
-      <p>Found {{ totalElements }} result(s)</p>
-    </div>
-
-    <div class="counseling-list">
-      <div *ngFor="let counseling of counselings" class="counseling-card">
-        <div class="counseling-header">
-          <span class="counseling-date">{{ counseling.counselingDate | date:'dd.MM.yyyy' }}</span>
-          <span class="counseling-status" [class]="'status-' + counseling.counselingStatus">
-            {{ counseling.counselingStatus }}
-          </span>
+  <!-- Filters Section -->
+  <div *ngIf="showFilters" class="filters-section">
+    <div class="filter-group">
+      <label>Date Range:</label>
+      <app-date-picker [mode]="'date'"
+                       (dateRangeChange)="onDateRangeSelected($event)"
+                       [initialFromDate]="dateFrom"
+                       [initialToDate]="dateTo"></app-date-picker>
+      <!--
+      <div class="date-inputs">
+        <div class="date-field">
+          <label for="dateFrom">From:</label>
+          <input
+            id="dateFrom"
+            type="date"
+            [(ngModel)]="dateFrom"
+            class="date-input"
+          />
         </div>
-
-        <div class="counseling-body">
-          <div class="counseling-field">
-            <label>Client:</label>
-            <span>{{ counseling.clientFullName }}</span>
-          </div>
-
-          <div class="counseling-field" *ngIf="counseling.concern">
-            <label>Concern:</label>
-            <p>{{ counseling.concern }}</p>
-          </div>
-
-          <div class="counseling-field" *ngIf="counseling.activity">
-            <label>Activity:</label>
-            <p>{{ counseling.activity }} </p>
-          </div>
-
-          <div class="counseling-footer">
-            <span *ngIf="counseling.keyword" class="keyword-badge">
-              <a [routerLink]="['/clients/'] + counseling.clientId">{{ counseling.keyword }}</a>
-            </span>
-            <span *ngIf="counseling.registeredBy" class="registered-by">By: {{ counseling.registeredBy }}</span>
-          </div>
+        <div class="date-field">
+          <label for="dateTo">To:</label>
+          <input
+            id="dateTo"
+            type="date"
+            [(ngModel)]="dateTo"
+            class="date-input"
+          />
         </div>
       </div>
+      -->
     </div>
 
-    <div class="pagination" *ngIf="totalPages > 1">
-      <button
-        (click)="previousPage()"
-        [disabled]="currentPage === 0"
-        class="pagination-button"
-      >
-        Previous
+    <div class="filter-actions">
+      <button (click)="applyFilters()" class="apply-button">
+        Apply Filters
       </button>
-
-      <button
-        *ngFor="let page of pageNumbers"
-        (click)="goToPage(page)"
-        [class.active]="currentPage === page"
-        class="pagination-button page-number"
-      >
-        {{ page + 1 }}
+      <button (click)="resetFilters()" class="reset-button">
+        Reset Filters
       </button>
-
-      <button
-        (click)="nextPage()"
-        [disabled]="currentPage === totalPages - 1"
-        class="pagination-button"
-      >
-        Next
-      </button>
-
-      <span class="pagination-info">
-        Page {{ currentPage + 1 }} of {{ totalPages }}
-      </span>
     </div>
   </div>
 </div>
+
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+<div *ngIf="isLoading" class="loading-spinner">
+  <div class="spinner"></div>
+  <p>Searching...</p>
+</div>
+
+<div *ngIf="!isLoading && searchQuery && counselings.length === 0" class="no-results">
+  <p>No counselings found for "{{ searchQuery }}"</p>
+</div>
+
+<div *ngIf="!isLoading && counselings.length > 0" class="results-container">
+  <div class="results-header">
+    <p>Found {{ totalElements }} result(s)</p>
+  </div>
+
+  <div class="counseling-list">
+    <div *ngFor="let counseling of counselings" class="counseling-card">
+      <div class="counseling-header">
+        <span class="counseling-date">{{ counseling.counselingDate | date:'dd.MM.yyyy' }}</span>
+        <span class="counseling-status" [class]="'status-' + counseling.counselingStatus">
+            {{ counseling.counselingStatus }}
+          </span>
+      </div>
+
+      <div class="counseling-body">
+        <div class="counseling-field">
+          <label>Client:</label>
+          <span>{{ counseling.clientFullName }}</span>
+        </div>
+
+        <div class="counseling-field" *ngIf="counseling.concern">
+          <label>Concern:</label>
+          <p>{{ counseling.concern }}</p>
+        </div>
+
+        <div class="counseling-field" *ngIf="counseling.activity">
+          <label>Activity:</label>
+          <p>{{ counseling.activity }}</p>
+        </div>
+
+        <div class="counseling-footer">
+          <span *ngIf="counseling.keyword" class="keyword-badge">{{ counseling.keyword }}</span>
+          <span *ngIf="counseling.registeredBy" class="registered-by">By: {{ counseling.registeredBy }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button
+      (click)="previousPage()"
+      [disabled]="currentPage === 0"
+      class="pagination-button"
+    >
+      Previous
+    </button>
+
+    <button
+      *ngFor="let page of pageNumbers"
+      (click)="goToPage(page)"
+      [class.active]="currentPage === page"
+      class="pagination-button page-number"
+    >
+      {{ page + 1 }}
+    </button>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="currentPage === totalPages - 1"
+      class="pagination-button"
+    >
+      Next
+    </button>
+
+    <span class="pagination-info">
+        Page {{ currentPage + 1 }} of {{ totalPages }}
+      </span>
+  </div>
+</div>
+

@@ -12,7 +12,7 @@ export interface Client {
   howHasThePersonHeardFromUs: string;
   vulnerableWhenAssertingRights: boolean;
   counselings: Counseling[];
-  person: Person;
+  // person: Person;
 
   nationality: string;
   language: string;
@@ -36,5 +36,11 @@ export interface Client {
   comment?: string;
 
   alert?: boolean;
+  firstName?: string;
+  lastName?: string;
+  gender?: string;
+  telephone?: string;
+  email?: string;
+  city?: string;
 
 }

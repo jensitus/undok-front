@@ -72,9 +72,9 @@ export class EditClientComponent implements OnInit, OnDestroy {
             this.clientService.getSingleClient(this.client_id).subscribe({
               next: (client) => {
                 this.client = client;
-                this.country = this.client.person.address.country;
-                this.nationality = this.client.nationality;
-                this.marital = this.client.maritalStatus;
+                // this.country = this.client.person.address.country;
+                // this.nationality = this.client.nationality;
+                // this.marital = this.client.maritalStatus;
               }
             })
           );

@@ -12,7 +12,7 @@
   @if (client) {
     <app-page-header [firstPoint]="'dashboard'" [firstIcon]="faTachometerAlt" [firstLink]="'/dashboard'"
                      [secondPoint]="'clients'" [secondIcon]="faUsers" [secondLink]="'/clients/client-list'"
-                     [endPoint]="client.person.firstName ? client.person.firstName + ' ' + client.person.lastName : client.keyword">
+                     [endPoint]="client.firstName ? client.firstName + ' ' + client.lastName : client.keyword">
     </app-page-header>
   }
 }
@@ -42,8 +42,8 @@
         <div class="row">
           <div class="col">
             <h2 style="font-size: x-large; font-weight: bold">
-              @if (client.person.firstName) {
-                {{ client.person.firstName }} {{ client.person.lastName }}
+              @if (client.firstName) {
+                {{ client.firstName }} {{ client.lastName }}
               } @else {
                 {{ client.keyword }}
               }
@@ -78,7 +78,7 @@
                   <label class="text-secondary">Email:</label>
                 </div>
                 <div class="col-md-7">
-                  {{ client.person.email }}
+                  {{ client.email }}
                 </div>
               </div>
               <div class="row">
@@ -86,7 +86,7 @@
                   <label class="text-secondary">Telephon:</label>
                 </div>
                 <div class="col-md-7">
-                  {{ client.person.telephone }}
+                  {{ client.telephone }}
                 </div>
               </div>
               <div class="row">
@@ -94,7 +94,7 @@
                   <label class="text-secondary">Stadt:</label>
                 </div>
                 <div class="col-md-7">
-                  {{ client.person.address.city }}
+                  {{ client.city }}
                 </div>
               </div>
               <div class="row">
@@ -110,7 +110,7 @@
                   <label class="text-secondary">Gender:</label>
                 </div>
                 <div class="col-md-7">
-                  {{ client.person.gender }}
+                  {{ client.gender }}
                 </div>
               </div>
 
@@ -346,7 +346,7 @@
               <fa-icon [icon]="faEdit"></fa-icon> edit
             </button>
 
-            <app-delete [id_to_delete]="client.person.id" [type]="deleteTypeClient"
+            <app-delete [id_to_delete]="client.id" [type]="deleteTypeClient"
                         [delete_object_name]="client.keyword"></app-delete>
           </div>
           <div class="col mt-4">

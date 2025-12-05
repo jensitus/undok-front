@@ -26,6 +26,10 @@ export interface DateRange {
   styleUrl: './date-picker.component.css'
 })
 export class DatePickerComponent implements OnInit {
+
+  get isDateTimeMode(): boolean {
+    return this.mode === 'datetime';
+  }
   @Input() mode: 'date' | 'datetime' = 'date';
   @Input() initialFromDate?: NgbDateStruct;
   @Input() initialToDate?: NgbDateStruct;
@@ -40,11 +44,14 @@ export class DatePickerComponent implements OnInit {
   toTime: NgbTimeStruct = { hour: 23, minute: 59, second: 59 };
   today = inject(NgbCalendar).getToday();
 
+  protected readonly faCalendar = faCalendar;
+
   ngOnInit() {
     if (this.initialFromDate) { this.fromDate = this.initialFromDate; }
     if (this.initialToDate) { this.toDate = this.initialToDate; }
     if (this.initialFromTime) { this.fromTime = this.initialFromTime; }
     if (this.initialToTime) { this.toTime = this.initialToTime; }
+    this.onDateChange();
   }
 
   onDateChange() {
@@ -58,15 +65,7 @@ export class DatePickerComponent implements OnInit {
         range.fromTime = this.fromTime;
         range.toTime = this.toTime;
       }
-
       this.dateRangeChange.emit(range);
     }
   }
-
-  get isDateTimeMode(): boolean {
-    return this.mode === 'datetime';
-  }
-
-
-  protected readonly faCalendar = faCalendar;
 }

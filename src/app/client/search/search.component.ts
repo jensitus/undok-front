@@ -6,11 +6,15 @@ import {Counseling} from '../model/counseling';
 import {SearchService} from '../service/search.service';
 import {Page} from '../model/page';
 import {RouterLink} from '@angular/router';
+import {DatePickerComponent} from '../../common/date-picker/date-picker.component';
+import {DateTimeService} from '../service/date-time.service';
+import {NgbCalendar, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {Time} from '../model/time';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, DatePickerComponent],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })
@@ -19,16 +23,27 @@ export class SearchComponent implements OnInit {
   searchQuery = '';
   counselings: Counseling[] = [];
   currentPage = 0;
-  pageSize = 10;
+  pageSize = 4;
   totalElements = 0;
   totalPages = 0;
   isLoading = false;
   errorMessage = '';
 
+  // Date range filters
+  dateFrom: NgbDateStruct;
+  dateTo: NgbDateStruct;
+  fromTime: Time = {hour: 0, minute: 0};
+  toTime: Time = {hour: 23, minute: 59};
+  showFilters = false;
+
   private searchSubject = new Subject<string>();
   private searchService = inject(SearchService);
+  private dateTimeService = inject(DateTimeService);
+  private today = inject(NgbCalendar).getToday();
 
   ngOnInit(): void {
+    this.dateFrom = {year: 2000, month: 1, day: 1};
+    this.dateTo = this.today;
     // Setup debounced search
     this.searchSubject.pipe(
       debounceTime(300),
@@ -39,7 +54,12 @@ export class SearchComponent implements OnInit {
         }
         this.isLoading = true;
         this.errorMessage = '';
-        return this.searchService.search(query, this.currentPage, this.pageSize);
+        console.log('Searching for:', query);
+        console.log('From:', this.dateFrom);
+        console.log('To:', this.dateTo);
+        const fromIso = this.dateTimeService.mergeDateAndTime(this.dateFrom, this.fromTime);
+        const toIso = this.dateTimeService.mergeDateAndTime(this.dateTo, this.toTime);
+        return this.searchService.search(query, this.currentPage, this.pageSize, fromIso, toIso);
       })
     ).subscribe({
       next: (page) => {
@@ -63,6 +83,8 @@ export class SearchComponent implements OnInit {
   }
 
   onSearch(): void {
+    const fromIso = this.dateTimeService.mergeDateAndTime(this.dateFrom, this.fromTime);
+    const toIso = this.dateTimeService.mergeDateAndTime(this.dateTo, this.toTime);
     if (this.searchQuery.trim() === '') {
       this.counselings = [];
       this.totalElements = 0;
@@ -72,7 +94,11 @@ export class SearchComponent implements OnInit {
 
     this.isLoading = true;
     this.errorMessage = '';
-    this.searchService.search(this.searchQuery, this.currentPage, this.pageSize).subscribe({
+    this.searchService.search(this.searchQuery,
+      this.currentPage,
+      this.pageSize,
+      fromIso || undefined,
+      toIso || undefined).subscribe({
       next: (page) => {
         this.counselings = page.content;
         this.totalElements = page.totalElements;
@@ -86,6 +112,22 @@ export class SearchComponent implements OnInit {
         this.counselings = [];
       }
     });
+  }
+
+  applyFilters(): void {
+    this.currentPage = 0;
+    this.onSearch();
+  }
+
+  resetFilters(): void {
+    this.dateFrom = undefined;
+    this.dateTo = undefined;
+    this.currentPage = 0;
+    this.onSearch();
+  }
+
+  toggleFilters(): void {
+    this.showFilters = !this.showFilters;
   }
 
   goToPage(page: number): void {
@@ -121,10 +163,21 @@ export class SearchComponent implements OnInit {
 
   clearSearch(): void {
     this.searchQuery = '';
+    this.dateFrom = undefined;
+    this.dateTo = undefined;
     this.counselings = [];
     this.totalElements = 0;
     this.totalPages = 0;
     this.currentPage = 0;
+  }
+
+  onDateRangeSelected(event: any) {
+
+    console.log('event', event.fromDate);
+    this.dateFrom = event.fromDate;
+    console.log('event', event.toDate);
+    this.dateTo = event.toDate;
+
   }
 
 }
