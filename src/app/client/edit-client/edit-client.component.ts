@@ -96,6 +96,7 @@ export class EditClientComponent implements OnInit, OnDestroy {
   }
 
   showSubmitted(event: ClientForm) {
+    console.log('event', event);
     this.unsubscribe$.push(
       this.clientService.updateClient(this.client.id, event).subscribe({
         next: (response) => {

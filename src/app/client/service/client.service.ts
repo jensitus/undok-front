@@ -27,7 +27,6 @@ export class ClientService {
   }
 
   updateClient(clientId: string, client: ClientForm): Observable<ResponseMessage> {
-    console.log(client);
     return this.http.post<ResponseMessage>(this.apiUrl + '/service/undok/clients/' + clientId + '/update', client);
   }
 

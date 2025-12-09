@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {Time} from '../model/time';
 
 @Injectable({
@@ -7,7 +7,6 @@ import {Time} from '../model/time';
 })
 export class DateTimeService {
 
-  dateObject: NgbDateStruct;
   localTimeMinute: string;
   localTimeHour: string;
 
@@ -50,5 +49,29 @@ export class DateTimeService {
   //    const s = (value + '').padStart(length, '0');
   //    return parseInt(s, 0);
   // }
+
+  convertToNgbDate(dateString: string): NgbDate | null {
+    if (!dateString) { return null; }
+
+    // Parse the date string
+    const date = new Date(dateString);
+
+    // Check if the date is valid
+    if (isNaN(date.getTime())) { return null; }
+
+    // Return the NgbDateStruct object
+    return {
+      after(other?: NgbDate | null): boolean {
+        return false;
+      }, before(other?: NgbDate | null): boolean {
+        return false;
+      }, equals(other?: NgbDate | null): boolean {
+        return false;
+      },
+      year: date.getFullYear(),
+      month: date.getMonth() + 1, // JavaScript months are 0-indexed
+      day: date.getDate()
+    };
+  }
 
 }
