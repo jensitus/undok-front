@@ -93,13 +93,13 @@
               @if (counseling.concern) {
                 <b>Anliegen:</b>
                 <div class="d-flex w-100 justify-content-between">
-                  <p class="mb-1">{{ counseling.concern }}</p>
+                  <p class="mb-1" [innerHTML]="counseling.concern | truncateAround:searchTerm:150 | highlight:searchTerm"></p>
                 </div>
               }
               @if (counseling.activity) {
                 <b>Aktivität:</b>
                 <div class="d-flex w-100 justify-content-between">
-                  <p class="mb-1">{{ counseling.activity }}</p>
+                  <p class="mb-1" [innerHTML]="counseling.activity | truncateAround:searchTerm:150 | highlight:searchTerm"></p>
                 </div>
               }
 
@@ -127,16 +127,17 @@
               class="list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-between">
                 <p class="mb-1">
-                  {{ client.firstName }} {{ client.lastName }}
+                  <span [innerHTML]="client.firstName | highlight:searchTerm"></span>
+                  <span [innerHTML]="client.lastName | highlight:searchTerm"></span>
                 </p>
                 <small class="text-muted">ID: {{ client.id }}</small>
               </div>
               <p class="mb-1" *ngIf="client.keyword">
                 <a [routerLink]="['/clients/', client.id]">
-                  <span class="badge bg-warning text-dark me-2">{{ client.keyword }}</span>
+                  <span class="badge bg-warning text-dark me-2" [innerHTML]="client.keyword | highlight:searchTerm"></span>
                 </a>
               </p>
-              <p class="mb-1" *ngIf="client.comment">{{ client.comment }}</p>
+              <p class="mb-1" *ngIf="client.comment" [innerHTML]="client.comment | highlight:searchTerm"></p>
               <small class="badge bg-success">Client</small>
             </div>
           </div>

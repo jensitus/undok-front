@@ -40,3 +40,13 @@ h5.mb-1 {
   height: 1rem;
   border-width: 0.15em;
 }
+
+/* Highlight styling */
+:host .search-highlight,
+:host mark.search-highlight {
+  background-color: #ffeb3b;
+  color: #000;
+  font-weight: 600;
+  padding: 0.1em 0.2em;
+  border-radius: 2px;
+}

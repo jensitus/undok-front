@@ -11,6 +11,8 @@ import {environment} from '../../../environments/environment';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {faCalendarAlt, faCircleLeft} from '@fortawesome/free-solid-svg-icons';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {HighlightPipe} from './highlight.pipe';
+import {TruncateAroundPipe} from './truncate-around.pipe';
 
 interface CounselingSearchResult {
   id: number;
@@ -50,7 +52,7 @@ interface UnifiedSearchResponse {
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, FormsModule, DatePickerComponent, RouterLink, FaIconComponent],
+  imports: [CommonModule, FormsModule, DatePickerComponent, RouterLink, FaIconComponent, HighlightPipe, TruncateAroundPipe],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })
