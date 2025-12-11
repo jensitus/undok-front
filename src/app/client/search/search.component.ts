@@ -9,7 +9,7 @@ import {Time} from '../model/time';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {faCalendarAlt, faCircleLeft} from '@fortawesome/free-solid-svg-icons';
+import {faCalendarAlt, faCircleLeft, faTasks} from '@fortawesome/free-solid-svg-icons';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {HighlightPipe} from './highlight.pipe';
 import {TruncateAroundPipe} from './truncate-around.pipe';
@@ -31,11 +31,21 @@ interface ClientSearchResult {
   type: string;
 }
 
+interface TaskSearchResult {
+  id: number;
+  title: string;
+  description: string;
+  status: string;
+  clientId: string;
+  type: string;
+}
+
 interface PaginationInfo {
   currentPage: number;
   pageSize: number;
   totalCounselings: number;
   totalClients: number;
+  totalTasks: number;
   totalElements: number;
   totalPages: number;
   hasNext: boolean;
@@ -45,6 +55,7 @@ interface PaginationInfo {
 interface UnifiedSearchResponse {
   counselings: CounselingSearchResult[];
   clients: ClientSearchResult[];
+  tasks: TaskSearchResult[];
   totalResults: number;
   pagination: PaginationInfo;
 }
@@ -81,6 +92,8 @@ export class SearchComponent implements OnInit {
 
   protected readonly faCalendarAlt = faCalendarAlt;
   protected readonly faCircleLeft = faCircleLeft;
+
+  protected readonly faTasks = faTasks;
 
   ngOnInit() {
     // Load initial state from URL parameters

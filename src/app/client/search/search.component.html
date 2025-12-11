@@ -63,7 +63,7 @@
           <fa-icon [icon]="faCircleLeft"></fa-icon>
           Found <strong>{{ searchResults.pagination.totalElements }}</strong> results
           ({{ searchResults.pagination.totalCounselings }} counselings,
-          {{ searchResults.pagination.totalClients }} clients)
+          {{ searchResults.pagination.totalClients }} clients, {{ searchResults.pagination.totalTasks }} tasks)
           <span *ngIf="startDate || endDate">
             <br>
             <small>
@@ -93,13 +93,17 @@
               @if (counseling.concern) {
                 <b>Anliegen:</b>
                 <div class="d-flex w-100 justify-content-between">
-                  <p class="mb-1" [innerHTML]="counseling.concern | truncateAround:searchTerm:150 | highlight:searchTerm"></p>
+                  <p class="mb-1"
+                     [innerHTML]="counseling.concern | truncateAround:searchTerm:150 | highlight:searchTerm">
+                  </p>
                 </div>
               }
               @if (counseling.activity) {
                 <b>Aktivität:</b>
                 <div class="d-flex w-100 justify-content-between">
-                  <p class="mb-1" [innerHTML]="counseling.activity | truncateAround:searchTerm:150 | highlight:searchTerm"></p>
+                  <p class="mb-1"
+                     [innerHTML]="counseling.activity | truncateAround:searchTerm:150 | highlight:searchTerm">
+                  </p>
                 </div>
               }
 
@@ -108,7 +112,7 @@
                   <small class="badge bg-primary">Counseling</small>
                 </div>
                 <div class="col-md-6">
-                  <a [routerLink]="['/clients/', counseling.clientId]">{{counseling.clientId}}</a>
+                  <a [routerLink]="['/clients/', counseling.clientId]">{{ counseling.clientId }}</a>
                 </div>
               </div>
             </div>
@@ -122,8 +126,7 @@
             Clients
           </h4>
           <div class="list-group mb-4">
-            <div
-              *ngFor="let client of searchResults.clients"
+            <div *ngFor="let client of searchResults.clients"
               class="list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-between">
                 <p class="mb-1">
@@ -134,11 +137,43 @@
               </div>
               <p class="mb-1" *ngIf="client.keyword">
                 <a [routerLink]="['/clients/', client.id]">
-                  <span class="badge bg-warning text-dark me-2" [innerHTML]="client.keyword | highlight:searchTerm"></span>
+                  <span class="badge bg-warning text-dark me-2"
+                        [innerHTML]="client.keyword | highlight:searchTerm"></span>
                 </a>
               </p>
               <p class="mb-1" *ngIf="client.comment" [innerHTML]="client.comment | highlight:searchTerm"></p>
               <small class="badge bg-success">Client</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tasks Results -->
+        <div *ngIf="searchResults.tasks.length > 0" class="mb-4">
+          <h4 class="mb-3">
+            <i class="bi bi-person-fill me-2"></i>
+            Tasks
+          </h4>
+          <div class="list-group mb-4">
+            <div *ngFor="let task of searchResults.tasks"
+                 class="list-group-item list-group-item-action">
+                @if (task.title) {
+                  <b>Title:</b>
+                  <div class="d-flex w-100 justify-content-between">
+                    <p class="mb-1" [innerHTML]="task.title | highlight:searchTerm"></p>
+                  </div>
+                }
+                @if (task.description) {
+                  <b>Description:</b>
+                  <div class="d-flex w-100 justify-content-between">
+                    <p class="mb-1" [innerHTML]="task.description | truncateAround:searchTerm:150 | highlight:searchTerm"></p>
+                  </div>
+                }
+              <p class="mb-1" *ngIf="task.clientId">
+                <a [routerLink]="['/clients/', task.clientId]">
+                  <span class="badge bg-warning text-dark me-2"
+                        [innerHTML]="task.clientId | highlight:searchTerm"></span>
+                </a>
+              </p>
             </div>
           </div>
         </div>
