@@ -71,7 +71,7 @@ export class SearchComponent implements OnInit {
 
   apiUrl = environment.api_url;
   protected today = inject(NgbCalendar).getToday();
-  protected initialFromDate = inject(NgbCalendar).getNext(this.today, 'm', -12);
+  protected initialFromDate: NgbDateStruct = {year: 2000, month: 1, day: 1}; //  = inject(NgbCalendar).getNext(this.today, 'm', -24);
   private http = inject(HttpClient);
   private dateTimeService = inject(DateTimeService);
   private route = inject(ActivatedRoute);

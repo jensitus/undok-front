@@ -90,29 +90,31 @@
           <div class="list-group mb-4">
             <div *ngFor="let counseling of searchResults.counselings"
                  class="list-group-item list-group-item-action">
-              @if (counseling.concern) {
-                <b>Anliegen:</b>
+              <div>
                 <div class="d-flex w-100 justify-content-between">
-                  <p class="mb-1"
-                     [innerHTML]="counseling.concern | truncateAround:searchTerm:150 | highlight:searchTerm">
+                  <p class="mb-1">
+                @if (counseling.concern) {
+                  <b>Anliegen:</b><br>
+                      <span [innerHTML]="counseling.concern | truncateAround:searchTerm:150 | highlight:searchTerm">
+                      </span>
+                }
                   </p>
+                  <small class="text-muted">ID: {{ counseling.id }}</small>
                 </div>
-              }
-              @if (counseling.activity) {
-                <b>Aktivität:</b>
-                <div class="d-flex w-100 justify-content-between">
-                  <p class="mb-1"
-                     [innerHTML]="counseling.activity | truncateAround:searchTerm:150 | highlight:searchTerm">
-                  </p>
-                </div>
-              }
-
+                @if (counseling.activity) {
+                  <b>Aktivität:</b>
+                  <div class="d-flex w-100 justify-content-between">
+                    <p class="mb-1"
+                       [innerHTML]="counseling.activity | truncateAround:searchTerm:150 | highlight:searchTerm">
+                    </p>
+                  </div>
+                }
+              </div>
               <div class="row">
                 <div class="col-md-2">
-                  <small class="badge bg-primary">Counseling</small>
-                </div>
-                <div class="col-md-6">
-                  <a [routerLink]="['/clients/', counseling.clientId]">{{ counseling.clientId }}</a>
+                  <a [routerLink]="['/clients/', counseling.clientId]">
+                    <small class="badge bg-primary">Counseling</small>
+                  </a>
                 </div>
               </div>
             </div>
@@ -127,22 +129,27 @@
           </h4>
           <div class="list-group mb-4">
             <div *ngFor="let client of searchResults.clients"
-              class="list-group-item list-group-item-action">
+                 class="list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-between">
                 <p class="mb-1">
-                  <span [innerHTML]="client.firstName | highlight:searchTerm"></span>
-                  <span [innerHTML]="client.lastName | highlight:searchTerm"></span>
+                  @if (client.firstName && client.lastName) {
+                    <b>Name:</b><br>
+                    <span [innerHTML]="client.firstName + ' ' + client.lastName | highlight:searchTerm"></span>
+                  }
                 </p>
                 <small class="text-muted">ID: {{ client.id }}</small>
               </div>
               <p class="mb-1" *ngIf="client.keyword">
-                <a [routerLink]="['/clients/', client.id]">
-                  <span class="badge bg-warning text-dark me-2"
-                        [innerHTML]="client.keyword | highlight:searchTerm"></span>
-                </a>
+                <b>Keyword:</b><br>
+                <span [innerHTML]="client.keyword | highlight:searchTerm"></span>
               </p>
-              <p class="mb-1" *ngIf="client.comment" [innerHTML]="client.comment | highlight:searchTerm"></p>
-              <small class="badge bg-success">Client</small>
+              @if (client.comment) {
+                <b>Kommentar:</b>
+                <p class="mb-1" [innerHTML]="client.comment | highlight:searchTerm"></p>
+              }
+              <a [routerLink]="['/clients/', client.id]">
+                <small class="badge bg-success">Client</small>
+              </a>
             </div>
           </div>
         </div>
@@ -156,22 +163,27 @@
           <div class="list-group mb-4">
             <div *ngFor="let task of searchResults.tasks"
                  class="list-group-item list-group-item-action">
-                @if (task.title) {
-                  <b>Title:</b>
-                  <div class="d-flex w-100 justify-content-between">
-                    <p class="mb-1" [innerHTML]="task.title | highlight:searchTerm"></p>
-                  </div>
-                }
-                @if (task.description) {
-                  <b>Description:</b>
-                  <div class="d-flex w-100 justify-content-between">
-                    <p class="mb-1" [innerHTML]="task.description | truncateAround:searchTerm:150 | highlight:searchTerm"></p>
-                  </div>
-                }
+              <div class="d-flex w-100 justify-content-between">
+                <p class="mb-1">
+              @if (task.title) {
+                <b>Title:</b>
+
+                  <p class="mb-1" [innerHTML]="task.title | highlight:searchTerm"></p>
+
+              }
+                </p>
+                <small class="text-muted">ID: {{ task.id }}</small>
+              </div>
+              @if (task.description) {
+                <b>Description:</b>
+                <div class="d-flex w-100 justify-content-between">
+                  <p class="mb-1"
+                     [innerHTML]="task.description | truncateAround:searchTerm:150 | highlight:searchTerm"></p>
+                </div>
+              }
               <p class="mb-1" *ngIf="task.clientId">
                 <a [routerLink]="['/clients/', task.clientId]">
-                  <span class="badge bg-warning text-dark me-2"
-                        [innerHTML]="task.clientId | highlight:searchTerm"></span>
+                  <span class="badge bg-warning text-dark me-2">Task</span>
                 </a>
               </p>
             </div>
