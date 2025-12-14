@@ -72,9 +72,9 @@ export class EditClientComponent implements OnInit, OnDestroy {
             this.clientService.getSingleClient(this.client_id).subscribe({
               next: (client) => {
                 this.client = client;
-                this.country = this.client.person.address.country;
-                this.nationality = this.client.nationality;
-                this.marital = this.client.maritalStatus;
+                // this.country = this.client.person.address.country;
+                // this.nationality = this.client.nationality;
+                // this.marital = this.client.maritalStatus;
               }
             })
           );
@@ -96,6 +96,7 @@ export class EditClientComponent implements OnInit, OnDestroy {
   }
 
   showSubmitted(event: ClientForm) {
+    console.log('event', event);
     this.unsubscribe$.push(
       this.clientService.updateClient(this.client.id, event).subscribe({
         next: (response) => {

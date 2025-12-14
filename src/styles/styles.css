@@ -40,3 +40,12 @@ a {
   border-radius: 5px !important;
   max-width: 100% !important;
 }
+
+/* Highlight styling */
+.search-highlight, mark.search-highlight {
+  background-color: #ffeb3b;
+  color: #000;
+  font-weight: 600;
+  padding: 0.1em 0.2em;
+  border-radius: 5px;
+}

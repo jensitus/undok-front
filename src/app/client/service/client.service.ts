@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ClientForm} from '../model/clientForm';
 import {Observable} from 'rxjs';
@@ -9,26 +9,24 @@ import {Client} from '../model/client';
 import {CountryData} from '../../admin-template/layout/charts/doughnut/country-data';
 import {AllClient} from '../model/all-client';
 import {ResponseMessage} from '../../common/helper/response-message';
+import {LanguageResult} from '../first-counseling-count/first-counseling-count.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientService {
 
+  private http = inject(HttpClient);
+
   apiUrl = environment.api_url;
   UNDOK_CLIENTS = '/service/undok/clients';
   UNDOK_DASHBOARD = '/dashboard';
-
-  constructor(
-    private http: HttpClient
-  ) { }
 
   createClient(client: ClientForm): Observable<any> {
     return this.http.post<any>(this.apiUrl + '/service/undok/clients/create', client);
   }
 
   updateClient(clientId: string, client: ClientForm): Observable<ResponseMessage> {
-    console.log(client);
     return this.http.post<ResponseMessage>(this.apiUrl + '/service/undok/clients/' + clientId + '/update', client);
   }
 
@@ -63,5 +61,7 @@ export class ClientService {
   getCountryDataForCharts(): Observable<CountryData> {
     return this.http.get<CountryData>(this.apiUrl + this.UNDOK_DASHBOARD + '/chart/country-chart-data');
   }
+
+
 
 }

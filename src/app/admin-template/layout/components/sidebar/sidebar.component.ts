@@ -7,12 +7,12 @@ import {
   faCoffee,
   faEarListen,
   faPowerOff,
-  faSave,
+  faSave, faSearch,
   faSurprise,
   faTachometerAlt,
   faTasks,
   faUser,
-  faUsers
+  faUsers, faBriefcaseMedical
 } from '@fortawesome/free-solid-svg-icons';
 import {SidebarService} from '../../../shared/services/sidebar.service';
 import {Subject} from 'rxjs';
@@ -170,4 +170,6 @@ export class SidebarComponent implements OnInit {
   //     }
   //   }
   // }
+  protected readonly faSearch = faSearch;
+  protected readonly faBriefcaseMedical = faBriefcaseMedical;
 }
