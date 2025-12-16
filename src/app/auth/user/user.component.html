@@ -63,7 +63,7 @@
               <b class="text-secondary">set admin</b>
             </div>
             <div class="col text-right" *ngIf="currentUser.email !== user.email && !user.locked">
-              <input type="checkbox" (click)="setAdmin(user.id, user.admin)">
+              <input type="checkbox" (click)="setAdmin(user.id, user.admin)" [(ngModel)]="this.user.admin">
             </div>
             <div class="col text-right" *ngIf="currentUser.email === user.email">
               don't do this
@@ -76,15 +76,19 @@
 
             <div class="col">
               <button class="btn btn-sm btn-outline-dark"
-                      *ngIf="!user.locked"
+                      *ngIf="!user.locked && currentUser.username !== user.username"
                       (click)="resendConfirmationLink(user.id)">
                 yes
               </button>
               <button class="btn btn-sm btn-outline-dark"
-                      *ngIf="user.locked" [disabled]="true">no
+                      *ngIf="user.locked"
+                      [disabled]="true">
+                no
               </button>
               <button class="btn btn-sm btn-outline-dark"
-                      *ngIf="user.confirmed && !user.locked" [disabled]="true">no
+                      *ngIf="user.confirmed && !user.locked"
+                      [disabled]="true">
+                no
               </button>
             </div>
           </div>
@@ -93,7 +97,7 @@
               <b class="text-secondary">lock</b>
             </div>
             <div class="col">
-              <button class="btn btn-sm btn-outline-danger" (click)="lockUser()">
+              <button class="btn btn-sm btn-outline-danger" (click)="lockUser()" [disabled]="currentUser.username === user.username">
                 <span *ngIf="!user.locked">yes</span>
                 <span *ngIf="user.locked">unlock</span>
               </button>
