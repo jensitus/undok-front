@@ -29,8 +29,8 @@ export class UserService {
     return this.http.get<User>(this.apiUrl + '/service/users/by_username/' + username);
   }
 
-  forgotPassword(email: string) {
-    return this.http.post(this.apiUrl + '/service/auth/reset_password', email);
+  forgotPassword(email: string): Observable<ResponseMessage> {
+    return this.http.post<ResponseMessage>(this.apiUrl + '/service/auth/reset_password', email);
   }
 
   checkTokenExpired(token: string, email: string) {

@@ -1,10 +1,9 @@
-import { Component, output, signal, inject, computed } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AuthenticationService } from '../services/authentication.service';
-import { AlertService } from '../../admin-template/layout/components/alert/services/alert.service';
-import { AlertComponent } from '../../admin-template/layout/components/alert/alert.component';
+import {Component, computed, inject, output, signal} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {AuthenticationService} from '../services/authentication.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
 
 @Component({
   selector: 'app-login',
@@ -83,6 +82,7 @@ export class LoginComponent {
         .subscribe({
           next: () => {
             this.loading.set(false);
+            this.alertService.success('we\'ve sent you a little tiny token as the second factor', true);
             this.router.navigate(['/second-factor']);
           },
           error: (error) => {

@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   collapedSideBar: boolean;
   showSidebar = true;
   private routerSubscription: Subscription;
-  private noSidebarRoutes = ['/login', '/register', '/second-factor', '/verify-email'];
+  private noSidebarRoutes = ['/login', '/register', '/second-factor', '/verify-email', '/forgot'];
   receiveCollapsed($event) {
     this.collapedSideBar = $event;
   }
