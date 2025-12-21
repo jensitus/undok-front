@@ -59,20 +59,6 @@
     </a>
 
     @if (showClientButtons) {
-      @if (clientId) {
-        <a class="list-group-item" [routerLink]="['clients/' + clientId + '/create-counseling']">
-          <fa-icon class="text-danger" [icon]="faTasks"></fa-icon>&nbsp;
-          <span>{{ 'neue beratung' }}</span>
-        </a>
-      }
-    }
-
-    <!--    <a *ngIf="showClientButtons || showCreateEmployerButton" class="list-group-item" [routerLink]="['clients/create/employer']">
-          <fa-icon class="text-primary" [icon]="faSurprise"></fa-icon>&nbsp;
-          <span>{{ 'neue arbeitgeber:in' }}</span>
-        </a>-->
-
-    @if (showClientButtons) {
       <a class="list-group-item" (click)="assignEmployer()">
         <fa-icon class="text-primary" [icon]="faSurprise"></fa-icon>&nbsp;
         <span>{{ 'arbeitgeber:in zuweisen' }}</span>
