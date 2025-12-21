@@ -1,30 +1,69 @@
-import {Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  ElementRef,
+  inject,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {ClientService} from '../service/client.service';
 import {Subscription} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Client} from '../model/client';
 import {Person} from '../model/person';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ModalDismissReasons, NgbAlert, NgbCollapse, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
 import {SidebarService} from '../../admin-template/shared/services/sidebar.service';
 import {DeleteTypes} from '../delete/delete-types';
-import {CategoryTypes} from '../model/category-types';
 import {Counseling} from '../model/counseling';
 import {CategoryService} from '../service/category.service';
-import {faEdit, faTachometerAlt, faUser, faUsers} from '@fortawesome/free-solid-svg-icons';
+import {faEdit, faTachometerAlt, faTasks, faUser, faUsers} from '@fortawesome/free-solid-svg-icons';
 import {isUndefined} from '../../common/helper/comparison-utils';
 import {DurationService} from '../service/duration.service';
 import {Label} from '../model/label';
 import {DropdownItem} from '../model/dropdown-item';
 import {JoinCategory} from '../model/join-category';
-import {EntityTypes} from '../model/entity-types';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
-import {Task} from '../model/task';
+import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
+import {PageHeaderComponent} from '../../admin-template/shared/modules/page-header/page-header.component';
+import {ReopenCaseComponent} from '../case/reopen-case/reopen-case.component';
+import {ShowClientEmployersComponent} from '../show-client-employers/show-client-employers.component';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {DeleteComponent} from '../delete/delete.component';
+import {CaseTaskListComponent} from '../components/tasks/case-task-list/case-task-list.component';
+import {ShowCounselingsPerClientComponent} from '../show-counselings-per-client/show-counselings-per-client.component';
+import {CloseCaseComponent} from '../case/close-case/close-case.component';
+import {CreateCounselingComponent} from '../create-counseling/create-counseling.component';
+import {ShowEmployersListComponent} from '../show-employers-list/show-employers-list.component';
+import {CommonModule} from '@angular/common';
 
 
 @Component({
   selector: 'app-show-single-client',
+  standalone: true,
   templateUrl: './show-single-client.component.html',
+  imports: [
+    CommonModule,
+    NgbAlert,
+    AlertComponent,
+    PageHeaderComponent,
+    ReopenCaseComponent,
+    NgbCollapse,
+    ShowClientEmployersComponent,
+    FaIconComponent,
+    DeleteComponent,
+    CaseTaskListComponent,
+    ShowCounselingsPerClientComponent,
+    CloseCaseComponent,
+    CreateCounselingComponent,
+    ShowEmployersListComponent,
+    RouterLink
+  ],
   styleUrls: ['./show-single-client.component.css']
 })
 export class ShowSingleClientComponent implements OnInit, OnDestroy {
@@ -39,10 +78,13 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
     private categoryService: CategoryService,
     private durationService: DurationService,
     private alertService: AlertService,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
   ) {
   }
+  private destroyRef = inject(DestroyRef);
 
-  show = false;
+  alert = false;
   autohide = true;
 
   deleteTypeClient: DeleteTypes = DeleteTypes.CLIENT;
@@ -74,6 +116,8 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   private joinCategory: JoinCategory;
 
   protected readonly faEdit = faEdit;
+
+  protected readonly faTasks = faTasks;
 
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -149,25 +193,31 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   getClient() {
-    this.subscription$.push(
-      this.clientService.getSingleClient(this.id).subscribe(res => {
-        this.client = res;
-        if (this.client.openCase === null && this.client.closedCases !== null) {
-          this.reOpenCase = true;
-        } else if (this.client.openCase === null && this.client.closedCases === null) {
-          this.reOpenCase = false;
+    this.clientService.getSingleClient(this.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res) => {
+          this.ngZone.run(() => {
+            this.client = res;
+            console.log('this.client', this.client);
+            console.log('alert value:', this.alert);
+
+            this.reOpenCase = this.client.openCase === null && this.client.closedCases !== null;
+            this.closeCase = this.client.openCase !== null;
+            this.alert = this.client.alert === true;
+
+            console.log('alert after assignment:', this.alert);
+            console.log('should show header:', !this.alert && !!this.client);
+
+            this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
+            this.getTotalCounselingDuration();
+            this.cdr.detectChanges();
+          });
+        },
+        error: (err) => {
+          console.error('Error loading client:', err);
         }
-        if (this.client.openCase !== null) {
-          this.closeCase = true;
-        }
-        if (this.client.alert === true) {
-          this.show = true;
-        }
-        // @ts-ignore
-        this.sidebarService.setClientIdForCreateCounselingSubject(this.client.id);
-        this.getTotalCounselingDuration();
-      })
-    );
+      });
   }
 
   getDemoSubject() {
@@ -248,8 +298,7 @@ export class ShowSingleClientComponent implements OnInit, OnDestroy {
   }
 
   close() {
-    this.show = !this.show;
+    this.alert = !this.alert;
     // setTimeout(() => (this.show = true), 3000);
   }
-
 }

@@ -9,7 +9,7 @@ import {Client} from '../model/client';
 import {CountryData} from '../../admin-template/layout/charts/doughnut/country-data';
 import {AllClient} from '../model/all-client';
 import {ResponseMessage} from '../../common/helper/response-message';
-import {LanguageResult} from '../first-counseling-count/first-counseling-count.component';
+import {LanguageResult} from '../report/report.component';
 
 @Injectable({
   providedIn: 'root'
@@ -61,7 +61,5 @@ export class ClientService {
   getCountryDataForCharts(): Observable<CountryData> {
     return this.http.get<CountryData>(this.apiUrl + this.UNDOK_DASHBOARD + '/chart/country-chart-data');
   }
-
-
 
 }

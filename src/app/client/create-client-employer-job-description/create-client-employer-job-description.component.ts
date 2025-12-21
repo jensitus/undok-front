@@ -7,10 +7,14 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
 import {ClientEmployerForm} from '../model/client-employer-form';
 import {takeUntil} from 'rxjs/operators';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-create-client-employer-job-description',
   templateUrl: './create-client-employer-job-description.component.html',
+  imports: [
+    FormsModule
+  ],
   styleUrls: ['./create-client-employer-job-description.component.css']
 })
 export class CreateClientEmployerJobDescriptionComponent implements OnInit, OnDestroy {

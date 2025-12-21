@@ -47,7 +47,7 @@ import {CreateTaskComponent} from './components/tasks/create-task/create-task.co
 import {ShowSingleTaskComponent} from './components/tasks/show-single-task/show-single-task.component';
 import {CaseTaskListComponent} from './components/tasks/case-task-list/case-task-list.component';
 import {LinkifyPipe} from '../common/helper/linkify.pipe';
-import {FirstCounselingCountComponent} from './first-counseling-count/first-counseling-count.component';
+import {ReportComponent} from './report/report.component';
 import {SearchComponent} from './search/search.component';
 
 const appRoutes: Routes = [
@@ -58,7 +58,7 @@ const appRoutes: Routes = [
   {path: 'create', component: CreateClientComponent},
   {path: 'client-list', component: ShowClientsComponent},
   {path: 'counselings', component: ShowCounselingsComponent},
-  {path: 'reports', component: FirstCounselingCountComponent},
+  {path: 'reports', component: ReportComponent},
   {path: ':id', component: ShowSingleClientComponent},
   {path: 'create/employer', component: CreateEmployerComponent},
   {path: 'employers/:id', component: ShowSingleEmployerComponent},
@@ -70,32 +70,7 @@ const appRoutes: Routes = [
 
 @NgModule({
   declarations: [
-    CreateClientComponent,
-    ShowClientsComponent,
-    ShowSingleClientComponent,
-    CreateCounselingComponent,
-    ShowCounselingsComponent,
-    ShowCounselingsPerClientComponent,
-    EditClientComponent,
-    CreateEmployerComponent,
-    ShowEmployersListComponent,
-    ShowClientEmployersComponent,
-    NgbdSortableHeader,
-    EditCounselingComponent,
-    CreateCommentComponent,
-    ShowEmployersComponent,
-    CreateClientEmployerJobDescriptionComponent,
-    EditClientEmployerJobDescriptionComponent,
-    CounselingComponent,
-    NewLinePipe,
-    ShowSingleEmployerComponent,
-    EditEmployerComponent,
-    DeleteComponent,
-    DeleteModalComponent,
-    ShowCounselingComponent,
-    BackUpComponent,
-    EditCategoriesComponent,
-    EditCategoryComponent,
+
   ],
   imports: [
     CommonModule,
@@ -115,7 +90,33 @@ const appRoutes: Routes = [
     CreateTaskComponent,
     ShowSingleTaskComponent,
     CaseTaskListComponent,
-    LinkifyPipe
+    LinkifyPipe,
+    EditCategoryComponent,
+    EditCategoriesComponent,
+    BackUpComponent,
+    ShowCounselingComponent,
+    DeleteModalComponent,
+    DeleteComponent,
+    EditEmployerComponent,
+    ShowSingleEmployerComponent,
+    NewLinePipe,
+    CounselingComponent,
+    EditClientEmployerJobDescriptionComponent,
+    CreateClientEmployerJobDescriptionComponent,
+    ShowEmployersComponent,
+    CreateCommentComponent,
+    EditCounselingComponent,
+    NgbdSortableHeader,
+    ShowClientEmployersComponent,
+    ShowEmployersListComponent,
+    CreateEmployerComponent,
+    EditClientComponent,
+    ShowCounselingsPerClientComponent,
+    ShowCounselingsComponent,
+    CreateCounselingComponent,
+    ShowSingleClientComponent,
+    ShowClientsComponent,
+    CreateClientComponent
   ],
   exports: [
   ],

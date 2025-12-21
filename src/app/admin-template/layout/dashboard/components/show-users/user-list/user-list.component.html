@@ -2,41 +2,31 @@
   <thead>
   <tr>
     <th scope="col">#</th>
-    <th>
-      username
-    </th>
-    <th>
-      email
-    </th>
-    <th>
-      admin
-    </th>
-    <th>
-      locked
-    </th>
+    <th>username</th>
+    <th>email</th>
+    <th>admin</th>
+    <th>locked</th>
     <th></th>
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let u of userList; index as i">
-    <th scope="row">{{i+1}}</th>
-    <td>
-      <a [routerLink]="['/users', u.username]" [routerLinkActive]="['router-link-active']">
-        <span>{{ u.username }}</span>
-      </a>
-    </td>
-    <td>{{ u.email }}</td>
-    <td>
-      <span *ngIf="u.admin">
-        <fa-icon class="text-danger" [icon]="faCheck"></fa-icon>
-      </span>
-    </td>
-    <td>
-      {{u.locked}}
-    </td>
-    <td>
-
-    </td>
-  </tr>
+    @for (u of userList(); track u.username; let i = $index) {
+      <tr>
+        <th scope="row">{{ i + 1 }}</th>
+        <td>
+          <a [routerLink]="['/users', u.username]" routerLinkActive="router-link-active">
+            <span>{{ u.username }}</span>
+          </a>
+        </td>
+        <td>{{ u.email }}</td>
+        <td>
+          @if (u.admin) {
+            <fa-icon class="text-danger" [icon]="faCheck"></fa-icon>
+          }
+        </td>
+        <td>{{ u.locked }}</td>
+        <td></td>
+      </tr>
+    }
   </tbody>
 </table>

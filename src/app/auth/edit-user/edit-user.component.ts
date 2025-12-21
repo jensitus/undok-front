@@ -2,13 +2,20 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {UserService} from '../services/user.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {environment} from '../../../environments/environment';
 import {Subscription} from 'rxjs';
+import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-edit-user',
   templateUrl: './edit-user.component.html',
+  imports: [
+    AlertComponent,
+    ReactiveFormsModule,
+    NgClass
+  ],
   styleUrls: ['./edit-user.component.css']
 })
 export class EditUserComponent implements OnInit, OnDestroy {

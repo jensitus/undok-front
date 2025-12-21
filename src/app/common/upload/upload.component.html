@@ -7,17 +7,25 @@
            accept="image/*"
            (change)="processFile(imageInput)">
   </label>
-  <div *ngIf="selectedFile" class="img-preview-container">
-    <div class="img-preview{{selectedFile.status === 'fail' ? '-error' : ''}}"
-         [ngStyle]="{'background-image': 'url('+ selectedFile.src + ')'}">
+  @if (selectedFile) {
+    <div class="img-preview-container">
+      <div class="img-preview{{selectedFile.status === 'fail' ? '-error' : ''}}"
+           [ngStyle]="{'background-image': 'url('+ selectedFile.src + ')'}">
+      </div>
+      @if (selectedFile.pending) {
+        <div class="img-loading-overlay">
+          <div class="img-spinning-circle"></div>
+          <p><ngb-progressbar type="danger" [animated]="true" [value]="100" [striped]="true"></ngb-progressbar></p>
+        </div>
+      }
+      @if (selectedFile.status === 'ok') {
+        <div class="alert alert-success"> Image Uploaded Successfully!</div>
+      }
+      @if (selectedFile.status === 'fail') {
+        <div class="alert alert-danger"> Image Upload Failed!</div>
+      }
     </div>
-    <div *ngIf="selectedFile.pending" class="img-loading-overlay">
-      <div class="img-spinning-circle"></div>
-      <p><ngb-progressbar type="danger" [animated]="true" [value]="100" [striped]="true"></ngb-progressbar></p>
-    </div>
-    <div *ngIf="selectedFile.status === 'ok'" class="alert alert-success"> Image Uploaded Successfully!</div>
-    <div *ngIf="selectedFile.status === 'fail'" class="alert alert-danger"> Image Upload Failed!</div>
-  </div>
+  }
 
   <div>
     <input type="file" id="file" multiple (change)="getFileDetails($event)">

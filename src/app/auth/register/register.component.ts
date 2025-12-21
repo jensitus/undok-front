@@ -1,14 +1,24 @@
 import {Component, OnInit} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
+import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import {Router, RouterLink} from '@angular/router';
 import {UserService} from '../services/user.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {first} from 'rxjs/operators';
 import {AuthenticationService} from '../services/authentication.service';
+import {NavbarComponent} from '../../common/navbar/navbar.component';
+import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
+import {NgClass, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
+  imports: [
+    AlertComponent,
+    ReactiveFormsModule,
+    NgClass,
+    NgIf,
+    RouterLink
+  ],
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {

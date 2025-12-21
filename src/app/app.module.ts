@@ -60,21 +60,6 @@ const app_routes: Routes = [
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HomeComponent,
-    LoginComponent,
-    RegisterComponent,
-    NavbarComponent,
-    ResetPasswordComponent,
-    ForgotPasswordComponent,
-    UserComponent,
-    EditUserComponent,
-    ConfirmAccountComponent,
-    ChangePasswordComponent,
-    UploadComponent,
-    FilelistComponent,
-    BackButtonDirective,
-    TwoFactorComponent,
   ],
   imports: [
     BrowserModule,
@@ -88,7 +73,22 @@ const app_routes: Routes = [
     AlertModule,
     PageHeaderModule,
     FontAwesomeModule,
-    SidebarComponent
+    SidebarComponent,
+    TwoFactorComponent,
+    BackButtonDirective,
+    FilelistComponent,
+    UploadComponent,
+    ChangePasswordComponent,
+    ConfirmAccountComponent,
+    EditUserComponent,
+    UserComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
+    NavbarComponent,
+    RegisterComponent,
+    LoginComponent,
+    HomeComponent,
+    AppComponent
   ],
   providers: [
     AuthGuard,
@@ -100,7 +100,7 @@ const app_routes: Routes = [
   ],
     exports: [
     ],
-  bootstrap: [AppComponent]
+  bootstrap: []
 })
 export class AppModule {
 }

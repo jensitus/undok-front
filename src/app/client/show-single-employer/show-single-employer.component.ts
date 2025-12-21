@@ -9,10 +9,21 @@ import {CommonService} from '../../common/services/common.service';
 import {DeleteService} from '../service/delete.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {DeleteTypes} from '../delete/delete-types';
+import {DeleteComponent} from '../delete/delete.component';
+import {EditEmployerComponent} from '../edit-employer/edit-employer.component';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
 
 @Component({
   selector: 'app-show-single-employer',
+  standalone: true,
   templateUrl: './show-single-employer.component.html',
+  imports: [
+    DeleteComponent,
+    EditEmployerComponent,
+    FaIconComponent,
+    AlertComponent
+  ],
   styleUrls: ['./show-single-employer.component.css']
 })
 export class ShowSingleEmployerComponent implements OnInit, OnDestroy {

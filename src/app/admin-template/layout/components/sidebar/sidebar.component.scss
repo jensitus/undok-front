@@ -1,4 +1,4 @@
-$topnav-background-color: #ffffff;
+$topnav-background-color: #f8f9fa;
 .sidebar {
     border-radius: 0;
     position: fixed;
@@ -11,7 +11,7 @@ $topnav-background-color: #ffffff;
     border: none;
     border-radius: 0;
     overflow-y: auto;
-    background-color: $topnav-background-color;
+    background-color: #ffffff;
     bottom: 0;
     overflow-x: hidden;
     padding-bottom: 40px;
@@ -24,7 +24,7 @@ $topnav-background-color: #ffffff;
     // border-top: 1px solid rgba(255,255,255,0.3);
     .list-group {
         a.list-group-item {
-            background: $topnav-background-color;
+            background: #ffffff;
             border: 0;
             border-radius: 0;
             color: #444;
@@ -175,7 +175,7 @@ $topnav-background-color: #ffffff;
         background: darken($topnav-background-color, 5%);
         color: #fff;
     }
-    border-top: 1px solid #999;
+    border-top: 1px solid #eee;
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     -ms-transition: all 0.2s ease-in-out;

@@ -2,10 +2,15 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DeleteTypes} from '../delete-types';
 import {faTrash} from '@fortawesome/free-solid-svg-icons';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-delete-modal',
+  standalone: true,
   templateUrl: './delete-modal.component.html',
+  imports: [
+    FaIconComponent
+  ],
   styleUrls: ['./delete-modal.component.css']
 })
 export class DeleteModalComponent implements OnInit {

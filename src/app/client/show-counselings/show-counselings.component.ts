@@ -5,19 +5,36 @@ import {faTasks} from '@fortawesome/free-solid-svg-icons';
 import {CounselingTableService} from '../table/counseling-table.service';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
 import {CounselingService} from '../service/counseling.service';
-import {DatePipe} from '@angular/common';
+import {AsyncPipe, CommonModule, DatePipe} from '@angular/common';
 import {CsvService} from '../service/csv.service';
 import {AllCounseling} from '../model/all-counseling';
 import {saveAs} from 'file-saver';
 import {takeUntil} from 'rxjs/operators';
 import {currentDate, currentDateTime} from '../../common/helper/date-utility';
+import {NgbHighlight, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule} from '@angular/forms';
+import {RouterLink} from '@angular/router';
+import {LinkifyPipe} from '../../common/helper/linkify.pipe';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 
 @Component({
-             selector: 'app-show-counselings',
-             templateUrl: './show-counselings.component.html',
-             styleUrls: ['./show-counselings.component.css'],
-             providers: [{provide: 'paramId', useValue: 'param-id-donner'}]
-           })
+  selector: 'app-show-counselings',
+  standalone: true,
+  templateUrl: './show-counselings.component.html',
+  styleUrls: ['./show-counselings.component.css'],
+  imports: [
+    CommonModule,
+    NgbPaginationModule,
+    AsyncPipe,
+    FormsModule,
+    RouterLink,
+    NgbHighlight,
+    LinkifyPipe,
+    DatePipe,
+    FaIconComponent
+  ],
+  providers: [{provide: 'paramId', useValue: 'param-id-donner'}]
+})
 export class ShowCounselingsComponent implements OnInit, OnDestroy {
 
   total$: Observable<number>;

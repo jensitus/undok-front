@@ -6,7 +6,6 @@ import {CategoryService} from '../../service/category.service';
 import {CategoryTypes} from '../../model/category-types';
 import {CommonService} from '../../../common/services/common.service';
 import {Label} from '../../model/label';
-import {AddCategoryComponent} from '../add-category/add-category.component';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgForOf} from '@angular/common';
@@ -17,7 +16,6 @@ import {NgForOf} from '@angular/common';
   standalone: true,
   templateUrl: './select-box.component.html',
   imports: [
-    AddCategoryComponent,
     NgSelectModule,
     FormsModule,
     NgForOf,

@@ -14,23 +14,29 @@
       <fa-icon class="text-info" [icon]="faBars"></fa-icon>&nbsp;
       <span>{{ 'Charts' }}</span>
     </a>-->
-    <a [routerLink]="['/list-users']" *ngIf="currentUser.admin" [routerLinkActive]="['router-link-active']"
-       class="list-group-item">
-      <fa-icon class="text-secondary" [icon]="faCampground"></fa-icon>&nbsp;
-      <span>{{ 'list users' }}</span>
-    </a>
+    @if (currentUser.admin) {
+      <a [routerLink]="['/list-users']" [routerLinkActive]="['router-link-active']"
+         class="list-group-item">
+        <fa-icon class="text-secondary" [icon]="faCampground"></fa-icon>&nbsp;
+        <span>{{ 'list users' }}</span>
+      </a>
+    }
 
-    <a [routerLink]="['/clients/csv-download-list']" *ngIf="currentUser.admin" [routerLinkActive]="['router-link-active']"
-       class="list-group-item">
-      <fa-icon class="text-secondary" [icon]="faSave"></fa-icon>&nbsp;
-      <span>{{ 'daily CSVs' }}</span>
-    </a>
+    @if (currentUser.admin) {
+      <a [routerLink]="['/clients/csv-download-list']" [routerLinkActive]="['router-link-active']"
+         class="list-group-item">
+        <fa-icon class="text-secondary" [icon]="faSave"></fa-icon>&nbsp;
+        <span>{{ 'daily CSVs' }}</span>
+      </a>
+    }
 
-    <a [routerLink]="['/clients/edit-categories']" *ngIf="currentUser.admin" [routerLinkActive]="['router-link-active']"
-       class="list-group-item">
-      <fa-icon class="text-primary" [icon]="faEarListen"></fa-icon>&nbsp;
-      <span>{{ 'Edit Categories' }}</span>
-    </a>
+    @if (currentUser.admin) {
+      <a [routerLink]="['/clients/edit-categories']" [routerLinkActive]="['router-link-active']"
+         class="list-group-item">
+        <fa-icon class="text-primary" [icon]="faEarListen"></fa-icon>&nbsp;
+        <span>{{ 'Edit Categories' }}</span>
+      </a>
+    }
 
     <a [routerLink]="['/login']" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <fa-icon class="text-secondary" [icon]="faPowerOff"></fa-icon>&nbsp;
@@ -52,22 +58,26 @@
       <span>{{ 'Reports' }}</span>
     </a>
 
-    <span *ngIf="showClientButtons">
-    <a *ngIf="clientId" class="list-group-item" [routerLink]="['clients/' + clientId + '/create-counseling']">
-      <fa-icon class="text-danger" [icon]="faTasks"></fa-icon>&nbsp;
-      <span>{{ 'neue beratung' }}</span>
-    </a>
-    </span>
+    @if (showClientButtons) {
+      @if (clientId) {
+        <a class="list-group-item" [routerLink]="['clients/' + clientId + '/create-counseling']">
+          <fa-icon class="text-danger" [icon]="faTasks"></fa-icon>&nbsp;
+          <span>{{ 'neue beratung' }}</span>
+        </a>
+      }
+    }
 
-<!--    <a *ngIf="showClientButtons || showCreateEmployerButton" class="list-group-item" [routerLink]="['clients/create/employer']">
-      <fa-icon class="text-primary" [icon]="faSurprise"></fa-icon>&nbsp;
-      <span>{{ 'neue arbeitgeber:in' }}</span>
-    </a>-->
+    <!--    <a *ngIf="showClientButtons || showCreateEmployerButton" class="list-group-item" [routerLink]="['clients/create/employer']">
+          <fa-icon class="text-primary" [icon]="faSurprise"></fa-icon>&nbsp;
+          <span>{{ 'neue arbeitgeber:in' }}</span>
+        </a>-->
 
-    <a *ngIf="showClientButtons" class="list-group-item" (click)="assignEmployer()">
-      <fa-icon class="text-primary" [icon]="faSurprise"></fa-icon>&nbsp;
-      <span>{{ 'arbeitgeber:in zuweisen' }}</span>
-    </a>
+    @if (showClientButtons) {
+      <a class="list-group-item" (click)="assignEmployer()">
+        <fa-icon class="text-primary" [icon]="faSurprise"></fa-icon>&nbsp;
+        <span>{{ 'arbeitgeber:in zuweisen' }}</span>
+      </a>
+    }
 
     <div class="header-fields">
       <a (click)="rltAndLtr()" class="list-group-item">
@@ -77,6 +87,11 @@
   </div>
   <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">
     <i class="fa fa-fw fa-angle-double-{{collapsed?'right':'left'}}"></i>&nbsp;
+    @if (!collapsed) {
+      <fa-icon class="text-secondary" [icon]="faAngleDoubleLeft"></fa-icon>
+    } @else if (collapsed) {
+      <fa-icon class="text-secondary" [icon]="faAngleDoubleRight"></fa-icon>
+    }
     <span>{{ 'Collapse Sidebar' }}</span>
   </div>
 </nav>

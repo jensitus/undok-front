@@ -1,19 +1,26 @@
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item" *ngIf="firstLink">
+  <ol class="breadcrumb">
+    @if (firstLink) {
+      <li class="breadcrumb-item">
         <!--small><fa-icon class="text-secondary" [icon]="firstIcon"></fa-icon></small--> &nbsp;
-        <a href="Javascript:void(0)" class="breadcrumb-font" [routerLink]="[firstLink]"> {{firstPoint}}</a>
+        <a href="Javascript:void(0)" class="breadcrumb-font" [routerLink]="[firstLink]"> {{ firstPoint }}</a>
       </li>
-      <li class="breadcrumb-item" *ngIf="secondLink">
+    }
+    @if (secondLink) {
+      <li class="breadcrumb-item">
         <!--small><fa-icon class="text-secondary" [icon]="secondIcon"></fa-icon></small--> &nbsp;
-        <a href="Javascript:void(0)" class="breadcrumb-font" [routerLink]="[secondLink]"> {{secondPoint}}</a>
+        <a href="Javascript:void(0)" class="breadcrumb-font" [routerLink]="[secondLink]"> {{ secondPoint }}</a>
       </li>
-      <li class="breadcrumb-item" *ngIf="thirdLink">
+    }
+    @if (thirdLink) {
+      <li class="breadcrumb-item">
         <!--small><fa-icon class="text-secondary" [icon]="thirdIcon" ></fa-icon></small--> &nbsp;
-        <a href="Javascript:void(0)" class="breadcrumb-font" [routerLink]="[thirdLink]"> {{thirdPoint}}</a>
+        <a href="Javascript:void(0)" class="breadcrumb-font" [routerLink]="[thirdLink]"> {{ thirdPoint }}</a>
       </li>
-      <li class="breadcrumb-item active">
-        <!--fa-icon class="text-secondary" [icon]="endPointIcon"></fa-icon--> &nbsp; <span class="breadcrumb-font">{{endPoint}}</span>
-      </li>
-    </ol>
+    }
+    <li class="breadcrumb-item active">
+      <!--fa-icon class="text-secondary" [icon]="endPointIcon"></fa-icon--> &nbsp; <span
+      class="breadcrumb-font">{{ endPoint }}</span>
+    </li>
+  </ol>
 </nav>

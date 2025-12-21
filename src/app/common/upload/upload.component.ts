@@ -1,6 +1,10 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import {UploadService} from '../services/upload.service';
+import {NavbarComponent} from '../navbar/navbar.component';
+import {NgIf, NgStyle} from '@angular/common';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 
 class ImageSnippet {
   pending = false;
@@ -17,7 +21,13 @@ const URL = 'http://localhost:8080/service/app/files';
 
 @Component({
   selector: 'app-upload',
+  standalone: true,
   templateUrl: './upload.component.html',
+  imports: [
+    NavbarComponent,
+    NgStyle,
+    NgbModule,
+  ],
   styleUrls: ['./upload.component.css']
 })
 export class UploadComponent implements OnInit {

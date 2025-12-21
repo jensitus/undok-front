@@ -5,10 +5,17 @@ import {User} from '../model/user';
 import {UserService} from '../services/user.service';
 import {Router} from '@angular/router';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-two-factor',
+  standalone: true,
   templateUrl: './two-factor.component.html',
+  imports: [
+    AlertComponent,
+    FormsModule
+  ],
   styleUrls: ['./two-factor.component.css']
 })
 export class TwoFactorComponent implements OnInit, OnDestroy {
@@ -46,9 +53,11 @@ export class TwoFactorComponent implements OnInit, OnDestroy {
     console.log(this.secondFactorForm);
     this.subscription$.push(this.userService.sendSecondFactorToken(this.secondFactorForm).subscribe((result) => {
       this.secondFactorUser = result.userDto;
+      console.log('secondFactorUser: ', this.secondFactorUser);
       localStorage.clear();
       localStorage.setItem('currentUser', JSON.stringify(this.secondFactorUser));
-      this.router.navigate(['/']);
+
+      this.router.navigate(['home']);
     }));
   }
 

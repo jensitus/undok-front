@@ -1,29 +1,61 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {min, Subscription} from 'rxjs';
+import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs';
 import {CounselingService} from '../service/counseling.service';
 import {Counseling} from '../model/counseling';
 import {CommonService} from '../../common/services/common.service';
-import {ModalDismissReasons, NgbDateStruct, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ModalDismissReasons, NgbDateStruct, NgbInputDatepicker, NgbModal, NgbTimepicker} from '@ng-bootstrap/ng-bootstrap';
 import {CategoryService} from '../service/category.service';
 import {CategoryTypes} from '../model/category-types';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {DropdownItem} from '../model/dropdown-item';
 import {EntityTypes} from '../model/entity-types';
 import {JoinCategory} from '../model/join-category';
 import {Label} from '../model/label';
-import {faBars} from '@fortawesome/free-solid-svg-icons';
+import {faBars, faTachometerAlt} from '@fortawesome/free-solid-svg-icons';
 import {Time} from '../model/time';
 import {DateTimeService} from '../service/date-time.service';
 import {DurationService} from '../service/duration.service';
-import {error} from 'protractor';
+import {PageHeaderComponent} from '../../admin-template/shared/modules/page-header/page-header.component';
+import {FormsModule} from '@angular/forms';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {DatePipe} from '@angular/common';
+import {MultiSelectBoxComponent} from '../select-box/multi/multi-select-box.component';
+import {NewLinePipe} from '../new-line.pipe';
+import {CreateCommentComponent} from '../create-comment/create-comment.component';
 
 @Component({
   selector: 'app-counseling',
+  standalone: true,
   templateUrl: './counseling.component.html',
+  imports: [
+    PageHeaderComponent,
+    RouterLink,
+    FormsModule,
+    FaIconComponent,
+    NgbInputDatepicker,
+    NgbTimepicker,
+    MultiSelectBoxComponent,
+    NewLinePipe,
+    CreateCommentComponent,
+    DatePipe
+  ],
   styleUrls: ['./counseling.component.css']
 })
 export class CounselingComponent implements OnInit, OnDestroy {
+
+  constructor(
+    private counselingService: CounselingService,
+    private commonService: CommonService,
+    private modalService: NgbModal,
+    private categoryService: CategoryService,
+    private router: Router,
+    private alertService: AlertService,
+    public dateTimeService: DateTimeService,
+    private durationService: DurationService,
+    private cdr: ChangeDetectorRef
+  ) {
+  }
 
   CONCERN_MAX_LENGTH = 4080;
   ACTIVITY_MAX_LENGTH = 4080;
@@ -54,17 +86,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
   editRequiredTime = false;
   counselingDateRequired = false;
 
-  constructor(
-    private counselingService: CounselingService,
-    private commonService: CommonService,
-    private modalService: NgbModal,
-    private categoryService: CategoryService,
-    private router: Router,
-    private alertService: AlertService,
-    public dateTimeService: DateTimeService,
-    private durationService: DurationService,
-  ) {
-  }
+  protected readonly faTachometerAlt = faTachometerAlt;
 
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -95,14 +117,17 @@ export class CounselingComponent implements OnInit, OnDestroy {
         CategoryTypes.LEGAL, this.counselingId
       ).subscribe(categories => {
         this.counseling.legalCategory = categories;
+        this.cdr.detectChanges();
       }));
       this.subscription$.push(this.categoryService.getCategoriesByTypeAndEntity(
         CategoryTypes.ACTIVITY, this.counselingId
       ).subscribe(categories => {
         this.counseling.activityCategories = categories;
+        this.cdr.detectChanges();
       }));
       this.setDateObject();
       this.counselingDuration = this.durationService.getCounselingsDurationForEditing(this.counseling.requiredTime);
+      this.cdr.detectChanges();
     }, error => {
       this.router.navigate(['/clients', this.clientId]).then();
     }));
@@ -271,7 +296,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
   }
 
   setDateObject() {
-    if (this.counseling) {
+    if (this.counseling && this.counseling.counselingDate) {
       const strings = this.counseling.counselingDate.split('T');
       this.dateObject = new class implements NgbDateStruct {
         day: number;
@@ -290,4 +315,8 @@ export class CounselingComponent implements OnInit, OnDestroy {
     }
   }
 
+  closeCommentModal() {
+    this.getCounseling();
+    this.modalService.dismissAll();
+  }
 }

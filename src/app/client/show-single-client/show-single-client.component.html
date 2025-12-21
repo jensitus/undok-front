@@ -1,6 +1,6 @@
 <app-alert></app-alert>
 
-@if (show) {
+@if (alert) {
   <div class="row">
     <div class="col-xl-5">
       <ngb-alert [type]="'warning'" (closed)="close()">
@@ -19,7 +19,6 @@
 
 @if (!client) {
   <div class="card" aria-hidden="true">
-    <img src="..." class="card-img-top" alt="...">
     <div class="card-body">
       <h5 class="card-title placeholder-glow">
         <span class="placeholder col-6"></span>
@@ -64,9 +63,6 @@
         <div class="card">
           <div class="card-body">
             <div class="row">
-              <div class="col mt-1">
-                <label class="text-secondary">Name:</label>
-              </div>
               <div class="col mt-1">
                 <label class="text-secondary">Keyword:</label>
                 {{ client.keyword }}
@@ -222,12 +218,15 @@
                   <label class="text-secondary">gefährdet bei Geltendmachung:</label>
                 </div>
                 <div class="col-md-6">
-                <span *ngIf="client.vulnerableWhenAssertingRights">
-                  ja
-                </span>
-                  <span *ngIf="client.vulnerableWhenAssertingRights === false">
-                  nein
-                </span>
+                @if (client.vulnerableWhenAssertingRights) {
+                  <span>
+                    ja
+                  </span>
+                } @else {
+                  <span>
+                    nein
+                  </span>
+                }
                 </div>
               </div>
             }
@@ -246,18 +245,22 @@
             @if (client.openCase.jobFunction.length > 0) {
               <div>
                 <label class="text-secondary">Tätigkeiten:</label>&nbsp;
-                <span *ngFor="let jobFunction of client.openCase.jobFunction">
-                <span [innerHTML]="jobFunction.name"></span>&nbsp;
-              </span>
+                @for (jobFunction of client.openCase.jobFunction; track jobFunction) {
+                  <span>
+                    <span [innerHTML]="jobFunction.name"></span>&nbsp;
+                  </span>
+                }
               </div>
             }
             @if (client.openCase.counselingLanguages.length > 0) {
               <div>
                 <label class="text-secondary">Beratungssprachen:</label>&nbsp;
                 @if (client.openCase) {
-                  <span *ngFor="let language of client.openCase.counselingLanguages">
-                  <span [innerHTML]="language.name"></span>&nbsp;
-                </span>
+                  @for (language of client.openCase.counselingLanguages; track language) {
+                    <span>
+                      <span [innerHTML]="language.name"></span>&nbsp;
+                    </span>
+                  }
                 }
               </div>
             }
@@ -267,12 +270,15 @@
                   <label class="text-secondary">Dolmetch erforderlich:</label>
                 </div>
                 <div class="col-md-7">
-                  <span *ngIf="client.interpreterNecessary">
-                    ja
-                  </span>
-                  <span *ngIf="client.interpreterNecessary === false">
-                    nein
-                  </span>
+                  @if (client.interpreterNecessary) {
+                    <span>
+                      ja
+                    </span>
+                  } @else {
+                    <span>
+                      nein
+                    </span>
+                  }
                 </div>
               </div>
             }
@@ -280,9 +286,11 @@
               <div>
                 <label class="text-secondary">Arbeitsmarktzugang:</label>&nbsp;
                 @if (client.openCase) {
-                  <span *ngFor="let access of client.openCase.jobMarketAccess">
-                  <span [innerHTML]="access.name"></span>&nbsp;
-                </span>
+                  @for (access of client.openCase.jobMarketAccess; track access) {
+                    <span>
+                      <span [innerHTML]="access.name"></span>&nbsp;
+                    </span>
+                  }
                 }
               </div>
             }
@@ -290,9 +298,11 @@
               <div>
                 <label class="text-secondary">Wo hat die Person von uns gehört:</label>&nbsp;
                 @if (client.openCase) {
-                  <span *ngFor="let access of client.openCase.originOfAttention">
-                  <span [innerHTML]="access.name"></span>&nbsp;
-                </span>
+                  @for (access of client.openCase.originOfAttention; track access) {
+                    <span>
+                      <span [innerHTML]="access.name"></span>&nbsp;
+                    </span>
+                  }
                 }
               </div>
             }
@@ -300,9 +310,11 @@
               <div>
                 <label class="text-secondary">undokumentierte Arbeit:</label>&nbsp;
                 @if (client.openCase) {
-                  <span *ngFor="let access of client.openCase.undocumentedWork">
-                  <span [innerHTML]="access.name"></span>&nbsp;
-                </span>
+                  @for (access of client.openCase.undocumentedWork; track access) {
+                    <span>
+                      <span [innerHTML]="access.name"></span>&nbsp;
+                    </span>
+                  }
                 }
               </div>
             }
@@ -310,9 +322,11 @@
               <div>
                 <label class="text-secondary">{{ Label.COMPLAINT + ':' }}</label>&nbsp;
                 @if (client.openCase) {
-                  <span *ngFor="let access of client.openCase.complaints">
-                  <span [innerHTML]="access.name"></span>&nbsp;
-                </span>
+                  @for (access of client.openCase.complaints; track access) {
+                    <span>
+                      <span [innerHTML]="access.name"></span>&nbsp;
+                    </span>
+                  }
                 }
               </div>
             }
@@ -320,9 +334,11 @@
               <div>
                 <label class="text-secondary">{{ Label.INDUSTRY_UNION + ':' }}</label>&nbsp;
                 @if (client.openCase) {
-                  <span *ngFor="let access of client.openCase.industryUnion">
-                  <span [innerHTML]="access.name"></span>&nbsp;
-                </span>
+                  @for (access of client.openCase.industryUnion; track access) {
+                    <span>
+                      <span [innerHTML]="access.name"></span>&nbsp;
+                    </span>
+                  }
                 }
               </div>
             }
@@ -330,9 +346,11 @@
               <div>
                 <label class="text-secondary">{{ Label.SECTOR + ':' }}</label>&nbsp;
                 @if (client.openCase) {
-                  <span *ngFor="let access of client.openCase.sector">
-                  <span [innerHTML]="access.name"></span>&nbsp;
-                </span>
+                  @for (access of client.openCase.sector; track access) {
+                    <span>
+                      <span [innerHTML]="access.name"></span>&nbsp;
+                    </span>
+                  }
                 }
               </div>
             }
@@ -340,15 +358,20 @@
         </div>
         <div class="row mt-1">
           <div class="col text-lg-start">
-            <button class="btn btn-sm btn-outline-primary m-3"
-                    [disabled]="client.openCase === null"
-                    [routerLink]="['edit']" title="edit">
-              <fa-icon [icon]="faEdit"></fa-icon> edit
-            </button>
+            <ul class="list-group list-group-horizontal">
+              <a class="list-group-item" [routerLink]="['edit']" title="edit">
+                <fa-icon class="text-secondary" [icon]="faEdit"></fa-icon> edit
+              </a>
+              <li class="list-group-item"><app-delete [id_to_delete]="client.id" [type]="deleteTypeClient"
+                                                      [delete_object_name]="client.keyword"></app-delete></li>
+              <a class="list-group-item" [routerLink]="['/clients/' + client.id + '/create-counseling']">
+                <fa-icon class="text-secondary" [icon]="faTasks"></fa-icon> neue beratung
+              </a>
+            </ul>
 
-            <app-delete [id_to_delete]="client.id" [type]="deleteTypeClient"
-                        [delete_object_name]="client.keyword"></app-delete>
           </div>
+        </div>
+        <div class="row mt-1">
           <div class="col mt-4">
           <span class="text-secondary text-left">
             Gesamtberatungsdauer:

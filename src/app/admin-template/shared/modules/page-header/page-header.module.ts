@@ -6,8 +6,8 @@ import { PageHeaderComponent } from './page-header.component';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 @NgModule({
-              imports: [CommonModule, RouterModule, FontAwesomeModule],
-    declarations: [PageHeaderComponent],
+  imports: [CommonModule, RouterModule, FontAwesomeModule, PageHeaderComponent],
+    declarations: [],
     exports: [PageHeaderComponent]
 })
 export class PageHeaderModule {}

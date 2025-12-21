@@ -5,10 +5,14 @@ import {CommonService} from '../../common/services/common.service';
 import {EmployerService} from '../service/employer.service';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-create-employer',
   templateUrl: './create-employer.component.html',
+  imports: [
+    FormsModule
+  ],
   styleUrls: ['./create-employer.component.css']
 })
 export class CreateEmployerComponent implements OnInit, OnDestroy {

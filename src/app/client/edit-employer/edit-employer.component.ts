@@ -3,10 +3,14 @@ import {Employer} from '../model/employer';
 import {EmployerService} from '../service/employer.service';
 import {Subscription} from 'rxjs';
 import {CommonService} from '../../common/services/common.service';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-edit-employer',
   templateUrl: './edit-employer.component.html',
+  imports: [
+    FormsModule
+  ],
   styleUrls: ['./edit-employer.component.css']
 })
 export class EditEmployerComponent implements OnInit, OnDestroy {

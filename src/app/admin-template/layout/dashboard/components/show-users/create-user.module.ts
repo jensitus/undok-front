@@ -14,14 +14,17 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [CreateUserComponent, UserListComponent, ShowUsersComponent],
-    imports: [
-        CommonModule,
-        RouterModule.forChild(routes),
-        FormsModule,
-        FontAwesomeModule,
-        AlertModule,
-        PageHeaderModule
-    ]
+  declarations: [],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    FormsModule,
+    FontAwesomeModule,
+    AlertModule,
+    PageHeaderModule,
+    CreateUserComponent,
+    ShowUsersComponent,
+    UserListComponent
+  ]
 })
 export class CreateUserModule { }

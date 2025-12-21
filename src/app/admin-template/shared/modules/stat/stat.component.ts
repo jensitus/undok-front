@@ -1,10 +1,17 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {IconDefinition, faArrowAltCircleRight} from '@fortawesome/free-solid-svg-icons';
+import {RouterLink} from '@angular/router';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 
 @Component({
-    selector: 'app-stat',
-    templateUrl: './stat.component.html',
-    styleUrls: ['./stat.component.scss']
+  selector: 'app-stat',
+  standalone: true,
+  templateUrl: './stat.component.html',
+  imports: [
+    RouterLink,
+    FaIconComponent
+  ],
+  styleUrls: ['./stat.component.scss']
 })
 export class StatComponent implements OnInit {
     @Input() bgClass: string;

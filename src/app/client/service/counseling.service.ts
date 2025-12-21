@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {Counseling} from '../model/counseling';
+import {catchError, tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,10 @@ export class CounselingService {
 
   createUpdateComment(counselingId: string, comment: string): Observable<Counseling> {
     console.log(counselingId, comment);
-    return this.http.put<Counseling>(this.apiUrl + this.COUNSELING_URL + counselingId + '/set-or-update-comment/', comment);
+    return this.http.put<Counseling>(this.apiUrl + this.COUNSELING_URL + counselingId + '/set-or-update-comment/', comment, {
+      headers: {
+        'Content-Type': 'text/plain'
+      }});
   }
 
   deleteCounseling(counselingId: string): Observable<void> {

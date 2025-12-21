@@ -2,10 +2,15 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CounselingService} from '../service/counseling.service';
 import {Subscription} from 'rxjs';
+import {CounselingComponent} from '../counseling/counseling.component';
 
 @Component({
   selector: 'app-show-counseling',
+  standalone: true,
   templateUrl: './show-counseling.component.html',
+  imports: [
+    CounselingComponent
+  ],
   styleUrls: ['./show-counseling.component.css']
 })
 export class ShowCounselingComponent implements OnInit, OnDestroy {

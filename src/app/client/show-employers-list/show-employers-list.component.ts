@@ -7,14 +7,26 @@ import {EmployerTableService} from '../table/employer-table.service';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
 import {CommonService} from '../../common/services/common.service';
 import {faSurprise} from '@fortawesome/free-solid-svg-icons';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ModalDismissReasons, NgbHighlight, NgbModal, NgbPagination} from '@ng-bootstrap/ng-bootstrap';
 import {CreateClientEmployerJobDescriptionComponent} from '../create-client-employer-job-description/create-client-employer-job-description.component';
 import {SidebarService} from '../../admin-template/shared/services/sidebar.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {AsyncPipe} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-show-employers-list',
   templateUrl: './show-employers-list.component.html',
+  imports: [
+    NgbPagination,
+    FaIconComponent,
+    AsyncPipe,
+    FormsModule,
+    NgbHighlight,
+    RouterLink
+  ],
   styleUrls: ['./show-employers-list.component.css']
 })
 export class ShowEmployersListComponent implements OnInit, OnDestroy {

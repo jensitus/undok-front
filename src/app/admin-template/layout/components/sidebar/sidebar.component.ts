@@ -3,22 +3,27 @@ import {NavigationEnd, Router, RouterLink, RouterLinkActive} from '@angular/rout
 import {User} from '../../../../auth/model/user';
 import {
   faBars,
+  faBriefcaseMedical,
   faCampground,
   faCoffee,
   faEarListen,
   faPowerOff,
-  faSave, faSearch,
+  faSave,
+  faSearch,
   faSurprise,
   faTachometerAlt,
   faTasks,
   faUser,
-  faUsers, faBriefcaseMedical
+  faUsers
 } from '@fortawesome/free-solid-svg-icons';
 import {SidebarService} from '../../../shared/services/sidebar.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {NgClass, NgIf} from '@angular/common';
+import {NgClass} from '@angular/common';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {faAngleDoubleDown} from '@fortawesome/free-solid-svg-icons/faAngleDoubleDown';
+import {faAngleDoubleLeft} from '@fortawesome/free-solid-svg-icons/faAngleDoubleLeft';
+import {faAngleDoubleRight} from '@fortawesome/free-solid-svg-icons/faAngleDoubleRight';
 
 @Component({
   selector: 'app-sidebar',
@@ -29,7 +34,6 @@ import {FaIconComponent} from '@fortawesome/angular-fontawesome';
     RouterLink,
     FaIconComponent,
     RouterLinkActive,
-    NgIf
   ],
   standalone: true
 })
@@ -172,4 +176,7 @@ export class SidebarComponent implements OnInit {
   // }
   protected readonly faSearch = faSearch;
   protected readonly faBriefcaseMedical = faBriefcaseMedical;
+  protected readonly faAngleDoubleDown = faAngleDoubleDown;
+  protected readonly faAngleDoubleLeft = faAngleDoubleLeft;
+  protected readonly faAngleDoubleRight = faAngleDoubleRight;
 }

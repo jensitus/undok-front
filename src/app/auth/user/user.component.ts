@@ -1,12 +1,15 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {UserService} from '../services/user.service';
-import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
-import {User} from '../model/user';
-import {SetAdminDto} from '../../admin-template/layout/dashboard/components/show-users/model/set-admin-dto';
-import {ResponseMessage} from '../../common/helper/response-message';
-import {Subscription} from 'rxjs';
-import {faTachometerAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
+import { faTachometerAlt, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { UserService } from '../services/user.service';
+import { AlertService } from '../../admin-template/layout/components/alert/services/alert.service';
+import { User } from '../model/user';
+import { SetAdminDto } from '../../admin-template/layout/dashboard/components/show-users/model/set-admin-dto';
+import { ResponseMessage } from '../../common/helper/response-message';
+import { AlertComponent } from '../../admin-template/layout/components/alert/alert.component';
+import { PageHeaderComponent } from '../../admin-template/shared/modules/page-header/page-header.component';
 
 export interface LockUser {
   id: string;
@@ -15,94 +18,103 @@ export interface LockUser {
 
 @Component({
   selector: 'app-user',
+  standalone: true,
   templateUrl: './user.component.html',
+  imports: [
+    AlertComponent,
+    PageHeaderComponent,
+    RouterLink,
+    FormsModule
+  ],
   styleUrls: ['./user.component.css']
 })
-export class UserComponent implements OnInit, OnDestroy {
+export class UserComponent implements OnInit {
+  // Inject services
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly userService = inject(UserService);
+  private readonly alertService = inject(AlertService);
 
-  currentUser: User;
-  username: string;
-  user: User;
-  setAdminDto: SetAdminDto;
-  responseMessage: ResponseMessage;
-  private unsubscribe$: Subscription[] = [];
-  private locked: boolean;
+  // Icons
   protected readonly faUsers = faUsers;
   protected readonly faTachometerAlt = faTachometerAlt;
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private userService: UserService,
-    private alertService: AlertService
-  ) {
+  // Signals for reactive state
+  readonly currentUser = signal<User | null>(null);
+  readonly user = signal<User | null>(null);
+  readonly responseMessage = signal<ResponseMessage | null>(null);
+
+  // Convert route params to signal
+  private readonly params = toSignal(this.activatedRoute.params);
+
+  // Computed signal for username from route
+  readonly username = computed(() => this.params()?.['username'] ?? '');
+
+  ngOnInit(): void {
+    this.loadCurrentUser();
+    this.loadUser();
   }
 
-  ngOnInit() {
-    this.getCurrentUser();
-    this.getUser();
-  }
-
-  ngOnDestroy(): void {
-    if (this.unsubscribe$) {
-      this.unsubscribe$.forEach((s) => {
-        s.unsubscribe();
-      });
+  private loadCurrentUser(): void {
+    const userJson = localStorage.getItem('currentUser');
+    if (userJson) {
+      this.currentUser.set(JSON.parse(userJson));
     }
   }
 
-  private getCurrentUser() {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  private loadUser(): void {
+    const username = this.username();
+    if (!username) { return; }
+
+    this.userService.getByUsername(username)
+        .subscribe({
+          next: data => this.user.set(data),
+          error: err => this.alertService.error(err)
+        });
   }
 
-  setAdmin(user_id, admin) {
-    admin = !admin;
-    this.setAdminDto = {
-      admin: admin
+  setAdmin(userId: string, currentAdminStatus: boolean): void {
+    const newAdminStatus = !currentAdminStatus;
+    const setAdminDto: SetAdminDto = {
+      admin: newAdminStatus
     };
-    this.unsubscribe$.push(
-      this.userService.setAdmin(user_id, this.setAdminDto).subscribe(message => {
-        this.responseMessage = message;
-        this.alertService.success(message.text, true);
-        this.getUser();
-      }));
+
+    this.userService.setAdmin(userId, setAdminDto)
+        .subscribe({
+          next: message => {
+            this.responseMessage.set(message);
+            this.alertService.success(message.text, true);
+            this.loadUser();
+          },
+          error: err => this.alertService.error(err)
+        });
   }
 
-  getUser() {
-    this.activatedRoute.params.subscribe(params => {
-      this.username = params['username'];
-    });
-    this.unsubscribe$.push(
-      this.userService.getByUsername(this.username).subscribe(data => {
-        this.user = data;
-      }, error => {
-        this.alertService.error(error);
-      }));
+  resendConfirmationLink(userId: string): void {
+    this.userService.resendConfirmationLink(userId)
+        .subscribe({
+          next: value => {
+            this.alertService.success(value.text, true);
+          },
+          error: err => console.error('Error resending confirmation link:', err)
+        });
   }
 
-  resendConfirmationLink(userId: string) {
-    this.unsubscribe$.push(
-      this.userService.resendConfirmationLink(userId).subscribe({
-        next: value => {
-          this.alertService.success(value.text, true);
-        },
-        error: err => console.log('Himmel', err)
-      })
-    );
-  }
+  lockUser(): void {
+    const currentUser = this.user();
+    if (!currentUser) { return; }
 
-  lockUser() {
     const lockUser: LockUser = {
-      id: this.user.id,
-      lock: !this.user.locked
+      id: currentUser.id,
+      lock: !currentUser.locked
     };
-    this.unsubscribe$.push(
-      this.userService.lockUser(lockUser).subscribe({
-        next: value => {
-          this.alertService.success(value.text, true);
-          this.getUser();
-        },
-        error: err => this.alertService.error(err)
-      })
-    );
+
+    this.userService.lockUser(lockUser)
+        .subscribe({
+          next: value => {
+            this.alertService.success(value.text, true);
+            this.loadUser();
+          },
+          error: err => this.alertService.error(err)
+        });
   }
 }

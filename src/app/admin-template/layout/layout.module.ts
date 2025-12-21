@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout.component';
@@ -20,24 +19,19 @@ import {SidebarComponent} from './components/sidebar/sidebar.component';
   imports: [
     CommonModule,
     LayoutRoutingModule,
-    NgbDropdownModule,
     ReactiveFormsModule,
     FormsModule,
     AlertModule,
     FontAwesomeModule,
-    SidebarComponent
-  ],
-    declarations: [
-        LayoutComponent,
-
-        HeaderComponent,
-        AddUserComponent
-    ],
-  exports: [
+    SidebarComponent,
+    LayoutComponent,
     HeaderComponent,
-
+    AddUserComponent
   ],
-    providers: [
+  exports: [
+    HeaderComponent
+  ],
+  providers: [
         AuthGuard,
         {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}

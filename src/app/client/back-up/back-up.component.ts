@@ -1,62 +1,64 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {saveAs} from 'file-saver';
-import {CsvService} from '../service/csv.service';
-import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import { Component, signal, inject, computed } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { saveAs } from 'file-saver';
+import { CsvService } from '../service/csv.service';
+import { AlertService } from '../../admin-template/layout/components/alert/services/alert.service';
+import { AlertComponent } from '../../admin-template/layout/components/alert/alert.component';
 
 @Component({
   selector: 'app-back-up',
+  standalone: true,
+  imports: [
+    AlertComponent
+  ],
   templateUrl: './back-up.component.html',
   styleUrls: ['./back-up.component.css']
 })
-export class BackUpComponent implements OnInit, OnDestroy {
+export class BackUpComponent {
+  // Inject services
+  private readonly csvService = inject(CsvService);
+  private readonly alertService = inject(AlertService);
 
-  private subscription: Subscription[] = [];
-  public csvList: string[];
-  public clientsList: string[] = [];
-  public counselingsList: string[] = [];
+  // Signal for CSV list
+  csvList = signal<string[]>([]);
 
-  constructor(
-    private csvService: CsvService,
-    private alertService: AlertService
-  ) {
+  // Computed signals for divided lists
+  clientsList = computed(() =>
+    this.csvList().filter(csv => csv.includes('clients'))
+  );
+
+  counselingsList = computed(() =>
+    this.csvList().filter(csv => !csv.includes('clients'))
+  );
+
+  constructor() {
+    // Load CSV list on initialization
+    this.loadCsvList();
   }
 
-  ngOnInit(): void {
-    this.subscription.push(
-      this.csvService.getCsvList().subscribe({
-        next: (result) => {
-          this.csvList = result;
-          this.divideCsv();
-        },
-        error: (error) => {
-          this.alertService.error(error.error.text);
-        }
-      }));
+  private loadCsvList(): void {
+    this.csvService.getCsvList()
+        .pipe(takeUntilDestroyed())
+        .subscribe({
+          next: (result) => {
+            this.csvList.set(result);
+          },
+          error: (error) => {
+            this.alertService.error(error.error?.text || 'Failed to load CSV list');
+          }
+        });
   }
 
-  divideCsv() {
-    for (const csv of this.csvList) {
-      if (csv.includes('clients')) {
-        this.clientsList.push(csv);
-      } else {
-        this.counselingsList.push(csv);
-      }
-    }
+  getCsvAsBackup(filename: string): void {
+    this.csvService.getBackUpCsv(filename)
+        .pipe(takeUntilDestroyed())
+        .subscribe({
+          next: (blob) => {
+            saveAs(blob, filename);
+          },
+          error: (error) => {
+            this.alertService.error(error.error?.text || 'Failed to download backup');
+          }
+        });
   }
-
-  ngOnDestroy(): void {
-    this.subscription.forEach((s) => {
-      s.unsubscribe();
-    });
-  }
-
-  getCsvAsBackup(filename: string) {
-    this.subscription.push(
-      this.csvService.getBackUpCsv(filename).subscribe({
-        next: (blob) => saveAs(blob, filename)
-      })
-    );
-  }
-
 }

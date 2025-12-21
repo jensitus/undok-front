@@ -1,55 +1,67 @@
-import {Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {CategoryService} from '../service/category.service';
-import {CategoryTypes} from '../model/category-types';
-import {Category} from '../model/category';
-import {Label} from '../model/label';
-import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import { Component, computed, inject, signal, effect } from '@angular/core';
+import { CategoryService } from '../service/category.service';
+import { CategoryTypes } from '../model/category-types';
+import { Category } from '../model/category';
+import { Label } from '../model/label';
+import { AlertService } from '../../admin-template/layout/components/alert/services/alert.service';
+import { AddCategoryComponent } from '../select-box/add-category/add-category.component';
+import { EditCategoryComponent } from '../edit-category/edit-category.component';
 
 @Component({
   selector: 'app-edit-categories',
+  standalone: true,
   templateUrl: './edit-categories.component.html',
+  imports: [
+    AddCategoryComponent,
+    EditCategoryComponent
+  ],
   styleUrls: ['./edit-categories.component.css']
 })
-export class EditCategoriesComponent implements OnInit {
-
-  private categoryService = inject(CategoryService);
-  private alertService = inject(AlertService);
+export class EditCategoriesComponent {
+  // Services injected using inject()
+  private readonly categoryService = inject(CategoryService);
+  private readonly alertService = inject(AlertService);
 
   // Signals for state management
-  categories = signal<Category[]>([]);
-  loading = signal<boolean>(false);
-  error = signal<string | null>(null);
+  readonly categories = signal<Category[]>([]);
+  readonly loading = signal<boolean>(false);
+  readonly error = signal<string | null>(null);
 
-  private subscription$: Subscription[] = [];
   // Computed signal for categorized map
-  catMap = computed(() => {
+  readonly catMap = computed(() => {
     const map = new Map<string, Category[]>();
     const cats = this.categories();
 
-    let catType: keyof typeof CategoryTypes;
-    // tslint:disable-next-line:forin
-    for (catType in CategoryTypes) {
-      const catArray: Category[] = [];
-      const value = CategoryTypes[catType];
+    // Initialize map with all category types
+    Object.keys(CategoryTypes).forEach((catType) => {
+      const categoryArray: Category[] = [];
+      const typeValue = CategoryTypes[catType as keyof typeof CategoryTypes];
 
-      cats.forEach((c) => {
-        if (c.type === value) {
-          catArray.push(c);
+      // Filter categories by type
+      cats.forEach((category) => {
+        if (category.type === typeValue) {
+          categoryArray.push(category);
         }
       });
 
-      map.set(catType, catArray);
-    }
+      map.set(catType, categoryArray);
+    });
 
     return map;
   });
 
+  // Computed signal for category types array (for template iteration)
+  readonly categoryTypes = computed(() => Object.keys(CategoryTypes));
+
+  // Expose constants for template
   protected readonly CategoryTypes = CategoryTypes;
   protected readonly Label = Label;
 
-  ngOnInit(): void {
-    this.getCategories();
+  constructor() {
+    // Load categories on component initialization
+    effect(() => {
+      this.getCategories();
+    }, { allowSignalWrites: true });
   }
 
   getCategories(): void {
@@ -62,47 +74,26 @@ export class EditCategoriesComponent implements OnInit {
         this.loading.set(false);
       },
       error: (err) => {
-        this.error.set('Failed to load categories');
+        const errorMessage = 'Failed to load categories';
+        this.error.set(errorMessage);
         this.loading.set(false);
-        this.alertService.error('Failed to load categories');
+        this.alertService.error(errorMessage);
         console.error('Error loading categories:', err);
       }
     });
   }
 
-/*  sortCategories() {
-    let catType: keyof typeof CategoryTypes;
-    // tslint:disable-next-line:forin
-    for (catType in CategoryTypes) {
-      const catArray: Category[] = [];
-      const value = CategoryTypes[catType];
-      this.categories.forEach((c) => {
-        if (c.type === value) {
-          catArray.push(c);
-        }
-        console.log(c);
-      });
-        this.catMap.set(catType, catArray);
-    }
-  }*/
-
-  reload() {
+  reload(): void {
     this.getCategories();
     this.alertService.success('Category successfully added');
   }
 
-  showError(event) {
-    this.alertService.error(event);
+  showError(errorMessage: string): void {
+    this.alertService.error(errorMessage);
   }
 
-  // Helper method to get categories by type
+  // Helper method to get categories by type (used in template)
   getCategoriesByType(type: string): Category[] {
     return this.catMap().get(type) || [];
   }
-
-  // Helper method for template iteration
-  getCategoryTypes(): string[] {
-    return Object.keys(CategoryTypes);
-  }
-
 }

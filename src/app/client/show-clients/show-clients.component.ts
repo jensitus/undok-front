@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ClientService} from '../service/client.service';
 import {Observable, Subject} from 'rxjs';
 import {faTachometerAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
@@ -10,10 +10,30 @@ import {AlertService} from '../../admin-template/layout/components/alert/service
 import {CommonService} from '../../common/services/common.service';
 import {takeUntil} from 'rxjs/operators';
 import {saveAs} from 'file-saver';
+import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
+import {PageHeaderComponent} from '../../admin-template/shared/modules/page-header/page-header.component';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {NgbHighlight, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import {AsyncPipe, CommonModule, NgForOf} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-show-clients',
+  standalone: true,
   templateUrl: './show-clients.component.html',
+  imports: [
+    CommonModule,
+    AlertComponent,
+    PageHeaderComponent,
+    FaIconComponent,
+    NgbPaginationModule,
+    AsyncPipe,
+    FormsModule,
+    NgbHighlight,
+    NgForOf,
+    RouterLink
+  ],
   styleUrls: ['./show-clients.component.css']
 })
 export class ShowClientsComponent implements OnInit, OnDestroy {
@@ -40,7 +60,8 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
     public clientTableService: ClientTableService,
     private csvService: CsvService,
     private alertService: AlertService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private cdr: ChangeDetectorRef
   ) {
   }
 
@@ -56,6 +77,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   getClientsForTable() {
     this.total$ = this.clientTableService.total$;
     this.clients$ = this.clientTableService.clients$;
+    this.cdr.detectChanges();
   }
 
   onSort({column, direction}: SortEvent) {

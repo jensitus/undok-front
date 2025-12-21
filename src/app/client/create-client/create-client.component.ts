@@ -17,10 +17,19 @@ import {EntityTypes} from '../model/entity-types';
 import {JoinCategory} from '../model/join-category';
 import {Client} from '../model/client';
 import {takeUntil} from 'rxjs/operators';
+import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
+import {PageHeaderComponent} from '../../admin-template/shared/modules/page-header/page-header.component';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-create-client',
+  standalone: true,
   templateUrl: './create-client.component.html',
+  imports: [
+    AlertComponent,
+    PageHeaderComponent,
+    FormsModule
+  ],
   styleUrls: ['./create-client.component.css']
 })
 export class CreateClientComponent implements OnInit, OnDestroy {

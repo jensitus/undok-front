@@ -1,53 +1,101 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {Subject, Subscription} from 'rxjs';
-import {CounselingService} from '../service/counseling.service';
-import {takeUntil} from 'rxjs/operators';
-import {CommonService} from '../../common/services/common.service';
+import { Component, input, output, computed, inject, signal, effect, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CounselingService } from '../service/counseling.service';
+import { CommonService } from '../../common/services/common.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-create-comment',
+  standalone: true,
   templateUrl: './create-comment.component.html',
+  imports: [FormsModule],
   styleUrls: ['./create-comment.component.css']
 })
-export class CreateCommentComponent implements OnInit, OnDestroy {
+export class CreateCommentComponent {
+  // Services using inject()
+  private readonly counselingService = inject(CounselingService);
+  private readonly commonService = inject(CommonService);
 
-  @Input() public clientId: string;
-  @Input() public comment: string;
-  @Input() public delete = false;
-  @Output() public commentSaved: EventEmitter<boolean> = new EventEmitter();
-  private unsubscribe$: Subscription[] = [];
+  // Signal-based inputs
+  readonly clientId = input.required<string>();
+  readonly initialComment = input<string>('', { alias: 'comment' });
+  readonly delete = input<boolean>(false);
 
-  constructor(
-    private counselingService: CounselingService,
-    private commonService: CommonService
-  ) {
+  // Signal-based output
+  readonly commentSaved = output<boolean>();
+
+  // Internal state as signal - ensure it's never null
+  readonly comment = signal<string>('');
+
+  // Computed signal for comment length - with null safety
+  readonly commentLength = computed(() => {
+    const commentText = this.comment();
+    return commentText ? commentText.length : 0;
+  });
+
+  // Loading state
+  readonly isSubmitting = signal<boolean>(false);
+
+  // Injector for takeUntilDestroyed outside constructor
+  private readonly destroyRef = inject(DestroyRef);
+
+  constructor() {
+    // Initialize comment from input when it changes
+    effect(() => {
+      const initial = this.initialComment();
+      // Ensure we never set null or undefined
+      this.comment.set(initial || '');
+    });
   }
 
-  ngOnInit(): void {
-  }
+  onSubmit(): void {
+    const clientId = this.clientId();
+    const commentText = this.comment();
 
-  ngOnDestroy(): void {
-    if (this.unsubscribe$) {
-      this.unsubscribe$.forEach((s) => {
-        s.unsubscribe();
-      });
+    if (this.isSubmitting()) {
+      return; // Prevent double submission
     }
+
+    this.isSubmitting.set(true);
+
+    this.counselingService
+        .createUpdateComment(clientId, commentText)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            this.commentSaved.emit(true);
+            this.isSubmitting.set(false);
+          },
+          error: (err) => {
+            console.error('Failed to save comment:', err);
+            this.isSubmitting.set(false);
+          }
+        });
   }
 
-  onSubmit() {
-    this.unsubscribe$.push(
-      this.counselingService.createUpdateComment(this.clientId, this.comment).subscribe({
-        next: () => {
-          this.commentSaved.emit(true);
-        }
-      })
-    );
-  }
+  deleteComment(): void {
+    const clientId = this.clientId();
 
-  deleteComment() {
-    this.comment = 'null';
-    this.unsubscribe$.push(this.counselingService.createUpdateComment(this.clientId, this.comment).subscribe(res => {
-      this.commonService.setReloadSubject(true);
-    }));
+    if (this.isSubmitting()) {
+      return; // Prevent double deletion
+    }
+
+    this.isSubmitting.set(true);
+    // Set to empty string instead of 'null'
+    this.comment.set('');
+
+    this.counselingService
+        .createUpdateComment(clientId, 'null')
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            this.commonService.setReloadSubject(true);
+            this.isSubmitting.set(false);
+          },
+          error: (err) => {
+            console.error('Failed to delete comment:', err);
+            this.isSubmitting.set(false);
+          }
+        });
   }
 }

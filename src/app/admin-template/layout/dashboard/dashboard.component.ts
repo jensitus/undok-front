@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {routerTransition} from '../../../router.animations';
 import {User} from '../../../auth/model/user';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {CommonService} from '../../../common/services/common.service';
 import {ClientService} from '../../../client/service/client.service';
 import {faComments, faShoppingCart, faSurprise, faTachometerAlt, faTasks, faUsers} from '@fortawesome/free-solid-svg-icons';
@@ -9,36 +9,31 @@ import {EmployerService} from '../../../client/service/employer.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {AlertService} from '../components/alert/services/alert.service';
-import {NgbCarouselConfig} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCarousel, NgbCarouselConfig, NgbSlide} from '@ng-bootstrap/ng-bootstrap';
+import {TimelineComponent} from './components';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {TaskListComponent} from '../../../client/components/tasks/task-list/task-list.component';
+import {StatComponent} from '../../shared/modules/stat/stat.component';
+import {AlertComponent} from '../components/alert/alert.component';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
+  imports: [
+    TimelineComponent,
+    FaIconComponent,
+    TaskListComponent,
+    RouterLink,
+    StatComponent,
+    AlertComponent,
+    NgbCarousel,
+    NgbSlide
+  ],
   animations: [routerTransition()]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-
-  public alerts: Array<any> = [];
-  currentUser: User;
-  admin = false;
-  counselingCount: number;
-  clientCount: number;
-  employerCount: number;
-  faComments = faComments;
-  faTasks = faTasks;
-  faShoppingCard = faShoppingCart;
-  faSurprise = faSurprise;
-  faUser = faUsers;
-  private unsubscribe$ = new Subject();
-  showNavigationArrows = false;
-  showNavigationIndicators = false;
-  images = [
-    {title: 'Schneeberg', short: 'schneeberg', src: 'assets/images/schneeberg.jpg', alt: 'Im Vordergrung Wien, im Hintergrung der Schneeberg'},
-    {title: 'Møn - Dänemark', short: 'Møn', src: 'assets/images/sonnenblumenfeld.jpg', alt: 'Sonnenblumenfeld in Dänemark'},
-    {title: 'Sonnenaufgang an der Elbe', short: 'Sunrise', src: 'assets/images/klangschale-Elbe.jpeg', alt: 'Sonnenaufgang an der Elbe bei Neu Darchau'},
-    {title: 'Semmering Gegend', short: 'Semmering', src: 'assets/images/dsc-schneeberg-background.jpeg', alt: 'Schneebergblick in der Semmering Gegend'},
-  ];
 
   constructor(
     private router: Router,
@@ -70,6 +65,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
     config.showNavigationArrows = false;
     config.showNavigationIndicators = false;
   }
+
+  public alerts: Array<any> = [];
+  currentUser: User;
+  admin = false;
+  counselingCount: number;
+  clientCount: number;
+  employerCount: number;
+  faComments = faComments;
+  faTasks = faTasks;
+  faShoppingCard = faShoppingCart;
+  faSurprise = faSurprise;
+  faUser = faUsers;
+  private unsubscribe$ = new Subject();
+  showNavigationArrows = false;
+  showNavigationIndicators = false;
+  images = [
+    {title: 'Schneeberg', short: 'schneeberg', src: 'assets/images/schneeberg.jpg', alt: 'Im Vordergrung Wien, im Hintergrung der Schneeberg'},
+    {title: 'Møn - Dänemark', short: 'Møn', src: 'assets/images/sonnenblumenfeld.jpg', alt: 'Sonnenblumenfeld in Dänemark'},
+    {title: 'Sonnenaufgang an der Elbe', short: 'Sunrise', src: 'assets/images/klangschale-Elbe.jpeg', alt: 'Sonnenaufgang an der Elbe bei Neu Darchau'},
+    {title: 'Semmering Gegend', short: 'Semmering', src: 'assets/images/dsc-schneeberg-background.jpeg', alt: 'Schneebergblick in der Semmering Gegend'},
+  ];
+
+  protected readonly faTachometerAlt = faTachometerAlt;
 
   ngOnInit() {
     this.getCurrentUser();
@@ -112,6 +130,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.clientService.numberOfClients().subscribe({
         next: clientCount => {
           this.clientCount = clientCount;
+          console.log('clientCount', this.clientCount);
         }
       }
     );
@@ -125,6 +144,4 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     );
   }
-
-  protected readonly faTachometerAlt = faTachometerAlt;
 }

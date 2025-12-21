@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {User} from '../model/user';
 import {environment} from '../../../environments/environment';
@@ -14,12 +14,15 @@ import {LockUser} from '../user/user.component';
 })
 export class UserService {
 
+  private readonly http = inject(HttpClient);
   apiUrl = environment.api_url;
 
-  constructor(private http: HttpClient) { }
+  constructor() { }
 
   getAll(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiUrl + '/service/users/all');
+    const url = `${this.apiUrl}/service/users/all`;
+    console.log(url);
+    return this.http.get<User[]>(url);
   }
 
   getByUsername(username: string): Observable<User> {
