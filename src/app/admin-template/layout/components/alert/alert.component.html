@@ -1,12 +1,16 @@
 <div class="container">
   <div class="row">
     <div class="col-xl-4">
-      <div *ngIf="messagetype == 'success'" class="alert alert-success">
-        {{message.text}}
-      </div>
-      <div *ngIf="messagetype == 'error'" class="alert alert-danger">
-        {{message.text}}
-      </div>
+      @if (messagetype() == 'success') {
+        <div class="alert alert-success">
+          {{ message().text }}
+        </div>
+      }
+      @if (messagetype() == 'error') {
+        <div class="alert alert-danger">
+          {{ message().text }}
+        </div>
+      }
     </div>
   </div>
 </div>

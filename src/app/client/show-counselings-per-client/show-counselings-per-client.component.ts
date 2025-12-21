@@ -61,12 +61,12 @@ export class ShowCounselingsPerClientComponent implements OnInit {
 
   getCreateCounselingSubject() {
     this.commonService.createCounselingSubject
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((counselingSubject) => {
-        if (counselingSubject === true) {
-          this.modalService.dismissAll();
-        }
-      });
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe((counselingSubject) => {
+          if (counselingSubject === true) {
+            this.modalService.dismissAll();
+          }
+        });
   }
 
   openEditCounseling(content) {
@@ -79,15 +79,15 @@ export class ShowCounselingsPerClientComponent implements OnInit {
 
   yes(id: string) {
     this.counselingService.deleteCounseling(id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => {
-          this.commonService.setCreateCounselingSubject(true);
-        },
-        error: (err) => {
-          console.error('Error deleting counseling:', err);
-        }
-      });
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            this.commonService.setCreateCounselingSubject(true);
+          },
+          error: (err) => {
+            console.error('Error deleting counseling:', err);
+          }
+        });
   }
 
   no() {
@@ -101,44 +101,44 @@ export class ShowCounselingsPerClientComponent implements OnInit {
 
   getCounselingsByClientId() {
     this.counselingService.getCounselingsByClientId(this.clientId, this.counselingOrder)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (counselings) => {
-          this.counselings = counselings;
-          this.getCategories();
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          console.error('Error loading counselings:', err);
-        }
-      });
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: (counselings) => {
+            this.counselings = counselings;
+            this.getCategories();
+            this.cdr.detectChanges();
+          },
+          error: (err) => {
+            console.error('Error loading counselings:', err);
+          }
+        });
   }
 
   getCategories() {
     this.counselings.forEach((c) => {
       this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, c.id)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-          next: (categories) => {
-            c.legalCategory = categories;
-            this.cdr.detectChanges();
-          },
-          error: (err) => {
-            console.error('Error loading legal categories:', err);
-          }
-        });
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: (categories) => {
+              c.legalCategory = categories;
+              this.cdr.detectChanges();
+            },
+            error: (err) => {
+              console.error('Error loading legal categories:', err);
+            }
+          });
 
       this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.ACTIVITY, c.id)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-          next: (categories) => {
-            c.activityCategories = categories;
-            this.cdr.detectChanges();
-          },
-          error: (err) => {
-            console.error('Error loading activity categories:', err);
-          }
-        });
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: (categories) => {
+              c.activityCategories = categories;
+              this.cdr.detectChanges();
+            },
+            error: (err) => {
+              console.error('Error loading activity categories:', err);
+            }
+          });
     });
   }
 
