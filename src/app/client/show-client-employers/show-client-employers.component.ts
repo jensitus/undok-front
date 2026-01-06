@@ -1,101 +1,154 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {EmployerService} from '../service/employer.service';
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
-import {CommonService} from '../../common/services/common.service';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ClientEmployerJobDescription} from '../model/client-employer-job-description';
-import {EditClientEmployerJobDescriptionComponent} from '../edit-client-employer-job-description/edit-client-employer-job-description.component';
+import { Component, input, inject, signal, effect, untracked } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { EmployerService } from '../service/employer.service';
+import { CommonService } from '../../common/services/common.service';
+import { ModalDismissReasons, NgbCollapse, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ClientEmployerJobDescription } from '../model/client-employer-job-description';
+import { EditClientEmployerJobDescriptionComponent } from '../edit-client-employer-job-description/edit-client-employer-job-description.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
-    selector: 'app-show-client-employers',
-    templateUrl: './show-client-employers.component.html',
-    styleUrls: ['./show-client-employers.component.css']
+  selector: 'app-show-client-employers',
+  standalone: true,
+  templateUrl: './show-client-employers.component.html',
+  imports: [
+    NgbCollapse,
+    DatePipe
+  ],
+  styleUrls: ['./show-client-employers.component.css']
 })
-export class ShowClientEmployersComponent implements OnInit, OnDestroy {
+export class ShowClientEmployersComponent {
+  // Services injected using inject()
+  private readonly employerService = inject(EmployerService);
+  private readonly commonService = inject(CommonService);
+  private readonly modalService = inject(NgbModal);
 
-    @Input() clientId: string;
-    clientEmployerJobDescriptions: ClientEmployerJobDescription[];
-    private unsubscribe$ = new Subject();
-    public closeResult: string;
-    public isCollapsed = true;
+  // Signal-based input
+  readonly clientId = input.required<string>();
 
-    constructor(
-        private employerService: EmployerService,
-        private commonService: CommonService,
-        private modalService: NgbModal
-    ) {
-    }
+  // Component state as signals
+  readonly clientEmployerJobDescriptions = signal<ClientEmployerJobDescription[]>([]);
+  readonly loading = signal(false);
+  readonly error = signal<string | null>(null);
+  readonly isCollapsed = signal(true);
 
-    private static getDismissReason(reason: any): string {
-        if (reason === ModalDismissReasons.ESC) {
-            return 'by pressing ESC';
-        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-            return 'by clicking on a backdrop';
-        } else {
-            return `with: ${reason}`;
+  // Convert employer subject observable to signal
+  private readonly employerSubjectSignal = toSignal(this.commonService.employerSubject);
+
+  constructor() {
+    // Load employers when clientId is available or changes
+    effect(() => {
+      const id = this.clientId();
+      if (id) {
+        untracked(() => {
+          this.loadEmployersForClient(id);
+        });
+      }
+    });
+
+    // Watch for employer updates from common service
+    effect(() => {
+      const reload = this.employerSubjectSignal();
+      if (reload === true) {
+        const id = this.clientId();
+        if (id) {
+          untracked(() => {
+            this.loadEmployersForClient(id);
+            this.modalService.dismissAll();
+          });
         }
-    }
+      }
+    });
+  }
 
-    ngOnInit(): void {
-        this.getEmployersForClient();
-        this.getAddEmployerSubject();
-    }
+  private loadEmployersForClient(clientId: string): void {
+    this.loading.set(true);
+    this.error.set(null);
 
-    ngOnDestroy(): void {
-        this.unsubscribe$.next(true);
-    }
+    this.employerService.getEmployersForClient(clientId).subscribe({
+      next: (employers) => {
+        this.clientEmployerJobDescriptions.set(employers);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.error.set('Failed to load employers');
+        this.loading.set(false);
+        console.error('Error loading employers:', err);
+      }
+    });
+  }
 
-    getEmployersForClient() {
-        this.employerService.getEmployersForClient(this.clientId).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-            console.log('employers', res);
-            this.clientEmployerJobDescriptions = res;
-        });
-    }
+  deleteEmployerFromClient(employerId: string): void {
+    const clientId = this.clientId();
 
-    deleteEmployerFromClient(e_id: string) {
-        this.employerService.deleteEmployerFromClient(e_id, this.clientId).pipe(takeUntil(this.unsubscribe$)).subscribe(r => {
-            this.commonService.setEmployerSubject(true);
-        });
-    }
-
-    getAddEmployerSubject() {
-        this.commonService.employerSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(reload => {
-            if (reload === true) {
-                console.log('employer Subject');
-                this.getEmployersForClient();
-                this.modalService.dismissAll();
-            }
-        });
-    }
-
-    edit(clientEmployerJobDescription: ClientEmployerJobDescription) {
-        const assignModal = this.modalService.open(EditClientEmployerJobDescriptionComponent, {
-            ariaLabelledBy: 'modal-basic-title',
-            size: 'lg'
-        });
-        assignModal.componentInstance.clientEmployerJobDescription = clientEmployerJobDescription;
-        assignModal.componentInstance.clientId = this.clientId;
-        assignModal.result.then((result) => {
-            this.closeResult = `Closed with: ${result}`;
-        }, (reason) => {
-            this.closeResult = `Dismissed ${ShowClientEmployersComponent.getDismissReason(reason)}`;
-        });
-    }
-
-    openDeleteConfirmationModal(content) {
-        this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-            this.closeResult = `Closed with: ${result}`;
-        }, (reason) => {
-            this.closeResult = `Dismissed ${ShowClientEmployersComponent.getDismissReason(reason)}`;
-        });
-    }
-
-    yes(employerId) {
-        this.deleteEmployerFromClient(employerId);
-    }
-
-    no() {
+    this.employerService.deleteEmployerFromClient(employerId, clientId).subscribe({
+      next: () => {
+        this.commonService.setEmployerSubject(true);
         this.modalService.dismissAll();
+      },
+      error: (err) => {
+        this.error.set('Failed to delete employer');
+        console.error('Error deleting employer:', err);
+      }
+    });
+  }
+
+  edit(clientEmployerJobDescription: ClientEmployerJobDescription): void {
+    const assignModal = this.modalService.open(
+      EditClientEmployerJobDescriptionComponent,
+      {
+        ariaLabelledBy: 'modal-basic-title',
+        size: 'lg'
+      }
+    );
+
+    assignModal.componentInstance.clientEmployerJobDescription = clientEmployerJobDescription;
+    assignModal.componentInstance.clientId = this.clientId();
+
+    assignModal.result.then(
+      (result) => {
+        console.log(`Closed with: ${result}`);
+      },
+      (reason) => {
+        console.log(`Dismissed ${this.getDismissReason(reason)}`);
+      }
+    );
+  }
+
+  openDeleteConfirmationModal(content: any): void {
+    this.modalService
+        .open(content, { ariaLabelledBy: 'modal-basic-title' })
+        .result.then(
+      (result) => {
+        console.log(`Closed with: ${result}`);
+      },
+      (reason) => {
+        console.log(`Dismissed ${this.getDismissReason(reason)}`);
+      }
+    );
+  }
+
+  yes(employerId: string): void {
+    this.deleteEmployerFromClient(employerId);
+  }
+
+  no(): void {
+    this.modalService.dismissAll();
+  }
+
+  toggleCollapse(): void {
+    // If you need per-item collapse, you'll need to track state per item
+    // For now, keeping the single isCollapsed signal
+    this.isCollapsed.update(collapsed => !collapsed);
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
     }
+  }
 }

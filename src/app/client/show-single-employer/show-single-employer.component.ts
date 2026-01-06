@@ -1,19 +1,17 @@
-import { Component, inject, signal, effect } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { EmployerService } from '../service/employer.service';
-import { Employer } from '../model/employer';
-import { faSurprise } from '@fortawesome/free-solid-svg-icons';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CommonService } from '../../common/services/common.service';
-import { DeleteService } from '../service/delete.service';
-import { AlertService } from '../../admin-template/layout/components/alert/services/alert.service';
-import { DeleteTypes } from '../delete/delete-types';
-import { DeleteComponent } from '../delete/delete.component';
-import { EditEmployerComponent } from '../edit-employer/edit-employer.component';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { AlertComponent } from '../../admin-template/layout/components/alert/alert.component';
-import { switchMap } from 'rxjs/operators';
+import {Component, effect, inject, signal, untracked} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {EmployerService} from '../service/employer.service';
+import {Employer} from '../model/employer';
+import {faSurprise} from '@fortawesome/free-solid-svg-icons';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {CommonService} from '../../common/services/common.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import {DeleteTypes} from '../delete/delete-types';
+import {DeleteComponent} from '../delete/delete.component';
+import {EditEmployerComponent} from '../edit-employer/edit-employer.component';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
 
 @Component({
   selector: 'app-show-single-employer',
@@ -33,7 +31,6 @@ export class ShowSingleEmployerComponent {
   private readonly modalService = inject(NgbModal);
   private readonly employerService = inject(EmployerService);
   private readonly commonService = inject(CommonService);
-  private readonly deleteService = inject(DeleteService);
   private readonly alertService = inject(AlertService);
 
   // Convert route params to signal
@@ -56,23 +53,27 @@ export class ShowSingleEmployerComponent {
     effect(() => {
       const params = this.routeParams();
       if (params?.['id']) {
-        this.employerId.set(params['id']);
-        this.loadEmployer(params['id']);
+        // Use untracked() to write to signals without creating dependencies
+        untracked(() => {
+          this.employerId.set(params['id']);
+          this.loadEmployer(params['id']);
+        });
       }
-    }, { allowSignalWrites: true });
+    });
 
     // Watch for employer updates from common service
+    const createEmployerSignal = toSignal(this.commonService.createEmployerSubject);
     effect(() => {
-      // Convert observable to signal for reactive updates
-      this.commonService.createEmployerSubject.subscribe(result => {
-        if (result) {
-          const currentId = this.employerId();
-          if (currentId) {
+      const result = createEmployerSignal();
+      if (result) {
+        const currentId = this.employerId();
+        if (currentId) {
+          untracked(() => {
             this.loadEmployer(currentId);
             this.modalService.dismissAll();
-          }
+          });
         }
-      });
+      }
     });
   }
 
