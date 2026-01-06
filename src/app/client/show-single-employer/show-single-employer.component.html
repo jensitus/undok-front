@@ -1,76 +1,131 @@
 <app-alert></app-alert>
+
 <div class="container">
-  <div class="row">
-    <div class="col-md-4">
-      <h4>
-        <fa-icon [icon]="faSurprise" class="text-warning mr-5"></fa-icon>
-        Arbeitgeber:in
-      </h4>
+  @if (loading()) {
+    <div class="text-center py-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
     </div>
-  </div>
-  <div class="row mt-5">
-    <div class="col-md-4">
-      <b>Firma</b>
+  }
+
+  @if (error()) {
+    <div class="alert alert-danger" role="alert">
+      {{ error() }}
     </div>
-  </div>
-  <div class="row mt-3">
-    <div class="col-md-4">
-      <span class="text-secondary"> Name: </span><br>
-      <span *ngIf="employer.company">{{employer.company}}</span>
+  }
+
+  @if (!loading() && !error() && employer()) {
+    <div class="row">
+      <div class="col-md-4">
+        <h4>
+          <fa-icon [icon]="faSurprise" class="text-warning mr-5"></fa-icon>
+          Arbeitgeber:in
+        </h4>
+      </div>
     </div>
-    <div class="col-md-4">
-      <span class="text-secondary">Adresse:</span><br>
-      <span *ngIf="employer.person.address"> {{employer.person.address.street}} {{employer.person.address.zipCode}} {{employer.person.address.city}}</span>
+
+    <div class="row mt-5">
+      <div class="col-md-4">
+        <b>Firma</b>
+      </div>
     </div>
-  </div>
-  <hr class="mt-5 mb-5">
-  <div class="row">
-    <div class="col-md-4">
-      <b>Ansprechpartner:in</b>
+
+    <div class="row mt-3">
+      <div class="col-md-4">
+        <span class="text-secondary">Name:</span><br>
+        @if (employer()?.company) {
+          <span>{{ employer()!.company }}</span>
+        }
+      </div>
+      <div class="col-md-4">
+        <span class="text-secondary">Adresse:</span><br>
+        @if (employer()?.person?.address) {
+          <span>
+            {{ employer()!.person.address.street }}
+            {{ employer()!.person.address.zipCode }}
+            {{ employer()!.person.address.city }}
+          </span>
+        }
+      </div>
     </div>
-  </div>
-  <div class="row mt-3">
-    <div class="col-md-4">
-      <span class="text-secondary">Name:</span><br>
-      <span *ngIf="employer.person">{{employer.person.firstName}} {{employer.person.lastName}}</span>
+
+    <hr class="mt-5 mb-5">
+
+    <div class="row">
+      <div class="col-md-4">
+        <b>Ansprechpartner:in</b>
+      </div>
     </div>
-  </div>
-  <div class="row mt-2">
-    <div class="col-md-4">
-      <span class="text-secondary">Email: </span> <br>
-      <span *ngIf="employer.person.email">{{employer.person.email}}</span>
+
+    <div class="row mt-3">
+      <div class="col-md-4">
+        <span class="text-secondary">Name:</span><br>
+        @if (employer()?.person) {
+          <span>{{ employer()!.person.firstName }} {{ employer()!.person.lastName }}</span>
+        }
+      </div>
     </div>
-    <div class="col-md-4">
-      <span class="text-secondary">Position: </span> <br>
-      <span *ngIf="employer.position">{{employer.position}}</span>
+
+    <div class="row mt-2">
+      <div class="col-md-4">
+        <span class="text-secondary">Email:</span><br>
+        @if (employer()?.person?.email) {
+          <span>{{ employer()!.person.email }}</span>
+        }
+      </div>
+      <div class="col-md-4">
+        <span class="text-secondary">Position:</span><br>
+        @if (employer()?.position) {
+          <span>{{ employer()!.position }}</span>
+        }
+      </div>
+      <div class="col-md-4">
+        <span class="text-secondary">Telephon:</span><br>
+        @if (employer()?.person?.telephone) {
+          <span>{{ employer()!.person.telephone }}</span>
+        }
+      </div>
     </div>
-    <div class="col-md-4">
-      <span class="text-secondary">Telephon: </span> <br>
-      <span *ngIf="employer.person.telephone">{{employer.person.telephone}}</span>
+
+    <div class="row mt-5">
+      <div class="col-md-4">
+        <button
+          class="btn btn-sm btn-outline-primary"
+          (click)="openEditEmployer(content_edit_employer)">
+          edit
+        </button>
+        &nbsp;&nbsp;
+        <app-delete
+          [type]="deleteTypeEmployer"
+          [id_to_delete]="employer()!.id">
+        </app-delete>
+      </div>
     </div>
-  </div>
-  <div class="row mt-5">
-    <div class="col-md-4">
-      <button class="btn btn-sm btn-outline-primary" (click)="openEditEmployer(content_edit_employer)">edit</button>
-      &nbsp;&nbsp;
-      <app-delete [type]="deleteTypeEmployer" [id_to_delete]="employer.id"></app-delete>
-      <!--button class="btn btn-sm btn-outline-danger" (click)="delete()">delete</button-->
-    </div>
-  </div>
+  }
 </div>
 
 <ng-template #content_edit_employer let-modal>
   <div class="modal-header">
     <h4 class="modal-title">edit employer</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <app-edit-employer [employer]="employer"></app-edit-employer>
+    @if (employer()) {
+      <app-edit-employer [employer]="employer()!"></app-edit-employer>
+    }
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
+    <button
+      type="button"
+      class="btn btn-lg btn-outline-danger"
+      (click)="modal.close('Save click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
