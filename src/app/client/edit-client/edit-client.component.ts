@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Component, computed, DestroyRef, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {of, startWith, Subscription} from 'rxjs';
 import {ClientService} from '../service/client.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Client} from '../model/client';
@@ -13,27 +13,28 @@ import {DropdownItem} from '../model/dropdown-item';
 import {EntityTypes} from '../model/entity-types';
 import {JoinCategory} from '../model/join-category';
 import {Category} from '../model/category';
+import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
+import {PageHeaderComponent} from '../../admin-template/shared/modules/page-header/page-header.component';
+import {ClientFormComponent} from '../client-form/client-form.component';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
+import {catchError, map, switchMap} from 'rxjs/operators';
+import {ResourceState} from '../model/resource-state.model';
 
 @Component({
   selector: 'app-edit-client',
+  standalone: true,
   templateUrl: './edit-client.component.html',
+  imports: [
+    AlertComponent,
+    PageHeaderComponent,
+    ClientFormComponent
+  ],
   styleUrls: ['./edit-client.component.css']
 })
-export class EditClientComponent implements OnInit, OnDestroy {
-  private joinCategories: JoinCategory[] = [];
-  private joinCategory: JoinCategory;
-  deSelectedItems: DropdownItem[] = [];
-  jobMarketAccessSelected: Category[];
+export class EditClientComponent {
 
-  constructor(
-    private clientService: ClientService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private alertService: AlertService,
-  ) {
-  }
-
-  client: Client | undefined;
+  // old stuff:
+  // client: Client | undefined;
   client_id: string;
   private unsubscribe$: Subscription[] = [];
   firstName: string;
@@ -59,72 +60,105 @@ export class EditClientComponent implements OnInit, OnDestroy {
   country: string;
   currentResidentStatus: string;
 
-  loading = false;
+  loading = signal(false);
 
   protected readonly Label = Label;
 
-  ngOnInit(): void {
-    this.unsubscribe$.push(
-      this.activatedRoute.params.subscribe({
-        next: (params) => {
-          this.client_id = params['id'];
-          this.unsubscribe$.push(
-            this.clientService.getSingleClient(this.client_id).subscribe({
-              next: (client) => {
-                this.client = client;
-                // this.country = this.client.person.address.country;
-                // this.nationality = this.client.nationality;
-                // this.marital = this.client.maritalStatus;
-              }
-            })
-          );
-        }
-      })
-    );
+  // old stuff end
+
+
+  private joinCategories: JoinCategory[] = [];
+  private joinCategory: JoinCategory;
+  deSelectedItems: DropdownItem[] = [];
+  jobMarketAccessSelected: Category[];
+
+  // the new approach:
+
+  private clientService = inject(ClientService);
+  private activatedRoute = inject(ActivatedRoute);
+  private router = inject(Router);
+  private alertService = inject(AlertService);
+  private destroyRef = inject(DestroyRef);
+
+  clientId = toSignal(
+    this.activatedRoute.params.pipe(map(params => params['id']))
+  );
+
+  private clientResource = toSignal(
+    this.activatedRoute.params.pipe(
+      switchMap(params =>
+        this.clientService.getSingleClient(params['id']).pipe(
+          map((client): ResourceState<Client> => ({
+            state: 'success',
+            data: client
+          })),
+          catchError((error): ResourceState<Client>[] => [{
+            state: 'error',
+            error: error.message || 'Failed to load client'
+          }]),
+          startWith({ state: 'loading' } as ResourceState<Client>)
+        )
+      )
+    ),
+    { initialValue: { state: 'loading' } as ResourceState<Client> }
+  );
+
+  client = computed(() => {
+    const resource = this.clientResource();
+    return resource.state === 'success' ? resource.data : null;
+  });
+
+  isLoading = computed(() => this.clientResource().state === 'loading');
+
+  error = computed(() => {
+    const resource = this.clientResource();
+    return resource.state === 'error' ? resource.error : null;
+  });
+
+  hasData = computed(() => !!this.client());
+
+  goBack(): void {
+    this.router.navigate(['/clients']);
   }
 
-  ngOnDestroy(): void {
-    if (this.unsubscribe$) {
-      this.unsubscribe$.forEach((s) => {
-        s.unsubscribe();
+  retry(): void {
+    const currentId = this.clientId();
+    if (currentId) {
+      this.router.navigate(['/clients', currentId], {
+        queryParamsHandling: 'preserve'
       });
     }
   }
 
-  submit(): void {
-
+  constructor(
+  ) {
   }
 
   showSubmitted(event: ClientForm) {
-    console.log('event', event);
-    this.unsubscribe$.push(
-      this.clientService.updateClient(this.client.id, event).subscribe({
-        next: (response) => {
-          this.loading = true;
-          this.loading = false;
-          this.alertService.success(response.text, true);
-          this.router.navigate(['clients/', this.client_id]);
-        }
-      })
-    );
+    const currentClient = this.client();
+    const currentClientId = this.clientId();
+
+    if (!currentClient || !currentClientId) {
+      this.alertService.error('Client not found');
+      return;
+    }
+
+    this.loading.set(true);
+
+    this.clientService.updateClient(currentClient.id, event)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: (response) => {
+            this.loading.set(false);
+            this.alertService.success(response.text, true);
+            this.router.navigate(['clients/', currentClientId]);
+          },
+          error: (err) => {
+            this.loading.set(false);
+            this.alertService.error('Failed to update client');
+            console.error('Update error:', err);
+          }
+        });
   }
 
-  showCategoryValue(event: DropdownItem[], jobMarketAccessType: CategoryTypes) {
-    this.joinCategories = [];
-    event.forEach(e => {
-      this.joinCategory = {
-        categoryId: e.itemId,
-        categoryType: jobMarketAccessType,
-        entityId: this.client.id,
-        entityType: EntityTypes.CLIENT
-      };
-      this.joinCategories.push(this.joinCategory);
-    });
-    console.log('this.joinCategories', this.joinCategories);
-  }
-
-  showDeSelected(event: DropdownItem[]) {
-    this.deSelectedItems = event;
-    console.log('this.deSelectedItems', this.deSelectedItems);
-  }
 }

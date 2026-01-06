@@ -3,14 +3,24 @@ import {routerTransition} from '../../../router.animations';
 import {ClientService} from '../../../client/service/client.service';
 import {Client} from '../../../client/model/client';
 import {CountryData} from './doughnut/country-data';
+import {PageHeaderComponent} from '../../shared/modules/page-header/page-header.component';
+import {faDashboard} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-charts',
   templateUrl: './charts.component.html',
   styleUrls: ['./charts.component.scss'],
+  imports: [
+    PageHeaderComponent
+  ],
   animations: [routerTransition()]
 })
 export class ChartsComponent implements OnInit {
+
+  constructor(
+    private clientService: ClientService
+  ) {
+  }
 
   // Radar
   public radarChartLabels: string[] = [
@@ -102,11 +112,6 @@ export class ChartsComponent implements OnInit {
 
   private clients: Client[];
 
-  constructor(
-    private clientService: ClientService
-  ) {
-  }
-
   citizens: number[] = [];
   countries: string[] = [];
   countryData: CountryData;
@@ -142,6 +147,8 @@ export class ChartsComponent implements OnInit {
   public doughnutChartData: number[]; // = this.doughD;
 
   public doughnutChartType: string;
+
+  protected readonly faDashboard = faDashboard;
 
   setChartLabelAndData() {
     this.doughnutChartLabels = this.countries;

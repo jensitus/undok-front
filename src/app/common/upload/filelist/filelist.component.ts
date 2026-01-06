@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import {UploadService} from '../../services/upload.service';
 import {Uploaded} from '../model/uploaded';
+import {NavbarComponent} from '../../navbar/navbar.component';
 
 @Component({
   selector: 'app-filelist',
+  standalone: true,
   templateUrl: './filelist.component.html',
+  imports: [
+    NavbarComponent
+  ],
   styleUrls: ['./filelist.component.css']
 })
 export class FilelistComponent implements OnInit {

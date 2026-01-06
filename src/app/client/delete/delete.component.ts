@@ -6,10 +6,14 @@ import {Router} from '@angular/router';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {takeUntil} from 'rxjs/operators';
 import {CommonService} from '../../common/services/common.service';
+import {DeleteModalComponent} from './delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-delete',
   templateUrl: './delete.component.html',
+  imports: [
+    DeleteModalComponent
+  ],
   styleUrls: ['./delete.component.css']
 })
 export class DeleteComponent implements OnInit, OnDestroy {

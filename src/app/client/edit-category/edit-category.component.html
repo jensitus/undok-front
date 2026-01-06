@@ -1,24 +1,50 @@
-<div class="row" *ngIf="!update">
-  <div class="col-md-8">
-    {{categoryName}}
-  </div>
-  <div class="col-md-4 text-right">
-    <span class="set-cursor-pointer" (click)="updateCategory()"><small>edit</small></span>
-  </div>
-</div>
-<div class="row" *ngIf="update">
-  <div class="col-md-6 p-2">
-    <div class="form-group">
-      <input type="text" [(ngModel)]="categoryName" class="form-control" />
-      <label *ngIf="errorMessage !== null"><small class="text-danger">{{errorMessage}}</small></label>
+<div class="category-item mb-2">
+  @if (errorMessage()) {
+    <div class="alert alert-danger alert-sm mb-2">
+      {{ errorMessage() }}
     </div>
-  </div>
-  <div class="col-md-3 m-1">
-    <button class="btn btn-sm btn-outline-dark" (click)="editCategory()">click</button>
-  </div>
-  <div class="col-md-3 m-1">
-    <span class="set-cursor-pointer" (click)="updateCategory()"><small>edit</small></span>
-  </div>
+  }
+
+  @if (!isEditMode()) {
+    <!-- Display Mode -->
+    <div class="d-flex align-items-center justify-content-between">
+      <span class="category-name">{{ categoryName() }}</span>
+      <button type="button"
+              class="btn btn-sm btn-outline-secondary"
+              (click)="toggleEditMode()"
+              [disabled]="isSubmitting()">
+        Edit
+      </button>
+    </div>
+  } @else {
+    <!-- Edit Mode -->
+    <div class="edit-form">
+      <div class="input-group mb-2">
+        <input type="text"
+               class="form-control form-control-sm"
+               [(ngModel)]="categoryName"
+               [disabled]="isSubmitting()"
+               (keyup.enter)="editCategory()"
+               (keyup.escape)="cancelEdit()"/>
+      </div>
+      <div class="d-flex gap-2">
+        <button type="button"
+                class="btn btn-sm btn-success"
+                (click)="editCategory()"
+                [disabled]="isSubmitting() || !categoryName().trim()">
+          @if (isSubmitting()) {
+            <span>Saving...</span>
+          } @else {
+            <span>Save</span>
+          }
+        </button>
+        <button type="button"
+                class="btn btn-sm btn-secondary"
+                (click)="cancelEdit()"
+                [disabled]="isSubmitting()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  }
 </div>
-
-

@@ -1,12 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import {Router, NavigationEnd, RouterLink} from '@angular/router';
 import {User} from '../../../../auth/model/user';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 
 @Component({
-    selector: 'app-header',
-    templateUrl: './header.component.html',
-    styleUrls: ['./header.component.scss']
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  imports: [
+    RouterLink,
+    FaIconComponent
+  ],
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
 

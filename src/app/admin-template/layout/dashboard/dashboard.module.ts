@@ -17,24 +17,24 @@ import {AlertModule} from '../components/alert/alert.module';
 import {TaskListComponent} from '../../../client/components/tasks/task-list/task-list.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        NgbCarouselModule,
-        NgbAlertModule,
-        DashboardRoutingModule,
-        StatModule,
-        ReactiveFormsModule,
-        FontAwesomeModule,
-        FormsModule,
-        ChartsModule,
-        AlertModule,
-        TaskListComponent
-    ],
-  declarations: [
+  imports: [
+    CommonModule,
+    NgbCarouselModule,
+    NgbAlertModule,
+    DashboardRoutingModule,
+    StatModule,
+    ReactiveFormsModule,
+    FontAwesomeModule,
+    FormsModule,
+    ChartsModule,
+    AlertModule,
+    TaskListComponent,
     DashboardComponent,
     TimelineComponent,
     NotificationComponent,
     ChatComponent
+  ],
+  declarations: [
   ]
 })
 export class DashboardModule {}

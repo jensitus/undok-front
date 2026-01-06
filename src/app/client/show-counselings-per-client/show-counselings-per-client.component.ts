@@ -1,34 +1,43 @@
-import {Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, DestroyRef, inject, Input, OnInit} from '@angular/core';
 import {Counseling} from '../model/counseling';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
 import {CounselingService} from '../service/counseling.service';
-import {Subscription} from 'rxjs';
 import {DurationService} from '../service/duration.service';
 import {CategoryTypes} from '../model/category-types';
 import {CategoryService} from '../service/category.service';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {CommonModule} from '@angular/common';
+import {RouterLink} from '@angular/router';
+import {LinkifyPipe} from '../../common/helper/linkify.pipe';
+import {NewLinePipe} from '../new-line.pipe';
+import {CreateCommentComponent} from '../create-comment/create-comment.component';
 
 @Component({
   selector: 'app-show-counselings-per-client',
+  standalone: true,
   templateUrl: './show-counselings-per-client.component.html',
-  styleUrls: ['./show-counselings-per-client.component.css']
+  styleUrls: ['./show-counselings-per-client.component.css'],
+  imports: [
+    CommonModule,
+    RouterLink,
+    LinkifyPipe,
+    NewLinePipe,
+    CreateCommentComponent
+  ]
 })
-export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
+export class ShowCounselingsPerClientComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
+  private modalService = inject(NgbModal);
+  private counselingService = inject(CounselingService);
+  private commonService = inject(CommonService);
+  private categoryService = inject(CategoryService);
+  private cdr = inject(ChangeDetectorRef);
+  public durationService = inject(DurationService);
 
-
-  constructor(
-    private modalService: NgbModal,
-    private counselingService: CounselingService,
-    private commonService: CommonService,
-    public durationService: DurationService,
-  ) {
-  }
-
-  counselings: Counseling[];
+  counselings: Counseling[] = [];
   @Input() clientId: string;
   private closeResult = '';
-  private subscriptions: Subscription[] = [];
-  private categoryService = inject(CategoryService);
   protected counselingOrder = 'Asc';
 
   private static getDismissReason(reason: any): string {
@@ -46,24 +55,18 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
     this.getCounselingsByClientId();
   }
 
-  ngOnDestroy(): void {
-    if (this.subscriptions) {
-      this.subscriptions.forEach((s) => {
-        s.unsubscribe();
-      });
-    }
-  }
-
   getCounselingDuration(requiredTime: number): string {
     return this.durationService.getCounselingDuration(requiredTime);
   }
 
   getCreateCounselingSubject() {
-    this.subscriptions.push(this.commonService.createCounselingSubject.subscribe((counselingSubject) => {
-      if (counselingSubject === true) {
-        this.modalService.dismissAll();
-      }
-    }));
+    this.commonService.createCounselingSubject
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe((counselingSubject) => {
+          if (counselingSubject === true) {
+            this.modalService.dismissAll();
+          }
+        });
   }
 
   openEditCounseling(content) {
@@ -75,11 +78,16 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
   }
 
   yes(id: string) {
-    this.subscriptions.push(
-      this.counselingService.deleteCounseling(id).subscribe(result => {
-        this.commonService.setCreateCounselingSubject(true);
-      })
-    );
+    this.counselingService.deleteCounseling(id)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            this.commonService.setCreateCounselingSubject(true);
+          },
+          error: (err) => {
+            console.error('Error deleting counseling:', err);
+          }
+        });
   }
 
   no() {
@@ -92,35 +100,46 @@ export class ShowCounselingsPerClientComponent implements OnInit, OnDestroy {
   }
 
   getCounselingsByClientId() {
-    this.subscriptions.push(
-      this.counselingService.getCounselingsByClientId(this.clientId, this.counselingOrder).subscribe({
-        next: (counselings) => {
-          this.counselings = counselings;
-          this.getCategories();
-        }, error: err => {
-          console.log(err);
-        }
-      })
-    );
+    this.counselingService.getCounselingsByClientId(this.clientId, this.counselingOrder)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: (counselings) => {
+            this.counselings = counselings;
+            this.getCategories();
+            this.cdr.detectChanges();
+          },
+          error: (err) => {
+            console.error('Error loading counselings:', err);
+          }
+        });
   }
 
   getCategories() {
     this.counselings.forEach((c) => {
-        this.subscriptions.push(
-          this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, c.id).subscribe({
+      this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, c.id)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
             next: (categories) => {
               c.legalCategory = categories;
+              this.cdr.detectChanges();
+            },
+            error: (err) => {
+              console.error('Error loading legal categories:', err);
             }
-          }));
-        this.subscriptions.push(
-          this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.ACTIVITY, c.id).subscribe({
+          });
+
+      this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.ACTIVITY, c.id)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
             next: (categories) => {
               c.activityCategories = categories;
+              this.cdr.detectChanges();
+            },
+            error: (err) => {
+              console.error('Error loading activity categories:', err);
             }
-          }));
-      }
-    );
-
+          });
+    });
   }
 
   changeCounselingOrder() {

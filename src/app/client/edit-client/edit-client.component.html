@@ -1,35 +1,34 @@
 <app-alert></app-alert>
 <app-page-header [firstPoint]="'dashboard'" [firstIcon]="faTachometerAlt" [firstLink]="'/dashboard'"
                  [secondPoint]="'clients'" [secondIcon]="faUsers" [secondLink]="'/clients/client-list'"
-                 [thirdPoint]="'client'" [thirdIcon]="faUser" [thirdLink]="'/clients/' + client_id"
+                 [thirdPoint]="'client'" [thirdIcon]="faUser" [thirdLink]="'/clients/' + client().id"
                  [endPointIcon]="faPencil" [endPoint]="'edit'">
 </app-page-header>
 <div class="spinner-border text-success" role="status" *ngIf="loading">
   <span class="sr-only">Loading...</span>
 </div>
-<div *ngIf="client">
+@if (client().keyword) {
+  <div>
 
-  <div class="row">
-    <div class="col">
-      @if (client.firstName || client.lastName) {
-        <h2 style="font-size: x-large; font-weight: bold">
-          {{ client.firstName }} {{ client.lastName }}
-          <small style="font-size: medium; font-weight: lighter">
-            {{ client.keyword }}
-          </small>
-        </h2>
-      } @else if (!client.firstName || !client.lastName) {
-        <h2 style="font-size: x-large; font-weight: bold">
-          {{ client.keyword }}
-        </h2>
-      }
+    <div class="row">
+      <div class="col">
+        @if (client().firstName || client().lastName) {
+          <h2 style="font-size: x-large; font-weight: bold">
+            {{ client().firstName }} {{ client().lastName }}
+            <small style="font-size: medium; font-weight: lighter">
+              {{ client().keyword }}
+            </small>
+          </h2>
+        } @else if (!client().firstName || !client().lastName) {
+          <h2 style="font-size: x-large; font-weight: bold">
+            {{ client().keyword }}
+          </h2>
+        }
 
+      </div>
     </div>
+
+    <app-client-form [client]="client()" (submitted)="showSubmitted($event)"></app-client-form>
+
   </div>
-
-
-
-  <app-client-form [client]="client" (submitted)="showSubmitted($event)"></app-client-form>
-
-
-</div>
+}

@@ -1,58 +1,72 @@
-import { Component, OnInit } from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {UserService} from '../services/user.service';
-import {first} from 'rxjs/operators';
-import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { UserService } from '../services/user.service';
+import { AlertService } from '../../admin-template/layout/components/alert/services/alert.service';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-forgot-password',
+  standalone: true,
   templateUrl: './forgot-password.component.html',
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    NgClass
+  ],
   styleUrls: ['./forgot-password.component.css']
 })
 export class ForgotPasswordComponent implements OnInit {
-  forgotForm: UntypedFormGroup;
-  loading = false;
-  submitted = false;
-  data: any;
+  // Inject services
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly userService = inject(UserService);
+  private readonly alertService = inject(AlertService);
 
-  constructor(
-    private formBuilder: UntypedFormBuilder,
-    private router: Router,
-    private userService: UserService,
-    private alertService: AlertService
-  ) { }
+  // Signals for reactive state
+  readonly loading = signal(false);
+  readonly submitted = signal(false);
+  readonly data = signal<any>(null);
 
-  ngOnInit() {
+  // Form group
+  forgotForm!: FormGroup;
+
+  ngOnInit(): void {
     this.forgotForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]]
     });
   }
 
+  // Getter for form controls (for template access)
   get f() {
     return this.forgotForm.controls;
   }
 
-  onSubmit() {
-    this.submitted = true;
+  onSubmit(): void {
+    this.submitted.set(true);
 
-    // stop here if form is invalid
+    // Stop here if form is invalid
     if (this.forgotForm.invalid) {
       return;
     }
 
-    this.loading = true;
-    this.userService.forgotPassword(this.forgotForm.value).pipe(first()).subscribe(
-      data => {
-        console.log(data);
-        this.data = data;
-        this.alertService.success(this.data.text, true);
-        this.router.navigate(['/home']);
-      }, error => {
-        // console.log(error);
-        // this.alertService.error(error);
-      }
-    );
-  }
+    this.loading.set(true);
 
+    this.userService.forgotPassword(this.forgotForm.value)
+        .subscribe({
+          next: response => {
+            console.log(response);
+            this.data.set(response);
+            this.alertService.success(response.text, true);
+            this.loading.set(false);
+            this.router.navigate(['/home']);
+          },
+          error: err => {
+            console.error('Forgot password error:', err);
+            this.loading.set(false);
+            // Uncomment if you want to show error alerts
+            // this.alertService.error(err.error?.text || 'An error occurred');
+          }
+        });
+  }
 }

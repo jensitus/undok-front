@@ -1,14 +1,22 @@
 <div class="card-body">
-  <ul class="list-group list-group-flush" *ngFor="let item of items; let i = index">
-    <li class="list-group-item">
-      <div *ngIf="item.counselingDate">
-        {{item.counselingDate | date: 'dd.MM.yyyy HH:mm'}}
-      </div>
-      <div>
-        <small>
-          <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a>
-        </small>
-      </div>
-    </li>
+  <ul class="list-group list-group-flush">
+    @for (item of items(); track item.clientId; let i = $index) {
+      <li class="list-group-item">
+        @if (item.counselingDate) {
+          <div>
+            {{ item.counselingDate | date: 'dd.MM.yyyy HH:mm' }}
+          </div>
+        }
+        <div>
+          <small>
+            <a [routerLink]="['/clients', item.clientId]" [innerHTML]="item.name"></a>
+          </small>
+        </div>
+      </li>
+    } @empty {
+      <li class="list-group-item text-muted">
+        <small>No timeline items available</small>
+      </li>
+    }
   </ul>
 </div>

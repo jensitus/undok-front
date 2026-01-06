@@ -1,46 +1,94 @@
-<app-navbar></app-navbar>
 <app-alert></app-alert>
+
 <div class="container">
   <div>
     <h4>Register</h4>
   </div>
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="col-md-4">
+        <!-- Username Field -->
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Name" formControlName="username"
-                 [ngClass]="{ 'is-invalid': submitted && f.username.errors }"/>
+          <input type="text"
+                 class="form-control"
+                 placeholder="Name"
+                 formControlName="username"
+                 [ngClass]="{ 'is-invalid': submitted() && f.username.errors }"/>
         </div>
-        <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-          <div *ngIf="f.username.errors.required"><small>Name is required</small></div>
-          <div *ngIf="f.username.errors.minlength"><small>God damn, that is way too short</small></div>
-          <div *ngIf="f.username.errors.maxlength"><small>God damn, that is way too long</small></div>
-        </div>
+        @if (submitted() && f.username.errors) {
+          <div class="invalid-feedback">
+            @if (f.username.errors['required']) {
+              <small>Name is required</small>
+            }
+            @if (f.username.errors['minlength']) {
+              <small>God damn, that is way too short</small>
+            }
+            @if (f.username.errors['maxlength']) {
+              <small>God damn, that is way too long</small>
+            }
+          </div>
+        }
+
+        <!-- Email Field -->
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Email" formControlName="email"
-                 [ngClass]="{ 'is-invalid': submitted && f.email.errors }"/>
+          <input type="text"
+                 class="form-control"
+                 placeholder="Email"
+                 formControlName="email"
+                 [ngClass]="{ 'is-invalid': submitted() && f.email.errors }"/>
         </div>
-        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-          <div *ngIf="f.email.errors.required"><small>Email is required</small></div>
-          <div *ngIf="f.email.errors.email"><small>Well, this isn't really an emailaddress</small></div>
-        </div>
+        @if (submitted() && f.email.errors) {
+          <div class="invalid-feedback">
+            @if (f.email.errors['required']) {
+              <small>Email is required</small>
+            }
+            @if (f.email.errors['email']) {
+              <small>Well, this isn't really an emailaddress</small>
+            }
+          </div>
+        }
+
+        <!-- Password Field -->
         <div class="form-group">
-          <input type="password" class="form-control" placeholder="Password" formControlName="password"
-                 [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
+          <input type="password"
+                 class="form-control"
+                 placeholder="Password"
+                 formControlName="password"
+                 [ngClass]="{ 'is-invalid': submitted() && f.password.errors }"/>
         </div>
-        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-          <div *ngIf="f.password.errors.required"><small>Password is required</small></div>
-          <div *ngIf="f.password.errors.minlength"><small>Password must be at least 6 characters</small></div>
-        </div>
+        @if (submitted() && f.password.errors) {
+          <div class="invalid-feedback">
+            @if (f.password.errors['required']) {
+              <small>Password is required</small>
+            }
+            @if (f.password.errors['minlength']) {
+              <small>Password must be at least 6 characters</small>
+            }
+          </div>
+        }
+
+        <!-- Password Confirmation Field -->
         <div class="form-group">
-          <input type="password" class="form-control" placeholder="Password Confirmation"
+          <input type="password"
+                 class="form-control"
+                 placeholder="Password Confirmation"
                  formControlName="passwordConfirmation"/>
         </div>
+
+        <!-- Submit Button and Actions -->
         <div>
-          <button [disabled]="loading" class="btn btn-outline-success">Register</button>
-          <img *ngIf="loading"
-               src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+          <button [disabled]="loading()"
+                  class="btn btn-outline-success">
+            Register
+          </button>
+
+          @if (loading()) {
+            <img
+              src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+              alt="Loading..."/>
+          }
+
           <a [routerLink]="['/login']" class="btn btn-link">Cancel</a>
         </div>
       </div>

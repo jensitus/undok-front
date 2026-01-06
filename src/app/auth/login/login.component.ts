@@ -1,77 +1,94 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, computed, inject, output, signal} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {AuthenticationService} from '../services/authentication.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
-import {Subscription} from 'rxjs';
+import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
+  imports: [
+    AlertComponent,
+    ReactiveFormsModule,
+    RouterLink
+  ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent {
+  // Inject services
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly authenticationService = inject(AuthenticationService);
+  private readonly alertService = inject(AlertService);
 
-  @Output() toggle = new EventEmitter<any>();
+  // Output as signal
+  readonly toggle = output<any>();
 
-  loginForm: UntypedFormGroup;
-  loading = false;
-  submitted = false;
-  returnUrl: string;
-  private subscription$: Subscription[] = [];
+  // Signals for state
+  loading = signal<boolean>(false);
+  submitted = signal<boolean>(false);
+  returnUrl = signal<string>('');
 
-  constructor(
-    private formBuilder: UntypedFormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private authenticationService: AuthenticationService,
-    private alertService: AlertService
-  ) {
-  }
+  // Reactive form
+  readonly loginForm: FormGroup;
 
-  ngOnInit() {
+  // Computed signal for form controls (convenience getter)
+  readonly controls = computed(() => this.loginForm.controls);
+
+  // Computed signals for validation errors
+  readonly usernameErrors = computed(() => {
+    const control = this.loginForm.get('username');
+    return this.submitted() && control?.errors ? control.errors : null;
+  });
+
+  readonly passwordErrors = computed(() => {
+    const control = this.loginForm.get('password');
+    return this.submitted() && control?.errors ? control.errors : null;
+  });
+
+  constructor() {
+    // Initialize form
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
 
-    // reset login status
+    // Reset login status
     this.authenticationService.logout();
 
-    // get return url from route parameters or default to '/'
-    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    // Get return url from route parameters or default to '/'
+    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl.set(returnUrl);
   }
 
-  ngOnDestroy(): void {
-    this.subscription$.forEach((s) => {
-      s.unsubscribe();
-    });
-  }
+  onSubmit(): void {
+    this.submitted.set(true);
 
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.loginForm.controls;
-  }
-
-  onSubmit() {
-    this.submitted = true;
-
-    // stop here if form is invalid
+    // Stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
 
-    this.loading = true;
-    this.subscription$.push(
-      this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe({
-        next: () => {
-          this.loading = false;
-          this.router.navigate(['/second-factor']);
-        },
-        error: error => {
-          this.alertService.error(error.error.text);
-        }
-      }));
-  }
+    this.loading.set(true);
 
+    const username = this.loginForm.get('username')?.value;
+    const password = this.loginForm.get('password')?.value;
+
+    this.authenticationService
+        .login(username, password)
+        .subscribe({
+          next: () => {
+            this.loading.set(false);
+            this.alertService.success('we\'ve sent you a little tiny token as the second factor', true);
+            this.router.navigate(['/second-factor']);
+          },
+          error: (error) => {
+            this.alertService.error(error.error?.text || 'Login failed');
+            this.loading.set(false);
+          }
+        });
+  }
 }

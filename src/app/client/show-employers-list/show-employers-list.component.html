@@ -9,18 +9,31 @@
 
 <form>
   <div class="form-group form-inline">
-    Filter: <input class="form-control ml-2" type="text" name="searchTerm"
-                   [(ngModel)]="employerTableService.searchTerm"/>
-    <span class="ml-3" *ngIf="employerTableService.loading$ | async">Loading...</span>
+    Filter:
+    <input class="form-control ml-2"
+           type="text"
+           name="searchTerm"
+           [(ngModel)]="employerTableService.searchTerm"/>
+
+    @if (employerTableService.loading$ | async) {
+      <span class="ml-3">Loading...</span>
+    }
   </div>
 
   <div class="d-flex justify-content-between p-2">
-    <ngb-pagination
-      [collectionSize]="(total$ | async)!" [(page)]="employerTableService.page"
-      [pageSize]="employerTableService.pageSize"
-      [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
+    <ngb-pagination [collectionSize]="(total$ | async)!"
+                    [(page)]="employerTableService.page"
+                    [pageSize]="employerTableService.pageSize"
+                    [maxSize]="5"
+                    [rotate]="true"
+                    [ellipses]="false"
+                    [boundaryLinks]="true">
     </ngb-pagination>
-    <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="employerTableService.pageSize">
+
+    <select class="custom-select"
+            style="width: auto"
+            name="pageSize"
+            [(ngModel)]="employerTableService.pageSize">
       <option [ngValue]="10">10 items per page</option>
       <option [ngValue]="20">20 items per page</option>
       <option [ngValue]="60">60 items per page</option>
@@ -37,35 +50,57 @@
       <th scope="col">Position</th>
       <th scope="col">Telephon</th>
       <th scope="col">link</th>
-      <th scope="col" *ngIf="clientId">add</th>
+      @if (clientId()) {
+        <th scope="col">add</th>
+      }
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let employer of employers$ | async; index as i">
-      <th><small>{{ i + 1 }}</small></th>
-      <td>
-        <ngb-highlight [result]="employer.company" [term]="employerTableService.searchTerm"></ngb-highlight>
-      </td>
-      <td>
-        <ngb-highlight [result]="employer.person.firstName" [term]="employerTableService.searchTerm"></ngb-highlight>
-      </td>
-      <td>
-        <ngb-highlight [result]="employer.person.lastName" [term]="employerTableService.searchTerm"></ngb-highlight>
-      </td>
-      <td>
-        <ngb-highlight [result]="employer.position" [term]="employerTableService.searchTerm"></ngb-highlight>
-      </td>
-      <td>
-        {{employer.person.telephone}}
-      </td>
-      <td>
-        <a [routerLink]="['/clients/employers/', employer.id]">link</a>
-      </td>
-      <td *ngIf="clientId">
-        <button class="btn btn-sm btn-outline-info" (click)="assignEmployer(employer)">assign</button>
-      </td>
-    </tr>
+      @for (employer of employers$ | async; track employer.id; let i = $index) {
+        <tr>
+          <th><small>{{ i + 1 }}</small></th>
+          <td>
+            <ngb-highlight [result]="employer.company"
+                           [term]="employerTableService.searchTerm">
+            </ngb-highlight>
+          </td>
+          <td>
+            <ngb-highlight [result]="employer.person.firstName"
+                           [term]="employerTableService.searchTerm">
+            </ngb-highlight>
+          </td>
+          <td>
+            <ngb-highlight [result]="employer.person.lastName"
+                           [term]="employerTableService.searchTerm">
+            </ngb-highlight>
+          </td>
+          <td>
+            <ngb-highlight [result]="employer.position"
+                           [term]="employerTableService.searchTerm">
+            </ngb-highlight>
+          </td>
+          <td>
+            {{ employer.person.telephone }}
+          </td>
+          <td>
+            <a [routerLink]="['/clients/employers/', employer.id]">link</a>
+          </td>
+          @if (clientId()) {
+            <td>
+              <button class="btn btn-sm btn-outline-info"
+                      (click)="assignEmployer(employer)">
+                assign
+              </button>
+            </td>
+          }
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="8" class="text-center text-muted">
+            <small>No employers found</small>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
-
 </form>

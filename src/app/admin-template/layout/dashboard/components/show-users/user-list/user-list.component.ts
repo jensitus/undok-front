@@ -1,63 +1,67 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {User} from '../../../../../../auth/model/user';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {UserService} from '../../../../../../auth/services/user.service';
-import {ResponseMessage} from '../../../../../../common/helper/response-message';
-import {CommonService} from '../../../../../../common/services/common.service';
-import {faCheck} from '@fortawesome/free-solid-svg-icons';
-import {AlertService} from '../../../../components/alert/services/alert.service';
+import {Component, OnInit, inject, signal, effect, DestroyRef} from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { User } from '../../../../../../auth/model/user';
+import { UserService } from '../../../../../../auth/services/user.service';
+import { ResponseMessage } from '../../../../../../common/helper/response-message';
+import { CommonService } from '../../../../../../common/services/common.service';
+import { AlertService } from '../../../../components/alert/services/alert.service';
 
 @Component({
   selector: 'app-user-list',
+  standalone: true,
   templateUrl: './user-list.component.html',
+  imports: [
+    RouterLink,
+    RouterLinkActive,
+    FaIconComponent
+  ],
   styleUrls: ['./user-list.component.css']
 })
-export class UserListComponent implements OnInit, OnDestroy {
+export class UserListComponent implements OnInit {
+  // Inject services using the new inject() function
+  private readonly userService = inject(UserService);
+  private readonly commonService = inject(CommonService);
+  private readonly alertService = inject(AlertService);
+  private readonly destroyRef = inject(DestroyRef);
 
-  faCheck = faCheck;
-  userList: User[];
-  responseMessage: ResponseMessage;
-  private unsubscribe$ = new Subject();
+  // Use signals for reactive state management
+  readonly userList = signal<User[]>([]);
+  readonly responseMessage = signal<ResponseMessage | null>(null);
+  readonly faCheck = faCheck;
 
-  constructor(
-    private userService: UserService,
-    private commonService: CommonService,
-    private alertService: AlertService
-  ) {
+  constructor() {
+    // Set up subscription to watch for user creation events
+    this.commonService.createUserSubject
+        .pipe(takeUntilDestroyed())
+        .subscribe(created => {
+          if (created) {
+            this.getUserList();
+          }
+        });
   }
 
   ngOnInit(): void {
     this.getUserList();
-    this.getCreateUserSubject();
-  }
-
-  ngOnDestroy(): void {
-    // @ts-ignore
-    this.unsubscribe$.next();
   }
 
   private getUserList(): void {
-    this.userService.getAll().pipe(takeUntil(this.unsubscribe$)).subscribe(userResult => {
-      this.userList = userResult;
-    });
+    this.userService.getAll()
+        .subscribe(userResult => {
+          this.userList.set(userResult);
+        });
   }
 
-  private getCreateUserSubject() {
-    this.commonService.createUserSubject.subscribe(res => {
-      if (res) {
-        this.getUserList();
-      }
-    });
+  resendConfirmationLink(userId: string): void {
+    this.userService.resendConfirmationLink(userId)
+        .pipe(takeUntilDestroyed())
+        .subscribe({
+          next: value => {
+            this.alertService.success(value.text, true);
+          },
+          error: err => console.error('Error resending confirmation link:', err)
+        });
   }
-
-  resendConfirmationLink(userId: string) {
-    this.userService.resendConfirmationLink(userId).pipe(takeUntil(this.unsubscribe$)).subscribe({
-      next: value => {
-        this.alertService.success(value.text, true);
-      },
-      error: err => console.log('Himmel', err)
-    });
-  }
-
 }

@@ -1,36 +1,70 @@
 <form #registerForm="ngForm" (ngSubmit)="onSubmit()" class="mb-2">
   <div class="form-group">
-    <input type="text" class="form-control" placeholder="Name" name="username" [(ngModel)]="username" required/>
+    <input type="text"
+           class="form-control"
+           placeholder="Name"
+           name="username"
+           [ngModel]="username()"
+           (ngModelChange)="username.set($event)"
+           [disabled]="loading()"
+           required />
   </div>
-  <div class="form-group">
-    <input type="text" class="form-control" placeholder="Email" name="email" [(ngModel)]="email" required/>
-  </div>
-  <div>
-    <button [disabled]="loading" class="btn btn-sm btn-outline-success">Create User</button>
-    <img *ngIf="loading"
-         src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
 
+  <div class="form-group">
+    <input type="text"
+           class="form-control"
+           placeholder="Email"
+           name="email"
+           [ngModel]="email()"
+           (ngModelChange)="email.set($event)"
+           [disabled]="loading()"
+           required />
+  </div>
+
+  <div>
+    <button [disabled]="loading()"
+            class="btn btn-sm btn-outline-success">
+      Create User
+    </button>
+
+    @if (loading()) {
+      <img
+        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+        alt="Loading..."/>
+    }
   </div>
 </form>
 
-<ng-template #confUrl let-modal>
+<ng-template #confUrlTemplate let-modal>
   <div class="modal-header">
     <h5 class="modal-title">Confirmation Url</h5>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
+    <button type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="modal.dismiss('Cross click')">
     </button>
   </div>
+
   <div class="modal-body">
     Copy the url below and send it to the created user for completing the creation:
     <br>
-    <p style="color: #2e6da4">{{responseMessage.text}}</p>
+    <p style="color: #2e6da4">{{ responseMessage()?.text }}</p>
   </div>
+
   <div class="modal-footer">
-    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    <button type="button"
+            class="btn btn-light"
+            (click)="modal.close('Close click')">
+      Close
+    </button>
   </div>
 </ng-template>
 
-<div *ngIf="this.responseMessage" class="mt-2">
-  <button class="btn btn-sm btn-outline-primary" (click)="openLg(this.confUrl)">show conf url</button>
-</div>
-
+@if (responseMessage()) {
+  <div class="mt-2">
+    <button class="btn btn-sm btn-outline-primary"
+            (click)="openLg(confUrlModal()!)">
+      show conf url
+    </button>
+  </div>
+}

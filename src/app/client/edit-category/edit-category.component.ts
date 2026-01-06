@@ -1,53 +1,77 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {CategoryService} from '../service/category.service';
-import {Subscription} from 'rxjs';
-import {ClientForm} from '../model/clientForm';
+import { Component, input, inject, signal, effect } from '@angular/core';
+import { CategoryService } from '../service/category.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-category',
+  standalone: true,
   templateUrl: './edit-category.component.html',
+  imports: [FormsModule],
   styleUrls: ['./edit-category.component.css']
 })
-export class EditCategoryComponent implements OnInit, OnDestroy {
+export class EditCategoryComponent {
+  // Service injected using inject()
+  private readonly categoryService = inject(CategoryService);
 
-  @Input() categoryId: string;
-  @Input() categoryName: string;
-  private subscription$: Subscription[] = [];
-  update = false;
-  errorMessage: string = null;
+  // Signal-based inputs
+  readonly categoryId = input.required<string>();
+  readonly initialCategoryName = input.required<string>({ alias: 'categoryName' });
 
-  constructor(
-    private categoryService: CategoryService
-  ) { }
+  // Component state as signals
+  readonly categoryName = signal<string>('');
+  readonly isEditMode = signal(false);
+  readonly errorMessage = signal<string | null>(null);
+  readonly isSubmitting = signal(false);
 
-  ngOnInit(): void {
-  }
-
-  ngOnDestroy(): void {
-    this.subscription$.forEach((s) => {
-      s.unsubscribe();
+  constructor() {
+    // Sync categoryName with input changes
+    effect(() => {
+      this.categoryName.set(this.initialCategoryName());
     });
   }
 
-  editCategory() {
-    this.subscription$.push(
-      this.categoryService.updateCategory(this.categoryId, this.categoryName).subscribe({
-        next: (result) => {
-          this.updateCategory();
-        }, error: (error) => {
-          this.errorMessage = error.error.text;
-        }
-      })
-    );
+  editCategory(): void {
+    const categoryId = this.categoryId();
+    const categoryName = this.categoryName().trim();
+
+    if (!categoryName) {
+      this.errorMessage.set('Category name cannot be empty');
+      return;
+    }
+
+    if (this.isSubmitting()) {
+      return; // Prevent double submission
+    }
+
+    this.isSubmitting.set(true);
+    this.errorMessage.set(null);
+
+    this.categoryService.updateCategory(categoryId, categoryName).subscribe({
+      next: () => {
+        this.isEditMode.set(false);
+        this.isSubmitting.set(false);
+      },
+      error: (err) => {
+        const error = err?.error?.text || 'Failed to update category';
+        this.errorMessage.set(error);
+        this.isSubmitting.set(false);
+      }
+    });
   }
 
-  updateCategory() {
-    this.update = !this.update;
-    this.setErrorMessageToNull();
+  toggleEditMode(): void {
+    this.isEditMode.update(mode => !mode);
+    this.errorMessage.set(null);
+
+    // Reset to original name if canceling
+    if (!this.isEditMode()) {
+      this.categoryName.set(this.initialCategoryName());
+    }
   }
 
-  setErrorMessageToNull() {
-    this.errorMessage = null;
+  cancelEdit(): void {
+    this.categoryName.set(this.initialCategoryName());
+    this.isEditMode.set(false);
+    this.errorMessage.set(null);
   }
-
 }

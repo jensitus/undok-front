@@ -7,10 +7,14 @@ import {EmployerService} from '../service/employer.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {CommonService} from '../../common/services/common.service';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-edit-client-employer-job-description',
   templateUrl: './edit-client-employer-job-description.component.html',
+  imports: [
+    FormsModule
+  ],
   styleUrls: ['./edit-client-employer-job-description.component.css']
 })
 export class EditClientEmployerJobDescriptionComponent implements OnInit, OnDestroy {

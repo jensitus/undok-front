@@ -13,10 +13,16 @@ import {DropdownItem} from '../model/dropdown-item';
 import {JoinCategory} from '../model/join-category';
 import {EntityTypes} from '../model/entity-types';
 import {Label} from '../model/label';
+import {MultiSelectBoxComponent} from '../select-box/multi/multi-select-box.component';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-edit-counseling',
   templateUrl: './edit-counseling.component.html',
+  imports: [
+    MultiSelectBoxComponent,
+    FormsModule
+  ],
   styleUrls: ['./edit-counseling.component.css']
 })
 export class EditCounselingComponent implements OnInit, OnDestroy {

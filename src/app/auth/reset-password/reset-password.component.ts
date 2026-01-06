@@ -1,13 +1,22 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {UserService} from '../services/user.service';
 import {first} from 'rxjs/operators';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import {NavbarComponent} from '../../common/navbar/navbar.component';
+import {NgClass, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
+  imports: [
+    NavbarComponent,
+    ReactiveFormsModule,
+    NgClass,
+    NgIf,
+    RouterLink
+  ],
   styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent implements OnInit {

@@ -4,8 +4,7 @@ import {CategoryTypes} from '../../model/category-types';
 import {Case} from '../../model/case';
 import {CaseService} from '../../service/case.service';
 import {SelectBoxComponent} from '../../select-box/single/select-box.component';
-import {ModalDismissReasons, NgbAlert, NgbCalendar, NgbDateStruct, NgbInputDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {JsonPipe} from '@angular/common';
+import {ModalDismissReasons, NgbCalendar, NgbDateStruct, NgbInputDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 import {NgbFormatterService} from '../../../common/services/ngb-formatter.service';
 import {Subscription} from 'rxjs';
@@ -19,8 +18,6 @@ import {faCalendar} from '@fortawesome/free-solid-svg-icons';
   imports: [
     SelectBoxComponent,
     NgbInputDatepicker,
-    JsonPipe,
-    NgbAlert,
     FormsModule,
     FaIconComponent
   ],

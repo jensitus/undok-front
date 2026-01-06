@@ -1,11 +1,15 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {IconDefinition} from '@fortawesome/free-solid-svg-icons';
+import {CommonModule} from '@angular/common';
+import {RouterLink} from '@angular/router';
 
 @Component({
-             selector: 'app-page-header',
-             templateUrl: './page-header.component.html',
-             styleUrls: ['./page-header.component.scss']
-           })
+  selector: 'app-page-header',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  templateUrl: './page-header.component.html',
+  styleUrls: ['./page-header.component.scss']
+})
 export class PageHeaderComponent implements OnInit {
 
   @Input() firstPoint!: string;

@@ -1,9 +1,8 @@
-import {Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, inject, input, output, effect, signal, computed, DestroyRef} from '@angular/core';
 import {Client} from '../model/client';
-import {FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Label} from '../model/label';
 import {CITIZENSHIPS} from '../model/citizenships';
-import {NgForOf} from '@angular/common';
 import {SelectBoxComponent} from '../select-box/single/select-box.component';
 import {CategoryTypes} from '../model/category-types';
 import {ClientForm} from '../model/clientForm';
@@ -12,8 +11,8 @@ import {JoinCategory} from '../model/join-category';
 import {Category} from '../model/category';
 import {SelectModule} from '../select-box/select/select.module';
 import {NgSelectModule} from '@ng-select/ng-select';
-import {Subscription} from 'rxjs';
 import {CategoryService} from '../service/category.service';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-client-form',
@@ -21,7 +20,6 @@ import {CategoryService} from '../service/category.service';
   standalone: true,
   imports: [
     FormsModule,
-    NgForOf,
     SelectBoxComponent,
     ReactiveFormsModule,
     SelectModule,
@@ -29,275 +27,251 @@ import {CategoryService} from '../service/category.service';
   ],
   styleUrls: ['./client-form.component.css']
 })
-export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
+export class ClientFormComponent {
+  // Services
+  private categoryService = inject(CategoryService);
+  private destroyRef = inject(DestroyRef);
 
-  constructor() {
-  }
-
-  COMMENT_MAX_LENGTH = 2024;
-  jobMarketAccessCategoriesToSelect: Category[];
-  counselingLanguagesCategoriesToSelect: Category[];
-  originOfAttentionCategoriesToSelect: Category[];
-  undocumentedWorkCategoriesToSelect: Category[];
-  complaintsToSelected: Category[];
-  industryUnionToSelect: Category[];
-  jobFunctionToSelect: Category[];
-  sectorToSelect: Category[];
-
-  @Input() client: Client;
-  @Output() submitted = new EventEmitter<ClientForm>();
-  form: FormGroup;
-  clientForm: ClientForm;
+  // Constants
+  readonly COMMENT_MAX_LENGTH = 2024;
   protected readonly CategoryTypes = CategoryTypes;
-
   protected readonly Label = Label;
   protected readonly citizenships = CITIZENSHIPS;
-  loading = false;
-  cat_working_relationship: CategoryTypes = CategoryTypes.WORKING_RELATIONSHIP;
+  readonly cat_working_relationship: CategoryTypes = CategoryTypes.WORKING_RELATIONSHIP;
 
-  private subscription$: Subscription[] = [];
+  // Modern Angular 21 Input/Output
+  client = input<Client>();
+  submitted = output<ClientForm>();
 
-  private categoryService = inject(CategoryService);
-  counselingLanguageModel = [];
-  jobMarketAccessModel = [];
-  originOfAttentionModel = [];
-  undocumentedWorkModel = [];
-  complaintsModel = [];
-  industryUnionModel = [];
-  jobFunctionModel = [];
-  sectorModel = [];
+  // Signals for state management
+  clientForm = signal<ClientForm>(this.initializeClientForm());
+  loading = signal(false);
 
-  ngOnInit(): void {
-    if (this.client) {
-      this.clientForm = this.mapClient(this.client);
-      this.fillNgModels();
-    } else {
-      this.initializeClientForm();
-    }
+  // Category data signals
+  jobMarketAccessCategoriesToSelect = signal<Category[]>([]);
+  counselingLanguagesCategoriesToSelect = signal<Category[]>([]);
+  originOfAttentionCategoriesToSelect = signal<Category[]>([]);
+  undocumentedWorkCategoriesToSelect = signal<Category[]>([]);
+  complaintsToSelected = signal<Category[]>([]);
+  industryUnionToSelect = signal<Category[]>([]);
+  jobFunctionToSelect = signal<Category[]>([]);
+  sectorToSelect = signal<Category[]>([]);
+
+  // Model signals for ng-select
+  counselingLanguageModel = signal<string[]>([]);
+  jobMarketAccessModel = signal<string[]>([]);
+  originOfAttentionModel = signal<string[]>([]);
+  undocumentedWorkModel = signal<string[]>([]);
+  complaintsModel = signal<string[]>([]);
+  industryUnionModel = signal<string[]>([]);
+  jobFunctionModel = signal<string[]>([]);
+  sectorModel = signal<string[]>([]);
+
+  // Computed for remaining characters
+  remainingCharacters = computed(() => {
+    const comment = this.clientForm().comment;
+    return this.COMMENT_MAX_LENGTH - (comment?.length || 0);
+  });
+
+  constructor() {
+    // Load categories on initialization
     this.loadCategoriesByCategoryType();
-  }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.client?.currentValue) {
-      this.form?.patchValue(this.client);
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.subscription$.forEach((s) => {
-      s.unsubscribe();
-    });
+    // Effect to handle client input changes
+    effect(() => {
+      const client = this.client();
+      if (client) {
+        this.clientForm.set(this.mapClient(client));
+        this.fillNgModels(client);
+      }
+    }, {allowSignalWrites: true});
   }
 
   submit() {
-    this.loading = true;
-    this.showCategoryValue(this.counselingLanguageModel, CategoryTypes.COUNSELING_LANGUAGE);
-    this.showCategoryValue(this.jobMarketAccessModel, CategoryTypes.JOB_MARKET_ACCESS);
-    this.showCategoryValue(this.originOfAttentionModel, CategoryTypes.ORIGIN_OF_ATTENTION);
-    this.showCategoryValue(this.undocumentedWorkModel, CategoryTypes.UNDOCUMENTED_WORK);
-    this.showCategoryValue(this.complaintsModel, CategoryTypes.COMPLAINT);
-    this.showCategoryValue(this.industryUnionModel, CategoryTypes.INDUSTRY_UNION);
-    this.showCategoryValue(this.jobFunctionModel, CategoryTypes.JOB_FUNCTION);
-    this.showCategoryValue(this.sectorModel, CategoryTypes.SECTOR);
-    this.submitted.emit(this.clientForm);
+    this.loading.set(true);
+    const form = this.clientForm();
+
+    this.processCategorySelections(form);
+
+    this.submitted.emit(form);
+    this.loading.set(false);
+  }
+
+  private processCategorySelections(form: ClientForm) {
+    this.showCategoryValue(this.counselingLanguageModel(), CategoryTypes.COUNSELING_LANGUAGE, form);
+    this.showCategoryValue(this.jobMarketAccessModel(), CategoryTypes.JOB_MARKET_ACCESS, form);
+    this.showCategoryValue(this.originOfAttentionModel(), CategoryTypes.ORIGIN_OF_ATTENTION, form);
+    this.showCategoryValue(this.undocumentedWorkModel(), CategoryTypes.UNDOCUMENTED_WORK, form);
+    this.showCategoryValue(this.complaintsModel(), CategoryTypes.COMPLAINT, form);
+    this.showCategoryValue(this.industryUnionModel(), CategoryTypes.INDUSTRY_UNION, form);
+    this.showCategoryValue(this.jobFunctionModel(), CategoryTypes.JOB_FUNCTION, form);
+    this.showCategoryValue(this.sectorModel(), CategoryTypes.SECTOR, form);
   }
 
   selectGender(event: string) {
-    this.clientForm.gender = event;
+    this.clientForm.update(form => ({...form, gender: event}));
   }
 
   selectResidentStatus(event: string) {
-    this.clientForm.currentResidentStatus = event;
+    this.clientForm.update(form => ({...form, currentResidentStatus: event}));
   }
 
   onCitizenshipChange(value: any) {
-    this.clientForm.nationality = value;
+    this.clientForm.update(form => ({...form, nationality: value}));
   }
 
   selectTargetGroup(event: string) {
-    this.clientForm.targetGroup = event;
+    this.clientForm.update(form => ({...form, targetGroup: event}));
   }
 
   selectWorkingRelationship(event: string) {
-    this.clientForm.workingRelationship = event;
+    this.clientForm.update(form => ({...form, workingRelationship: event}));
+  }
+
+  updateFormField<K extends keyof ClientForm>(field: K, value: ClientForm[K]) {
+    this.clientForm.update(form => ({...form, [field]: value}));
   }
 
   mapClient(client: Client): ClientForm {
     return {
-      keyword: client.keyword ? client.keyword : null,
-      firstName: client.firstName ? client.firstName : null,
-      lastName: client.lastName ? client.lastName : null,
-      telephone: client.telephone ? client.telephone : null,
-      city: client.city ? client.city : null,
-      email: client.email ? client.email : null,
-      labourMarketAccess: client.labourMarketAccess ? client.labourMarketAccess : null,
-      interpreterNecessary: client.interpreterNecessary ? client.interpreterNecessary : null,
-      howHasThePersonHeardFromUs: client.howHasThePersonHeardFromUs ? client.howHasThePersonHeardFromUs : null,
-      vulnerableWhenAssertingRights: client.vulnerableWhenAssertingRights ? client.vulnerableWhenAssertingRights : null,
-      nationality: client.nationality ? client.nationality : null,
-      language: client.language ? client.language : null,
-      currentResidentStatus: client.currentResidentStatus ? client.currentResidentStatus : null,
-      jobCenterBlock: client.openCase.jobCenterBlock ? client.openCase.jobCenterBlock : null,
-      humanTrafficking: client.openCase.humanTrafficking ? client.openCase.humanTrafficking : null,
-      gender: client.gender ? client.gender : null,
-      union: client.union ? client.union : null,
-      targetGroup: client.openCase.targetGroup ? client.openCase.targetGroup : null,
-      workingRelationship: client.openCase.workingRelationship ? client.openCase.workingRelationship : null,
-      furtherContact: client.furtherContact ? client.furtherContact : null,
-      comment: client.comment ? client.comment : null,
-      alert: client.alert ? client.alert : null,
+      keyword: client.keyword ?? null,
+      firstName: client.firstName ?? null,
+      lastName: client.lastName ?? null,
+      telephone: client.telephone ?? null,
+      city: client.city ?? null,
+      email: client.email ?? null,
+      labourMarketAccess: client.labourMarketAccess ?? null,
+      interpreterNecessary: client.interpreterNecessary ?? null,
+      howHasThePersonHeardFromUs: client.howHasThePersonHeardFromUs ?? null,
+      vulnerableWhenAssertingRights: client.vulnerableWhenAssertingRights ?? null,
+      nationality: client.nationality ?? null,
+      language: client.language ?? null,
+      currentResidentStatus: client.currentResidentStatus ?? null,
+      jobCenterBlock: client.openCase?.jobCenterBlock ?? null,
+      humanTrafficking: client.openCase?.humanTrafficking ?? null,
+      gender: client.gender ?? null,
+      union: client.union ?? null,
+      targetGroup: client.openCase?.targetGroup ?? null,
+      workingRelationship: client.openCase?.workingRelationship ?? null,
+      furtherContact: client.furtherContact ?? null,
+      comment: client.comment ?? null,
+      alert: client.alert ?? null,
     };
   }
 
-  showCategoryValue(event: string[], categoryType: CategoryTypes) {
+  showCategoryValue(eventIds: string[], categoryType: CategoryTypes, form: ClientForm) {
+    const client = this.client();
+    if (!client) { return; }
+
+    const joinCategories = eventIds.map(id =>
+      this.createJoinCategory(id, categoryType, client.openCase.id, EntityTypes.CASE)
+    );
+
     switch (categoryType) {
-      case (CategoryTypes.COUNSELING_LANGUAGE):
-        this.clientForm.counselingLanguageSelected = [];
-        let joinCategoryCounselingLanguage: JoinCategory = null;
-        event.forEach(e => {
-          joinCategoryCounselingLanguage = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
-          this.clientForm.counselingLanguageSelected.push(joinCategoryCounselingLanguage);
-        });
+      case CategoryTypes.COUNSELING_LANGUAGE:
+        form.counselingLanguageSelected = joinCategories;
         break;
-      case (CategoryTypes.JOB_MARKET_ACCESS):
-        this.clientForm.jobMarketAccessSelected = [];
-        let jobMarketAccessJoinCategory: JoinCategory = null;
-        event.forEach(e => {
-          jobMarketAccessJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
-          this.clientForm.jobMarketAccessSelected.push(jobMarketAccessJoinCategory);
-        });
+      case CategoryTypes.JOB_MARKET_ACCESS:
+        form.jobMarketAccessSelected = joinCategories;
         break;
-      case (CategoryTypes.ORIGIN_OF_ATTENTION):
-        this.clientForm.originOfAttentionSelected = [];
-        let originOfAttentionJoinCategory: JoinCategory = null;
-        event.forEach(e => {
-          originOfAttentionJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
-          this.clientForm.originOfAttentionSelected.push(originOfAttentionJoinCategory);
-        });
+      case CategoryTypes.ORIGIN_OF_ATTENTION:
+        form.originOfAttentionSelected = joinCategories;
         break;
-      case (CategoryTypes.UNDOCUMENTED_WORK):
-        this.clientForm.undocumentedWorkSelected = [];
-        let undocumentedWorkJoinCategory: JoinCategory = null;
-        event.forEach(e => {
-          undocumentedWorkJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
-          this.clientForm.undocumentedWorkSelected.push(undocumentedWorkJoinCategory);
-        });
+      case CategoryTypes.UNDOCUMENTED_WORK:
+        form.undocumentedWorkSelected = joinCategories;
         break;
-      case (CategoryTypes.COMPLAINT):
-        this.clientForm.complaintsSelected = [];
-        let complaintJoinCategory: JoinCategory = null;
-        event.forEach(e => {
-          complaintJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
-          this.clientForm.complaintsSelected.push(complaintJoinCategory);
-        });
+      case CategoryTypes.COMPLAINT:
+        form.complaintsSelected = joinCategories;
         break;
-      case (CategoryTypes.INDUSTRY_UNION):
-        this.clientForm.industryUnionSelected = [];
-        let industryUnionJoinCategory: JoinCategory = null;
-        event.forEach(e => {
-          industryUnionJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
-          this.clientForm.industryUnionSelected.push(industryUnionJoinCategory);
-        });
+      case CategoryTypes.INDUSTRY_UNION:
+        form.industryUnionSelected = joinCategories;
         break;
-      case (CategoryTypes.JOB_FUNCTION):
-        this.clientForm.jobFunctionSelected = [];
-        let jobFunctionJoinCategory: JoinCategory = null;
-        event.forEach(e => {
-          jobFunctionJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
-          this.clientForm.jobFunctionSelected.push(jobFunctionJoinCategory);
-        });
+      case CategoryTypes.JOB_FUNCTION:
+        form.jobFunctionSelected = joinCategories;
         break;
-        case (CategoryTypes.SECTOR):
-          this.clientForm.sectorSelected = [];
-          let sectorJoinCategory: JoinCategory = null;
-          event.forEach(e => {
-            sectorJoinCategory = this.createJoinCategory(e, categoryType, this.client.openCase.id, EntityTypes.CASE);
-            this.clientForm.sectorSelected.push(sectorJoinCategory);
-          });
+      case CategoryTypes.SECTOR:
+        form.sectorSelected = joinCategories;
+        break;
     }
   }
 
-  private createJoinCategory(categoryId: string, categoryType: CategoryTypes, entityId: string, entityType: EntityTypes): JoinCategory {
+  private createJoinCategory(
+    categoryId: string,
+    categoryType: CategoryTypes,
+    entityId: string,
+    entityType: EntityTypes
+  ): JoinCategory {
     return {
-      categoryId: categoryId,
-      categoryType: categoryType,
-      entityId: this.client.openCase.id,
-      entityType: entityType
+      categoryId,
+      categoryType,
+      entityId,
+      entityType
     };
   }
 
   loadCategoriesByCategoryType(): void {
-    this.subscription$.push(
-      this.categoryService.getCategories(CategoryTypes.JOB_MARKET_ACCESS).subscribe(cat => {
-        this.jobMarketAccessCategoriesToSelect = cat;
-      })
+    this.categoryService.getCategories(CategoryTypes.JOB_MARKET_ACCESS)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(cat => this.jobMarketAccessCategoriesToSelect.set(cat));
+
+    this.categoryService.getCategories(CategoryTypes.COUNSELING_LANGUAGE)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(cat => this.counselingLanguagesCategoriesToSelect.set(cat));
+
+    this.categoryService.getCategories(CategoryTypes.ORIGIN_OF_ATTENTION)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(cat => this.originOfAttentionCategoriesToSelect.set(cat));
+
+    this.categoryService.getCategories(CategoryTypes.UNDOCUMENTED_WORK)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(cat => this.undocumentedWorkCategoriesToSelect.set(cat));
+
+    this.categoryService.getCategories(CategoryTypes.COMPLAINT)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(cat => this.complaintsToSelected.set(cat));
+
+    this.categoryService.getCategories(CategoryTypes.INDUSTRY_UNION)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(cat => this.industryUnionToSelect.set(cat));
+
+    this.categoryService.getCategories(CategoryTypes.JOB_FUNCTION)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(cat => this.jobFunctionToSelect.set(cat));
+
+    this.categoryService.getCategories(CategoryTypes.SECTOR)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(cat => this.sectorToSelect.set(cat));
+  }
+
+  fillNgModels(client: Client) {
+    this.counselingLanguageModel.set(
+      client.openCase?.counselingLanguages?.map(c => c.id) ?? []
     );
-    this.subscription$.push(
-      this.categoryService.getCategories(CategoryTypes.COUNSELING_LANGUAGE).subscribe(cat => {
-        this.counselingLanguagesCategoriesToSelect = cat;
-      })
+    this.jobMarketAccessModel.set(
+      client.openCase?.jobMarketAccess?.map(c => c.id) ?? []
     );
-    this.subscription$.push(
-      this.categoryService.getCategories(CategoryTypes.ORIGIN_OF_ATTENTION).subscribe(cat => {
-        this.originOfAttentionCategoriesToSelect = cat;
-      })
+    this.originOfAttentionModel.set(
+      client.openCase?.originOfAttention?.map(c => c.id) ?? []
     );
-    this.subscription$.push(
-      this.categoryService.getCategories(CategoryTypes.UNDOCUMENTED_WORK).subscribe(cat => {
-        this.undocumentedWorkCategoriesToSelect = cat;
-      })
+    this.undocumentedWorkModel.set(
+      client.openCase?.undocumentedWork?.map(c => c.id) ?? []
     );
-    this.subscription$.push(
-      this.categoryService.getCategories(CategoryTypes.COMPLAINT).subscribe(cat => {
-        this.complaintsToSelected = cat;
-      })
+    this.complaintsModel.set(
+      client.openCase?.complaints?.map(c => c.id) ?? []
     );
-    this.subscription$.push(
-      this.categoryService.getCategories(CategoryTypes.INDUSTRY_UNION).subscribe(cat => {
-        this.industryUnionToSelect = cat;
-      })
+    this.industryUnionModel.set(
+      client.openCase?.industryUnion?.map(c => c.id) ?? []
     );
-    this.subscription$.push(
-      this.categoryService.getCategories(CategoryTypes.JOB_FUNCTION).subscribe(cat => {
-        this.jobFunctionToSelect = cat;
-      })
+    this.jobFunctionModel.set(
+      client.openCase?.jobFunction?.map(c => c.id) ?? []
     );
-    this.subscription$.push(
-      this.categoryService.getCategories(CategoryTypes.SECTOR).subscribe(cat => {
-        this.sectorToSelect = cat;
-      })
+    this.sectorModel.set(
+      client.openCase?.sector?.map(c => c.id) ?? []
     );
   }
 
-  fillNgModels() {
-    this.client.openCase.counselingLanguages?.forEach(category => {
-      this.counselingLanguageModel.push(category.id);
-    });
-    this.client.openCase.jobMarketAccess?.forEach(category => {
-      this.jobMarketAccessModel.push(category.id);
-    });
-    this.client.openCase.originOfAttention?.forEach(category => {
-      this.originOfAttentionModel.push(category.id);
-    });
-    this.client.openCase.undocumentedWork?.forEach(category => {
-      this.undocumentedWorkModel.push(category.id);
-    });
-    this.client.openCase.complaints?.forEach(category => {
-      this.complaintsModel.push(category.id);
-    });
-    this.client.openCase.industryUnion?.forEach(category => {
-      this.industryUnionModel.push(category.id);
-    });
-    this.client.openCase.jobFunction?.forEach(category => {
-      this.jobFunctionModel.push(category.id);
-    });
-    this.client.openCase.sector?.forEach(category => {
-      this.sectorModel.push(category.id);
-    });
-  }
-
-  initializeClientForm() {
-    this.clientForm = {
+  initializeClientForm(): ClientForm {
+    return {
       keyword: null,
       firstName: null,
       lastName: null,
@@ -318,5 +292,4 @@ export class ClientFormComponent implements OnInit, OnChanges, OnDestroy {
       alert: false,
     };
   }
-
 }

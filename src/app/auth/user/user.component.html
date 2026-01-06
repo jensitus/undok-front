@@ -1,8 +1,14 @@
-<div *ngIf="user">
-<app-page-header [firstPoint]="'dashboard'" [firstIcon]="faTachometerAlt" [firstLink]="'/dashboard'"
-                 [secondPoint]="'users'" [secondIcon]="faUsers" [secondLink]="'/list-users'"
-                 [endPoint]="user.username"/>
-<app-alert></app-alert>
+@if (user(); as u) {
+  <app-page-header [firstPoint]="'dashboard'"
+                   [firstIcon]="faTachometerAlt"
+                   [firstLink]="'/dashboard'"
+                   [secondPoint]="'users'"
+                   [secondIcon]="faUsers"
+                   [secondLink]="'/list-users'"
+                   [endPoint]="u.username"/>
+
+  <app-alert></app-alert>
+
   <div class="row mt-5">
     <div class="col-5">
       <div class="card">
@@ -12,49 +18,50 @@
               <b class="text-secondary">username</b>
             </div>
             <div class="col-6">
-              {{ user.username }}
+              {{ u.username }}
             </div>
           </div>
+
           <div class="row mb-2">
             <div class="col-6">
               <b class="text-secondary">email</b>
             </div>
             <div class="col-6">
-              {{ user.email }}
+              {{ u.email }}
             </div>
           </div>
+
           <div class="row mb-2">
             <div class="col">
               <b class="text-secondary">role</b>
             </div>
             <div class="col">
-              <span *ngIf="user.admin">
-                ADMIN
-              </span>
-              <span *ngIf="!user.admin">
-                {{user.roles[0].name}}
-              </span>
+              @if (u.admin) {
+                <span>ADMIN</span>
+              } @else {
+                <span>{{ u.roles[0].name }}</span>
+              }
             </div>
           </div>
+
           <div class="row">
             <div class="col">
               <b class="text-secondary">locked</b>
             </div>
             <div class="col">
-              <span *ngIf="user.locked">
-                locked
-              </span>
-              <span *ngIf="!user.locked">
-                not locked
-              </span>
+              @if (u.locked) {
+                <span>locked</span>
+              } @else {
+                <span>not locked</span>
+              }
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-1">
 
-    </div>
+    <div class="col-1"></div>
+
     <div class="col-5">
       <div class="card">
         <div class="card-body">
@@ -62,61 +69,79 @@
             <div class="col">
               <b class="text-secondary">set admin</b>
             </div>
-            <div class="col text-right" *ngIf="currentUser.email !== user.email && !user.locked">
-              <input type="checkbox" (click)="setAdmin(user.id, user.admin)" [(ngModel)]="this.user.admin">
-            </div>
-            <div class="col text-right" *ngIf="currentUser.email === user.email">
-              don't do this
-            </div>
+            @if (currentUser()?.email !== u.email && !u.locked) {
+              <div class="col text-right">
+                <input
+                  type="checkbox"
+                  [checked]="u.admin"
+                  (change)="setAdmin(u.id, u.admin)">
+              </div>
+            } @else if (currentUser()?.email === u.email) {
+              <div class="col text-right">
+                don't do this
+              </div>
+            }
           </div>
-          <div class="row mt-3" *ngIf="!user.confirmed">
-            <div class="col">
-              <b class="text-secondary">send confirmation link</b>
-            </div>
 
-            <div class="col">
-              <button class="btn btn-sm btn-outline-dark"
-                      *ngIf="!user.locked && currentUser.username !== user.username"
-                      (click)="resendConfirmationLink(user.id)">
-                yes
-              </button>
-              <button class="btn btn-sm btn-outline-dark"
-                      *ngIf="user.locked"
-                      [disabled]="true">
-                no
-              </button>
-              <button class="btn btn-sm btn-outline-dark"
-                      *ngIf="user.confirmed && !user.locked"
-                      [disabled]="true">
-                no
-              </button>
+          @if (!u.confirmed) {
+            <div class="row mt-3">
+              <div class="col">
+                <b class="text-secondary">send confirmation link</b>
+              </div>
+              <div class="col">
+                @if (!u.locked && currentUser()?.username !== u.username) {
+                  <button
+                    class="btn btn-sm btn-outline-dark"
+                    (click)="resendConfirmationLink(u.id)">
+                    yes
+                  </button>
+                }
+                @if (u.locked) {
+                  <button class="btn btn-sm btn-outline-dark" [disabled]="true">
+                    no
+                  </button>
+                }
+                @if (u.confirmed && !u.locked) {
+                  <button class="btn btn-sm btn-outline-dark" [disabled]="true">
+                    no
+                  </button>
+                }
+              </div>
             </div>
-          </div>
+          }
+
           <div class="row mt-2">
             <div class="col">
               <b class="text-secondary">lock</b>
             </div>
             <div class="col">
-              <button class="btn btn-sm btn-outline-danger" (click)="lockUser()" [disabled]="currentUser.username === user.username">
-                <span *ngIf="!user.locked">yes</span>
-                <span *ngIf="user.locked">unlock</span>
+              <button
+                class="btn btn-sm btn-outline-danger"
+                (click)="lockUser()"
+                [disabled]="currentUser()?.username === u.username">
+                @if (!u.locked) {
+                  <span>yes</span>
+                } @else {
+                  <span>unlock</span>
+                }
               </button>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   </div>
 
   <div class="col-md-4 mt-3">
-    <div *ngIf="user">
-      <div *ngIf="currentUser.email == user.email">
-        <ul class="list-group">
-          <li class="list-group-item"><a [routerLink]="['/users', user.username, 'edit']">change email</a></li>
-          <li class="list-group-item"><a [routerLink]="['/users', user.username, 'changepw']">change pw</a></li>
-        </ul>
-      </div>
-    </div>
+    @if (currentUser()?.email === u.email) {
+      <ul class="list-group">
+        <li class="list-group-item">
+          <a [routerLink]="['/users', u.username, 'edit']">change email</a>
+        </li>
+        <li class="list-group-item">
+          <a [routerLink]="['/users', u.username, 'changepw']">change pw</a>
+        </li>
+      </ul>
+    }
   </div>
-</div>
+}

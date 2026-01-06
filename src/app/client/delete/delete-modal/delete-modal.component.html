@@ -1,6 +1,6 @@
-<button class="btn btn-sm btn-outline-danger me-2" (click)="open(delete_object)">
-  <fa-icon [icon]="faTrash"></fa-icon> delete
-</button>
+<a (click)="open(delete_object)">
+  <fa-icon class="text-secondary" [icon]="faTrash"></fa-icon> delete
+</a>
 
 <ng-template #delete_object let-modal>
   <div class="modal-header">

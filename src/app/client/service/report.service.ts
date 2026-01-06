@@ -5,7 +5,7 @@ import {
   LanguageResult,
   NationalityCount,
   SectorCount
-} from '../first-counseling-count/first-counseling-count.component';
+} from '../report/report.component';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';

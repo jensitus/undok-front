@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, computed, DestroyRef, effect, inject, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {debounceTime, Subject, switchMap} from 'rxjs';
@@ -13,6 +13,7 @@ import {faCalendarAlt, faCircleLeft, faTasks} from '@fortawesome/free-solid-svg-
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {HighlightPipe} from './highlight.pipe';
 import {TruncateAroundPipe} from './truncate-around.pipe';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 
 interface CounselingSearchResult {
   id: number;
@@ -67,152 +68,52 @@ interface UnifiedSearchResponse {
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })
-export class SearchComponent implements OnInit {
-
-  apiUrl = environment.api_url;
-  protected today = inject(NgbCalendar).getToday();
-  protected initialFromDate: NgbDateStruct = {year: 2000, month: 1, day: 1}; //  = inject(NgbCalendar).getNext(this.today, 'm', -24);
+export class SearchComponent {
+  // Services
   private http = inject(HttpClient);
   private dateTimeService = inject(DateTimeService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private calendar = inject(NgbCalendar);
+  private destroyRef = inject(DestroyRef);
 
-  searchTerm = '';
-  startDate: NgbDateStruct | null = null;
-  endDate: NgbDateStruct | null = null;
-  searchResults: UnifiedSearchResponse | null = null;
-  isLoading = false;
-  error: string | null = null;
-  currentPage = 0;
-  pageSize = 4;
-  start: string | null = null;
-  end: string | null = null;
+  // Constants
+  readonly apiUrl = environment.api_url;
+  readonly today = this.calendar.getToday();
+  readonly initialFromDate: NgbDateStruct = {year: 2000, month: 1, day: 1};
 
-  private searchSubject = new Subject<string>();
-
+  // Icons
   protected readonly faCalendarAlt = faCalendarAlt;
   protected readonly faCircleLeft = faCircleLeft;
-
   protected readonly faTasks = faTasks;
 
-  ngOnInit() {
-    // Load initial state from URL parameters
-    this.route.queryParams.subscribe(params => {
-      this.searchTerm = params['q'] || '';
-      this.start = params['start'] || '';
-      this.end = params['end'] || '';
-      // tslint:disable-next-line:radix
-      this.currentPage = parseInt(params['page'] || '0');
-      // tslint:disable-next-line:radix
-      this.pageSize = parseInt(params['size'] || '4');
+  // Signals for reactive state
+  searchTerm                  = signal('');
+  startDate            = signal<NgbDateStruct | null>(null);
+  endDate              = signal<NgbDateStruct | null>(null);
+  searchResults  = signal<UnifiedSearchResponse | null>(null);
+  isLoading                 = signal(false);
+  error                       = signal<string | null>(null);
+  currentPage                = signal(0);
+  pageSize                   = signal(4);
 
-      // Perform search if there's a search term in URL
-      if (this.searchTerm.trim().length > 0) {
-        this.performSearchAndUpdateResults();
-      }
-      if (this.start !== '') {
-        this.initialFromDate = this.dateTimeService.convertToNgbDate(this.start);
-      }
-    });
+  // Query params as signal
+  private queryParams = toSignal(this.route.queryParams, {initialValue: {}});
+  private hasInitialized = signal(false);
 
-    // Setup debounced search - waits 800ms after user stops typing
-    this.searchSubject.pipe(
-      debounceTime(800),
-      switchMap(term => {
-        this.isLoading = true;
-        this.updateUrl();
-        return this.performSearch(term, 0);
-      })
-    ).subscribe({
-      next: (results) => {
-        this.searchResults = results;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.error = 'Search failed. Please try again.';
-        this.isLoading = false;
-        console.error('Search error:', err);
-      }
-    });
-  }
+  // Computed values
+  hasResults      = computed(() => this.searchResults() !== null);
+  totalPages      = computed(() => this.searchResults()?.pagination.totalPages ?? 0);
+  hasNextPage     = computed(() => this.searchResults()?.pagination.hasNext ?? false);
+  hasPreviousPage = computed(() => this.searchResults()?.pagination.hasPrevious ?? false);
 
-  onSearchInput() {
-    if (this.searchTerm.trim().length === 0) {
-      this.searchResults = null;
-      this.currentPage = 0;
-      this.isLoading = false;
-      return;
-    }
+  // Computed page numbers for pagination
+  pageNumbers = computed(() => {
+    const results = this.searchResults();
+    if (!results) { return []; }
 
-    this.error = null;
-    this.currentPage = 0;
-    this.searchSubject.next(this.searchTerm);
-  }
-
-  onSearchSubmit() {
-    if (this.searchTerm.trim().length === 0) {
-      return;
-    }
-
-    this.isLoading = true;
-    this.error = null;
-    this.currentPage = 0;
-    this.updateUrl();
-
-    this.performSearch(this.searchTerm, 0).subscribe({
-      next: (results) => {
-        this.searchResults = results;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.error = 'Search failed. Please try again.';
-        this.isLoading = false;
-        console.error('Search error:', err);
-      }
-    });
-  }
-
-  goToPage(page: number) {
-    if (page < 0 || !this.searchResults || page >= this.searchResults.pagination.totalPages) {
-      return;
-    }
-
-    this.isLoading = true;
-    this.error = null;
-    this.currentPage = page;
-    this.updateUrl();
-
-    this.performSearch(this.searchTerm, page).subscribe({
-      next: (results) => {
-        this.searchResults = results;
-        this.isLoading = false;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      },
-      error: (err) => {
-        this.error = 'Search failed. Please try again.';
-        this.isLoading = false;
-        console.error('Search error:', err);
-      }
-    });
-  }
-
-  nextPage() {
-    if (this.searchResults?.pagination.hasNext) {
-      this.goToPage(this.currentPage + 1);
-    }
-  }
-
-  previousPage() {
-    if (this.searchResults?.pagination.hasPrevious) {
-      this.goToPage(this.currentPage - 1);
-    }
-  }
-
-  getPageNumbers(): number[] {
-    if (!this.searchResults) { return []; }
-
-    const totalPages = this.searchResults.pagination.totalPages;
-    const current = this.currentPage;
+    const totalPages = results.pagination.totalPages;
+    const current = this.currentPage();
     const pages: number[] = [];
 
     // Show max 5 page numbers
@@ -229,78 +130,221 @@ export class SearchComponent implements OnInit {
     }
 
     return pages;
+  });
+
+  // Subject for debounced search
+  private searchSubject = new Subject<string>();
+
+  constructor() {
+    // Effect to load initial state from URL (only once)
+    effect(() => {
+      const params = this.queryParams();
+
+      // Only run once on initialization
+      if (this.hasInitialized()) {
+        return;
+      }
+
+      if (params['q']) {
+        this.searchTerm.set(params['q'] || '');
+      }
+
+      const page = parseInt(params['page'] || '0', 10);
+      const size = parseInt(params['size'] || '4', 10);
+
+      this.currentPage.set(page);
+      this.pageSize.set(size);
+
+      // Perform search if there's a search term
+      if (this.searchTerm().trim().length > 0) {
+        this.performSearchAndUpdateResults();
+      }
+
+      this.hasInitialized.set(true);
+    }, {allowSignalWrites: true});
+
+    // Setup debounced search with reasonable debounce time
+    this.searchSubject.pipe(
+      debounceTime(1500), // Changed from 1800ms to 500ms
+      switchMap(term => {
+        this.isLoading.set(true);
+        this.updateUrl();
+        return this.performSearch(term, 0);
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (results) => {
+        this.searchResults.set(results);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        this.error.set('Search failed. Please try again.');
+        this.isLoading.set(false);
+        console.error('Search error:', err);
+      }
+    });
+  }
+
+  onSearchInput(term: string) {
+    this.searchTerm.set(term);
+
+    if (term.trim().length === 0) {
+      this.searchResults.set(null);
+      this.currentPage.set(0);
+      this.isLoading.set(false);
+      return;
+    }
+
+    this.error.set(null);
+    this.currentPage.set(0);
+    // this.isLoading.set(true); // Set loading immediately for better UX
+    this.searchSubject.next(term);
+  }
+
+  onSearchSubmit() {
+    const term = this.searchTerm();
+
+    if (term.trim().length === 0) {
+      return;
+    }
+
+    this.isLoading.set(true);
+    this.error.set(null);
+    this.currentPage.set(0);
+    this.updateUrl();
+
+    this.performSearch(term, 0)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: (results) => {
+            this.searchResults.set(results);
+            this.isLoading.set(false);
+          },
+          error: (err) => {
+            this.error.set('Search failed. Please try again.');
+            this.isLoading.set(false);
+            console.error('Search error:', err);
+          }
+        });
+  }
+
+  goToPage(page: number) {
+    const results = this.searchResults();
+
+    if (page < 0 || !results || page >= results.pagination.totalPages) {
+      return;
+    }
+
+    this.isLoading.set(true);
+    this.error.set(null);
+    this.currentPage.set(page);
+    this.updateUrl();
+
+    this.performSearch(this.searchTerm(), page)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: (unifiedSearchResult) => {
+            this.searchResults.set(unifiedSearchResult);
+            this.isLoading.set(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          },
+          error: (err) => {
+            this.error.set('Search failed. Please try again.');
+            this.isLoading.set(false);
+            console.error('Search error:', err);
+          }
+        });
+  }
+
+  nextPage() {
+    if (this.hasNextPage()) {
+      this.goToPage(this.currentPage() + 1);
+    }
+  }
+
+  previousPage() {
+    if (this.hasPreviousPage()) {
+      this.goToPage(this.currentPage() - 1);
+    }
   }
 
   clearSearch() {
-    this.searchTerm = '';
-    this.startDate = null;
-    this.endDate = null;
-    this.searchResults = null;
-    this.currentPage = 0;
-    this.error = null;
+    this.searchTerm.set('');
+    this.startDate.set(null);
+    this.endDate.set(null);
+    this.searchResults.set(null);
+    this.currentPage.set(0);
+    this.error.set(null);
     this.router.navigate(['/clients/search']);
-    this.isLoading = false;
+    this.isLoading.set(false);
   }
 
   onDateChange() {
     // Trigger search when dates change (if there's already a search term)
-    if (this.searchTerm.trim().length > 0) {
+    if (this.searchTerm().trim().length > 0) {
       this.onSearchSubmit();
     }
   }
 
-  private performSearchAndUpdateResults() {
-    this.isLoading = true;
-    this.error = null;
+  dateRangeChange(event: DateRange) {
+    this.startDate.set(event.fromDate);
+    this.endDate.set(event.toDate);
+  }
 
-    this.performSearch(this.searchTerm, this.currentPage).subscribe({
-      next: (results) => {
-        this.searchResults = results;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.error = 'Search failed. Please try again.';
-        this.isLoading = false;
-        console.error('Search error:', err);
-      }
-    });
+  private performSearchAndUpdateResults() {
+    this.isLoading.set(true);
+    this.error.set(null);
+
+    this.performSearch(this.searchTerm(), this.currentPage())
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: (results) => {
+            this.searchResults.set(results);
+            this.isLoading.set(false);
+          },
+          error: (err) => {
+            this.error.set('Search failed. Please try again.');
+            this.isLoading.set(false);
+            console.error('Search error:', err);
+          }
+        });
   }
 
   private performSearch(term: string, page: number) {
     let params = new HttpParams()
       .set('q', term)
       .set('page', page.toString())
-      .set('size', this.pageSize.toString());
+      .set('size', this.pageSize().toString());
 
     // Add date parameters if provided
-    if (this.startDate) {
-      params = params.set('startDate', this.dateTimeService.mergeDateAndTime(this.startDate, {hour: 0, minute: 0} as Time));
+    const start = this.startDate();
+    const end = this.endDate();
+
+    if (start) {
+      params = params.set('startDate', this.dateTimeService.mergeDateAndTime(start, {hour: 0, minute: 0} as Time));
     }
-    if (this.endDate) {
-      params = params.set('endDate', this.dateTimeService.mergeDateAndTime(this.endDate, {hour: 23, minute: 59} as Time));
+    if (end) {
+      params = params.set('endDate', this.dateTimeService.mergeDateAndTime(end, {hour: 23, minute: 59} as Time));
     }
 
     return this.http.get<UnifiedSearchResponse>(this.apiUrl + '/service/undok/search', { params });
   }
 
-
-  dateRangeChange(event: DateRange) {
-    this.startDate = event.fromDate;
-    this.endDate = event.toDate;
-  }
-
   private updateUrl() {
     const queryParams: any = {
-      q: this.searchTerm,
-      page: this.currentPage,
-      size: this.pageSize
+      q: this.searchTerm(),
+      page: this.currentPage(),
+      size: this.pageSize()
     };
 
-    if (this.startDate) {
-      queryParams.start = this.dateTimeService.mergeDateAndTime(this.startDate, {hour: 0, minute: 0} as Time);
+    const start = this.startDate();
+    const end = this.endDate();
+
+    if (start) {
+      queryParams.start = this.dateTimeService.mergeDateAndTime(start, {hour: 0, minute: 0} as Time);
     }
-    if (this.endDate) {
-      queryParams.end = this.dateTimeService.mergeDateAndTime(this.endDate, {hour: 0, minute: 0} as Time);
+    if (end) {
+      queryParams.end = this.dateTimeService.mergeDateAndTime(end, {hour: 0, minute: 0} as Time);
     }
 
     this.router.navigate([], {

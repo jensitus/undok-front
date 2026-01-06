@@ -1,15 +1,13 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {CategoryTypes} from '../../model/category-types';
-import {Subscription} from 'rxjs';
-import {Category} from '../../model/category';
-import {CategoryService} from '../../service/category.service';
-import {CommonService} from '../../../common/services/common.service';
-import {Label} from '../../model/label';
-import {NgbCollapse} from '@ng-bootstrap/ng-bootstrap';
-import {FormsModule} from '@angular/forms';
-import {NgIf} from '@angular/common';
-import {AlertModule} from '../../../admin-template/layout/components/alert/alert.module';
-import {AlertService} from '../../../admin-template/layout/components/alert/services/alert.service';
+import { Component, input, output, inject, signal, computed } from '@angular/core';
+import { CategoryTypes } from '../../model/category-types';
+import { Category } from '../../model/category';
+import { CategoryService } from '../../service/category.service';
+import { CommonService } from '../../../common/services/common.service';
+import { Label } from '../../model/label';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
+import { AlertModule } from '../../../admin-template/layout/components/alert/alert.module';
+import { AlertService } from '../../../admin-template/layout/components/alert/services/alert.service';
 
 export enum Crud {
   CREATE,
@@ -25,64 +23,91 @@ export enum Crud {
   imports: [
     NgbCollapse,
     FormsModule,
-    NgIf,
     AlertModule
   ],
   styleUrls: ['./add-category.component.css']
 })
-export class AddCategoryComponent implements OnInit, OnDestroy {
+export class AddCategoryComponent {
+  // Services injected using inject()
+  private readonly categoryService = inject(CategoryService);
+  private readonly commonService = inject(CommonService);
+  private readonly alertService = inject(AlertService);
 
-  constructor(
-    private categoryService: CategoryService,
-    private commonService: CommonService,
-    private alertService: AlertService
-  ) {
-  }
+  // Signal-based inputs
+  readonly categoryType = input.required<CategoryTypes>();
+  readonly label = input<Label | undefined>(undefined);
+  readonly crud = input<Crud>(Crud.CREATE);
+  readonly stringLabel = input<string | undefined>(undefined);
 
-  @Input() categoryType: CategoryTypes;
-  @Input() label: Label;
-  @Input() crud: Crud | undefined;
-  @Input() stringLabel: string;
-  @Output() submitted = new EventEmitter<boolean>();
-  @Output() error = new EventEmitter<string>();
-  private subscription$: Subscription[] = [];
-  categoryExists: string = null;
-  categoryIsCollapsed = true;
-  newCategory: string = null;
+  // Signal-based outputs
+  readonly submitted = output<boolean>();
+  readonly error = output<string>();
 
+  // Component state as signals
+  readonly categoryExists = signal<string | null>(null);
+  readonly categoryIsCollapsed = signal(true);
+  readonly newCategory = signal<string>('');
+  readonly isSubmitting = signal(false);
+
+  // Computed signal to check if form is valid
+  readonly isFormValid = computed(() => {
+    const category = this.newCategory().trim();
+    return category.length > 0 && !this.isSubmitting();
+  });
+
+  // Computed signal for display label
+  readonly displayLabel = computed(() => {
+    const labelValue = this.label();
+    const stringLabelValue = this.stringLabel();
+
+    if (labelValue) {
+      return Label[labelValue];
+    } else if (stringLabelValue) {
+      return Label[stringLabelValue];
+    }
+    return '';
+  });
+
+  // Expose Label enum for template
   protected readonly Label = Label;
 
-  ngOnInit(): void {
-    if (this.crud === undefined) {
-      this.crud = Crud.CREATE;
-    }
-  }
+  addNewCategory(type: string): void {
+    const categoryName = this.newCategory().trim();
 
-  ngOnDestroy(): void {
-    this.subscription$.forEach((s) => {
-      s.unsubscribe();
+    if (!categoryName) {
+      return;
+    }
+
+    if (this.isSubmitting()) {
+      return; // Prevent double submission
+    }
+
+    const category: Category = {
+      name: categoryName,
+      type: type
+    };
+
+    this.isSubmitting.set(true);
+    this.categoryExists.set(null);
+
+    this.categoryService.addCategory(category).subscribe({
+      next: () => {
+        this.newCategory.set('');
+        this.categoryIsCollapsed.set(true);
+        this.commonService.setReloadSubject(true);
+        this.submitted.emit(true);
+        this.isSubmitting.set(false);
+      },
+      error: (err) => {
+        const errorMessage = err?.error?.text || 'Failed to add category';
+        this.categoryExists.set(errorMessage);
+        this.error.emit(errorMessage);
+        this.isSubmitting.set(false);
+      }
     });
   }
 
-  addNewCategory(type: string) {
-    let category: Category;
-    category = {
-      name: this.newCategory,
-      type: type
-    };
-    this.subscription$.push(
-      this.categoryService.addCategory(category).subscribe({
-        next: (r) => {
-          this.newCategory = null;
-          this.categoryIsCollapsed = true;
-          this.commonService.setReloadSubject(true);
-          this.submitted.emit(true);
-        },
-        error: (err) => {
-          this.categoryExists = err.error.text;
-          this.error.emit(err.error.text);
-        }
-      })
-    );
+  toggleCollapse(): void {
+    this.categoryIsCollapsed.update(collapsed => !collapsed);
   }
 }

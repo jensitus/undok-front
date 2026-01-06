@@ -1,10 +1,11 @@
-<app-page-header [firstPoint]="'dashboard'" [firstIcon]="'faTachometerAlt'" [firstLink]="'/dashboard'"
-                 [secondPoint]="'clients'" [secondIcon]="'faTachometerAlt'" [secondLink]="'/clients/client-list'"
-                 [thirdPoint]="'client'" [thirdIcon]="'faTachometerAlt'" [thirdLink]="'/clients/' + clientId"
+<app-page-header [firstPoint]="'dashboard'" [firstIcon]="faTachometerAlt" [firstLink]="'/dashboard'"
+                 [secondPoint]="'clients'" [secondIcon]="faTachometerAlt" [secondLink]="'/clients/client-list'"
+                 [thirdPoint]="'client'" [thirdIcon]="faTachometerAlt" [thirdLink]="'/clients/' + clientId"
                  [endPoint]="'counseling'">
 </app-page-header>
 
-<div class="row mt-3" *ngIf="counseling">
+@if (counseling) {
+<div class="row mt-3">
   <div class="col-md-10">
     <div class="row">
       <div class="col-md-12">
@@ -12,16 +13,19 @@
       </div>
     </div>
     <div class="row mt-2">
-      <div class="col-3" *ngIf="counseling">
+      @if (counseling) {
+      <div class="col-3">
         Keyword: <b><a [routerLink]="['/clients', counseling?.clientId]" [innerHTML]="counseling?.keyword"></a></b>
       </div>
+      }
       <div class="col-3">
         <span>Name: </span>
-        <b><span *ngIf="counseling" [innerHTML]="counseling?.clientFullName"></span></b>
+        <b>@if (counseling) {<span [innerHTML]="counseling?.clientFullName"></span>}</b>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-10 mt-3" *ngIf="!counseling.counselingDate && !editCounselingDate">
+      @if (!counseling.counselingDate && !editCounselingDate) {
+      <div class="col-md-10 mt-3">
         <div class="form-group">
           <label class="mb-3">Termin</label> &nbsp;
           @if (counselingDateRequired) {
@@ -50,7 +54,9 @@
           </div>
         </div>
       </div>
-      <div class="col-md-10" *ngIf="counseling.counselingDate && editCounselingDate">
+      }
+      @if (counseling.counselingDate && editCounselingDate) {
+      <div class="col-md-10">
         <div class="form-group">
           <label>Termin</label>
           <div class="row">
@@ -71,20 +77,26 @@
           </div>
         </div>
       </div>
-      <div class="col-md-2" *ngIf="!counseling.counselingDate && !editCounselingDate">
+      }
+      @if (!counseling.counselingDate && !editCounselingDate) {
+      <div class="col-md-2">
         <!-- div class="set-cursor-pointer" (click)="chooseEditConcern()">Close</div -->
         <div class="mt-2">
           <button class="btn btn-sm btn-success" (click)="update('concern')">update</button>
         </div>
       </div>
-      <div class="col-md-2" *ngIf="counseling.counselingDate && editCounselingDate">
+      }
+      @if (counseling.counselingDate && editCounselingDate) {
+      <div class="col-md-2">
         <!-- div class="set-cursor-pointer" (click)="chooseEditConcern()">Close</div -->
         <div class="mt-2">
           <button class="btn btn-sm btn-outline-success" (click)="update('concern')">update</button>
         </div>
       </div>
+      }
     </div>
-    <div class="row mt-4" *ngIf="counseling.counselingDate && !editCounselingDate">
+    @if (counseling.counselingDate && !editCounselingDate) {
+    <div class="row mt-4">
       <div class="col-md-10">
         <label class="text-secondary">Datum:</label>&nbsp;
         <b><span [innerHTML]="counseling?.counselingDate | date: 'dd.MM.yyyy HH:mm'"></span></b>
@@ -93,16 +105,24 @@
         <span class="set-cursor-pointer" (click)="chooseEditCounselingDate()">edit</span>
       </div>
     </div>
-    <div class="row mb-3 mt-4 fade-in" *ngIf="!editConcern">
+    }
+    @if (!editConcern) {
+    <div class="row mb-3 mt-4 fade-in">
       <div class="col-md-10">
         <label class="text-secondary">Anliegen:</label>
-        <div *ngIf="counseling.concern" [innerHTML]="counseling.concern | newLine"></div>
+        @if (counseling.concern) {
+          <div [innerHTML]="counseling.concern | newLine"></div>
+        }
       </div>
-      <div class="col-md-2" *ngIf="counseling.counselingDate">
-        <span class="set-cursor-pointer" (click)="chooseEditConcern()">edit</span>
-      </div>
+      @if (counseling.counselingDate) {
+        <div class="col-md-2">
+          <span class="set-cursor-pointer" (click)="chooseEditConcern()">edit</span>
+        </div>
+      }
     </div>
-    <div *ngIf="editConcern" class="row fade-in m-1 mb-4 mt-4">
+    }
+    @if (editConcern) {
+    <div class="row fade-in m-1 mb-4 mt-4">
       <div class="col-md-10">
         <div class="form-group">
           <label class="text-secondary">Anliegen:</label>
@@ -120,24 +140,30 @@
         </div>
       </div>
     </div>
+    }
 
     <!-- LEGAL CATEGORY   -->
-    <div class="row mt-4 fade-in" *ngIf="!editLegalCategory">
+    @if (!editLegalCategory) {
+    <div class="row mt-4 fade-in">
       <div class="col-md-10">
         <label class="text-secondary">Rechtsschutzkategorie:</label>&nbsp;
-        <span *ngFor="let legalCategory of counseling.legalCategory">
-          <span [innerHTML]="legalCategory.name"></span>&nbsp;
-        </span>
+        @for (legalCategory of counseling.legalCategory; track legalCategory) {
+          <span>
+            <span [innerHTML]="legalCategory.name"></span>&nbsp;
+          </span>
+        }
       </div>
-      <div class="col-md-2">
-        <div class="set-cursor-pointer"
-             (click)="addLegalCategory()"
-             *ngIf="counseling.counselingDate">
-          edit
+      @if (counseling.counselingDate) {
+        <div class="col-md-2">
+          <div class="set-cursor-pointer" (click)="addLegalCategory()">
+            edit
+          </div>
         </div>
-      </div>
+      }
     </div>
-    <div class="row mt-4 fade-in" *ngIf="editLegalCategory">
+    }
+    @if (editLegalCategory) {
+    <div class="row mt-4 fade-in">
       <div class="col">
         <app-multi [categoryType]="legalCategoryType"
                    [label]="legalLabel"
@@ -155,19 +181,22 @@
         </div>
       </div>
     </div>
-    <div class="mt-4 mb-3 row fade-in" *ngIf="!editActivity">
+    }
+    @if (!editActivity) {
+    <div class="mt-4 mb-3 row fade-in">
       <div class="col-md-10">
         <label class="text-secondary">Aktivität:</label>
-        <div *ngIf="counseling.activity" [innerHTML]="counseling.activity | newLine"></div>
+        @if (counseling.activity) {<div [innerHTML]="counseling.activity | newLine"></div>}
       </div>
-      <div class="col-md-2">
-        <span class="set-cursor-pointer"
-              (click)="chooseEditActivity()"
-              *ngIf="counseling.counselingDate">edit
-        </span>
-      </div>
+      @if (counseling.counselingDate) {
+        <div class="col-md-2">
+          <span class="set-cursor-pointer" (click)="chooseEditActivity()">edit</span>
+        </div>
+      }
     </div>
-    <div class="row mt-4 mb-3 fade-in" *ngIf="editActivity">
+    }
+    @if (editActivity) {
+    <div class="row mt-4 mb-3 fade-in">
       <div class="col-md-10">
         <div class="form-group">
           <label>Aktivität</label>
@@ -186,22 +215,28 @@
         </div>
       </div>
     </div>
+    }
 
     <!-- Activity Category-->
-    <div class="row mt-4 fade-in" *ngIf="!editActivityCategory">
+    @if (!editActivityCategory) {
+    <div class="row mt-4 fade-in">
       <div class="col-md-10">
         <label class="text-secondary">Aktivitätskategorie:</label>&nbsp;
-        <span *ngFor="let activityCategory of counseling.activityCategories">
-          <span [innerHTML]="activityCategory.name"></span>&nbsp;
-        </span>
+        @for (activityCategory of counseling.activityCategories; track activityCategory) {
+          <span>
+            <span [innerHTML]="activityCategory.name"></span>&nbsp;
+          </span>
+        }
       </div>
-      <div class="col-md-2">
-      <span class="set-cursor-pointer"
-            (click)="addActivityCategory()"
-            *ngIf="counseling.counselingDate">edit</span>
-      </div>
+      @if (counseling.counselingDate) {
+        <div class="col-md-2">
+          <span class="set-cursor-pointer" (click)="addActivityCategory()">edit</span>
+        </div>
+      }
     </div>
-    <div class="row mt-4 fade-in" *ngIf="editActivityCategory">
+    }
+    @if (editActivityCategory) {
+    <div class="row mt-4 fade-in">
       <div class="col-md-10">
         <app-multi [categoryType]="activityCategoryType"
                    [label]="activityLabel"
@@ -220,10 +255,12 @@
         </div>
       </div>
     </div>
+    }
 
     <!-- Required Time -->
 
-    <div class="row mt-4 fade-in" *ngIf="!editRequiredTime">
+    @if (!editRequiredTime) {
+    <div class="row mt-4 fade-in">
 
       <div class="col-md-4">
         <label class="text-secondary">Beratungsdauer:</label>&nbsp;
@@ -236,24 +273,27 @@
         <span class="set-cursor-pointer" (click)="chooseEditRequiredTime()">edit</span>
       </div>
     </div>
+    }
 
-    <div class="row mt-4 fade-in" *ngIf="editRequiredTime">
+    @if (editRequiredTime) {
+    <div class="row mt-4 fade-in">
       <div class="col-md-4">
         <label class="text-secondary">Beratungsdauer:</label>&nbsp;
         <span>{{ counselingDuration }}</span>
       </div>
-      <div class="col-md-2 fade-in" *ngIf="editRequiredTime">
+      <div class="col-md-2 fade-in">
         <input type="time"
                [(ngModel)]="counselingDuration"
                class="form-control-sm">
       </div>
-      <div class="col-md-4 fade-in" *ngIf="editRequiredTime">
+      <div class="col-md-4 fade-in">
         <button class="btn btn-sm btn-outline-secondary" (click)="saveRequiredTime()">save</button>
       </div>
       <div class="col-md-2">
         <span class="set-cursor-pointer" (click)="chooseEditRequiredTime()">close</span>
       </div>
     </div>
+    }
 
 
     <div class="mt-4">
@@ -268,20 +308,24 @@
 
     </div>
   </div>
-</div>
+  </div>
+}
 
-<ng-container *ngIf="counseling">
+@if (counseling) {
   <div class="row mt-5">
     <div class="col">
       <h5><b>Kommentar</b></h5>
     </div>
   </div>
-  <div class="row mt-3" *ngIf="counseling.comment != null">
+  @if (counseling.comment != null) {
+  <div class="row mt-3">
     <div class="col-md-6">
       {{ counseling.comment }}
     </div>
   </div>
-  <div *ngIf="counseling.comment === null" class="row mt-3 ml-2">
+  }
+  @if (counseling.comment === null) {
+  <div class="row mt-3 ml-2">
     <div class="col-md-2">
       <button class="btn btn-sm btn-outline-dark"
               (click)="openEditCounseling(edit_comment)">
@@ -289,7 +333,9 @@
       </button>
     </div>
   </div>
-  <div class="row mt-3" *ngIf="counseling.comment != null">
+  }
+  @if (counseling.comment != null) {
+  <div class="row mt-3">
     <div class="col">
       <button class="btn btn-sm btn-outline-dark" (click)="openEditCounseling(edit_comment)">edit comment</button>
       &nbsp;&nbsp;
@@ -297,7 +343,8 @@
                           [comment]="counseling.comment"></app-create-comment>
     </div>
   </div>
-</ng-container>
+  }
+}
 
 <!--<ng-template #edit_counseling let-modal>
   <div class="modal-header">
@@ -324,7 +371,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-create-comment [clientId]="counseling.id" [comment]="counseling.comment"></app-create-comment>
+    <app-create-comment [clientId]="counseling.id" [comment]="counseling.comment" (commentSaved)="closeCommentModal()"></app-create-comment>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">

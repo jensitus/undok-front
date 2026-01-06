@@ -1,16 +1,19 @@
-<ng-container *ngIf="!waitForCategories">
+@if (!waitForCategories()) {
+<ng-container>
   <ngb-progressbar type="success" [value]="25" [striped]="true"></ngb-progressbar>
 </ng-container>
-<ng-container *ngIf="waitForCategories">
-  <label>{{label}}</label>
-  <ng-multiselect-dropdown
-    (onDeSelect)="deSelect($event)"
-    [placeholder]="'select category'"
-    [settings]="dropdownSettings"
-    [data]="dropdownList"
-    [(ngModel)]="selectedItems"
-    (onSelect)="onItemSelect($event)"
-    (onSelectAll)="onSelectAll($event)">
-  </ng-multiselect-dropdown>
-<app-add-category [categoryType]="categoryType" [label]="label"></app-add-category>
-</ng-container>
+} @else {
+  <ng-container>
+    <label>{{label()}}</label>
+    <ng-multiselect-dropdown
+      (onDeSelect)="deSelect($event)"
+      [placeholder]="'select category'"
+      [settings]="dropdownSettings"
+      [data]="dropdownList()"
+      [(ngModel)]="selectedItems"
+      (onSelect)="onItemSelect($event)"
+      (onSelectAll)="onSelectAll($event)">
+    </ng-multiselect-dropdown>
+    <app-add-category [categoryType]="categoryType()" [label]="label()"></app-add-category>
+  </ng-container>
+}

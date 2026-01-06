@@ -1,34 +1,34 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subject, Subscription} from 'rxjs';
-import {AlertService} from './services/alert.service';
-import {takeUntil} from 'rxjs/operators';
+import { Component, signal, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AlertService } from './services/alert.service';
 
 @Component({
-   selector: 'app-alert',
-   templateUrl: './alert.component.html',
-   styleUrls: ['./alert.component.css']
+  selector: 'app-alert',
+  standalone: true,
+  templateUrl: './alert.component.html',
+  styleUrls: ['./alert.component.css']
 })
-export class AlertComponent implements OnInit, OnDestroy {
-  private subscription$ = new Subject<any>();
-  message: any;
-  messagetype: string;
+export class AlertComponent {
+  // Inject service
+  private readonly alertService = inject(AlertService);
 
-   constructor(
-     private alertService: AlertService
-   ) {
-   }
+  // Signals for state
+  message = signal<any>(null);
+  messagetype = signal<string>('');
 
-   ngOnInit() {
-    this.alertService.getMessage().pipe(takeUntil(this.subscription$)).subscribe(message => {
-      this.message = message;
-      this.messagetype = this.message.type;
-    }, error => {
-      console.log('error Alert', alert);
-    });
-   }
-
-   ngOnDestroy() {
-     this.subscription$.next(true);
-   }
-
+  constructor() {
+    // Set up alert message subscription
+    this.alertService
+        .getMessage()
+        .pipe(takeUntilDestroyed())
+        .subscribe({
+          next: (message) => {
+            this.message.set(message);
+            this.messagetype.set(message?.type || '');
+          },
+          error: (error) => {
+            console.error('error Alert', error);
+          }
+        });
+  }
 }
