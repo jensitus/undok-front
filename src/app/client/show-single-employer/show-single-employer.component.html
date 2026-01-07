@@ -1,6 +1,17 @@
 <app-alert></app-alert>
-
 <div class="container">
+  @if (successMessage()) {
+    <div class="row">
+      <div class="alert alert-success alert-dismissible fade show col-md-4" role="alert">
+        {{ successMessage() }}
+        <button type="button"
+                class="btn-close"
+                (click)="successMessage.set(null)"
+                aria-label="Close">
+        </button>
+      </div>
+    </div>
+  }
   @if (loading()) {
     <div class="text-center py-5">
       <div class="spinner-border" role="status">
@@ -90,15 +101,13 @@
 
     <div class="row mt-5">
       <div class="col-md-4">
-        <button
-          class="btn btn-sm btn-outline-primary"
-          (click)="openEditEmployer(content_edit_employer)">
+        <button class="btn btn-sm btn-outline-primary"
+                (click)="openEditEmployer(content_edit_employer)">
           edit
         </button>
         &nbsp;&nbsp;
-        <app-delete
-          [type]="deleteTypeEmployer"
-          [id_to_delete]="employer()!.id">
+        <app-delete [type]="deleteTypeEmployer"
+                    [id_to_delete]="employer()!.id">
         </app-delete>
       </div>
     </div>
@@ -108,11 +117,10 @@
 <ng-template #content_edit_employer let-modal>
   <div class="modal-header">
     <h4 class="modal-title">edit employer</h4>
-    <button
-      type="button"
-      class="close"
-      aria-label="Close"
-      (click)="modal.dismiss('Cross click')">
+    <button type="button"
+            class="close"
+            aria-label="Close"
+            (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -122,10 +130,9 @@
     }
   </div>
   <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-lg btn-outline-danger"
-      (click)="modal.close('Save click')">
+    <button type="button"
+            class="btn btn-lg btn-outline-danger"
+            (click)="modal.close('Save click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
