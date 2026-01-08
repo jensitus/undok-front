@@ -85,6 +85,9 @@ export class ShowClientEmployersComponent {
       next: () => {
         this.commonService.setEmployerSubject(true);
         this.modalService.dismissAll();
+        setTimeout(() => {
+          this.commonService.setEmployerSubject(false);
+        }, 100);
       },
       error: (err) => {
         this.error.set('Failed to delete employer');
