@@ -78,10 +78,10 @@ export class ShowClientEmployersComponent {
     });
   }
 
-  deleteEmployerFromClient(employerId: string): void {
+  deleteEmployerFromClient(clientEmployerId: string): void {
     const clientId = this.clientId();
 
-    this.employerService.deleteEmployerFromClient(employerId, clientId).subscribe({
+    this.employerService.deleteEmployerFromClient(clientEmployerId, clientId).subscribe({
       next: () => {
         this.commonService.setEmployerSubject(true);
         this.modalService.dismissAll();
@@ -128,8 +128,8 @@ export class ShowClientEmployersComponent {
     );
   }
 
-  yes(employerId: string): void {
-    this.deleteEmployerFromClient(employerId);
+  yes(clientEmployerId: string): void {
+    this.deleteEmployerFromClient(clientEmployerId);
   }
 
   no(): void {
