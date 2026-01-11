@@ -51,9 +51,9 @@ export class EmployerService {
     );
   }
 
-  deleteEmployerFromClient(employerId: string, clientId: string): Observable<any> {
+  deleteEmployerFromClient(clientEmployerId: string, clientId: string): Observable<any> {
     return this.http.delete(
-      `${this.apiUrl}/service/undok/client/employers/${employerId}/client/${clientId}/delete`
+      `${this.apiUrl}/service/undok/client/employers/${clientEmployerId}/client/${clientId}/delete`
     );
   }
 

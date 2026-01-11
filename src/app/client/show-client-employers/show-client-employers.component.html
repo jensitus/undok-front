@@ -21,12 +21,11 @@
             <b class="text-primary mr-3">Job</b>
           </div>
           <div class="col text-right">
-            <button
-              type="button"
-              class="btn btn-sm btn-link"
-              (click)="collapse.toggle()"
-              [attr.aria-expanded]="!isCollapsed()"
-              aria-controls="collapseExample">
+            <button type="button"
+                    class="btn btn-sm btn-link"
+                    (click)="collapse.toggle()"
+                    [attr.aria-expanded]="!isCollapsed()"
+                    aria-controls="collapseExample">
               Adresse
             </button>
           </div>
@@ -68,7 +67,7 @@
               <div class="col">
                 <span class="text-secondary">Straße:</span>
                 @if (e.employer.person.address.street) {
-                  <span>{{ e.employer.person.address.street }}</span>
+                  <span> {{ e.employer.person.address.street }}</span>
                 }
               </div>
             </div>
@@ -76,10 +75,10 @@
               <div class="col">
                 <span class="text-secondary">Ort:</span>
                 @if (e.employer.person.address.zipCode) {
-                  <span>{{ e.employer.person.address.zipCode }}</span>
+                  <span> {{ e.employer.person.address.zipCode }}</span>
                 }
                 @if (e.employer.person.address.city) {
-                  <span>{{ e.employer.person.address.city }}</span>
+                  <span> {{ e.employer.person.address.city }}</span>
                 }
               </div>
             </div>
@@ -87,7 +86,7 @@
               <div class="col">
                 <span class="text-secondary">Land:</span>
                 @if (e.employer.person.address.country) {
-                  <span>{{ e.employer.person.address.country }}</span>
+                  <span> {{ e.employer.person.address.country }}</span>
                 }
               </div>
             </div>
@@ -104,7 +103,7 @@
           <div class="col">
             <span class="text-secondary">bis:</span>
             @if (e.until) {
-              <span>{{ e.until | date: 'dd.MM.yyyy' }}</span>
+              <span> {{ e.until | date: 'dd.MM.yyyy' }}</span>
             }
           </div>
         </div>
@@ -160,7 +159,7 @@
         <span class="text-right">
           <button
             type="button"
-            (click)="yes(e.employer.id)"
+            (click)="yes(e.id)"
             class="btn btn-sm btn-outline-success">
             yes
           </button>

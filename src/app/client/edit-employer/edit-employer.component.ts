@@ -1,46 +1,69 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Employer} from '../model/employer';
-import {EmployerService} from '../service/employer.service';
-import {Subscription} from 'rxjs';
-import {CommonService} from '../../common/services/common.service';
-import {FormsModule} from '@angular/forms';
+import { Component, input, inject, signal, effect } from '@angular/core';
+import { Employer } from '../model/employer';
+import { EmployerService } from '../service/employer.service';
+import { CommonService } from '../../common/services/common.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-employer',
+  standalone: true,
   templateUrl: './edit-employer.component.html',
-  imports: [
-    FormsModule
-  ],
+  imports: [FormsModule],
   styleUrls: ['./edit-employer.component.css']
 })
-export class EditEmployerComponent implements OnInit, OnDestroy {
+export class EditEmployerComponent {
+  // Services injected using inject()
+  private readonly employerService = inject(EmployerService);
+  private readonly commonService = inject(CommonService);
 
-  @Input() employer: Employer;
-  loading = false;
-  private subscription$: Subscription[] = [];
+  // Signal-based input
+  readonly initialEmployer = input.required<Employer>({ alias: 'employer' });
 
-  constructor(
-    private employerService: EmployerService,
-    private commonService: CommonService
-  ) { }
+  // Component state as signals
+  readonly employer = signal<Employer | null>(null);
+  readonly loading = signal(false);
+  readonly error = signal<string | null>(null);
 
-  ngOnInit(): void {
+  constructor() {
+    // Sync employer signal with input changes
+    effect(() => {
+      const initial = this.initialEmployer();
+      if (initial) {
+        // Create a deep copy to avoid mutating the input
+        this.employer.set(JSON.parse(JSON.stringify(initial)));
+      }
+    });
   }
 
   updateEmployer(): void {
-    console.log(this.employer);
-    this.subscription$.push(this.employerService.updateEmployer(this.employer.id, this.employer).subscribe(result => {
-      console.log(result);
-      this.commonService.setCreateEmployerSubject(true);
-    }));
-  }
+    const employerData = this.employer();
 
-  ngOnDestroy(): void {
-    if (this.subscription$) {
-      this.subscription$.forEach(s => {
-        s.unsubscribe();
-      });
+    if (!employerData) {
+      this.error.set('No employer data available');
+      return;
     }
-  }
 
+    if (this.loading()) {
+      return; // Prevent double submission
+    }
+
+    this.loading.set(true);
+    this.error.set(null);
+
+    this.employerService.updateEmployer(employerData.id, employerData).subscribe({
+      next: (result) => {
+        this.commonService.setCreateEmployerSubject(true);
+        setTimeout(() => {
+          this.commonService.setCreateEmployerSubject(false);
+        }, 100);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        const errorMessage = err?.error?.message || 'Failed to update employer';
+        this.error.set(errorMessage);
+        this.loading.set(false);
+        console.error('Error updating employer:', err);
+      }
+    });
+  }
 }

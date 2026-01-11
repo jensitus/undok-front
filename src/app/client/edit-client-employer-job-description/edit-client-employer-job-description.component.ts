@@ -1,45 +1,48 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Employer} from '../model/employer';
-import {ClientEmployerJobDescription} from '../model/client-employer-job-description';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {ClientEmployerForm} from '../model/client-employer-form';
-import {EmployerService} from '../service/employer.service';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {CommonService} from '../../common/services/common.service';
-import {FormsModule} from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { ClientEmployerJobDescription } from '../model/client-employer-job-description';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ClientEmployerForm } from '../model/client-employer-form';
+import { EmployerService } from '../service/employer.service';
+import { CommonService } from '../../common/services/common.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-client-employer-job-description',
+  standalone: true,
   templateUrl: './edit-client-employer-job-description.component.html',
-  imports: [
-    FormsModule
-  ],
+  imports: [FormsModule],
   styleUrls: ['./edit-client-employer-job-description.component.css']
 })
-export class EditClientEmployerJobDescriptionComponent implements OnInit, OnDestroy {
+export class EditClientEmployerJobDescriptionComponent {
+  // Services injected using inject()
+  readonly activeModal = inject(NgbActiveModal);
+  private readonly employerService = inject(EmployerService);
+  private readonly commonService = inject(CommonService);
 
-  @Input() clientEmployerJobDescription: ClientEmployerJobDescription;
-  @Input() clientId: string;
-  private clientEmployerForm: ClientEmployerForm;
-  private unsubscribe$ = new Subject();
+  // Public properties that parent can set via componentInstance
+  // These are set by the parent when opening the modal
+  clientEmployerJobDescription!: ClientEmployerJobDescription;
+  clientId!: string;
 
-  constructor(
-    public activeModal: NgbActiveModal,
-    private employerService: EmployerService,
-    private commonService: CommonService
-  ) {
-  }
+  // Component state as signals
+  readonly loading = signal(false);
+  readonly error = signal<string | null>(null);
 
-  ngOnInit(): void {
-  }
+  submit(): void {
+    if (!this.clientEmployerJobDescription) {
+      this.error.set('No job description data available');
+      return;
+    }
 
-  ngOnDestroy(): void {
-    this.unsubscribe$.next(true);
-  }
+    if (this.loading()) {
+      return; // Prevent double submission
+    }
 
-  submit() {
-    this.clientEmployerForm = {
+    this.loading.set(true);
+    this.error.set(null);
+
+    const clientEmployerForm: ClientEmployerForm = {
+      id: this.clientEmployerJobDescription.id,
       clientId: this.clientId,
       from: this.clientEmployerJobDescription.from,
       industry: this.clientEmployerJobDescription.industry,
@@ -49,11 +52,27 @@ export class EditClientEmployerJobDescriptionComponent implements OnInit, OnDest
       until: this.clientEmployerJobDescription.until,
       employerId: this.clientEmployerJobDescription.employer.id
     };
-    this.employerService.updateClientEmployer(this.clientEmployerForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      if (result === true) {
-        this.commonService.setReloadSubject(true);
+
+    this.employerService.updateClientEmployer(clientEmployerForm).subscribe({
+      next: (result) => {
+        if (result === true) {
+          this.commonService.setEmployerSubject(true);
+        }
+
+        // Reset to false after a brief delay so next update triggers the effect again
+        setTimeout(() => {
+          this.commonService.setEmployerSubject(false);
+        }, 100);
+
+        this.loading.set(false);
+        // Modal will be closed by parent component watching the employer subject
+      },
+      error: (err) => {
+        const errorMessage = err?.error?.message || 'Failed to update employer job description';
+        this.error.set(errorMessage);
+        this.loading.set(false);
+        console.error('Error updating client employer:', err);
       }
     });
   }
-
 }

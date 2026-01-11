@@ -43,6 +43,7 @@ export class ShowSingleEmployerComponent {
   readonly employer = signal<Employer | null>(null);
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
+  readonly successMessage = signal<string | null>(null);
 
   // Constants
   readonly deleteTypeEmployer: DeleteTypes = DeleteTypes.EMPLOYER;
@@ -71,6 +72,11 @@ export class ShowSingleEmployerComponent {
           untracked(() => {
             this.loadEmployer(currentId);
             this.modalService.dismissAll();
+            this.successMessage.set('Employer updated successfully');
+            // Auto-hide success message after 5 seconds
+            setTimeout(() => {
+              this.successMessage.set(null);
+            }, 5000);
           });
         }
       }
