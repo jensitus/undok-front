@@ -32,8 +32,8 @@ export class ShowClientEmployersComponent {
   readonly error = signal<string | null>(null);
   readonly isCollapsed = signal(true);
 
-  // Convert employer subject observable to signal
-  private readonly employerSubjectSignal = toSignal(this.commonService.employerSubject);
+  // Use employer signal directly from common service
+  private readonly employerSignal = this.commonService.employer;
 
   constructor() {
     // Load employers when clientId is available or changes
@@ -48,7 +48,7 @@ export class ShowClientEmployersComponent {
 
     // Watch for employer updates from common service
     effect(() => {
-      const reload = this.employerSubjectSignal();
+      const reload = this.employerSignal();
       if (reload === true) {
         const id = this.clientId();
         if (id) {
@@ -83,10 +83,10 @@ export class ShowClientEmployersComponent {
 
     this.employerService.deleteEmployerFromClient(clientEmployerId, clientId).subscribe({
       next: () => {
-        this.commonService.setEmployerSubject(true);
+        this.commonService.setEmployer(true);
         this.modalService.dismissAll();
         setTimeout(() => {
-          this.commonService.setEmployerSubject(false);
+          this.commonService.setEmployer(false);
         }, 100);
       },
       error: (err) => {

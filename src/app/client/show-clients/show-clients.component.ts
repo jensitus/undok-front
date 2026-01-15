@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {ChangeDetectorRef, Component, effect, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ClientService} from '../service/client.service';
 import {Observable, Subject} from 'rxjs';
 import {faTachometerAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
@@ -102,7 +102,9 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   }
 
   getAlertSubject() {
-    this.commonService.alertSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+    // Use effect to watch for alert signal changes
+    effect(() => {
+      const result = this.commonService.alert();
       this.successMessage = result;
       if (result) {
         this.showAlert();

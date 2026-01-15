@@ -52,9 +52,9 @@ export class EditEmployerComponent {
 
     this.employerService.updateEmployer(employerData.id, employerData).subscribe({
       next: (result) => {
-        this.commonService.setCreateEmployerSubject(true);
+        this.commonService.setCreateEmployer(true);
         setTimeout(() => {
-          this.commonService.setCreateEmployerSubject(false);
+          this.commonService.setCreateEmployer(false);
         }, 100);
         this.loading.set(false);
       },

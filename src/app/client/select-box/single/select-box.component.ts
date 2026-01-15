@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, effect, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Category} from '../../model/category';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {Subscription} from 'rxjs';
@@ -57,13 +57,12 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
   }
 
   getReloadSubject() {
-    this.subscription$.push(
-      this.commonService.reloadSubject.subscribe(reload => {
-        if (reload === true) {
-          this.loadCategoriesByCategoryType();
-        }
-      })
-    );
+    // Use effect to watch for reload signal changes
+    effect(() => {
+      if (this.commonService.reload()) {
+        this.loadCategoriesByCategoryType();
+      }
+    });
   }
 
   onCategoryValueChange(): void {

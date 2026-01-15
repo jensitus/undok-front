@@ -45,8 +45,8 @@ export class DeleteComponent implements OnInit, OnDestroy {
     switch (this.type) {
       case DeleteTypes.CLIENT:
         this.deleteService.deleteClient(this.id_to_delete).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-          this.commonService.setAlertSubject('Client successfully deleted');
-          this.commonService.setReloadSubject(true);
+          this.commonService.setAlert('Client successfully deleted');
+          this.commonService.setReload(true);
           this.router.navigate(['/clients/client-list']);
         }, error => {
           this.alertService.error('Sorry but something went wrong');
@@ -54,7 +54,7 @@ export class DeleteComponent implements OnInit, OnDestroy {
         break;
       case DeleteTypes.EMPLOYER:
         this.deleteService.deleteEmployer(this.id_to_delete).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-          this.commonService.setAlertSubject('Employer successfully deleted');
+          this.commonService.setAlert('Employer successfully deleted');
           this.router.navigate(['/clients/employers']);
         }, error => {
           this.alertService.error(error.error.text);
@@ -62,7 +62,7 @@ export class DeleteComponent implements OnInit, OnDestroy {
         break;
       case DeleteTypes.COUNSELING:
         this.deleteService.deleteEmployer(this.id_to_delete).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-          this.commonService.setDeleteSubject(true);
+          this.commonService.setDelete(true);
         });
         break;
       default:

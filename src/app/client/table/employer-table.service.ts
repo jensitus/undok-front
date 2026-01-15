@@ -1,4 +1,4 @@
-import {Injectable, OnDestroy, PipeTransform} from '@angular/core';
+import {effect, Injectable, OnDestroy, PipeTransform} from '@angular/core';
 import {SortColumn, SortDirection} from './sortable.directive';
 import {Employer} from '../model/employer';
 import {BehaviorSubject, Observable, of, Subject, Subscription} from 'rxjs';
@@ -142,11 +142,12 @@ export class EmployerTableService implements OnDestroy {
   }
 
   getCreateEmployerSubject() {
-    this.subscription$.push(this.commonService.createEmployerSubject.subscribe(reload => {
-      if (reload === true) {
+    // Use effect to watch for createEmployer signal changes
+    effect(() => {
+      if (this.commonService.createEmployer()) {
         this.constructEmployersObs();
       }
-    }));
+    });
   }
 
 }

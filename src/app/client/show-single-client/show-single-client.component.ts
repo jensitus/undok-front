@@ -1,4 +1,16 @@
-import { Component, signal, inject, computed, viewChild, TemplateRef, ElementRef, effect, ChangeDetectorRef, NgZone } from '@angular/core';
+import {
+  Component,
+  signal,
+  inject,
+  computed,
+  viewChild,
+  TemplateRef,
+  ElementRef,
+  effect,
+  ChangeDetectorRef,
+  NgZone,
+  OnDestroy
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
@@ -53,7 +65,7 @@ import { faEdit, faTachometerAlt, faTasks, faUser, faUsers } from '@fortawesome/
   ],
   styleUrls: ['./show-single-client.component.css']
 })
-export class ShowSingleClientComponent {
+export class ShowSingleClientComponent implements OnDestroy {
   // Inject services
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly clientService = inject(ClientService);
@@ -124,7 +136,7 @@ export class ShowSingleClientComponent {
 
   constructor() {
     // Initialize component
-    this.sidebarService.setClientButtonSubject(true);
+    this.sidebarService.setClientButtons(true);
 
     // Set up route parameter subscription
     this.activatedRoute.params
@@ -140,96 +152,72 @@ export class ShowSingleClientComponent {
     // Cleanup effect
     effect(() => {
       return () => {
-        this.sidebarService.setClientButtonSubject(false);
+        this.sidebarService.setClientButtons(false);
       };
     }, { allowSignalWrites: false });
   }
 
   private setupSubscriptions(): void {
-    // Demo subject
-    this.commonService.demoSubject
-        .pipe(takeUntilDestroyed())
-        .subscribe({
-          next: (reload) => {
-            if (reload === true) {
-              this.getClient();
-              this.modalService.dismissAll();
-            }
-          }
-        });
+    // Demo signal watcher
+    effect(() => {
+      if (this.commonService.demo() === true) {
+        this.getClient();
+        this.modalService.dismissAll();
+      }
+    });
 
-    // Reload subject
-    this.commonService.reloadSubject
-        .pipe(takeUntilDestroyed())
-        .subscribe({
-          next: (reload) => {
-            if (reload === true) {
-              this.getClient();
-              this.modalService.dismissAll();
-            }
-          }
-        });
+    // Reload signal watcher
+    effect(() => {
+      if (this.commonService.reload() === true) {
+        this.getClient();
+        this.modalService.dismissAll();
+      }
+    });
 
-    // New counseling subject
-    this.sidebarService.newCounselingSubject
-        .pipe(takeUntilDestroyed())
-        .subscribe({
-          next: (newCounseling) => {
-            if (newCounseling === true) {
-              const content = this.contentCreateCounseling();
-              if (content) {
-                this.openNewCounseling(content);
-              }
-            }
-          }
-        });
+    // New counseling signal watcher
+    effect(() => {
+      if (this.sidebarService.newCounseling() === true) {
+        const content = this.contentCreateCounseling();
+        if (content) {
+          this.openNewCounseling(content);
+        }
+      }
+    });
 
-    // New employer subject
-    this.sidebarService.newEmployerSubject
-        .pipe(takeUntilDestroyed())
-        .subscribe({
-          next: (newEmployer) => {
-            if (newEmployer === true) {
-              const employer = this.createEmployer();
-              if (employer) {
-                this.openEmployer(employer);
-              }
-            }
-          }
-        });
+    // New employer signal watcher
+    effect(() => {
+      if (this.sidebarService.newEmployer() === true) {
+        const employer = this.createEmployer();
+        if (employer) {
+          this.openEmployer(employer);
+        }
+      }
+    });
 
-    // Assign employer subject
-    this.sidebarService.assignEmployerSubject
-        .pipe(takeUntilDestroyed())
-        .subscribe({
-          next: (assignEmployer) => {
-            if (assignEmployer === true) {
-              const employer = this.assignEmployer();
-              if (employer) {
-                this.openEmployer(employer);
-              }
-            }
-          }
-        });
+    // Assign employer signal watcher
+    effect(() => {
+      if (this.sidebarService.assignEmployer() === true) {
+        const employer = this.assignEmployer();
+        if (employer) {
+          this.openEmployer(employer);
+        }
+      }
+    });
 
-    // Edit client subject
-    this.sidebarService.editClientSubject
-        .pipe(takeUntilDestroyed())
-        .subscribe({
-          next: (editClient) => {
-            if (editClient) {
-              const c = this.client();
-              if (c) {
-                this.router.navigate([`clients/${c.id}/edit`]);
-              }
-            }
-          }
-        });
+    // Edit client signal watcher
+    effect(() => {
+      if (this.sidebarService.editClient()) {
+        const c = this.client();
+        if (c) {
+          this.router.navigate([`clients/${c.id}/edit`]);
+        }
+      }
+    });
   }
 
   getClient(): void {
     const clientId = this.id();
-    if (!clientId) return;
+    if (!clientId) { return; }
 
     this.clientService
         .getSingleClient(clientId)
@@ -243,7 +231,7 @@ export class ShowSingleClientComponent {
               this.alert.set(res.alert === true);
               console.log('alert after assignment:', this.alert());
 
-              this.sidebarService.setClientIdForCreateCounselingSubject(res.id);
+              this.sidebarService.setClientIdForCreateCounseling(res.id);
               this.getTotalCounselingDuration();
               this.cdr.detectChanges();
             });
@@ -274,7 +262,7 @@ export class ShowSingleClientComponent {
   }
 
   openEmployer(content: ElementRef | undefined): void {
-    if (!content) return;
+    if (!content) { return; }
 
     this.modalService
         .open(content, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
@@ -306,7 +294,7 @@ export class ShowSingleClientComponent {
   }
 
   openNewCounseling(content_create_counseling: ElementRef | undefined): void {
-    if (!content_create_counseling) return;
+    if (!content_create_counseling) { return; }
 
     this.modalService
         .open(content_create_counseling, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
@@ -342,5 +330,10 @@ export class ShowSingleClientComponent {
 
   close(): void {
     this.alert.update(current => !current);
+  }
+
+  ngOnDestroy(): void {
+    this.sidebarService.setClientButtons(false);
+    this.sidebarService.setClientIdForCreateCounseling(null);
   }
 }

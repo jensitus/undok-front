@@ -1,68 +1,53 @@
-import { Injectable } from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import { Injectable, signal, Signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SidebarService {
+  // Modern signal-based state management
+  private readonly _clientButtons = signal<boolean>(false);
+  private readonly _newCounseling = signal<boolean>(false);
+  private readonly _clientIdForCreateCounseling = signal<string | null>(null);
+  private readonly _newEmployer = signal<boolean>(false);
+  private readonly _assignEmployer = signal<boolean>(false);
+  private readonly _editClient = signal<boolean>(false);
+  private readonly _createEmployerButton = signal<boolean>(false);
 
-  constructor() { }
+  // Public readonly signals
+  readonly clientButtons: Signal<boolean> = this._clientButtons.asReadonly();
+  readonly newCounseling: Signal<boolean> = this._newCounseling.asReadonly();
+  readonly clientIdForCreateCounseling: Signal<string | null> = this._clientIdForCreateCounseling.asReadonly();
+  readonly newEmployer: Signal<boolean> = this._newEmployer.asReadonly();
+  readonly assignEmployer: Signal<boolean> = this._assignEmployer.asReadonly();
+  readonly editClient: Signal<boolean> = this._editClient.asReadonly();
+  readonly createEmployerButton: Signal<boolean> = this._createEmployerButton.asReadonly();
 
-  public clientButtonSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-  public newCounselingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-  public clientIdForCreateCounselingSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-  public newEmployerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-  public assignEmployerSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-  public editClientSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-  public createEmployerButtonSubject: BehaviorSubject<boolean>  = new BehaviorSubject<boolean>(null);
-
-  setClientButtonSubject(value) {
-    if (value) {
-      this.clientButtonSubject.next(value);
-    } else {
-      this.clientButtonSubject.next(null);
-    }
+  // Setter methods for state updates
+  setClientButtons(value: boolean): void {
+    this._clientButtons.set(!!value);
   }
 
-  setClientIdForCreateCounselingSubject(value) {
-    if (value) {
-      this.clientIdForCreateCounselingSubject.next(value);
-    } else {
-      this.clientIdForCreateCounselingSubject.next(null);
-    }
+  setClientIdForCreateCounseling(value: string | null): void {
+    this._clientIdForCreateCounseling.set(value);
   }
 
-  setNewCounselingSubject(value) {
-    console.log('value', value);
-    if (value) {
-      this.newCounselingSubject.next(value);
-    } else {
-      this.newCounselingSubject.next(null);
-    }
+  // setNewCounseling(value: boolean): void {
+  //   this._newCounseling.set(!!value);
+  // }
+  //
+  // setNewEmployer(value: boolean): void {
+  //   this._newEmployer.set(!!value);
+  // }
+
+  setAssignEmployer(value: boolean): void {
+    this._assignEmployer.set(!!value);
   }
 
-  setNewEmployerSubject(value) {
-    if (value) {
-      this.newEmployerSubject.next(value);
-    } else {
-      this.newEmployerSubject.next(null);
-    }
-  }
+  // setEditClient(value: boolean): void {
+  //   this._editClient.set(!!value);
+  // }
 
-  setAssignEmployerSubject(value) {
-    if (value) {
-      this.assignEmployerSubject.next(value);
-    } else {
-      this.assignEmployerSubject.next(null);
-    }
+  setCreateEmployerButton(value: boolean): void {
+    this._createEmployerButton.set(!!value);
   }
-
-  setCreateEmployerButtonSubject(value) {
-    if (value) {
-      this.createEmployerButtonSubject.next(value);
-    } else {
-      this.createEmployerButtonSubject.next(null);
-    }
-  }
-
 }

@@ -1,4 +1,4 @@
-import {Injectable, OnDestroy, PipeTransform} from '@angular/core';
+import {effect, Injectable, OnDestroy, PipeTransform} from '@angular/core';
 import {SortColumn, SortDirection} from './sortable.directive';
 import {BehaviorSubject, Observable, of, Subject, Subscription} from 'rxjs';
 import {State} from './state';
@@ -182,8 +182,9 @@ export class ClientTableService implements OnDestroy {
   }
 
   getDeleteClientSubject() {
-    this.commonService.reloadSubject.subscribe(relClSub => {
-      if (relClSub) {
+    // Use effect to watch for reload signal changes
+    effect(() => {
+      if (this.commonService.reload()) {
         this.getClientsConstructor();
       }
     });

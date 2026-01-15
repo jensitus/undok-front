@@ -1,10 +1,10 @@
-<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive(), collapsed: collapsed()}">
 
   <div class="list-group mt-5">
-    <a [routerLink]="['/users', currentUser.username]" [routerLinkActive]="['router-link-active']"
+    <a [routerLink]="['/users', currentUser().username]" [routerLinkActive]="['router-link-active']"
        class="list-group-item">
       <fa-icon class="text-secondary" [icon]="faUser"></fa-icon>&nbsp;
-      <span>{{ currentUser.username }}</span>
+      <span>{{ currentUser().username }}</span>
     </a>
     <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <fa-icon class="text-secondary" [icon]="faTachometerAlt"></fa-icon>&nbsp;
@@ -14,7 +14,7 @@
       <fa-icon class="text-info" [icon]="faBars"></fa-icon>&nbsp;
       <span>{{ 'Charts' }}</span>
     </a>-->
-    @if (currentUser.admin) {
+    @if (currentUser().admin) {
       <a [routerLink]="['/list-users']" [routerLinkActive]="['router-link-active']"
          class="list-group-item">
         <fa-icon class="text-secondary" [icon]="faCampground"></fa-icon>&nbsp;
@@ -22,7 +22,7 @@
       </a>
     }
 
-    @if (currentUser.admin) {
+    @if (currentUser().admin) {
       <a [routerLink]="['/clients/csv-download-list']" [routerLinkActive]="['router-link-active']"
          class="list-group-item">
         <fa-icon class="text-secondary" [icon]="faSave"></fa-icon>&nbsp;
@@ -30,7 +30,7 @@
       </a>
     }
 
-    @if (currentUser.admin) {
+    @if (currentUser().admin) {
       <a [routerLink]="['/clients/edit-categories']" [routerLinkActive]="['router-link-active']"
          class="list-group-item">
         <fa-icon class="text-primary" [icon]="faEarListen"></fa-icon>&nbsp;
@@ -58,10 +58,17 @@
       <span>{{ 'Reports' }}</span>
     </a>
 
-    @if (showClientButtons) {
+    @if (showClientButtons()) {
       <a class="list-group-item" (click)="assignEmployer()">
         <fa-icon class="text-primary" [icon]="faSurprise"></fa-icon>&nbsp;
         <span>{{ 'arbeitgeber:in zuweisen' }}</span>
+      </a>
+    }
+
+    @if (clientId()) {
+      <a class="list-group-item" [routerLink]="['/clients/' + clientId() + '/create-counseling']">
+        <fa-icon class="text-secondary" [icon]="faTasks"></fa-icon>&nbsp;
+        <span>{{ 'neue beratung' }}</span>
       </a>
     }
 
@@ -71,11 +78,11 @@
       </a>
     </div>
   </div>
-  <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">
-    <i class="fa fa-fw fa-angle-double-{{collapsed?'right':'left'}}"></i>&nbsp;
-    @if (!collapsed) {
+  <div class="toggle-button" [ngClass]="{collapsed: collapsed()}" (click)="toggleCollapsed()">
+    <i class="fa fa-fw fa-angle-double-{{collapsed()?'right':'left'}}"></i>&nbsp;
+    @if (!collapsed()) {
       <fa-icon class="text-secondary" [icon]="faAngleDoubleLeft"></fa-icon>
-    } @else if (collapsed) {
+    } @else if (collapsed()) {
       <fa-icon class="text-secondary" [icon]="faAngleDoubleRight"></fa-icon>
     }
     <span>{{ 'Collapse Sidebar' }}</span>

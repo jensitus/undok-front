@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, effect, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {CounselingService} from '../service/counseling.service';
 import {Counseling} from '../model/counseling';
@@ -163,22 +163,22 @@ export class CounselingComponent implements OnInit, OnDestroy {
   }
 
   getReloadSubject() {
-    this.subscription$.push(this.commonService.reloadSubject.subscribe(result => {
-      if (result === true) {
+    // Use effect to watch for reload signal changes
+    effect(() => {
+      if (this.commonService.reload()) {
         this.getCounseling();
         this.modalService.dismissAll();
       }
-    }));
+    });
   }
 
   getDeleteSubject() {
-    this.subscription$.push(
-      this.commonService.deleteSubject.subscribe(result => {
-        if (result === true) {
-          this.router.navigate(['/clients/', this.counseling.clientId]);
-        }
-      })
-    );
+    // Use effect to watch for delete signal changes
+    effect(() => {
+      if (this.commonService.delete()) {
+        this.router.navigate(['/clients/', this.counseling.clientId]);
+      }
+    });
   }
 
   addActivityCategory() {
@@ -219,7 +219,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
     );
     this.subscription$.push(
       this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
-        this.commonService.setReloadSubject(true);
+        this.commonService.setReload(true);
       })
     );
     switch (categoryType) {

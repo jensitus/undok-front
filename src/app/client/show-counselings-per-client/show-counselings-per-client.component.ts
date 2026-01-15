@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, DestroyRef, inject, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, DestroyRef, effect, inject, Input, OnInit} from '@angular/core';
 import {Counseling} from '../model/counseling';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
@@ -60,13 +60,12 @@ export class ShowCounselingsPerClientComponent implements OnInit {
   }
 
   getCreateCounselingSubject() {
-    this.commonService.createCounselingSubject
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((counselingSubject) => {
-          if (counselingSubject === true) {
-            this.modalService.dismissAll();
-          }
-        });
+    // Use effect to watch for createCounseling signal changes
+    effect(() => {
+      if (this.commonService.createCounseling()) {
+        this.modalService.dismissAll();
+      }
+    });
   }
 
   openEditCounseling(content) {
@@ -82,7 +81,7 @@ export class ShowCounselingsPerClientComponent implements OnInit {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: () => {
-            this.commonService.setCreateCounselingSubject(true);
+            this.commonService.setCreateCounseling(true);
           },
           error: (err) => {
             console.error('Error deleting counseling:', err);

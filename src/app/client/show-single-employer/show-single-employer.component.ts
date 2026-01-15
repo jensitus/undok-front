@@ -63,9 +63,8 @@ export class ShowSingleEmployerComponent {
     });
 
     // Watch for employer updates from common service
-    const createEmployerSignal = toSignal(this.commonService.createEmployerSubject);
     effect(() => {
-      const result = createEmployerSignal();
+      const result = this.commonService.createEmployer();
       if (result) {
         const currentId = this.employerId();
         if (currentId) {
