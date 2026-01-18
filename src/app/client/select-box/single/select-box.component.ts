@@ -43,25 +43,21 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
     private categoryService: CategoryService,
     private commonService: CommonService
   ) {
+    // Effect to watch for reload signal changes
+    effect(() => {
+      if (this.commonService.reload()) {
+        this.loadCategoriesByCategoryType();
+      }
+    });
   }
 
   ngOnInit(): void {
-    this.getReloadSubject();
     this.loadCategoriesByCategoryType();
   }
 
   ngOnDestroy(): void {
     this.subscription$.forEach((s) => {
       s.unsubscribe();
-    });
-  }
-
-  getReloadSubject() {
-    // Use effect to watch for reload signal changes
-    effect(() => {
-      if (this.commonService.reload()) {
-        this.loadCategoriesByCategoryType();
-      }
     });
   }
 

@@ -55,6 +55,22 @@ export class CounselingComponent implements OnInit, OnDestroy {
     private durationService: DurationService,
     private cdr: ChangeDetectorRef
   ) {
+    // Effect to watch for reload signal changes
+    effect(() => {
+      if (this.commonService.reload()) {
+        this.getCounseling();
+        this.modalService.dismissAll();
+      }
+    });
+
+    // Effect to watch for delete signal changes
+    effect(() => {
+      if (this.commonService.delete()) {
+        if (this.counseling) {
+          this.router.navigate(['/clients/', this.counseling.clientId]);
+        }
+      }
+    });
   }
 
   CONCERN_MAX_LENGTH = 4080;
@@ -100,8 +116,6 @@ export class CounselingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCounseling();
-    this.getReloadSubject();
-    this.getDeleteSubject();
   }
 
   ngOnDestroy(): void {
@@ -162,24 +176,6 @@ export class CounselingComponent implements OnInit, OnDestroy {
     });
   }
 
-  getReloadSubject() {
-    // Use effect to watch for reload signal changes
-    effect(() => {
-      if (this.commonService.reload()) {
-        this.getCounseling();
-        this.modalService.dismissAll();
-      }
-    });
-  }
-
-  getDeleteSubject() {
-    // Use effect to watch for delete signal changes
-    effect(() => {
-      if (this.commonService.delete()) {
-        this.router.navigate(['/clients/', this.counseling.clientId]);
-      }
-    });
-  }
 
   addActivityCategory() {
     this.editActivityCategory = !this.editActivityCategory;

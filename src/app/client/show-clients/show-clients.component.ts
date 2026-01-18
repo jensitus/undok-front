@@ -63,10 +63,17 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     private cdr: ChangeDetectorRef
   ) {
+    // Effect to watch for alert signal changes
+    effect(() => {
+      const result = this.commonService.alert();
+      this.successMessage = result;
+      if (result) {
+        this.showAlert();
+      }
+    });
   }
 
   ngOnInit(): void {
-    this.getAlertSubject();
     this.getClientsForTable();
   }
 
@@ -99,17 +106,6 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   clickToCsv() {
     this.csvService.downloadCsv('/service/undok/clients').subscribe(blob => saveAs(blob, 'clients.csv'));
     // this.csvService.exportToCsv(this.clientTableService.allClients$, this.CSV_FILENAME, this.columns);
-  }
-
-  getAlertSubject() {
-    // Use effect to watch for alert signal changes
-    effect(() => {
-      const result = this.commonService.alert();
-      this.successMessage = result;
-      if (result) {
-        this.showAlert();
-      }
-    });
   }
 
 }

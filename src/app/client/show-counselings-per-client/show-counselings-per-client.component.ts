@@ -40,6 +40,15 @@ export class ShowCounselingsPerClientComponent implements OnInit {
   private closeResult = '';
   protected counselingOrder = 'Asc';
 
+  constructor() {
+    // Effect to watch for createCounseling signal changes
+    effect(() => {
+      if (this.commonService.createCounseling()) {
+        this.modalService.dismissAll();
+      }
+    });
+  }
+
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -51,21 +60,11 @@ export class ShowCounselingsPerClientComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getCreateCounselingSubject();
     this.getCounselingsByClientId();
   }
 
   getCounselingDuration(requiredTime: number): string {
     return this.durationService.getCounselingDuration(requiredTime);
-  }
-
-  getCreateCounselingSubject() {
-    // Use effect to watch for createCounseling signal changes
-    effect(() => {
-      if (this.commonService.createCounseling()) {
-        this.modalService.dismissAll();
-      }
-    });
   }
 
   openEditCounseling(content) {
@@ -99,6 +98,7 @@ export class ShowCounselingsPerClientComponent implements OnInit {
   }
 
   getCounselingsByClientId() {
+    console.log('getCounselingsByClientId');
     this.counselingService.getCounselingsByClientId(this.clientId, this.counselingOrder)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
