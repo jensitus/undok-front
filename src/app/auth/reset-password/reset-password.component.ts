@@ -1,12 +1,11 @@
-import { Component, OnInit, signal, inject, DestroyRef, computed } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../services/user.service';
-import { User } from '../model/user';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AlertService } from '../../admin-template/layout/components/alert/services/alert.service';
-import { NavbarComponent } from '../../common/navbar/navbar.component';
-import { NgClass } from '@angular/common';
+import {Component, computed, DestroyRef, inject, OnInit, signal} from '@angular/core';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {UserService} from '../services/user.service';
+import {User} from '../model/user';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import {NgClass} from '@angular/common';
 
 interface ResetPasswordForm {
   password: string;
@@ -19,7 +18,6 @@ interface ResetPasswordForm {
   standalone: true,
   templateUrl: './reset-password.component.html',
   imports: [
-    NavbarComponent,
     ReactiveFormsModule,
     NgClass,
     RouterLink

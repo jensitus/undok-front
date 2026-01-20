@@ -57,15 +57,19 @@ export class ForgotPasswordComponent implements OnInit {
           next: response => {
             console.log(response);
             this.data.set(response);
-            this.alertService.success(response.text, true);
             this.loading.set(false);
-            this.router.navigate(['/home']);
+
+            // Navigate to login with success message in state
+            const message = response.text || 'Password reset email has been sent. Please check your inbox for further instructions.';
+            this.router.navigate(['/login'], {
+              state: { successMessage: message }
+            });
           },
           error: err => {
             console.error('Forgot password error:', err);
             this.loading.set(false);
-            // Uncomment if you want to show error alerts
-            // this.alertService.error(err.error?.text || 'An error occurred');
+            const errorMessage = err.error?.text || 'An error occurred while processing your request. Please try again.';
+            this.alertService.error(errorMessage);
           }
         });
   }

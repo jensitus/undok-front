@@ -5,6 +5,13 @@
       <div class="col-md-5">
         <h5 class="mb-4">Login</h5>
 
+        @if (successMessage()) {
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ successMessage() }}
+            <button type="button" class="btn-close" (click)="successMessage.set(null)" aria-label="Close"></button>
+          </div>
+        }
+
         <div class="form-group mb-1">
           <input type="text"
                  class="form-control"
