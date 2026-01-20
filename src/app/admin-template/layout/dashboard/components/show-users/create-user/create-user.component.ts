@@ -1,4 +1,4 @@
-import { Component, signal, inject, viewChild, TemplateRef } from '@angular/core';
+import { Component, signal, inject, viewChild, TemplateRef, DestroyRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -28,6 +28,7 @@ export class CreateUserComponent {
   private readonly authService = inject(AuthenticationService);
   private readonly commonService = inject(CommonService);
   private readonly modalService = inject(NgbModal);
+  private readonly destroyRef = inject(DestroyRef);
 
   // Signals for reactive state
   loading = signal<boolean>(false);
@@ -56,7 +57,7 @@ export class CreateUserComponent {
     this.authService.createUserViaAdmin(createUserForm)
         .pipe(
           first(),
-          takeUntilDestroyed()
+          takeUntilDestroyed(this.destroyRef)
         )
         .subscribe({
           next: (data) => {
