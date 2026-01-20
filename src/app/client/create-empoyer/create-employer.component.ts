@@ -70,7 +70,7 @@ export class CreateEmployerComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.unsubscribe$.push(
       this.employerService.createEmployer(this.employerForm).subscribe(result => {
-        this.commonService.setCreateEmployerSubject(true);
+        this.commonService.setCreateEmployer(true);
         this.router.navigate(['/clients/employers']);
       })
     );

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, effect, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {CounselingService} from '../service/counseling.service';
 import {Counseling} from '../model/counseling';
@@ -55,6 +55,22 @@ export class CounselingComponent implements OnInit, OnDestroy {
     private durationService: DurationService,
     private cdr: ChangeDetectorRef
   ) {
+    // Effect to watch for reload signal changes
+    effect(() => {
+      if (this.commonService.reload()) {
+        this.getCounseling();
+        this.modalService.dismissAll();
+      }
+    });
+
+    // Effect to watch for delete signal changes
+    effect(() => {
+      if (this.commonService.delete()) {
+        if (this.counseling) {
+          this.router.navigate(['/clients/', this.counseling.clientId]);
+        }
+      }
+    });
   }
 
   CONCERN_MAX_LENGTH = 4080;
@@ -100,8 +116,6 @@ export class CounselingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCounseling();
-    this.getReloadSubject();
-    this.getDeleteSubject();
   }
 
   ngOnDestroy(): void {
@@ -162,24 +176,6 @@ export class CounselingComponent implements OnInit, OnDestroy {
     });
   }
 
-  getReloadSubject() {
-    this.subscription$.push(this.commonService.reloadSubject.subscribe(result => {
-      if (result === true) {
-        this.getCounseling();
-        this.modalService.dismissAll();
-      }
-    }));
-  }
-
-  getDeleteSubject() {
-    this.subscription$.push(
-      this.commonService.deleteSubject.subscribe(result => {
-        if (result === true) {
-          this.router.navigate(['/clients/', this.counseling.clientId]);
-        }
-      })
-    );
-  }
 
   addActivityCategory() {
     this.editActivityCategory = !this.editActivityCategory;
@@ -219,7 +215,7 @@ export class CounselingComponent implements OnInit, OnDestroy {
     );
     this.subscription$.push(
       this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
-        this.commonService.setReloadSubject(true);
+        this.commonService.setReload(true);
       })
     );
     switch (categoryType) {

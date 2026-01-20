@@ -62,7 +62,7 @@ export class CreateUserComponent {
           next: (data) => {
             this.alertService.success('Registration successful', true);
             this.loading.set(false);
-            this.commonService.setCreateUserSubject(true);
+            this.commonService.setCreateUser(true);
 
             // Reset form
             this.username.set('');

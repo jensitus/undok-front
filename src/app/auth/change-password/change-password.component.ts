@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject, computed } from '@angular/core';
+import { Component, OnInit, signal, inject, computed, DestroyRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -28,6 +28,7 @@ export class ChangePasswordComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly location = inject(Location);
   private readonly alertService = inject(AlertService);
+  private readonly destroyRef = inject(DestroyRef);
 
   // Signals for reactive state
   loading = signal<boolean>(false);
@@ -52,13 +53,13 @@ export class ChangePasswordComponent implements OnInit {
   ngOnInit() {
     // Get username from route params
     this.activatedRoute.params
-        .pipe(takeUntilDestroyed())
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(params => {
           this.username.set(params['username']);
 
           // Fetch user data
           this.userService.getByUsername(this.username())
-              .pipe(takeUntilDestroyed())
+              .pipe(takeUntilDestroyed(this.destroyRef))
               .subscribe({
                 next: (data: any) => {
                   this.userId.set(data.id);
@@ -92,7 +93,7 @@ export class ChangePasswordComponent implements OnInit {
 
     // Submit password change
     this.userService.changePassword(changePwDto)
-        .pipe(takeUntilDestroyed())
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: (data: any) => {
             this.alertService.success(data.text);

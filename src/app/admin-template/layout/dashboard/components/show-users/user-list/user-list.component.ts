@@ -33,14 +33,12 @@ export class UserListComponent implements OnInit {
   readonly faCheck = faCheck;
 
   constructor() {
-    // Set up subscription to watch for user creation events
-    this.commonService.createUserSubject
-        .pipe(takeUntilDestroyed())
-        .subscribe(created => {
-          if (created) {
-            this.getUserList();
-          }
-        });
+    // Set up effect to watch for user creation events
+    effect(() => {
+      if (this.commonService.createUser()) {
+        this.getUserList();
+      }
+    });
   }
 
   ngOnInit(): void {

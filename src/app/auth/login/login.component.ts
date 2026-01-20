@@ -31,6 +31,7 @@ export class LoginComponent {
   loading = signal<boolean>(false);
   submitted = signal<boolean>(false);
   returnUrl = signal<string>('');
+  successMessage = signal<string | null>(null);
 
   // Reactive form
   readonly loginForm: FormGroup;
@@ -62,6 +63,13 @@ export class LoginComponent {
     // Get return url from route parameters or default to '/'
     const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     this.returnUrl.set(returnUrl);
+
+    // Check for success message from navigation state
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as { successMessage?: string };
+    if (state?.successMessage) {
+      this.successMessage.set(state.successMessage);
+    }
   }
 
   onSubmit(): void {

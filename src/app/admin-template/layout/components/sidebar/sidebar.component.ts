@@ -1,5 +1,6 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, inject, output, signal} from '@angular/core';
 import {NavigationEnd, Router, RouterLink, RouterLinkActive} from '@angular/router';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {User} from '../../../../auth/model/user';
 import {
   faBars,
@@ -17,13 +18,12 @@ import {
   faUsers
 } from '@fortawesome/free-solid-svg-icons';
 import {SidebarService} from '../../../shared/services/sidebar.service';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
 import {NgClass} from '@angular/common';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {faAngleDoubleDown} from '@fortawesome/free-solid-svg-icons/faAngleDoubleDown';
 import {faAngleDoubleLeft} from '@fortawesome/free-solid-svg-icons/faAngleDoubleLeft';
 import {faAngleDoubleRight} from '@fortawesome/free-solid-svg-icons/faAngleDoubleRight';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-sidebar',
@@ -37,75 +37,75 @@ import {faAngleDoubleRight} from '@fortawesome/free-solid-svg-icons/faAngleDoubl
   ],
   standalone: true
 })
-export class SidebarComponent implements OnInit {
-  isActive: boolean;
-  collapsed: boolean;
-  showMenu: string;
-  pushRightClass: string;
-  currentUser: User;
-//  admin = false;
-  faCoffee = faCoffee;
-  faUser = faUser;
-  faBars = faBars;
-  faPowerOff = faPowerOff;
-  faTachometerAlt = faTachometerAlt;
-  faCampground = faCampground;
-  faUsers = faUsers;
-  faTasks = faTasks;
-  faSurprise = faSurprise;
-  faSave = faSave;
-  faEarListen = faEarListen;
-  private unsubscribe$ = new Subject();
-  showClientButtons = false;
-  showCreateEmployerButton = false;
-  clientId: string;
+export class SidebarComponent {
+  // Inject services
+  private readonly router = inject(Router);
+  private readonly sidebarService = inject(SidebarService);
 
-  @Output() collapsedEvent = new EventEmitter<boolean>();
+  // Signals for state
+  isActive = signal<boolean>(false);
+  collapsed = signal<boolean>(false);
+  showMenu = signal<string>('');
+  currentUser = signal<User | null>(this.getCurrentUser());
 
-  constructor(
-    /*private translate: TranslateService,*/
-    public router: Router,
-    private sidebarService: SidebarService
-  ) {
-    this.router.events.subscribe(val => {
-      if (
-        val instanceof NavigationEnd &&
-        window.innerWidth <= 992 &&
-        this.isToggled()
-      ) {
-        this.toggleSidebar();
-      }
-    });
+  // Access signals directly from the service
+  showClientButtons = this.sidebarService.clientButtons;
+  showCreateEmployerButton = this.sidebarService.createEmployerButton;
+  clientId = this.sidebarService.clientIdForCreateCounseling;
+
+  // Output event
+  collapsedEvent = output<boolean>();
+
+  // Constants
+  private readonly pushRightClass = 'push-right';
+
+  // Font Awesome icons
+  protected readonly faCoffee = faCoffee;
+  protected readonly faUser = faUser;
+  protected readonly faBars = faBars;
+  protected readonly faPowerOff = faPowerOff;
+  protected readonly faTachometerAlt = faTachometerAlt;
+  protected readonly faCampground = faCampground;
+  protected readonly faUsers = faUsers;
+  protected readonly faTasks = faTasks;
+  protected readonly faSurprise = faSurprise;
+  protected readonly faSave = faSave;
+  protected readonly faEarListen = faEarListen;
+  protected readonly faSearch = faSearch;
+  protected readonly faBriefcaseMedical = faBriefcaseMedical;
+  protected readonly faAngleDoubleDown = faAngleDoubleDown;
+  protected readonly faAngleDoubleLeft = faAngleDoubleLeft;
+  protected readonly faAngleDoubleRight = faAngleDoubleRight;
+
+  constructor() {
+    // Set up router event subscription for mobile sidebar handling
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntilDestroyed()
+      )
+      .subscribe(() => {
+        if (window.innerWidth <= 992 && this.isToggled()) {
+          this.toggleSidebar();
+        }
+      });
   }
 
-  ngOnInit() {
-    this.isActive = false;
-    this.collapsed = false;
-    this.showMenu = '';
-    this.pushRightClass = 'push-right';
-    this.getCurrentUser();
-    // this.checkAdmin();
-    this.getSidebarButtons();
-    this.getCreateEmployerButton();
-    this.getClientIDForCreatingCounseling();
-  }
+  // eventCalled(): void {
+  //   this.isActive.update(value => !value);
+  // }
+  //
+  // addExpandClass(element: string): void {
+  //   if (element === this.showMenu()) {
+  //     this.showMenu.set('0');
+  //   } else {
+  //     this.showMenu.set(element);
+  //   }
+  // }
 
-
-  eventCalled() {
-    this.isActive = !this.isActive;
-  }
-
-  addExpandClass(element: any) {
-    if (element === this.showMenu) {
-      this.showMenu = '0';
-    } else {
-      this.showMenu = element;
-    }
-  }
-
-  toggleCollapsed() {
-    this.collapsed = !this.collapsed;
-    this.collapsedEvent.emit(this.collapsed);
+  toggleCollapsed(): void {
+    this.collapsed.update(value => !value);
+    this.collapsedEvent.emit(this.collapsed());
   }
 
   isToggled(): boolean {
@@ -113,70 +113,34 @@ export class SidebarComponent implements OnInit {
     return dom.classList.contains(this.pushRightClass);
   }
 
-  toggleSidebar() {
-    const dom: any = document.querySelector('body');
+  toggleSidebar(): void {
+    const dom: HTMLElement = document.querySelector('body');
     dom.classList.toggle(this.pushRightClass);
   }
 
-  rltAndLtr() {
-    const dom: any = document.querySelector('body');
+  rltAndLtr(): void {
+    const dom: HTMLElement = document.querySelector('body');
     dom.classList.toggle('rtl');
   }
 
-  // changeLang(language: string) {
-  //     this.translate.use(language);
+  // onLoggedout(): void {
+  //   localStorage.removeItem('isLoggedin');
   // }
 
-  onLoggedout() {
-    localStorage.removeItem('isLoggedin');
+  private getCurrentUser(): User | null {
+    const userJson = localStorage.getItem('currentUser');
+    return userJson ? JSON.parse(userJson) : null;
   }
 
-  getClientIDForCreatingCounseling() {
-    this.sidebarService.clientIdForCreateCounselingSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(clientId => {
-      this.clientId = clientId;
-    });
-  }
-
-  getCurrentUser() {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  }
-
-  getSidebarButtons() {
-    this.sidebarService.clientButtonSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(showButtons => {
-      this.showClientButtons = showButtons;
-    });
-  }
-
-  getCreateEmployerButton() {
-    this.sidebarService.createEmployerButtonSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(createEmployerButton => {
-      this.showCreateEmployerButton = createEmployerButton;
-    });
-  }
-
-  newCounseling() {
-    this.sidebarService.setNewCounselingSubject(true);
-  }
-
-  newEmployer() {
-    this.sidebarService.setNewEmployerSubject(true);
-  }
-
-  assignEmployer() {
-    this.sidebarService.setAssignEmployerSubject(true);
-  }
-
-  // checkAdmin() {
-  //   console.log('this.currentUser.roles', this.currentUser.roles);
-  //   for (const r of this.currentUser.roles) {
-  //     if (r.name === 'ROLE_ADMIN') {
-  //       console.log('ADMIN');
-  //       this.admin = true;
-  //     }
-  //   }
+  // newCounseling(): void {
+  //   this.sidebarService.setNewCounselingSubject(true);
   // }
-  protected readonly faSearch = faSearch;
-  protected readonly faBriefcaseMedical = faBriefcaseMedical;
-  protected readonly faAngleDoubleDown = faAngleDoubleDown;
-  protected readonly faAngleDoubleLeft = faAngleDoubleLeft;
-  protected readonly faAngleDoubleRight = faAngleDoubleRight;
+
+  // newEmployer(): void {
+  //   this.sidebarService.setNewEmployerSubject(true);
+  // }
+
+  assignEmployer(): void {
+    this.sidebarService.setAssignEmployer(true);
+  }
 }

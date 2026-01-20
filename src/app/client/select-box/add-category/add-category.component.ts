@@ -94,7 +94,7 @@ export class AddCategoryComponent {
       next: () => {
         this.newCategory.set('');
         this.categoryIsCollapsed.set(true);
-        this.commonService.setReloadSubject(true);
+        this.commonService.setReload(true);
         this.submitted.emit(true);
         this.isSubmitting.set(false);
       },

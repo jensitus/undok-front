@@ -90,15 +90,11 @@ export class MultiSelectBoxComponent implements OnInit {
       }
     });
 
-    // Effect to listen to reload subject
+    // Effect to listen to reload signal
     effect(() => {
-      this.commonService.reloadSubject
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(result => {
-          if (result === true) {
-            this.loadCategoriesByCategoryType();
-          }
-        });
+      if (this.commonService.reload()) {
+        this.loadCategoriesByCategoryType();
+      }
     });
   }
 

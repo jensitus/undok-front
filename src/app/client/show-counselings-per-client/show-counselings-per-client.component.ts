@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, DestroyRef, inject, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, DestroyRef, effect, inject, Input, OnInit} from '@angular/core';
 import {Counseling} from '../model/counseling';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
@@ -40,6 +40,15 @@ export class ShowCounselingsPerClientComponent implements OnInit {
   private closeResult = '';
   protected counselingOrder = 'Asc';
 
+  constructor() {
+    // Effect to watch for createCounseling signal changes
+    effect(() => {
+      if (this.commonService.createCounseling()) {
+        this.modalService.dismissAll();
+      }
+    });
+  }
+
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -51,22 +60,11 @@ export class ShowCounselingsPerClientComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getCreateCounselingSubject();
     this.getCounselingsByClientId();
   }
 
   getCounselingDuration(requiredTime: number): string {
     return this.durationService.getCounselingDuration(requiredTime);
-  }
-
-  getCreateCounselingSubject() {
-    this.commonService.createCounselingSubject
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((counselingSubject) => {
-          if (counselingSubject === true) {
-            this.modalService.dismissAll();
-          }
-        });
   }
 
   openEditCounseling(content) {
@@ -82,7 +80,7 @@ export class ShowCounselingsPerClientComponent implements OnInit {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: () => {
-            this.commonService.setCreateCounselingSubject(true);
+            this.commonService.setCreateCounseling(true);
           },
           error: (err) => {
             console.error('Error deleting counseling:', err);
@@ -100,6 +98,7 @@ export class ShowCounselingsPerClientComponent implements OnInit {
   }
 
   getCounselingsByClientId() {
+    console.log('getCounselingsByClientId');
     this.counselingService.getCounselingsByClientId(this.clientId, this.counselingOrder)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({

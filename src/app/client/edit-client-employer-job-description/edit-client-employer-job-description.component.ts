@@ -56,12 +56,12 @@ export class EditClientEmployerJobDescriptionComponent {
     this.employerService.updateClientEmployer(clientEmployerForm).subscribe({
       next: (result) => {
         if (result === true) {
-          this.commonService.setEmployerSubject(true);
+          this.commonService.setEmployer(true);
         }
 
         // Reset to false after a brief delay so next update triggers the effect again
         setTimeout(() => {
-          this.commonService.setEmployerSubject(false);
+          this.commonService.setEmployer(false);
         }, 100);
 
         this.loading.set(false);

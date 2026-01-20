@@ -69,7 +69,7 @@ export class ShowEmployersListComponent {
       // This runs when component is created
       return () => {
         // This runs on destroy
-        this.sidebarService.setCreateEmployerButtonSubject(false);
+        this.sidebarService.setCreateEmployerButton(false);
       };
     }, { allowSignalWrites: false });
   }
@@ -85,30 +85,26 @@ export class ShowEmployersListComponent {
   }
 
   private setupAlertSubscription(): void {
-    this.commonService.alertSubject
-        .pipe(takeUntilDestroyed())
-        .subscribe({
-          next: (result) => {
-            if (result) {
-              this.alertService.success(result, true);
-            }
-          }
-        });
+    // Use effect to watch for alert signal changes
+    effect(() => {
+      const result = this.commonService.alert();
+      if (result) {
+        this.alertService.success(result, true);
+      }
+    });
   }
 
   private setupNewEmployerSubscription(): void {
-    this.sidebarService.newEmployerSubject
-        .pipe(takeUntilDestroyed())
-        .subscribe({
-          next: (newEmployer) => {
-            if (newEmployer === true) {
-              const employerElement = this.createEmployer();
-              if (employerElement) {
-                this.openEmployer(employerElement);
-              }
-            }
-          }
-        });
+    // Use effect to watch for newEmployer signal changes
+    effect(() => {
+      const newEmployer = this.sidebarService.newEmployer();
+      if (newEmployer === true) {
+        const employerElement = this.createEmployer();
+        if (employerElement) {
+          this.openEmployer(employerElement);
+        }
+      }
+    });
   }
 
   setEmployer(e_id: string): void {
@@ -153,7 +149,7 @@ export class ShowEmployersListComponent {
         .pipe(takeUntilDestroyed())
         .subscribe({
           next: () => {
-            this.commonService.setEmployerSubject(true);
+            this.commonService.setEmployer(true);
           },
           error: (err) => {
             console.error('Error adding employer:', err);

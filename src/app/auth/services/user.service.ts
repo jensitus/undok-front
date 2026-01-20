@@ -21,7 +21,6 @@ export class UserService {
 
   getAll(): Observable<User[]> {
     const url = `${this.apiUrl}/service/users/all`;
-    console.log(url);
     return this.http.get<User[]>(url);
   }
 

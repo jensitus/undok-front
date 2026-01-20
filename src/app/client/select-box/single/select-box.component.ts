@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, effect, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Category} from '../../model/category';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {Subscription} from 'rxjs';
@@ -43,10 +43,15 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
     private categoryService: CategoryService,
     private commonService: CommonService
   ) {
+    // Effect to watch for reload signal changes
+    effect(() => {
+      if (this.commonService.reload()) {
+        this.loadCategoriesByCategoryType();
+      }
+    });
   }
 
   ngOnInit(): void {
-    this.getReloadSubject();
     this.loadCategoriesByCategoryType();
   }
 
@@ -54,16 +59,6 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
     this.subscription$.forEach((s) => {
       s.unsubscribe();
     });
-  }
-
-  getReloadSubject() {
-    this.subscription$.push(
-      this.commonService.reloadSubject.subscribe(reload => {
-        if (reload === true) {
-          this.loadCategoriesByCategoryType();
-        }
-      })
-    );
   }
 
   onCategoryValueChange(): void {

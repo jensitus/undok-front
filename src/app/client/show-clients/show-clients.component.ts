@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {ChangeDetectorRef, Component, effect, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ClientService} from '../service/client.service';
 import {Observable, Subject} from 'rxjs';
 import {faTachometerAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
@@ -63,10 +63,17 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     private cdr: ChangeDetectorRef
   ) {
+    // Effect to watch for alert signal changes
+    effect(() => {
+      const result = this.commonService.alert();
+      this.successMessage = result;
+      if (result) {
+        this.showAlert();
+      }
+    });
   }
 
   ngOnInit(): void {
-    this.getAlertSubject();
     this.getClientsForTable();
   }
 
@@ -99,15 +106,6 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   clickToCsv() {
     this.csvService.downloadCsv('/service/undok/clients').subscribe(blob => saveAs(blob, 'clients.csv'));
     // this.csvService.exportToCsv(this.clientTableService.allClients$, this.CSV_FILENAME, this.columns);
-  }
-
-  getAlertSubject() {
-    this.commonService.alertSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      this.successMessage = result;
-      if (result) {
-        this.showAlert();
-      }
-    });
   }
 
 }

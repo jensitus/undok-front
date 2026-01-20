@@ -60,7 +60,7 @@ export class CreateClientEmployerJobDescriptionComponent implements OnInit, OnDe
     console.log(this.clientEmployerForm);
     this.employerService.createClientEmployer(this.clientEmployerForm).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       console.log(result);
-      this.commonService.setEmployerSubject(true);
+      this.commonService.setEmployer(true);
     });
   }
 
