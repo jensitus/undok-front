@@ -46,7 +46,7 @@ export class SidebarComponent {
   isActive = signal<boolean>(false);
   collapsed = signal<boolean>(false);
   showMenu = signal<string>('');
-  currentUser = signal<User>(this.getCurrentUser());
+  currentUser = signal<User | null>(this.getCurrentUser());
 
   // Access signals directly from the service
   showClientButtons = this.sidebarService.clientButtons;
@@ -127,8 +127,9 @@ export class SidebarComponent {
   //   localStorage.removeItem('isLoggedin');
   // }
 
-  private getCurrentUser(): User {
-    return JSON.parse(localStorage.getItem('currentUser'));
+  private getCurrentUser(): User | null {
+    const userJson = localStorage.getItem('currentUser');
+    return userJson ? JSON.parse(userJson) : null;
   }
 
   // newCounseling(): void {

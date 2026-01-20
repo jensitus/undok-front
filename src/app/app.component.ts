@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   collapedSideBar: boolean;
   showSidebar = true;
   private routerSubscription: Subscription;
-  private noSidebarRoutes = ['/login', '/register', '/second-factor', '/verify-email', '/forgot'];
+  private noSidebarRoutes = ['/login', '/register', '/second-factor', '/verify-email', '/forgot', '/auth/reset_password/:token/edit'];
   receiveCollapsed($event) {
     this.collapedSideBar = $event;
   }
@@ -30,8 +30,15 @@ export class AppComponent implements OnInit {
                                   .pipe(filter(event => event instanceof NavigationEnd))
                                   .subscribe((event: NavigationEnd) => {
                                     // Check if current route should hide sidebar
-                                    this.showSidebar = !this.noSidebarRoutes.some(route =>
-                                      event.urlAfterRedirects.startsWith(route));
+                                    this.showSidebar = !this.noSidebarRoutes.some(route => {
+                                      // Handle parameterized routes like /auth/reset_password/:token/edit
+                                      if (route.includes(':')) {
+                                        const pattern = route.replace(/:[^\/]+/g, '[^/]+');
+                                        const regex = new RegExp(`^${pattern}$`);
+                                        return regex.test(event.urlAfterRedirects);
+                                      }
+                                      return event.urlAfterRedirects.startsWith(route);
+                                    });
                                   });
   }
 }
