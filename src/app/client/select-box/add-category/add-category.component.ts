@@ -40,11 +40,12 @@ export class AddCategoryComponent {
   readonly stringLabel = input<string | undefined>(undefined);
 
   // Signal-based outputs
-  readonly submitted = output<boolean>();
+  readonly submitted = output<Category>();
   readonly error = output<string>();
 
   // Component state as signals
   readonly categoryExists = signal<string | null>(null);
+  readonly successMessage = signal<string | null>(null);
   readonly categoryIsCollapsed = signal(true);
   readonly newCategory = signal<string>('');
   readonly isSubmitting = signal(false);
@@ -91,12 +92,13 @@ export class AddCategoryComponent {
     this.categoryExists.set(null);
 
     this.categoryService.addCategory(category).subscribe({
-      next: () => {
+      next: (createdCategory) => {
         this.newCategory.set('');
         this.categoryIsCollapsed.set(true);
         this.commonService.setReload(true);
-        this.submitted.emit(true);
+        this.submitted.emit(createdCategory);
         this.isSubmitting.set(false);
+        this.successMessage.set('Category successfully added');
       },
       error: (err) => {
         const errorMessage = err?.error?.text || 'Failed to add category';

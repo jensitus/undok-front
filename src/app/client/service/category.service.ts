@@ -30,8 +30,8 @@ export class CategoryService {
     return this.http.get(this.apiUrl + this.UNDOK_CATEGORIES + this.UNDOK_BY_TYPE + type);
   }
 
-  addCategory(category: Category): Observable<any> {
-    return this.http.post(this.apiUrl + this.UNDOK_CATEGORIES + this.CREATE, category);
+  addCategory(category: Category): Observable<Category> {
+    return this.http.post<Category>(this.apiUrl + this.UNDOK_CATEGORIES + this.CREATE, category);
   }
 
   addJoinCategories(joinCategories: JoinCategory[]): Observable<any> {

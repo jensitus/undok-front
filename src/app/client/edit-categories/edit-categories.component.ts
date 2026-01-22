@@ -83,8 +83,9 @@ export class EditCategoriesComponent {
     });
   }
 
-  reload(): void {
-    this.getCategories();
+  reload(newCategory: Category): void {
+    // Add the new category to the existing categories signal
+    this.categories.update(currentCategories => [...currentCategories, newCategory]);
     this.alertService.success('Category successfully added');
   }
 
