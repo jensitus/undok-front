@@ -1,8 +1,8 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import {UploadService} from '../services/upload.service';
 import {NavbarComponent} from '../navbar/navbar.component';
-import {NgIf, NgStyle} from '@angular/common';
+import {NgStyle} from '@angular/common';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
@@ -25,8 +25,8 @@ const URL = 'http://localhost:8080/service/app/files';
   templateUrl: './upload.component.html',
   imports: [
     NavbarComponent,
-    NgStyle,
     NgbModule,
+    NgStyle,
   ],
   styleUrls: ['./upload.component.css']
 })
