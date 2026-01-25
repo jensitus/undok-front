@@ -30,7 +30,7 @@
             <div class="card-body">
               <app-add-category [stringLabel]="catType"
                                 [categoryType]="CategoryTypes[catType]"
-                                (submitted)="reload()"
+                                (submitted)="reload($event)"
                                 (error)="showError($event)">
               </app-add-category>
 
