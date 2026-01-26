@@ -1,13 +1,12 @@
-import { Component, input, output, inject, signal, computed } from '@angular/core';
-import { CategoryTypes } from '../../model/category-types';
-import { Category } from '../../model/category';
-import { CategoryService } from '../../service/category.service';
-import { CommonService } from '../../../common/services/common.service';
-import { Label } from '../../model/label';
-import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
-import { AlertModule } from '../../../admin-template/layout/components/alert/alert.module';
-import { AlertService } from '../../../admin-template/layout/components/alert/services/alert.service';
+import {Component, computed, inject, input, output, signal} from '@angular/core';
+import {CategoryTypes} from '../../model/category-types';
+import {Category} from '../../model/category';
+import {CategoryService} from '../../service/category.service';
+import {CommonService} from '../../../common/services/common.service';
+import {Label} from '../../model/label';
+import {NgbCollapse} from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule} from '@angular/forms';
+import {AlertService} from '../../../admin-template/layout/components/alert/services/alert.service';
 
 export enum Crud {
   CREATE,
@@ -23,7 +22,6 @@ export enum Crud {
   imports: [
     NgbCollapse,
     FormsModule,
-    AlertModule
   ],
   styleUrls: ['./add-category.component.css']
 })

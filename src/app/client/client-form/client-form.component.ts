@@ -9,7 +9,6 @@ import {ClientForm} from '../model/clientForm';
 import {EntityTypes} from '../model/entity-types';
 import {JoinCategory} from '../model/join-category';
 import {Category} from '../model/category';
-import {SelectModule} from '../select-box/select/select.module';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {CategoryService} from '../service/category.service';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
@@ -22,7 +21,6 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
     FormsModule,
     SelectBoxComponent,
     ReactiveFormsModule,
-    SelectModule,
     NgSelectModule,
   ],
   styleUrls: ['./client-form.component.css']

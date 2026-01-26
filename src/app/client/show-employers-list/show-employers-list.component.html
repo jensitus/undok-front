@@ -65,12 +65,12 @@
             </ngb-highlight>
           </td>
           <td>
-            <ngb-highlight [result]="employer.person.firstName"
+            <ngb-highlight [result]="employer.firstName"
                            [term]="employerTableService.searchTerm">
             </ngb-highlight>
           </td>
           <td>
-            <ngb-highlight [result]="employer.person.lastName"
+            <ngb-highlight [result]="employer.lastName"
                            [term]="employerTableService.searchTerm">
             </ngb-highlight>
           </td>
@@ -80,7 +80,7 @@
             </ngb-highlight>
           </td>
           <td>
-            {{ employer.person.telephone }}
+            {{ employer.telephone }}
           </td>
           <td>
             <a [routerLink]="['/clients/employers/', employer.id]">link</a>

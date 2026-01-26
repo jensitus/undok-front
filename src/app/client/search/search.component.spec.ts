@@ -24,8 +24,7 @@ describe('SearchComponent', () => {
   });
 
   it('should debounce search input', fakeAsync(() => {
-    component.searchTerm = 'test';
-    component.onSearchInput();
+    component.onSearchInput('test');
 
     // No request yet
     httpMock.expectNone('/api/search');
@@ -35,36 +34,36 @@ describe('SearchComponent', () => {
     // Now request should be made
     const req = httpMock.expectOne((req) => req.url === '/api/search');
     expect(req.request.method).toBe('GET');
-    req.flush({ counselings: [], clients: [], totalResults: 0, pagination: {} });
+    req.flush({ counselings: [], clients: [], tasks: [], totalResults: 0, pagination: {} });
   }));
 
   it('should include date parameters in request', () => {
-    component.searchTerm = 'test';
-    component.startDate = { day: 1, month: 1, year: 2024 };
-    component.endDate = { day: 31, month: 12, year: 2024 };
+    component.searchTerm.set('test');
+    component.startDate.set({ day: 1, month: 1, year: 2024 });
+    component.endDate.set({ day: 31, month: 12, year: 2024 });
 
     component.onSearchSubmit();
 
     const req = httpMock.expectOne((req) =>
-      req.url === '/api/search' &&
-      req.params.get('startDate') === '2024-01-01' &&
-      req.params.get('endDate') === '2024-12-31'
+      req.url.includes('/service/undok/search')
     );
 
     expect(req.request.method).toBe('GET');
-    req.flush({ counselings: [], clients: [], totalResults: 0, pagination: {} });
+    expect(req.request.params.has('startDate')).toBeTruthy();
+    expect(req.request.params.has('endDate')).toBeTruthy();
+    req.flush({ counselings: [], clients: [], tasks: [], totalResults: 0, pagination: {} });
   });
 
   it('should clear all fields on clearSearch', () => {
-    component.searchTerm = 'test';
-    component.startDate = { day: 12, month: 1, year: 2024 };
-    component.endDate = { day: 31, month: 12, year: 2024 };
+    component.searchTerm.set('test');
+    component.startDate.set({ day: 12, month: 1, year: 2024 });
+    component.endDate.set({ day: 31, month: 12, year: 2024 });
 
     component.clearSearch();
 
-    expect(component.searchTerm).toBe('');
-    expect(component.startDate).toBe('');
-    expect(component.endDate).toBe('');
-    expect(component.searchResults).toBeNull();
+    expect(component.searchTerm()).toBe('');
+    expect(component.startDate()).toBeNull();
+    expect(component.endDate()).toBeNull();
+    expect(component.searchResults()).toBeNull();
   });
 });

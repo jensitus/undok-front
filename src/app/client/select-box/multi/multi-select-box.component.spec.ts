@@ -8,8 +8,8 @@ describe('MultiSelectBoxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MultiSelectBoxComponent ]
-    })
+    imports: [MultiSelectBoxComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(MultiSelectBoxComponent);

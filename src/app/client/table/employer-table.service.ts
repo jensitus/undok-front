@@ -27,11 +27,11 @@ function sort(employers: Employer[], column: SortColumn, direction: string): Emp
 }
 
 function matches(employer: Employer, term: string, pipe: PipeTransform) {
-  if (employer.person.firstName === null) {
-    employer.person.firstName = '  ';
+  if (employer.firstName === null) {
+    employer.firstName = '  ';
   }
-  if (employer.person.lastName === null) {
-    employer.person.lastName = '  ';
+  if (employer.lastName === null) {
+    employer.lastName = '  ';
   }
   if (employer.company === null) {
     employer.company = '  ';
@@ -39,8 +39,8 @@ function matches(employer: Employer, term: string, pipe: PipeTransform) {
   if (employer.position === null) {
     employer.position = '  ';
   }
-  return employer.person.firstName.toLowerCase().includes(term.toLowerCase())
-    || employer.person.lastName.toLowerCase().includes(term.toLowerCase())
+  return employer.firstName.toLowerCase().includes(term.toLowerCase())
+    || employer.lastName.toLowerCase().includes(term.toLowerCase())
     || employer.company.toLowerCase().includes(term.toLowerCase())
     || employer.position.toLowerCase().includes(term.toLowerCase());
 }

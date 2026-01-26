@@ -8,8 +8,8 @@ describe('CreateClientEmployerJobDescriptionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreateClientEmployerJobDescriptionComponent ]
-    })
+    imports: [CreateClientEmployerJobDescriptionComponent]
+})
     .compileComponents();
   });
 

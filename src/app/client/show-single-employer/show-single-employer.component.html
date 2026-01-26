@@ -51,11 +51,11 @@
       </div>
       <div class="col-md-4">
         <span class="text-secondary">Adresse:</span><br>
-        @if (employer()?.person?.address) {
+        @if (employer()) {
           <span>
-            {{ employer()!.person.address.street }}
-            {{ employer()!.person.address.zipCode }}
-            {{ employer()!.person.address.city }}
+            {{ employer()!.street }}
+            {{ employer()!.zipCode }}
+            {{ employer()!.city }}
           </span>
         }
       </div>
@@ -72,8 +72,8 @@
     <div class="row mt-3">
       <div class="col-md-4">
         <span class="text-secondary">Name:</span><br>
-        @if (employer()?.person) {
-          <span>{{ employer()!.person.firstName }} {{ employer()!.person.lastName }}</span>
+        @if (employer()) {
+          <span>{{ employer()!.firstName }} {{ employer()!.lastName }}</span>
         }
       </div>
     </div>
@@ -81,8 +81,8 @@
     <div class="row mt-2">
       <div class="col-md-4">
         <span class="text-secondary">Email:</span><br>
-        @if (employer()?.person?.email) {
-          <span>{{ employer()!.person.email }}</span>
+        @if (employer()?.email) {
+          <span>{{ employer()!.email }}</span>
         }
       </div>
       <div class="col-md-4">
@@ -93,8 +93,8 @@
       </div>
       <div class="col-md-4">
         <span class="text-secondary">Telephon:</span><br>
-        @if (employer()?.person?.telephone) {
-          <span>{{ employer()!.person.telephone }}</span>
+        @if (employer()?.telephone) {
+          <span>{{ employer()!.telephone }}</span>
         }
       </div>
     </div>

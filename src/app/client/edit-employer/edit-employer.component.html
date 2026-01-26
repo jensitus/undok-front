@@ -24,7 +24,7 @@
             type="text"
             class="form-control"
             name="employerStreet"
-            [(ngModel)]="employer().person.address.street"
+            [(ngModel)]="employer().street"
             [disabled]="loading()"
             placeholder="street" />
         </div>
@@ -34,7 +34,7 @@
             type="text"
             class="form-control"
             name="employerZipCode"
-            [(ngModel)]="employer().person.address.zipCode"
+            [(ngModel)]="employer().zipCode"
             [disabled]="loading()"
             placeholder="zip code" />
         </div>
@@ -46,7 +46,7 @@
             type="text"
             class="form-control"
             name="employerCity"
-            [(ngModel)]="employer().person.address.city"
+            [(ngModel)]="employer().city"
             [disabled]="loading()"
             placeholder="city" />
         </div>
@@ -56,7 +56,7 @@
             type="text"
             class="form-control"
             name="employerCountry"
-            [(ngModel)]="employer().person.address.country"
+            [(ngModel)]="employer().country"
             [disabled]="loading()"
             placeholder="country" />
         </div>
@@ -73,7 +73,7 @@
             type="text"
             class="form-control"
             name="employerFirstName"
-            [(ngModel)]="employer().person.firstName"
+            [(ngModel)]="employer().firstName"
             [disabled]="loading()"
             placeholder="employerFirstName" />
         </div>
@@ -83,7 +83,7 @@
             type="text"
             class="form-control"
             name="employerLastName"
-            [(ngModel)]="employer().person.lastName"
+            [(ngModel)]="employer().lastName"
             [disabled]="loading()"
             placeholder="employerLastName" />
         </div>
@@ -105,7 +105,7 @@
             type="text"
             class="form-control"
             name="employerEmail"
-            [(ngModel)]="employer().person.email"
+            [(ngModel)]="employer().email"
             [disabled]="loading()"
             placeholder="Email" />
         </div>
@@ -115,7 +115,7 @@
             type="text"
             class="form-control"
             name="telephone"
-            [(ngModel)]="employer().person.telephone"
+            [(ngModel)]="employer().telephone"
             [disabled]="loading()"
             placeholder="telephone" />
         </div>

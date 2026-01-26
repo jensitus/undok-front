@@ -8,8 +8,8 @@ describe('SelectBoxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SelectBoxComponent ]
-    })
+    imports: [SelectBoxComponent]
+})
     .compileComponents();
   });
 
