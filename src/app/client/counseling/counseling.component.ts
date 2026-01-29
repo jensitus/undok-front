@@ -1,5 +1,6 @@
-import {ChangeDetectorRef, Component, effect, Input, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Component, computed, DestroyRef, effect, inject, input, signal} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {forkJoin} from 'rxjs';
 import {CounselingService} from '../service/counseling.service';
 import {Counseling} from '../model/counseling';
 import {CommonService} from '../../common/services/common.service';
@@ -42,19 +43,74 @@ import {CreateCommentComponent} from '../create-comment/create-comment.component
   ],
   styleUrls: ['./counseling.component.css']
 })
-export class CounselingComponent implements OnInit, OnDestroy {
+export class CounselingComponent {
+  // Dependency injection using inject()
+  private readonly counselingService = inject(CounselingService);
+  private readonly commonService = inject(CommonService);
+  private readonly modalService = inject(NgbModal);
+  private readonly categoryService = inject(CategoryService);
+  private readonly router = inject(Router);
+  private readonly alertService = inject(AlertService);
+  readonly dateTimeService = inject(DateTimeService);
+  private readonly durationService = inject(DurationService);
+  private readonly destroyRef = inject(DestroyRef);
 
-  constructor(
-    private counselingService: CounselingService,
-    private commonService: CommonService,
-    private modalService: NgbModal,
-    private categoryService: CategoryService,
-    private router: Router,
-    private alertService: AlertService,
-    public dateTimeService: DateTimeService,
-    private durationService: DurationService,
-    private cdr: ChangeDetectorRef
-  ) {
+  // Signal-based inputs (Angular 21)
+  readonly counselingId = input.required<string>();
+  readonly clientId = input.required<string>();
+
+  // Signals for reactive state
+  readonly counseling = signal<Counseling | undefined>(undefined);
+  readonly loading = signal(false);
+  readonly editConcern = signal(false);
+  readonly editActivity = signal(false);
+  readonly editActivityCategory = signal(false);
+  readonly editLegalCategory = signal(false);
+  readonly editCounselingDate = signal(false);
+  readonly editRequiredTime = signal(false);
+  readonly counselingDateRequired = signal(false);
+  readonly counselingDuration = signal<string>('');
+  readonly dateObject = signal<NgbDateStruct | undefined>(undefined);
+  readonly time = signal<Time>({hour: 13, minute: 30});
+
+  // Regular properties for non-reactive data
+  readonly CONCERN_MAX_LENGTH = 4080;
+  readonly ACTIVITY_MAX_LENGTH = 4080;
+  private closeResult = '';
+  joinCategories: JoinCategory[] = [];
+  joinCategory: JoinCategory;
+  deSelectedItems: DropdownItem[] = [];
+  deSelectedCategories: JoinCategory[] = [];
+  counselingDate: string;
+
+  // Constants
+  readonly legalCategoryType = CategoryTypes.LEGAL;
+  readonly activityCategoryType = CategoryTypes.ACTIVITY;
+  readonly legalLabel = Label.LEGAL;
+  readonly activityLabel = Label.ACTIVITY;
+  readonly faBars = faBars;
+  protected readonly faTachometerAlt = faTachometerAlt;
+
+  // Computed values
+  readonly concernRemainingChars = computed(() => {
+    const c = this.counseling();
+    return this.CONCERN_MAX_LENGTH - (c?.concern?.length ?? 0);
+  });
+
+  readonly activityRemainingChars = computed(() => {
+    const c = this.counseling();
+    return this.ACTIVITY_MAX_LENGTH - (c?.activity?.length ?? 0);
+  });
+
+  constructor() {
+    // Effect to load counseling data when counselingId changes
+    effect(() => {
+      const id = this.counselingId();
+      if (id) {
+        this.getCounseling();
+      }
+    });
+
     // Effect to watch for reload signal changes
     effect(() => {
       if (this.commonService.reload()) {
@@ -66,43 +122,13 @@ export class CounselingComponent implements OnInit, OnDestroy {
     // Effect to watch for delete signal changes
     effect(() => {
       if (this.commonService.delete()) {
-        if (this.counseling) {
-          this.router.navigate(['/clients/', this.counseling.clientId]);
+        const c = this.counseling();
+        if (c) {
+          this.router.navigate(['/clients/', c.clientId]);
         }
       }
     });
   }
-
-  CONCERN_MAX_LENGTH = 4080;
-  ACTIVITY_MAX_LENGTH = 4080;
-  @Input() counselingId: string;
-  @Input() clientId: string;
-  private subscription$: Subscription[] = [];
-  counseling: Counseling | undefined;
-  private closeResult = '';
-  loading: boolean;
-  editConcern = false;
-  editActivity = false;
-  editActivityCategory = false;
-  editLegalCategory = false;
-  joinCategories: JoinCategory[] = [];
-  joinCategory: JoinCategory;
-  deSelectedItems: DropdownItem[] = [];
-  legalCategoryType: CategoryTypes = CategoryTypes.LEGAL;
-  activityCategoryType: CategoryTypes = CategoryTypes.ACTIVITY;
-  legalLabel: Label = Label.LEGAL;
-  activityLabel: Label = Label.ACTIVITY;
-  deSelectedCategories: JoinCategory[] = [];
-  faBars = faBars;
-  time: Time = {hour: 13, minute: 30};
-  counselingDuration: string;
-  dateObject: NgbDateStruct;
-  counselingDate: string;
-  editCounselingDate = false;
-  editRequiredTime = false;
-  counselingDateRequired = false;
-
-  protected readonly faTachometerAlt = faTachometerAlt;
 
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -114,205 +140,251 @@ export class CounselingComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {
-    this.getCounseling();
-  }
-
-  ngOnDestroy(): void {
-    this.subscription$.forEach((s) => {
-      s.unsubscribe();
+  getCounseling(): void {
+    const counselingId = this.counselingId();
+    this.counselingService.getCounseling(counselingId).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (counseling) => {
+        // Fetch both category types in parallel
+        forkJoin({
+          legal: this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.LEGAL, counselingId),
+          activity: this.categoryService.getCategoriesByTypeAndEntity(CategoryTypes.ACTIVITY, counselingId)
+        }).pipe(
+          takeUntilDestroyed(this.destroyRef)
+        ).subscribe({
+          next: ({legal, activity}) => {
+            counseling.legalCategory = legal;
+            counseling.activityCategories = activity;
+            this.counseling.set(counseling);
+            this.setDateObject();
+            this.counselingDuration.set(
+              this.durationService.getCounselingsDurationForEditing(counseling.requiredTime)
+            );
+          }
+        });
+      },
+      error: () => {
+        this.router.navigate(['/clients', this.clientId()]);
+      }
     });
   }
 
-  getCounseling() {
-    this.subscription$.push(this.counselingService.getCounseling(this.counselingId).subscribe(counseling => {
-      this.counseling = counseling;
-      this.subscription$.push(this.categoryService.getCategoriesByTypeAndEntity(
-        CategoryTypes.LEGAL, this.counselingId
-      ).subscribe(categories => {
-        this.counseling.legalCategory = categories;
-        this.cdr.detectChanges();
-      }));
-      this.subscription$.push(this.categoryService.getCategoriesByTypeAndEntity(
-        CategoryTypes.ACTIVITY, this.counselingId
-      ).subscribe(categories => {
-        this.counseling.activityCategories = categories;
-        this.cdr.detectChanges();
-      }));
-      this.setDateObject();
-      this.counselingDuration = this.durationService.getCounselingsDurationForEditing(this.counseling.requiredTime);
-      this.cdr.detectChanges();
-    }, error => {
-      this.router.navigate(['/clients', this.clientId]).then();
-    }));
+  openDeleteConfirmationModal(content: any): void {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then(
+      (result) => this.closeResult = `Closed with: ${result}`,
+      (reason) => this.closeResult = `Dismissed ${CounselingComponent.getDismissReason(reason)}`
+    );
   }
 
-  openDeleteConfirmationModal(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${CounselingComponent.getDismissReason(reason)}`;
+  yes(id: string): void {
+    this.counselingService.deleteCounseling(id).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: () => {
+        this.router.navigate(['/clients', this.clientId()]);
+        this.modalService.dismissAll();
+      },
+      error: () => {
+        this.alertService.error('sorry, that didn\'t work');
+      }
     });
   }
 
-  yes(id: string) {
-    this.subscription$.push(this.counselingService.deleteCounseling(id).subscribe(result => {
-      this.router.navigate(['/clients', this.clientId]);
-      this.modalService.dismissAll();
-    }, error => {
-      this.alertService.error('sorry, that didn\'t work');
-    }));
-  }
-
-  no() {
+  no(): void {
     this.modalService.dismissAll();
   }
 
-  openEditCounseling(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${CounselingComponent.getDismissReason(reason)}`;
-    });
+  openEditCounseling(content: any): void {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then(
+      (result) => this.closeResult = `Closed with: ${result}`,
+      (reason) => this.closeResult = `Dismissed ${CounselingComponent.getDismissReason(reason)}`
+    );
   }
 
-
-  addActivityCategory() {
-    this.editActivityCategory = !this.editActivityCategory;
+  toggleEditActivityCategory(): void {
+    this.editActivityCategory.update(v => !v);
   }
 
-  showCategoryValue(event: DropdownItem[], categoryType: CategoryTypes) {
-    this.joinCategories = [];
-    event.forEach(e => {
-      this.joinCategory = {
-        categoryId: e.itemId,
-        categoryType: categoryType,
-        entityId: this.counseling.id,
-        entityType: EntityTypes.COUNSELING
-      };
-      this.joinCategories.push(this.joinCategory);
-    });
-    console.log('this.joinCategories', this.joinCategories);
+  showCategoryValue(event: DropdownItem[], categoryType: CategoryTypes): void {
+    const counseling = this.counseling();
+    if (!counseling) { return; }
+
+    this.joinCategories = event.map(e => ({
+      categoryId: e.itemId,
+      categoryType: categoryType,
+      entityId: counseling.id,
+      entityType: EntityTypes.COUNSELING
+    }));
   }
 
-  showDeSelected(event: DropdownItem[]) {
+  showDeSelected(event: DropdownItem[]): void {
     this.deSelectedItems = event;
   }
 
-  saveCategories(categoryType: CategoryTypes) {
-    this.deSelectedItems.forEach((deSelected) => {
-      const deselect: JoinCategory = {
-        entityType: 'COUNSELING',
-        entityId: this.counseling.id,
-        categoryType: categoryType,
-        categoryId: deSelected.itemId
-      };
-      this.deSelectedCategories.push(deselect);
-    });
-    this.subscription$.push(
-      this.categoryService.deleteJoinCategories(this.deSelectedCategories).subscribe(res => {
-      })
-    );
-    this.subscription$.push(
-      this.categoryService.addJoinCategories(this.joinCategories).subscribe(join => {
-        this.commonService.setReload(true);
-      })
-    );
-    switch (categoryType) {
-      case CategoryTypes.ACTIVITY:
-        this.addActivityCategory();
-        break;
-      case CategoryTypes.LEGAL:
-        this.addLegalCategory();
-        break;
-    }
-    this.deSelectedCategories = [];
-    this.joinCategories = [];
-  }
+  saveCategories(categoryType: CategoryTypes): void {
+    const counseling = this.counseling();
+    if (!counseling) { return; }
 
-  addLegalCategory() {
-    this.editLegalCategory = !this.editLegalCategory;
-  }
+    this.deSelectedCategories = this.deSelectedItems.map(deSelected => ({
+      entityType: 'COUNSELING' as const,
+      entityId: counseling.id,
+      categoryType: categoryType,
+      categoryId: deSelected.itemId
+    }));
 
-  update(type: string) {
-    this.loading = true;
-    if (this.dateObject) {
-      this.counselingDate = this.dateTimeService.mergeDateAndTime(this.dateObject, this.time);
-      this.counseling.counselingDate = this.counselingDate;
-    }
-    this.subscription$.push(
-      this.counselingService.updateCounseling(this.counseling.id, this.counseling).subscribe({
-        next: () => {
-          this.getCounseling();
-        },
-        error: err => {
-          if (err.status === 428) {
-            this.counselingDateRequired = true;
+    // Execute delete and add operations, then fetch updated categories
+    forkJoin({
+      delete: this.categoryService.deleteJoinCategories(this.deSelectedCategories),
+      add: this.categoryService.addJoinCategories(this.joinCategories)
+    }).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: () => {
+        // Fetch updated categories and update the counseling signal directly
+        this.categoryService.getCategoriesByTypeAndEntity(categoryType, counseling.id).pipe(
+          takeUntilDestroyed(this.destroyRef)
+        ).subscribe({
+          next: (categories) => {
+            this.counseling.update(c => {
+              if (!c) { return c; }
+              if (categoryType === CategoryTypes.LEGAL) {
+                return {...c, legalCategory: categories};
+              } else if (categoryType === CategoryTypes.ACTIVITY) {
+                return {...c, activityCategories: categories};
+              }
+              return c;
+            });
           }
+        });
+
+        // Close the edit panel
+        if (categoryType === CategoryTypes.ACTIVITY) {
+          this.toggleEditActivityCategory();
+        } else if (categoryType === CategoryTypes.LEGAL) {
+          this.toggleEditLegalCategory();
         }
-      })
-    );
-    this.editCounselingDate = false;
-    this.editActivity = false;
-    this.editConcern = false;
-    this.editActivityCategory = false;
-    this.editLegalCategory = false;
-    this.loading = false;
+
+        // Reset arrays
+        this.deSelectedCategories = [];
+        this.joinCategories = [];
+      }
+    });
   }
 
-  chooseEditConcern() {
-    this.editConcern = !this.editConcern;
+  toggleEditLegalCategory(): void {
+    this.editLegalCategory.update(v => !v);
   }
 
-  chooseEditActivity() {
-    this.editActivity = !this.editActivity;
-  }
+  update(type: string): void {
+    const counseling = this.counseling();
+    if (!counseling) { return; }
 
-  chooseEditCounselingDate() {
-    this.editCounselingDate = !this.editCounselingDate;
-  }
+    this.loading.set(true);
+    const dateObj = this.dateObject();
+    if (dateObj) {
+      this.counselingDate = this.dateTimeService.mergeDateAndTime(dateObj, this.time());
+      counseling.counselingDate = this.counselingDate;
+    }
 
-  chooseEditRequiredTime() {
-    this.editRequiredTime = !this.editRequiredTime;
-  }
-
-  saveRequiredTime() {
-    const hours = parseInt(this.counselingDuration.split(':')[0], 0);
-    const minutes = parseInt(this.counselingDuration.split(':')[1], 0);
-    const duration = hours * 60 + minutes;
-    this.subscription$.push(
-      this.counselingService.setCounselingDuration(this.counselingId, duration).subscribe({
-        next: (res) => {
-          this.chooseEditRequiredTime();
-        }, error: (err) => {
-          console.log(err);
+    this.counselingService.updateCounseling(counseling.id, counseling).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: () => {
+        this.getCounseling();
+      },
+      error: (err) => {
+        if (err.status === 428) {
+          this.counselingDateRequired.set(true);
         }
-      })
-    );
+      }
+    });
+
+    this.editCounselingDate.set(false);
+    this.editActivity.set(false);
+    this.editConcern.set(false);
+    this.editActivityCategory.set(false);
+    this.editLegalCategory.set(false);
+    this.loading.set(false);
   }
 
-  setDateObject() {
-    if (this.counseling && this.counseling.counselingDate) {
-      const strings = this.counseling.counselingDate.split('T');
-      this.dateObject = new class implements NgbDateStruct {
-        day: number;
-        month: number;
-        year: number;
-      };
-      this.dateObject.day = Number.parseInt(strings[0].split('-')[2], 10);
-      this.dateObject.month = Number.parseInt(strings[0].split('-')[1], 10);
-      this.dateObject.year = Number.parseInt(strings[0].split('-')[0], 10);
-      const hour = Number.parseInt(strings[1].split(':')[0], 10);
-      const minute = Number.parseInt(strings[1].split(':')[1], 10);
-      this.time = {
-        hour: hour,
-        minute: minute
-      };
+  toggleEditConcern(): void {
+    this.editConcern.update(v => !v);
+  }
+
+  toggleEditActivity(): void {
+    this.editActivity.update(v => !v);
+  }
+
+  toggleEditCounselingDate(): void {
+    this.editCounselingDate.update(v => !v);
+  }
+
+  toggleEditRequiredTime(): void {
+    this.editRequiredTime.update(v => !v);
+  }
+
+  saveRequiredTime(): void {
+    const duration = this.counselingDuration();
+    const hours = parseInt(duration.split(':')[0], 10);
+    const minutes = parseInt(duration.split(':')[1], 10);
+    const totalMinutes = hours * 60 + minutes;
+
+    this.counselingService.setCounselingDuration(this.counselingId(), totalMinutes).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: () => {
+        this.toggleEditRequiredTime();
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
+  private setDateObject(): void {
+    const counseling = this.counseling();
+    if (counseling?.counselingDate) {
+      const [datePart, timePart] = counseling.counselingDate.split('T');
+      const [year, month, day] = datePart.split('-').map(s => Number.parseInt(s, 10));
+      const [hour, minute] = timePart.split(':').map(s => Number.parseInt(s, 10));
+
+      this.dateObject.set({year, month, day});
+      this.time.set({hour, minute});
     }
   }
 
-  closeCommentModal() {
+  closeCommentModal(): void {
     this.getCounseling();
     this.modalService.dismissAll();
+  }
+
+  // Helper method for template two-way binding with signals
+  updateCounselingConcern(value: string): void {
+    this.counseling.update(c => c ? {...c, concern: value} : c);
+  }
+
+  updateCounselingActivity(value: string): void {
+    this.counseling.update(c => c ? {...c, activity: value} : c);
+  }
+
+  updateDateObject(value: NgbDateStruct): void {
+    this.dateObject.set(value);
+  }
+
+  updateTime(value: Time): void {
+    this.time.set(value);
+  }
+
+  updateTimeHour(hour: number): void {
+    this.time.update(t => ({...t, hour}));
+  }
+
+  updateTimeMinute(minute: number): void {
+    this.time.update(t => ({...t, minute}));
+  }
+
+  updateCounselingDuration(value: string): void {
+    this.counselingDuration.set(value);
   }
 }
