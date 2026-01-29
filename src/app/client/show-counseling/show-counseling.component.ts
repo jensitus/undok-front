@@ -1,7 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, computed, DestroyRef, effect, inject} from '@angular/core';
+import {toSignal} from '@angular/core/rxjs-interop';
 import {ActivatedRoute} from '@angular/router';
-import {CounselingService} from '../service/counseling.service';
-import {Subscription} from 'rxjs';
 import {CounselingComponent} from '../counseling/counseling.component';
 import {SidebarService} from '../../admin-template/shared/services/sidebar.service';
 
@@ -14,29 +13,24 @@ import {SidebarService} from '../../admin-template/shared/services/sidebar.servi
   ],
   styleUrls: ['./show-counseling.component.css']
 })
-export class ShowCounselingComponent implements OnInit, OnDestroy {
+export class ShowCounselingComponent {
 
-  clientId: string;
-  counselingId: string;
-  private subscription$: Subscription[] = [];
+  private activatedRoute = inject(ActivatedRoute);
+  private sidebarService = inject(SidebarService);
+  private destroyRef = inject(DestroyRef);
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private sidebarService: SidebarService
-    ) {}
+  private params = toSignal(this.activatedRoute.params);
+  clientId = computed(() => this.params()?.['client_id'] as string);
+  counselingId = computed(() => this.params()?.['counseling_id'] as string);
 
-  ngOnInit(): void {
-    this.subscription$.push(this.activatedRoute.params.subscribe(params => {
-      this.clientId = params['client_id'];
-      this.counselingId = params['counseling_id'];
-      this.sidebarService.setClientIdForCreateCounseling(this.clientId);
-    }));
-  }
+  constructor() {
+    effect(() => {
+      const id = this.clientId();
+      this.sidebarService.setClientIdForCreateCounseling(id);
+    });
 
-  ngOnDestroy(): void {
-    this.sidebarService.setClientIdForCreateCounseling(null);
-    this.subscription$.forEach((s) => {
-      s.unsubscribe();
+    this.destroyRef.onDestroy(() => {
+      this.sidebarService.setClientIdForCreateCounseling(null);
     });
   }
 
