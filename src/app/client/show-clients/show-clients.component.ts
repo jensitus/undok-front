@@ -9,7 +9,7 @@ import {AllClient} from '../model/all-client';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
 import {CommonService} from '../../common/services/common.service';
 import {takeUntil} from 'rxjs/operators';
-import {saveAs} from 'file-saver';
+import {saveAs} from '../../common/helper/file-utility';
 import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
 import {PageHeaderComponent} from '../../admin-template/shared/modules/page-header/page-header.component';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';

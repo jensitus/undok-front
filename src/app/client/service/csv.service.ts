@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import * as FileSaver from 'file-saver';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
@@ -26,11 +25,6 @@ export class CsvService {
 
   public getBackUpCsv(fileName): Observable<Blob> {
     return this.http.get(this.apiUrl + this.SERVICE_UNDOK_CSV + '/backupCsv/' + fileName, {responseType: 'blob'});
-  }
-
-  private saveAsFile(buffer: any, fileName: string, fileType: string): void {
-    const data: Blob = new Blob([buffer], { type: fileType });
-    FileSaver.saveAs(data, fileName);
   }
 
 }
