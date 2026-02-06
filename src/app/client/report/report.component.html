@@ -24,19 +24,19 @@
   <div class="form-check mt-4">
     <input class="form-check-input"
            type="checkbox"
-           [(ngModel)]="totalNumberOfClientsEnabled"
+           [(ngModel)]="totalNumberOfCounselings"
            id="totalNumber">
     <label class="form-check-label" for="totalNumber">
-      Get the total number of people who received advice within a specific time period.
+      Get the total number of counselings within a specific time period.
     </label>
   </div>
 
-  @if (totalNumberOfClientsError()) {
-    <div class="mt-3 alert alert-danger">{{ totalNumberOfClientsError() }}</div>
+  @if (totalNumberOfCounselingsError()) {
+    <div class="mt-3 alert alert-danger">{{ totalNumberOfCounselingsError() }}</div>
   }
-  @if (!totalNumberOfClientsError() && totalNumberOfClientsResult() !== null) {
+  @if (!totalNumberOfCounselingsError() && totalNumberOfCounselingsResult() !== null) {
     <div class="mt-3 alert alert-info">
-      Total number of clients in Range: <strong>{{ totalNumberOfClientsResult() }}</strong>
+      Total number of counselings in Range: <strong>{{ totalNumberOfCounselingsResult() }}</strong>
     </div>
   }
 
