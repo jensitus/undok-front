@@ -36,7 +36,7 @@ export interface ActivityCount {
 }
 
 interface ReportState {
-  totalNumberOfClients: { data: number | null; error: string | null };
+  totalNumberOfCounselings: { data: number | null; error: string | null };
   firstCounselingOnly: { data: number | null; error: string | null };
   languages: { data: LanguageResult[] | null; error: string | null };
   nationalities: { data: NationalityCount[] | null; error: string | null };
@@ -67,7 +67,7 @@ export class ReportComponent {
   readonly generalError = signal<string | null>(null);
 
   // Checkbox states as signals
-  readonly totalNumberOfClientsEnabled = signal(false);
+  readonly totalNumberOfCounselings = signal(false);
   readonly firstCounselingOnlyEnabled = signal(false);
   readonly languagesUsedEnabled = signal(false);
   readonly nationalityCountEnabled = signal(false);
@@ -77,7 +77,7 @@ export class ReportComponent {
 
   // Report results as signal
   readonly reportState = signal<ReportState>({
-    totalNumberOfClients: { data: null, error: null },
+    totalNumberOfCounselings: { data: null, error: null },
     firstCounselingOnly: { data: null, error: null },
     languages: { data: null, error: null },
     nationalities: { data: null, error: null },
@@ -87,11 +87,11 @@ export class ReportComponent {
   });
 
   // Computed signals for easy access
-  readonly totalNumberOfClientsResult = computed(() =>
-    this.reportState().totalNumberOfClients.data
+  readonly totalNumberOfCounselingsResult = computed(() =>
+    this.reportState().totalNumberOfCounselings.data
   );
-  readonly totalNumberOfClientsError = computed(() =>
-    this.reportState().totalNumberOfClients.error
+  readonly totalNumberOfCounselingsError = computed(() =>
+    this.reportState().totalNumberOfCounselings.error
   );
 
   readonly firstCounselingOnlyResult = computed(() =>
@@ -143,7 +143,7 @@ export class ReportComponent {
 
   // Computed signal for any enabled report
   readonly anyReportEnabled = computed(() => {
-    return this.totalNumberOfClientsEnabled() ||
+    return this.totalNumberOfCounselings() ||
       this.firstCounselingOnlyEnabled() ||
       this.languagesUsedEnabled() ||
       this.nationalityCountEnabled() ||
@@ -185,8 +185,8 @@ export class ReportComponent {
       // Create an object to hold all observables
       const requests: { [key: string]: any } = {};
 
-      if (this.totalNumberOfClientsEnabled()) {
-        requests['totalNumberOfClients'] = this.reportService
+      if (this.totalNumberOfCounselings()) {
+        requests['totalNumberOfCounselings'] = this.reportService
                                                .countNumberOfCounselingsByDateRange(fromIso, toIso)
                                                .pipe(
                                                  map(data => ({ data, error: null })),
@@ -287,7 +287,6 @@ export class ReportComponent {
       } else {
         this.loading.set(false);
       }
-
     } catch (e) {
       this.generalError.set('Failed to format dates.');
       this.loading.set(false);
