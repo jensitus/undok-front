@@ -1,26 +1,13 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    @if (firstLink) {
+    @for (crumb of breadcrumbs(); track crumb.link) {
       <li class="breadcrumb-item">
-        <!--small><fa-icon class="text-secondary" [icon]="firstIcon"></fa-icon></small--> &nbsp;
-        <a href="Javascript:void(0)" class="breadcrumb-font" [routerLink]="[firstLink]"> {{ firstPoint }}</a>
-      </li>
-    }
-    @if (secondLink) {
-      <li class="breadcrumb-item">
-        <!--small><fa-icon class="text-secondary" [icon]="secondIcon"></fa-icon></small--> &nbsp;
-        <a href="Javascript:void(0)" class="breadcrumb-font" [routerLink]="[secondLink]"> {{ secondPoint }}</a>
-      </li>
-    }
-    @if (thirdLink) {
-      <li class="breadcrumb-item">
-        <!--small><fa-icon class="text-secondary" [icon]="thirdIcon" ></fa-icon></small--> &nbsp;
-        <a href="Javascript:void(0)" class="breadcrumb-font" [routerLink]="[thirdLink]"> {{ thirdPoint }}</a>
+        &nbsp;
+        <a class="breadcrumb-font" [routerLink]="[crumb.link]">{{ crumb.label }}</a>
       </li>
     }
     <li class="breadcrumb-item active">
-      <!--fa-icon class="text-secondary" [icon]="endPointIcon"></fa-icon--> &nbsp; <span
-      class="breadcrumb-font">{{ endPoint }}</span>
+      &nbsp; <span class="breadcrumb-font">{{ endPoint() }}</span>
     </li>
   </ol>
 </nav>

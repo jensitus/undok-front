@@ -1,30 +1,22 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import {IconDefinition, faArrowAltCircleRight} from '@fortawesome/free-solid-svg-icons';
-import {RouterLink} from '@angular/router';
-import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import { Component, input, output } from '@angular/core';
+import { IconDefinition, faArrowAltCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { RouterLink } from '@angular/router';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-stat',
-  standalone: true,
   templateUrl: './stat.component.html',
-  imports: [
-    RouterLink,
-    FaIconComponent
-  ],
-  styleUrls: ['./stat.component.scss']
+  imports: [RouterLink, FaIconComponent],
+  styleUrl: './stat.component.scss'
 })
-export class StatComponent implements OnInit {
-    @Input() bgClass: string;
-    @Input() icon: IconDefinition;
-    @Input() count: number;
-    @Input() label: string;
-    @Input() data: number;
-    @Input() link: string;
-    @Output() event: EventEmitter<any> = new EventEmitter();
+export class StatComponent {
+  bgClass = input<string>('');
+  icon = input.required<IconDefinition>();
+  count = input<number>(0);
+  label = input<string>('');
+  // data = input<number>(0);
+  link = input<string>('');
+  event = output<any>();
 
-    faArrowCircleRight = faArrowAltCircleRight;
-
-    constructor() {}
-
-    ngOnInit() {}
+  faArrowCircleRight = faArrowAltCircleRight;
 }

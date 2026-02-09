@@ -15,14 +15,11 @@ import {
   faTachometerAlt,
   faTasks,
   faUser,
-  faUsers
+  faUsers, faAngleDoubleDown, faAngleDoubleLeft, faAngleDoubleRight
 } from '@fortawesome/free-solid-svg-icons';
 import {SidebarService} from '../../../shared/services/sidebar.service';
 import {NgClass} from '@angular/common';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
-import {faAngleDoubleDown} from '@fortawesome/free-solid-svg-icons/faAngleDoubleDown';
-import {faAngleDoubleLeft} from '@fortawesome/free-solid-svg-icons/faAngleDoubleLeft';
-import {faAngleDoubleRight} from '@fortawesome/free-solid-svg-icons/faAngleDoubleRight';
 import {filter} from 'rxjs/operators';
 
 @Component({

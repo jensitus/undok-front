@@ -1,45 +1,55 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {IconDefinition} from '@fortawesome/free-solid-svg-icons';
-import {CommonModule} from '@angular/common';
-import {RouterLink} from '@angular/router';
+import { Component, computed, input } from '@angular/core';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { RouterLink } from '@angular/router';
+
+interface BreadcrumbItem {
+  label: string;
+  icon?: IconDefinition;
+  link: string;
+}
 
 @Component({
   selector: 'app-page-header',
-  standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [RouterLink],
   templateUrl: './page-header.component.html',
-  styleUrls: ['./page-header.component.scss']
+  styleUrl: './page-header.component.scss'
 })
-export class PageHeaderComponent implements OnInit {
+export class PageHeaderComponent {
+  firstPoint = input.required<string>();
+  firstIcon = input<IconDefinition>();
+  firstLink = input<string>('');
 
-  @Input() firstPoint!: string;
-  @Input() firstIcon!: IconDefinition;
-  @Input() firstLink!: string;
+  secondPoint = input<string>('');
+  secondIcon = input<IconDefinition>();
+  secondLink = input<string>('');
 
-  @Input() secondPoint: string;
-  @Input() secondIcon: IconDefinition;
-  @Input() secondLink: string;
+  thirdPoint = input<string>('');
+  thirdIcon = input<IconDefinition>();
+  thirdLink = input<string>('');
 
-  @Input() thirdPoint: string;
-  @Input() thirdIcon: IconDefinition;
-  @Input() thirdLink: string;
+  fourthPoint = input<string>('');
+  fourthIcon = input<string>('');
+  fourthLink = input<string>('');
 
-  @Input() fourthPoint: string;
-  @Input() fourthIcon: string;
-  @Input() fourthLink: string;
+  endPoint = input.required<string>();
+  endPointIcon = input<IconDefinition>();
 
-  @Input() endPoint!: string;
-  @Input() endPointIcon: IconDefinition;
+  heading = input<string>('');
+  icon = input<string>('');
 
-  @Input() heading: string;
-  @Input() icon: string;
+  breadcrumbs = computed<BreadcrumbItem[]>(() => {
+    const items: BreadcrumbItem[] = [];
 
-  routerlink: string;
+    if (this.firstLink()) {
+      items.push({ label: this.firstPoint(), icon: this.firstIcon(), link: this.firstLink() });
+    }
+    if (this.secondLink()) {
+      items.push({ label: this.secondPoint(), icon: this.secondIcon(), link: this.secondLink() });
+    }
+    if (this.thirdLink()) {
+      items.push({ label: this.thirdPoint(), icon: this.thirdIcon(), link: this.thirdLink() });
+    }
 
-  constructor() {
-  }
-
-  ngOnInit() {
-
-  }
+    return items;
+  });
 }

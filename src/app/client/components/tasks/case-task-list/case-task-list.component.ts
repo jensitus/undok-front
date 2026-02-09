@@ -2,7 +2,7 @@ import {Component, effect, inject, input, OnInit, TemplateRef, ViewChild} from '
 import {CommonModule} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {faEdit, faPlus, faTasks, faTrash, faGears, faClock} from '@fortawesome/free-solid-svg-icons';
+import {faEdit, faPlus, faTasks, faTrash, faGears, faClock, faXmark, faFloppyDisk} from '@fortawesome/free-solid-svg-icons';
 import {TaskService} from '../../../service/task.service';
 import {CreateTaskComponent} from '../create-task/create-task.component';
 import {Task} from '../../../model/task';
@@ -10,8 +10,6 @@ import {AlertService} from '../../../../admin-template/layout/components/alert/s
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 import {StatusUtility} from '../../../../common/helper/status-utility';
-import {faFloppyDisk} from '@fortawesome/free-solid-svg-icons/faFloppyDisk';
-import {faXmark} from '@fortawesome/free-solid-svg-icons/faXmark';
 
 @Component({
   selector: 'app-case-task-list',
