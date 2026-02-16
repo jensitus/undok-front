@@ -12,6 +12,7 @@ interface BreadcrumbItem {
   selector: 'app-page-header',
   imports: [RouterLink],
   templateUrl: './page-header.component.html',
+  standalone: true,
   styleUrl: './page-header.component.scss'
 })
 export class PageHeaderComponent {

@@ -13,7 +13,7 @@
   <div class="col-md-4">
     <div class="form-group mb-2">
       <label for="keyword">Schlüsselwort</label>
-      <input id="keyword" type="text" class="form-control" name="keyword" [(ngModel)]="keyword"/>
+      <input id="keyword" type="text" class="form-control" [formControl]="keywordControl"/>
     </div>
   </div>
 </div>
