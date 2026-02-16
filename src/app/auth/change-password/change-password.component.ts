@@ -7,7 +7,7 @@ import { UserService } from '../services/user.service';
 import { ChangePwDto } from '../model/change-pw-dto';
 import { AlertService } from '../../admin-template/layout/components/alert/services/alert.service';
 import { AlertComponent } from '../../admin-template/layout/components/alert/alert.component';
-import { PageHeaderComponent } from '../../admin-template/shared/modules/page-header/page-header.component';
+import { PageHeaderComponent } from '../../admin-template/shared/page-header/page-header.component';
 import { faKey, faUser } from '@fortawesome/free-solid-svg-icons';
 
 @Component({

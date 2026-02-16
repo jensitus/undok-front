@@ -30,7 +30,7 @@ import { DeleteTypes } from '../delete/delete-types';
 import { Label } from '../model/label';
 import { isUndefined } from '../../common/helper/comparison-utils';
 import { AlertComponent } from '../../admin-template/layout/components/alert/alert.component';
-import { PageHeaderComponent } from '../../admin-template/shared/modules/page-header/page-header.component';
+import { PageHeaderComponent } from '../../admin-template/shared/page-header/page-header.component';
 import { ReopenCaseComponent } from '../case/reopen-case/reopen-case.component';
 import { ShowClientEmployersComponent } from '../show-client-employers/show-client-employers.component';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
@@ -73,7 +73,7 @@ export class ShowSingleClientComponent implements OnDestroy {
   private readonly commonService = inject(CommonService);
   private readonly sidebarService = inject(SidebarService);
   private readonly router = inject(Router);
-  private readonly categoryService = inject(CategoryService);
+  // private readonly categoryService = inject(CategoryService);
   private readonly durationService = inject(DurationService);
   private readonly alertService = inject(AlertService);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -112,14 +112,14 @@ export class ShowSingleClientComponent implements OnDestroy {
   readonly contentCreateCounseling = viewChild<ElementRef>('content_create_counseling');
   readonly createEmployer = viewChild<ElementRef>('create_employer');
   readonly assignEmployer = viewChild<ElementRef>('list_employer');
-  readonly editClient = viewChild<ElementRef>('edit_client');
-  readonly createTask = viewChild<TemplateRef<any>>('create_task');
+  // readonly editClient = viewChild<ElementRef>('edit_client');
+  // readonly createTask = viewChild<TemplateRef<any>>('create_task');
 
   // Constants
   readonly deleteTypeClient: DeleteTypes = DeleteTypes.CLIENT;
   readonly Label = Label;
   readonly faTachometerAlt = faTachometerAlt;
-  readonly faUser = faUser;
+  // readonly faUser = faUser;
   readonly faUsers = faUsers;
   readonly faEdit = faEdit;
   readonly faTasks = faTasks;

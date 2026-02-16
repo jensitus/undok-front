@@ -12,6 +12,7 @@ import {Client} from '../model/client';
 @Component({
   selector: 'app-create-counseling',
   templateUrl: './create-counseling.component.html',
+  standalone: true,
   styleUrls: ['./create-counseling.component.css']
 })
 export class CreateCounselingComponent implements OnInit, OnDestroy {

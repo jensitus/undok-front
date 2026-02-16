@@ -17,13 +17,16 @@ import {faBars, faTachometerAlt} from '@fortawesome/free-solid-svg-icons';
 import {Time} from '../model/time';
 import {DateTimeService} from '../service/date-time.service';
 import {DurationService} from '../service/duration.service';
-import {PageHeaderComponent} from '../../admin-template/shared/modules/page-header/page-header.component';
+import {PageHeaderComponent} from '../../admin-template/shared/page-header/page-header.component';
 import {FormsModule} from '@angular/forms';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {DatePipe} from '@angular/common';
 import {MultiSelectBoxComponent} from '../select-box/multi/multi-select-box.component';
 import {NewLinePipe} from '../new-line.pipe';
 import {CreateCommentComponent} from '../create-comment/create-comment.component';
+import {DeleteComponent} from '../delete/delete.component';
+import {DeleteTypes} from '../delete/delete-types';
+import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
 
 @Component({
   selector: 'app-counseling',
@@ -39,7 +42,9 @@ import {CreateCommentComponent} from '../create-comment/create-comment.component
     MultiSelectBoxComponent,
     NewLinePipe,
     CreateCommentComponent,
-    DatePipe
+    DatePipe,
+    DeleteComponent,
+    AlertComponent
   ],
   styleUrls: ['./counseling.component.css']
 })
@@ -90,6 +95,7 @@ export class CounselingComponent {
   readonly activityLabel = Label.ACTIVITY;
   readonly faBars = faBars;
   protected readonly faTachometerAlt = faTachometerAlt;
+  readonly deleteTypeCounseling: DeleteTypes = DeleteTypes.COUNSELING;
 
   // Computed values
   readonly concernRemainingChars = computed(() => {
@@ -122,6 +128,7 @@ export class CounselingComponent {
     // Effect to watch for delete signal changes
     effect(() => {
       if (this.commonService.delete()) {
+        this.commonService.setDelete(false);
         const c = this.counseling();
         if (c) {
           this.router.navigate(['/clients/', c.clientId]);

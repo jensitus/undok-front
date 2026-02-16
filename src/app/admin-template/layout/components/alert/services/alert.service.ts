@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import {Observable, ReplaySubject} from 'rxjs';
 import {NavigationStart, Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlertService {
-  private subject = new Subject<any>();
+  private subject = new ReplaySubject<any>(1);
   private keepAfterNavigationChange = false;
 
   constructor(private router: Router) {
@@ -15,7 +15,7 @@ export class AlertService {
       if (event instanceof NavigationStart) {
         if (this.keepAfterNavigationChange) {
           // only keep for a single location change
-          this.keepAfterNavigationChange = true;
+          this.keepAfterNavigationChange = false;
         } else {
           // clear alert
           this.subject.next(true);

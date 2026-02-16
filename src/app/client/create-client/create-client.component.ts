@@ -18,7 +18,7 @@ import {JoinCategory} from '../model/join-category';
 import {Client} from '../model/client';
 import {takeUntil} from 'rxjs/operators';
 import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
-import {PageHeaderComponent} from '../../admin-template/shared/modules/page-header/page-header.component';
+import {PageHeaderComponent} from '../../admin-template/shared/page-header/page-header.component';
 import {FormsModule} from '@angular/forms';
 
 @Component({

@@ -3,7 +3,7 @@ import {routerTransition} from '../../../router.animations';
 import {ClientService} from '../../../client/service/client.service';
 import {Client} from '../../../client/model/client';
 import {CountryData} from './doughnut/country-data';
-import {PageHeaderComponent} from '../../shared/modules/page-header/page-header.component';
+import {PageHeaderComponent} from '../../shared/page-header/page-header.component';
 import {faDashboard} from '@fortawesome/free-solid-svg-icons';
 
 @Component({

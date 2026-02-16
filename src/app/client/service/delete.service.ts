@@ -11,6 +11,7 @@ export class DeleteService {
   private apiUrl = environment.api_url;
   private CLIENT_PATH = '/service/undok/clients/';
   private EMPLOYER_PATH = '/service/undok/employers/';
+  private COUNSELING_PATH = '/service/undok/counselings/';
 
   constructor(
     // tslint:disable-next-line:no-shadowed-variable
@@ -23,6 +24,10 @@ export class DeleteService {
 
   deleteEmployer(id: string): Observable<any> {
     return this.http.delete<any>(this.apiUrl + this.EMPLOYER_PATH + id + '/set-deleted');
+  }
+
+  deleteCounseling(id: string): Observable<any> {
+    return this.http.delete<any>(this.apiUrl + this.COUNSELING_PATH + id);
   }
 
 }

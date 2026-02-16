@@ -11,7 +11,7 @@ import { AlertService } from '../components/alert/services/alert.service';
 import { TimelineComponent } from './components';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TaskListComponent } from '../../../client/components/tasks/task-list/task-list.component';
-import { StatComponent } from '../../shared/modules/stat/stat.component';
+import { StatComponent } from '../../shared/stat/stat.component';
 import { AlertComponent } from '../components/alert/alert.component';
 import {
   faComments,

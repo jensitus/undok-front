@@ -1,14 +1,14 @@
-<a (click)="open(delete_object)">
+<a (click)="open(deleteObject)">
   <fa-icon class="text-secondary" [icon]="faTrash"></fa-icon> delete
 </a>
 
-<ng-template #delete_object let-modal>
+<ng-template #deleteObject let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-title">Profile deletion</h4>
     <button type="button" class="btn-close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
-    <p><strong>Are you sure you want to delete <span class="text-primary">{{deleteObjectName}}</span>?</strong></p>
+    <p><strong>Are you sure you want to delete <span class="text-primary">{{ deleteObjectName() }}</span>?</strong></p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>

@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {faTachometerAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
-import {PageHeaderComponent} from '../../../../shared/modules/page-header/page-header.component';
+import {PageHeaderComponent} from '../../../../shared/page-header/page-header.component';
 import {AlertComponent} from '../../../components/alert/alert.component';
 import {UserListComponent} from './user-list/user-list.component';
 import {CreateUserComponent} from './create-user/create-user.component';

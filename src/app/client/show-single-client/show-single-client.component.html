@@ -336,9 +336,9 @@
                 edit
               </a>
               <li class="list-group-item">
-                <app-delete [id_to_delete]="client()!.id"
+                <app-delete [idToDelete]="client()!.id"
                             [type]="deleteTypeClient"
-                            [delete_object_name]="client()!.keyword">
+                            [deleteObjectName]="client()!.keyword">
                 </app-delete>
               </li>
               <a class="list-group-item" [routerLink]="['/clients/' + client()!.id + '/create-counseling']">

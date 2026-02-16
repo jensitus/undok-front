@@ -9,7 +9,7 @@ import { User } from '../model/user';
 import { SetAdminDto } from '../../admin-template/layout/dashboard/components/show-users/model/set-admin-dto';
 import { ResponseMessage } from '../../common/helper/response-message';
 import { AlertComponent } from '../../admin-template/layout/components/alert/alert.component';
-import { PageHeaderComponent } from '../../admin-template/shared/modules/page-header/page-header.component';
+import { PageHeaderComponent } from '../../admin-template/shared/page-header/page-header.component';
 
 export interface LockUser {
   id: string;

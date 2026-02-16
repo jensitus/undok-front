@@ -1,78 +1,80 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {DeleteTypes} from './delete-types';
-import {Subject} from 'rxjs';
-import {DeleteService} from '../service/delete.service';
-import {Router} from '@angular/router';
-import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
-import {takeUntil} from 'rxjs/operators';
-import {CommonService} from '../../common/services/common.service';
-import {DeleteModalComponent} from './delete-modal/delete-modal.component';
+import { Component, DestroyRef, inject, input } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
+import { DeleteTypes } from './delete-types';
+import { DeleteService } from '../service/delete.service';
+import { AlertService } from '../../admin-template/layout/components/alert/services/alert.service';
+import { CommonService } from '../../common/services/common.service';
+import { DeleteModalComponent } from './delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-delete',
   templateUrl: './delete.component.html',
-  imports: [
-    DeleteModalComponent
-  ],
-  styleUrls: ['./delete.component.css']
+  imports: [DeleteModalComponent],
+  standalone: true,
+  styleUrl: './delete.component.css'
 })
-export class DeleteComponent implements OnInit, OnDestroy {
+export class DeleteComponent {
+  private deleteService = inject(DeleteService);
+  private router = inject(Router);
+  private alertService = inject(AlertService);
+  private commonService = inject(CommonService);
+  private destroyRef = inject(DestroyRef);
 
   deleteTypeClient: DeleteTypes = DeleteTypes.CLIENT;
 
-  @Input() type: DeleteTypes;
-  @Input() id_to_delete: string;
-  @Input() delete_object_name: string;
-  private unsubscribe$ = new Subject();
-  confirmed: boolean;
-
-  constructor(
-    private deleteService: DeleteService,
-    private router: Router,
-    private alertService: AlertService,
-    private commonService: CommonService
-  ) {
-  }
-
-  ngOnInit(): void {
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next(true);
-  }
+  type = input.required<DeleteTypes>();
+  idToDelete = input.required<string>();
+  deleteObjectName = input<string>('');
+  navigateAfterDelete = input<string>('');
 
   delete() {
-    switch (this.type) {
+    switch (this.type()) {
       case DeleteTypes.CLIENT:
-        this.deleteService.deleteClient(this.id_to_delete).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-          this.commonService.setAlert('Client successfully deleted');
-          this.commonService.setReload(true);
-          this.router.navigate(['/clients/client-list']);
-        }, error => {
-          this.alertService.error('Sorry but something went wrong');
+        this.deleteService.deleteClient(this.idToDelete()).pipe(
+          takeUntilDestroyed(this.destroyRef)
+        ).subscribe({
+          next: () => {
+            this.commonService.setAlert('Client successfully deleted');
+            this.commonService.setReload(true);
+            this.router.navigate(['/clients/client-list']);
+          },
+          error: () => {
+            this.alertService.error('Sorry but something went wrong');
+          }
         });
         break;
+
       case DeleteTypes.EMPLOYER:
-        this.deleteService.deleteEmployer(this.id_to_delete).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-          this.commonService.setAlert('Employer successfully deleted');
-          this.router.navigate(['/clients/employers']);
-        }, error => {
-          this.alertService.error(error.error.text);
+        this.deleteService.deleteEmployer(this.idToDelete()).pipe(
+          takeUntilDestroyed(this.destroyRef)
+        ).subscribe({
+          next: () => {
+            this.commonService.setAlert('Employer successfully deleted');
+            this.router.navigate(['/clients/employers']);
+          },
+          error: (error) => {
+            this.alertService.error(error.error.text);
+          }
         });
         break;
+
       case DeleteTypes.COUNSELING:
-        this.deleteService.deleteEmployer(this.id_to_delete).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-          this.commonService.setDelete(true);
+        this.deleteService.deleteCounseling(this.idToDelete()).pipe(
+          takeUntilDestroyed(this.destroyRef)
+        ).subscribe({
+          next: () => {
+            this.commonService.setDelete(true);
+            this.alertService.success('Counseling deleted successfully', true);
+            this.router.navigate([this.navigateAfterDelete() || '/dashboard']);
+          }
         });
-        break;
-      default:
         break;
     }
   }
 
-  checkConfirmation(event: boolean) {
-    this.confirmed = event;
-    if (this.confirmed === true) {
+  onConfirmation(confirmed: boolean) {
+    if (confirmed) {
       this.delete();
     }
   }

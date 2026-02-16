@@ -11,7 +11,7 @@ import {CommonService} from '../../common/services/common.service';
 import {takeUntil} from 'rxjs/operators';
 import {saveAs} from '../../common/helper/file-utility';
 import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
-import {PageHeaderComponent} from '../../admin-template/shared/modules/page-header/page-header.component';
+import {PageHeaderComponent} from '../../admin-template/shared/page-header/page-header.component';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {NgbHighlight, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 import {AsyncPipe, CommonModule, NgForOf} from '@angular/common';
