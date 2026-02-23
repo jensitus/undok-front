@@ -284,10 +284,15 @@
         <span>{{ counselingDuration() }}</span>
       </div>
       <div class="col-md-2 fade-in">
-        <input type="time"
-               [ngModel]="counselingDuration()"
-               (ngModelChange)="updateCounselingDuration($event)"
-               class="form-control-sm">
+        <div class="input-group input-group-sm">
+          <input type="number" class="form-control form-control-sm"
+                 [ngModel]="durationHours()" (ngModelChange)="updateDurationHours($event)"
+                 min="0" placeholder="hh">
+          <span class="input-group-text">:</span>
+          <input type="number" class="form-control form-control-sm"
+                 [ngModel]="durationMinutes()" (ngModelChange)="updateDurationMinutes($event)"
+                 min="0" max="59" placeholder="mm">
+        </div>
       </div>
       <div class="col-md-4 fade-in">
         <button class="btn btn-sm btn-outline-secondary" (click)="saveRequiredTime()">save</button>

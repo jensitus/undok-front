@@ -99,6 +99,16 @@ export class CounselingComponent {
   readonly deleteTypeCounseling: DeleteTypes = DeleteTypes.COUNSELING;
 
   // Computed values
+  readonly durationHours = computed(() => {
+    const d = this.counselingDuration();
+    return d ? (parseInt(d.split(':')[0], 10) || 0) : 0;
+  });
+
+  readonly durationMinutes = computed(() => {
+    const d = this.counselingDuration();
+    return d ? (parseInt(d.split(':')[1], 10) || 0) : 0;
+  });
+
   readonly concernRemainingChars = computed(() => {
     const c = this.counseling();
     return this.CONCERN_MAX_LENGTH - (c?.concern?.length ?? 0);
@@ -405,11 +415,17 @@ export class CounselingComponent {
   }
 
   updateTimeMinute(minute: number): void {
-    console.log('minute', minute);
     this.time.update(t => ({...t, minute}));
   }
 
-  updateCounselingDuration(value: string): void {
-    this.counselingDuration.set(value);
+  updateDurationHours(hours: number): void {
+    const minutes = this.durationMinutes();
+    this.counselingDuration.set(`${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`);
+  }
+
+  updateDurationMinutes(minutes: number): void {
+    const totalHours = this.durationHours() + Math.floor(minutes / 60);
+    const normalizedMinutes = minutes % 60;
+    this.counselingDuration.set(`${String(totalHours).padStart(2, '0')}:${String(normalizedMinutes).padStart(2, '0')}`);
   }
 }
