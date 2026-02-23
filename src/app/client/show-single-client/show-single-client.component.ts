@@ -335,5 +335,6 @@ export class ShowSingleClientComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.sidebarService.setClientButtons(false);
     this.sidebarService.setClientIdForCreateCounseling(null);
+    this.sidebarService.setAssignEmployer(false);
   }
 }
