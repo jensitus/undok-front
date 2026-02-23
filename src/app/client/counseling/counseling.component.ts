@@ -74,6 +74,7 @@ export class CounselingComponent {
   readonly editCounselingDate = signal(false);
   readonly editRequiredTime = signal(false);
   readonly counselingDateRequired = signal(false);
+  readonly invalidDate = signal(false);
   readonly counselingDuration = signal<string>('');
   readonly dateObject = signal<NgbDateStruct | undefined>(undefined);
   readonly time = signal<Time>({hour: 13, minute: 30});
@@ -286,6 +287,7 @@ export class CounselingComponent {
   update(type: string): void {
     const counseling = this.counseling();
     if (!counseling) { return; }
+    if (this.invalidDate()) { return; }
 
     this.loading.set(true);
     const dateObj = this.dateObject();
@@ -303,6 +305,9 @@ export class CounselingComponent {
       error: (err) => {
         if (err.status === 428) {
           this.counselingDateRequired.set(true);
+        } else if (err.status === 418) {
+          this.alertService.error(err.error, true);
+          this.router.navigate(['/login']);
         }
       }
     });
@@ -377,6 +382,18 @@ export class CounselingComponent {
 
   updateDateObject(value: NgbDateStruct): void {
     this.dateObject.set(value);
+    if (value) {
+      this.invalidDate.set(!this.isValidDate(value));
+    } else {
+      this.invalidDate.set(false);
+    }
+  }
+
+  private isValidDate(date: NgbDateStruct): boolean {
+    const d = new Date(date.year, date.month - 1, date.day);
+    return d.getFullYear() === date.year &&
+      d.getMonth() === date.month - 1 &&
+      d.getDate() === date.day;
   }
 
   updateTime(value: Time): void {
@@ -388,6 +405,7 @@ export class CounselingComponent {
   }
 
   updateTimeMinute(minute: number): void {
+    console.log('minute', minute);
     this.time.update(t => ({...t, minute}));
   }
 

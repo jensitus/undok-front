@@ -41,6 +41,9 @@
                   </button>
                 </div>
               </div>
+              @if (invalidDate()) {
+                <small class="text-danger">Ungültiges Datum – bitte prüfen Sie Tag und Monat.</small>
+              }
             </div>
             <div class="col-3">
               <div class="input-group">
@@ -68,6 +71,9 @@
                   </button>
                 </div>
               </div>
+              @if (invalidDate()) {
+                <small class="text-danger">Ungültiges Datum – bitte prüfen Sie Tag und Monat.</small>
+              }
             </div>
             <div class="col-3">
               <ngb-timepicker [ngModel]="time()" (ngModelChange)="updateTime($event)" name="time"></ngb-timepicker>
@@ -79,14 +85,14 @@
       @if (!c.counselingDate && !editCounselingDate()) {
       <div class="col-md-2">
         <div class="mt-2">
-          <button class="btn btn-sm btn-success" (click)="update('concern')">update</button>
+          <button class="btn btn-sm btn-success" (click)="update('concern')" [disabled]="invalidDate()">update</button>
         </div>
       </div>
       }
       @if (c.counselingDate && editCounselingDate()) {
       <div class="col-md-2">
         <div class="mt-2">
-          <button class="btn btn-sm btn-outline-success" (click)="update('concern')">update</button>
+          <button class="btn btn-sm btn-outline-success" (click)="update('concern')" [disabled]="invalidDate()">update</button>
         </div>
       </div>
       }
