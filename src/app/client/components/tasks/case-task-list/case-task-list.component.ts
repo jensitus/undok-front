@@ -2,7 +2,7 @@ import {Component, effect, inject, input, signal, TemplateRef, viewChild} from '
 import {SlicePipe} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {faEdit, faPlus, faTasks, faGears, faClock, faXmark, faFloppyDisk} from '@fortawesome/free-solid-svg-icons';
+import {faCalendarDays, faClock, faEdit, faFloppyDisk, faGears, faPlus, faTasks, faXmark} from '@fortawesome/free-solid-svg-icons';
 import {TaskService} from '../../../service/task.service';
 import {CreateTaskComponent} from '../create-task/create-task.component';
 import {Task} from '../../../model/task';
@@ -33,6 +33,8 @@ export class CaseTaskListComponent {
   readonly editingTimeTaskId = signal<string | null>(null);
   readonly editingHours = signal(0);
   readonly editingMinutes = signal(0);
+  readonly editingDueDateTaskId = signal<string | null>(null);
+  readonly editingDueDate = signal<string>('');
 
   // Icons
   protected readonly faEdit = faEdit;
@@ -42,6 +44,7 @@ export class CaseTaskListComponent {
   protected readonly faClock = faClock;
   protected readonly faFloppyDisk = faFloppyDisk;
   protected readonly faXmark = faXmark;
+  protected readonly faCalendarDays = faCalendarDays;
 
   constructor() {
     effect(() => {
@@ -110,6 +113,41 @@ export class CaseTaskListComponent {
     this.editingTimeTaskId.set(null);
     this.editingHours.set(0);
     this.editingMinutes.set(0);
+  }
+
+  startEditDueDate(taskId: string, currentDueDate: Date | string | undefined): void {
+    this.editingDueDateTaskId.set(taskId);
+    if (currentDueDate) {
+      const d = new Date(currentDueDate);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      this.editingDueDate.set(`${yyyy}-${mm}-${dd}`);
+    } else {
+      this.editingDueDate.set('');
+    }
+  }
+
+  cancelEditDueDate(): void {
+    this.editingDueDateTaskId.set(null);
+    this.editingDueDate.set('');
+  }
+
+  updateTaskDueDate(taskId: string): void {
+    const dueDate = this.editingDueDate() || null;
+    this.taskService.updateTask(taskId, { dueDate: dueDate as any }).subscribe({
+      next: () => {
+        this.alertService.success('Due date updated successfully');
+        this.editingDueDateTaskId.set(null);
+        this.editingDueDate.set('');
+      },
+      error: (err) => {
+        console.error('Error updating due date:', err);
+        this.alertService.error('Failed to update due date');
+        this.editingDueDateTaskId.set(null);
+        this.editingDueDate.set('');
+      }
+    });
   }
 
   updateTaskStatus(taskId: string): void {

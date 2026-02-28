@@ -59,7 +59,7 @@ export class CreateTaskComponent implements OnInit {
     this.submitError.set(null);
 
     const taskData = this.taskForm.getRawValue();
-
+    taskData.dueDate = taskData.dueDate || null;
     this.taskService.createTask(taskData).subscribe({
       next: (createdTask) => {
         this.submitting.set(false);

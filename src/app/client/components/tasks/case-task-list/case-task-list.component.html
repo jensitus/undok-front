@@ -84,7 +84,26 @@
                   </select>
                 }
               </td>
-              <td>{{ formatDate(task.dueDate) }}</td>
+              <td>
+                @if (editingDueDateTaskId() !== task.id) {
+                  <span>{{ formatDate(task.dueDate) }}</span>
+                }
+                @if (editingDueDateTaskId() === task.id) {
+                  <div class="d-flex align-items-center">
+                    <input type="date"
+                           [ngModel]="editingDueDate()"
+                           (ngModelChange)="editingDueDate.set($event)"
+                           class="form-control form-control-sm me-2"
+                           style="width: 145px;">
+                    <button class="btn btn-sm btn-outline-success me-1" (click)="updateTaskDueDate(task.id)">
+                      <fa-icon [icon]="faFloppyDisk"></fa-icon>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" (click)="cancelEditDueDate()">
+                      <fa-icon [icon]="faXmark"></fa-icon>
+                    </button>
+                  </div>
+                }
+              </td>
               <td>
                 @if (editingTimeTaskId() !== task.id) {
                   <span>{{ formatRequiredTime(task.requiredTime) }}</span>
@@ -134,6 +153,13 @@
                             class="btn btn-outline-secondary"
                             title="Edit Required Time">
                       <fa-icon [icon]="faClock"></fa-icon>
+                    </button>
+                  }
+                  @if (editingDueDateTaskId() !== task.id) {
+                    <button (click)="startEditDueDate(task.id, task.dueDate)"
+                            class="btn btn-outline-secondary"
+                            title="Edit Due Date">
+                      <fa-icon [icon]="faCalendarDays"></fa-icon>
                     </button>
                   }
                   <a [routerLink]="['/clients/' + task.clientId + '/tasks', task.id]" class="btn btn-outline-primary" title="View/Edit">

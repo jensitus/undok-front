@@ -28,13 +28,12 @@
       <!-- Title -->
       <div class="mb-3">
         <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
-        <input
-          type="text"
-          class="form-control"
-          id="title"
-          formControlName="title"
-          [class.is-invalid]="isFieldInvalid('title')"
-          placeholder="Enter task title"
+        <input type="text"
+               class="form-control"
+               id="title"
+               formControlName="title"
+               [class.is-invalid]="isFieldInvalid('title')"
+               placeholder="Enter task title"
         >
         @if (isFieldInvalid('title')) {
           <div class="invalid-feedback">
@@ -46,13 +45,12 @@
       <!-- Description -->
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
-        <textarea
-          class="form-control"
-          id="description"
-          formControlName="description"
-          rows="3"
-          placeholder="Enter task description (optional)"
-        ></textarea>
+        <textarea class="form-control"
+                  id="description"
+                  formControlName="description"
+                  rows="3"
+                  placeholder="Enter task description (optional)">
+        </textarea>
       </div>
 
       <!-- Status -->
@@ -77,11 +75,9 @@
 
       <!-- Action Buttons -->
       <div class="d-flex gap-2">
-        <button
-          type="submit"
-          class="btn btn-primary"
-          [disabled]="submitting() || taskForm.invalid"
-        >
+        <button type="submit"
+                class="btn btn-primary"
+                [disabled]="submitting() || taskForm.invalid">
           @if (submitting()) {
             <span class="spinner-border spinner-border-sm me-2"></span>
             Creating...
@@ -90,12 +86,10 @@
           }
         </button>
 
-        <button
-          type="button"
-          class="btn btn-outline-secondary"
-          (click)="onCancel()"
-          [disabled]="submitting()"
-        >
+        <button type="button"
+                class="btn btn-outline-secondary"
+                (click)="onCancel()"
+                [disabled]="submitting()">
           Reset Form
         </button>
       </div>
