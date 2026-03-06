@@ -8,8 +8,8 @@ describe('ShowSingleEmployerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShowSingleEmployerComponent ]
-    })
+    imports: [ShowSingleEmployerComponent]
+})
     .compileComponents();
   });
 

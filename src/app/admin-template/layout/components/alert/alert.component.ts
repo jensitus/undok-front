@@ -16,6 +16,8 @@ export class AlertComponent {
   message = signal<any>(null);
   messagetype = signal<string>('');
 
+  private dismissTimeout: ReturnType<typeof setTimeout> | null = null;
+
   constructor() {
     // Set up alert message subscription
     this.alertService
@@ -25,6 +27,17 @@ export class AlertComponent {
           next: (message) => {
             this.message.set(message);
             this.messagetype.set(message?.type || '');
+
+            // Auto-dismiss success messages after 5 seconds
+            if (this.dismissTimeout) {
+              clearTimeout(this.dismissTimeout);
+            }
+            if (message?.type === 'success') {
+              this.dismissTimeout = setTimeout(() => {
+                this.message.set(null);
+                this.messagetype.set('');
+              }, 5000);
+            }
           },
           error: (error) => {
             console.error('error Alert', error);

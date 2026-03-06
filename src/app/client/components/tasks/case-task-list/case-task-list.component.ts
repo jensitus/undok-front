@@ -1,29 +1,52 @@
-import {Component, effect, inject, input, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Component, effect, inject, input, signal, TemplateRef, viewChild} from '@angular/core';
+import {SlicePipe} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {faEdit, faPlus, faTasks, faTrash, faGears, faClock} from '@fortawesome/free-solid-svg-icons';
+import {faCalendarDays, faClock, faEdit, faFloppyDisk, faGears, faPlus, faTasks, faXmark} from '@fortawesome/free-solid-svg-icons';
 import {TaskService} from '../../../service/task.service';
 import {CreateTaskComponent} from '../create-task/create-task.component';
 import {Task} from '../../../model/task';
 import {AlertService} from '../../../../admin-template/layout/components/alert/services/alert.service';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 import {StatusUtility} from '../../../../common/helper/status-utility';
-import {faFloppyDisk} from '@fortawesome/free-solid-svg-icons/faFloppyDisk';
-import {faXmark} from '@fortawesome/free-solid-svg-icons/faXmark';
 
 @Component({
   selector: 'app-case-task-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, FontAwesomeModule, CreateTaskComponent, FormsModule],
+  imports: [RouterLink, FontAwesomeModule, CreateTaskComponent, FormsModule, SlicePipe],
   templateUrl: './case-task-list.component.html',
   styleUrl: './case-task-list.component.css'
 })
-export class CaseTaskListComponent implements OnInit {
+export class CaseTaskListComponent {
+
+  protected readonly taskService = inject(TaskService);
+  private readonly alertService = inject(AlertService);
+  private readonly modalService = inject(NgbModal);
+
+  readonly caseId = input.required<string>();
+  readonly createTask = viewChild<TemplateRef<any>>('create_task');
+
+  // Editing state as signals
+  readonly editingStatusTaskId = signal<string | null>(null);
+  readonly editingStatus = signal('');
+  readonly editingTimeTaskId = signal<string | null>(null);
+  readonly editingHours = signal(0);
+  readonly editingMinutes = signal(0);
+  readonly editingDueDateTaskId = signal<string | null>(null);
+  readonly editingDueDate = signal<string>('');
+
+  // Icons
+  protected readonly faEdit = faEdit;
+  protected readonly faPlus = faPlus;
+  protected readonly faTasks = faTasks;
+  protected readonly faGears = faGears;
+  protected readonly faClock = faClock;
+  protected readonly faFloppyDisk = faFloppyDisk;
+  protected readonly faXmark = faXmark;
+  protected readonly faCalendarDays = faCalendarDays;
 
   constructor() {
-    // Effect to reload tasks when caseId changes
     effect(() => {
       const id = this.caseId();
       if (id) {
@@ -32,59 +55,14 @@ export class CaseTaskListComponent implements OnInit {
     });
   }
 
-  taskService = inject(TaskService);
-  alertService = inject(AlertService);
-  modalService = inject(NgbModal);
-
-  // Input for the case ID
-  caseId = input.required<string>();
-  @ViewChild('create_task') createTask: TemplateRef<any> | undefined;
-  private closeResult = '';
-
-  // Editing state
-  editingStatusTaskId: string | null = null;
-  editingStatus = '';
-  editingTimeTaskId: string | null = null;
-  editingTime = '';
-
-  // Icons
-  faEdit = faEdit;
-  faTrash = faTrash;
-  faPlus = faPlus;
-  faTasks = faTasks;
-
-  protected readonly faGears = faGears;
-
-  protected readonly faClock = faClock;
-
-  private static getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
-
-  ngOnInit() {
-    // Initial load
-    this.loadTasks(this.caseId());
-  }
-
-  loadTasks(caseId: string | undefined) {
+  loadTasks(caseId: string): void {
     this.taskService.getTasksByCaseId(caseId).subscribe();
   }
 
-  deleteTask(id: string) {
+  deleteTask(id: string): void {
     if (confirm('Are you sure you want to delete this task?')) {
       this.taskService.deleteTask(id).subscribe({
-        next: () => {
-          // Tasks signal will automatically update
-        },
-        error: (err) => {
-          console.error('Error deleting task:', err);
-        }
+        error: (err) => console.error('Error deleting task:', err)
       });
     }
   }
@@ -93,89 +71,9 @@ export class CaseTaskListComponent implements OnInit {
     return StatusUtility.getStatusBadgeClass(status);
   }
 
-  // getStatusBadgeClass(status: string | undefined): string {
-  //   switch (status?.toLowerCase()) {
-  //     case 'completed':
-  //       return 'badge bg-success';
-  //     case 'in progress':
-  //       return 'badge bg-primary';
-  //     case 'cancelled':
-  //       return 'badge bg-danger';
-  //     default:
-  //       return 'badge bg-secondary';
-  //   }
-  // }
-
   formatDate(date: Date | string | undefined): string {
     if (!date) { return 'Not set'; }
-    const d = new Date(date);
-    return d.toLocaleDateString();
-  }
-
-  onTaskCreated(task: Task, modal: any): void {
-    console.log('Task created:', task);
-    modal.close('Task created');
-    // Optional: Show success message, refresh list, etc.
-    this.alertService.success('Task created successfully');
-    // Optional: Refresh task list if you have one
-    this.loadTasks(this.caseId()); // Refresh client data if needed
-  }
-
-  openCreateTaskModal(content: any): void {
-    this.modalService.open(content, { size: 'lg' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${CaseTaskListComponent.getDismissReason(reason)}`;
-    });
-  }
-
-  startEditStatus(taskId: string, currentStatus: string | undefined): void {
-    this.editingStatusTaskId = taskId;
-    this.editingStatus = currentStatus || 'Open';
-  }
-
-  endEditStatus() {
-    this.editingStatusTaskId = null;
-    this.editingStatus = '';
-  }
-
-  startEditTime(taskId: string, currentRequiredTime: number | undefined): void {
-    this.editingTimeTaskId = taskId;
-    // Convert minutes to HH:mm format
-    if (currentRequiredTime) {
-      const hours = Math.floor(currentRequiredTime / 60);
-      const minutes = currentRequiredTime % 60;
-      this.editingTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-    } else {
-      this.editingTime = '00:00';
-    }
-  }
-
-  updateTaskRequiredTime(taskId: string): void {
-    // Convert HH:mm to minutes
-    const [hoursStr, minutesStr] = this.editingTime.split(':');
-    const hours = parseInt(hoursStr, 10);
-    const minutes = parseInt(minutesStr, 10);
-    const totalMinutes = hours * 60 + minutes;
-
-    this.taskService.updateTask(taskId, { requiredTime: totalMinutes }).subscribe({
-      next: () => {
-        this.alertService.success('Required time updated successfully');
-        this.editingTimeTaskId = null;
-        this.editingTime = '';
-      },
-      error: (err) => {
-        console.error('Error updating required time:', err);
-        this.alertService.error('Failed to update required time');
-        this.editingTimeTaskId = null;
-        this.editingTime = '';
-      }
-    });
-  }
-
-  cancelEditTime(): void {
-    this.editingTimeTaskId = null;
-    this.editingTime = '';
+    return new Date(date).toLocaleDateString();
   }
 
   formatRequiredTime(requiredTime: number | undefined): string {
@@ -185,22 +83,106 @@ export class CaseTaskListComponent implements OnInit {
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   }
 
-  updateTaskStatus(taskId: string): void {
-    this.taskService.updateTask(taskId, { status: this.editingStatus }).subscribe({
+  onTaskCreated(task: Task, modal: any): void {
+    modal.close('Task created');
+    this.alertService.success('Task created successfully');
+    this.loadTasks(this.caseId());
+  }
+
+  openCreateTaskModal(): void {
+    this.modalService.open(this.createTask(), { size: 'lg' });
+  }
+
+  startEditStatus(taskId: string, currentStatus: string | undefined): void {
+    this.editingStatusTaskId.set(taskId);
+    this.editingStatus.set(currentStatus || 'Open');
+  }
+
+  endEditStatus(): void {
+    this.editingStatusTaskId.set(null);
+    this.editingStatus.set('');
+  }
+
+  startEditTime(taskId: string, currentRequiredTime: number | undefined): void {
+    this.editingTimeTaskId.set(taskId);
+    this.editingHours.set(currentRequiredTime ? Math.floor(currentRequiredTime / 60) : 0);
+    this.editingMinutes.set(currentRequiredTime ? currentRequiredTime % 60 : 0);
+  }
+
+  cancelEditTime(): void {
+    this.editingTimeTaskId.set(null);
+    this.editingHours.set(0);
+    this.editingMinutes.set(0);
+  }
+
+  startEditDueDate(taskId: string, currentDueDate: Date | string | undefined): void {
+    this.editingDueDateTaskId.set(taskId);
+    if (currentDueDate) {
+      const d = new Date(currentDueDate);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      this.editingDueDate.set(`${yyyy}-${mm}-${dd}`);
+    } else {
+      this.editingDueDate.set('');
+    }
+  }
+
+  cancelEditDueDate(): void {
+    this.editingDueDateTaskId.set(null);
+    this.editingDueDate.set('');
+  }
+
+  updateTaskDueDate(taskId: string): void {
+    const dueDate = this.editingDueDate() || null;
+    this.taskService.updateTask(taskId, { dueDate: dueDate as any }).subscribe({
       next: () => {
-        this.alertService.success('Task status updated successfully');
-        this.editingStatusTaskId = null;
-        this.editingStatus = '';
+        this.alertService.success('Due date updated successfully');
+        this.editingDueDateTaskId.set(null);
+        this.editingDueDate.set('');
       },
       error: (err) => {
-        console.error('Error updating task status:', err);
-        this.alertService.error('Failed to update task status');
-        this.editingStatusTaskId = null;
-        this.editingStatus = '';
+        console.error('Error updating due date:', err);
+        this.alertService.error('Failed to update due date');
+        this.editingDueDateTaskId.set(null);
+        this.editingDueDate.set('');
       }
     });
   }
 
-  protected readonly faFloppyDisk = faFloppyDisk;
-  protected readonly faXmark = faXmark;
+  updateTaskStatus(taskId: string): void {
+    this.taskService.updateTask(taskId, { status: this.editingStatus() }).subscribe({
+      next: () => {
+        this.alertService.success('Task status updated successfully');
+        this.editingStatusTaskId.set(null);
+        this.editingStatus.set('');
+      },
+      error: (err) => {
+        console.error('Error updating task status:', err);
+        this.alertService.error('Failed to update task status');
+        this.editingStatusTaskId.set(null);
+        this.editingStatus.set('');
+      }
+    });
+  }
+
+  updateTaskRequiredTime(taskId: string): void {
+    const totalMinutes = this.editingHours() * 60 + this.editingMinutes();
+
+    this.taskService.updateTask(taskId, { requiredTime: totalMinutes }).subscribe({
+      next: () => {
+        this.alertService.success('Required time updated successfully');
+        this.editingTimeTaskId.set(null);
+        this.editingHours.set(0);
+        this.editingMinutes.set(0);
+      },
+      error: (err) => {
+        console.error('Error updating required time:', err);
+        this.alertService.error('Failed to update required time');
+        this.editingTimeTaskId.set(null);
+        this.editingHours.set(0);
+        this.editingMinutes.set(0);
+      }
+    });
+  }
 }

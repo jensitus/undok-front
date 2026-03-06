@@ -32,7 +32,6 @@ import {ShowEmployersComponent} from './client/show-employers/show-employers.com
 export const routes: Routes = [
   {path: 'home', component: HomeComponent, pathMatch: 'full'},
   {path: '', redirectTo: 'login', pathMatch: 'full'},
-  // { path: '', loadChildren: () => import('./admin-template/layout/layout.module').then(m => m.LayoutModule), canActivate: [AuthGuard] },
   {path: 'login', component: LoginComponent},
   {path: 'second-factor', component: TwoFactorComponent},
   {path: 'register', component: RegisterComponent},
@@ -41,13 +40,10 @@ export const routes: Routes = [
   {path: 'auth/:token/confirm/:email', component: ConfirmAccountComponent},
 
   {path: 'dashboard', component: DashboardComponent},
-  // loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)},
   {path: 'users/:username', component: UserComponent},
   {path: 'users/:username/edit', component: EditUserComponent},
   {path: 'users/:username/changepw', component: ChangePasswordComponent},
   {path: 'list-users', component: ShowUsersComponent },
-  // loadChildren: () => import('./dashboard/components/show-users/create-user.module').then(m => m.CreateUserModule)},
-  // {path: 'clients', loadChildren: () => import('./client/client.module').then(c => c.ClientModule)},
 
   /* new client routes: */
   {path: 'clients/employers', component: ShowEmployersComponent},

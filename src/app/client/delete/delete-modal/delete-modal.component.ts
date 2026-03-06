@@ -1,43 +1,33 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {DeleteTypes} from '../delete-types';
-import {faTrash} from '@fortawesome/free-solid-svg-icons';
-import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import { Component, inject, input, output } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DeleteTypes } from '../delete-types';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-delete-modal',
-  standalone: true,
   templateUrl: './delete-modal.component.html',
-  imports: [
-    FaIconComponent
-  ],
-  styleUrls: ['./delete-modal.component.css']
+  imports: [FaIconComponent],
+  standalone: true,
+  styleUrl: './delete-modal.component.css'
 })
-export class DeleteModalComponent implements OnInit {
+export class DeleteModalComponent {
+  private modalService = inject(NgbModal);
 
-  @Input() deleteType: DeleteTypes;
-  @Input() deleteObjectName: string;
-  @Input() confirmText: string;
-  @Output() confirmed = new EventEmitter<boolean>();
-  private closeResult: string;
-
-  constructor(
-    private modalService: NgbModal
-  ) { }
-
-  ngOnInit(): void {
-  }
-
-  open(delete_object) {
-    this.modalService.open(delete_object, {ariaLabelledBy: 'modal-basic-title', size: 'md'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-      this.confirmed.emit(true);
-    }, (reason) => {
-      // this.closeResult = `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`;
-      console.log(reason);
-      this.confirmed.emit(false);
-    });
-  }
+  deleteType = input<DeleteTypes>();
+  deleteObjectName = input<string>('');
+  confirmText = input<string>('');
+  confirmed = output<boolean>();
 
   protected readonly faTrash = faTrash;
+
+  open(deleteObject: any) {
+    this.modalService.open(deleteObject, {
+      ariaLabelledBy: 'modal-basic-title',
+      size: 'md'
+    }).result.then(
+      () => this.confirmed.emit(true),
+      () => this.confirmed.emit(false)
+    );
+  }
 }

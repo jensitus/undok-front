@@ -8,8 +8,8 @@ describe('EditCategoriesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditCategoriesComponent ]
-    })
+    imports: [EditCategoriesComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(EditCategoriesComponent);

@@ -1,4 +1,4 @@
-<app-delete-modal (confirmed)="checkConfirmation($event)"
-                  [deleteObjectName]="delete_object_name"
+<app-delete-modal (confirmed)="onConfirmation($event)"
+                  [deleteObjectName]="deleteObjectName()"
                   [deleteType]="deleteTypeClient">
 </app-delete-modal>

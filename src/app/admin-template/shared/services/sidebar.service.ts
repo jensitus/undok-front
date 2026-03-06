@@ -31,21 +31,9 @@ export class SidebarService {
     this._clientIdForCreateCounseling.set(value);
   }
 
-  // setNewCounseling(value: boolean): void {
-  //   this._newCounseling.set(!!value);
-  // }
-  //
-  // setNewEmployer(value: boolean): void {
-  //   this._newEmployer.set(!!value);
-  // }
-
   setAssignEmployer(value: boolean): void {
     this._assignEmployer.set(!!value);
   }
-
-  // setEditClient(value: boolean): void {
-  //   this._editClient.set(!!value);
-  // }
 
   setCreateEmployerButton(value: boolean): void {
     this._createEmployerButton.set(!!value);

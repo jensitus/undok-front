@@ -6,7 +6,7 @@ describe('NgbFormatterService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    // const service: NgbFormatterService = TestBed.get(NgbFormatterService);
+    // const service: NgbFormatterService = TestBed.inject(NgbFormatterService);
     // expect(service).toBeTruthy();
   });
 });

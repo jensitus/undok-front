@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmAccountComponent } from './confirm-account.component';
 
@@ -6,10 +6,10 @@ describe('ConfirmAccountComponent', () => {
   let component: ConfirmAccountComponent;
   let fixture: ComponentFixture<ConfirmAccountComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConfirmAccountComponent ]
-    })
+    imports: [ConfirmAccountComponent]
+})
     .compileComponents();
   }));
 

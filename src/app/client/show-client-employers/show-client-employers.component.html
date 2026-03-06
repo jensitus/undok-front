@@ -40,7 +40,7 @@
         <div class="row">
           <div class="col">
             <span class="text-secondary">Kontakt:</span>
-            {{ e.employer.person.firstName }} {{ e.employer.person.lastName }}
+            {{ e.employer.firstName }} {{ e.employer.lastName }}
           </div>
           <div class="col">
             <span class="text-secondary">Position:</span> {{ e.employer.position }}
@@ -50,43 +50,43 @@
         <div class="row">
           <div class="col">
             <span class="text-secondary">Telefon:</span>
-            {{ e.employer.person.telephone }}
+            {{ e.employer.telephone }}
           </div>
           <div class="col">
             <span class="text-secondary">Email:</span>
-            {{ e.employer.person.email }}
+            {{ e.employer.email }}
           </div>
         </div>
 
         <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
           <hr>
-          @if (!e.employer.person.address) {
+          @if (!e.employer.street) {
             <div>Leider kein Adresseintrag vorhanden</div>
           } @else {
             <div class="row">
               <div class="col">
                 <span class="text-secondary">Straße:</span>
-                @if (e.employer.person.address.street) {
-                  <span> {{ e.employer.person.address.street }}</span>
+                @if (e.employer.street) {
+                  <span> {{ e.employer.street }}</span>
                 }
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <span class="text-secondary">Ort:</span>
-                @if (e.employer.person.address.zipCode) {
-                  <span> {{ e.employer.person.address.zipCode }}</span>
+                @if (e.employer.zipCode) {
+                  <span> {{ e.employer.zipCode }}</span>
                 }
-                @if (e.employer.person.address.city) {
-                  <span> {{ e.employer.person.address.city }}</span>
+                @if (e.employer.city) {
+                  <span> {{ e.employer.city }}</span>
                 }
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <span class="text-secondary">Land:</span>
-                @if (e.employer.person.address.country) {
-                  <span> {{ e.employer.person.address.country }}</span>
+                @if (e.employer.country) {
+                  <span> {{ e.employer.country }}</span>
                 }
               </div>
             </div>

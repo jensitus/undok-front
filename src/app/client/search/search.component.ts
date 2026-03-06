@@ -30,6 +30,7 @@ interface ClientSearchResult {
   firstName: string;
   comment: string;
   type: string;
+  matchedCategories: string[];
 }
 
 interface TaskSearchResult {

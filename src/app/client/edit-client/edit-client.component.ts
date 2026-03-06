@@ -14,7 +14,7 @@ import {EntityTypes} from '../model/entity-types';
 import {JoinCategory} from '../model/join-category';
 import {Category} from '../model/category';
 import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
-import {PageHeaderComponent} from '../../admin-template/shared/modules/page-header/page-header.component';
+import {PageHeaderComponent} from '../../admin-template/shared/page-header/page-header.component';
 import {ClientFormComponent} from '../client-form/client-form.component';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {catchError, map, switchMap} from 'rxjs/operators';

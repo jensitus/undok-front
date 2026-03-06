@@ -1,6 +1,6 @@
-import { Component, signal, inject, computed } from '@angular/core';
+import { Component, DestroyRef, signal, inject, computed } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { saveAs } from 'file-saver';
+import { saveAs } from '../../common/helper/file-utility';
 import { CsvService } from '../service/csv.service';
 import { AlertService } from '../../admin-template/layout/components/alert/services/alert.service';
 import { AlertComponent } from '../../admin-template/layout/components/alert/alert.component';
@@ -18,6 +18,7 @@ export class BackUpComponent {
   // Inject services
   private readonly csvService = inject(CsvService);
   private readonly alertService = inject(AlertService);
+  private readonly destroyRef = inject(DestroyRef);
 
   // Signal for CSV list
   csvList = signal<string[]>([]);
@@ -51,7 +52,7 @@ export class BackUpComponent {
 
   getCsvAsBackup(filename: string): void {
     this.csvService.getBackUpCsv(filename)
-        .pipe(takeUntilDestroyed())
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: (blob) => {
             saveAs(blob, filename);

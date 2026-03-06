@@ -7,8 +7,16 @@
       "@angular/localize"
     ]
   },
+  "files": [
+    "main.ts"
+  ],
+  "include": [
+    "**/*.d.ts"
+  ],
   "exclude": [
     "test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "src/environments/environment.*.ts",
+    "!src/environments/environment.ts"
   ]
 }

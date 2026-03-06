@@ -1,46 +1,30 @@
-import {
-  Component,
-  signal,
-  inject,
-  computed,
-  viewChild,
-  TemplateRef,
-  ElementRef,
-  effect,
-  ChangeDetectorRef,
-  NgZone,
-  OnDestroy
-} from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CommonModule } from '@angular/common';
-import { ModalDismissReasons, NgbAlert, NgbCollapse, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Client } from '../model/client';
-import { Person } from '../model/person';
-import { Counseling } from '../model/counseling';
-import { JoinCategory } from '../model/join-category';
-import { DropdownItem } from '../model/dropdown-item';
-import { ClientService } from '../service/client.service';
-import { CommonService } from '../../common/services/common.service';
-import { SidebarService } from '../../admin-template/shared/services/sidebar.service';
-import { CategoryService } from '../service/category.service';
-import { DurationService } from '../service/duration.service';
-import { AlertService } from '../../admin-template/layout/components/alert/services/alert.service';
-import { DeleteTypes } from '../delete/delete-types';
-import { Label } from '../model/label';
-import { isUndefined } from '../../common/helper/comparison-utils';
-import { AlertComponent } from '../../admin-template/layout/components/alert/alert.component';
-import { PageHeaderComponent } from '../../admin-template/shared/modules/page-header/page-header.component';
-import { ReopenCaseComponent } from '../case/reopen-case/reopen-case.component';
-import { ShowClientEmployersComponent } from '../show-client-employers/show-client-employers.component';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { DeleteComponent } from '../delete/delete.component';
-import { CaseTaskListComponent } from '../components/tasks/case-task-list/case-task-list.component';
-import { ShowCounselingsPerClientComponent } from '../show-counselings-per-client/show-counselings-per-client.component';
-import { CloseCaseComponent } from '../case/close-case/close-case.component';
-import { CreateCounselingComponent } from '../create-counseling/create-counseling.component';
-import { ShowEmployersListComponent } from '../show-employers-list/show-employers-list.component';
-import { faEdit, faTachometerAlt, faTasks, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
+import {ChangeDetectorRef, Component, computed, effect, ElementRef, inject, NgZone, OnDestroy, signal, viewChild} from '@angular/core';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {CommonModule} from '@angular/common';
+import {ModalDismissReasons, NgbAlert, NgbCollapse, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Client} from '../model/client';
+import {Counseling} from '../model/counseling';
+import {ClientService} from '../service/client.service';
+import {CommonService} from '../../common/services/common.service';
+import {SidebarService} from '../../admin-template/shared/services/sidebar.service';
+import {DurationService} from '../service/duration.service';
+import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
+import {TaskService} from '../service/task.service';
+import {DeleteTypes} from '../delete/delete-types';
+import {Label} from '../model/label';
+import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
+import {PageHeaderComponent} from '../../admin-template/shared/page-header/page-header.component';
+import {ReopenCaseComponent} from '../case/reopen-case/reopen-case.component';
+import {ShowClientEmployersComponent} from '../show-client-employers/show-client-employers.component';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {DeleteComponent} from '../delete/delete.component';
+import {CaseTaskListComponent} from '../components/tasks/case-task-list/case-task-list.component';
+import {ShowCounselingsPerClientComponent} from '../show-counselings-per-client/show-counselings-per-client.component';
+import {CloseCaseComponent} from '../case/close-case/close-case.component';
+import {CreateCounselingComponent} from '../create-counseling/create-counseling.component';
+import {ShowEmployersListComponent} from '../show-employers-list/show-employers-list.component';
+import {faEdit, faTachometerAlt, faTasks, faUsers} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-show-single-client',
@@ -73,30 +57,30 @@ export class ShowSingleClientComponent implements OnDestroy {
   private readonly commonService = inject(CommonService);
   private readonly sidebarService = inject(SidebarService);
   private readonly router = inject(Router);
-  private readonly categoryService = inject(CategoryService);
   private readonly durationService = inject(DurationService);
+  private readonly taskService = inject(TaskService);
   private readonly alertService = inject(AlertService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly ngZone = inject(NgZone);
 
   // Signals for state
   alert = signal<boolean>(false);
-  autohide = signal<boolean>(true);
   client = signal<Client | undefined>(undefined);
-  person = signal<Person | undefined>(undefined);
+  private id = signal<string | undefined>(undefined);
   counselings = signal<Counseling[] | undefined>(undefined);
   isCollapsed = signal<boolean>(false);
-  selectedTaskId = signal<string | undefined>(undefined);
   closeResult = signal<string>('');
-  totalCounselingDuration = signal<number>(0);
-  totalHumanReadableDuration = signal<string | undefined>(undefined);
-  deSelectedItems = signal<DropdownItem[]>([]);
-  deSelectedCategories = signal<JoinCategory[]>([]);
-  joinCategories = signal<JoinCategory[]>([]);
-  joinCategory = signal<JoinCategory | undefined>(undefined);
-  private id = signal<string | undefined>(undefined);
 
   // Computed signals
+  readonly totalHumanReadableDuration = computed(() => {
+    const counselingMinutes = (this.client()?.counselings ?? [])
+      .reduce((sum, c) => sum + (c.requiredTime ?? 0), 0);
+    const taskMinutes = this.taskService.tasks()
+                            .reduce((sum, t) => sum + (t.requiredTime ?? 0), 0);
+    const total = counselingMinutes + taskMinutes;
+    return total > 0 ? this.durationService.getCounselingDuration(total) : undefined;
+  });
+
   reOpenCase = computed(() => {
     const c = this.client();
     return c?.openCase === null && c?.closedCases !== null;
@@ -108,18 +92,16 @@ export class ShowSingleClientComponent implements OnDestroy {
   });
 
   // ViewChild signals
-  readonly showTask = viewChild<TemplateRef<any>>('show_task');
+  // readonly showTask = viewChild<TemplateRef<any>>('show_task');
   readonly contentCreateCounseling = viewChild<ElementRef>('content_create_counseling');
   readonly createEmployer = viewChild<ElementRef>('create_employer');
   readonly assignEmployer = viewChild<ElementRef>('list_employer');
-  readonly editClient = viewChild<ElementRef>('edit_client');
-  readonly createTask = viewChild<TemplateRef<any>>('create_task');
 
   // Constants
   readonly deleteTypeClient: DeleteTypes = DeleteTypes.CLIENT;
   readonly Label = Label;
   readonly faTachometerAlt = faTachometerAlt;
-  readonly faUser = faUser;
+  // readonly faUser = faUser;
   readonly faUsers = faUsers;
   readonly faEdit = faEdit;
   readonly faTasks = faTasks;
@@ -154,7 +136,7 @@ export class ShowSingleClientComponent implements OnDestroy {
       return () => {
         this.sidebarService.setClientButtons(false);
       };
-    }, { allowSignalWrites: false });
+    }, {allowSignalWrites: false});
   }
 
   private setupSubscriptions(): void {
@@ -217,7 +199,9 @@ export class ShowSingleClientComponent implements OnDestroy {
 
   getClient(): void {
     const clientId = this.id();
-    if (!clientId) { return; }
+    if (!clientId) {
+      return;
+    }
 
     this.clientService
         .getSingleClient(clientId)
@@ -232,7 +216,6 @@ export class ShowSingleClientComponent implements OnDestroy {
               console.log('alert after assignment:', this.alert());
 
               this.sidebarService.setClientIdForCreateCounseling(res.id);
-              this.getTotalCounselingDuration();
               this.cdr.detectChanges();
             });
           },
@@ -242,30 +225,13 @@ export class ShowSingleClientComponent implements OnDestroy {
         });
   }
 
-  getTotalCounselingDuration(): void {
-    let sumOfCounselingDuration = 0;
-    const c = this.client();
-
-    if (!isUndefined(c)) {
-      for (const counseling of c.counselings) {
-        sumOfCounselingDuration += counseling.requiredTime;
-      }
-    }
-
-    this.totalCounselingDuration.set(sumOfCounselingDuration);
-
-    if (sumOfCounselingDuration > 0) {
-      this.totalHumanReadableDuration.set(
-        this.durationService.getCounselingDuration(sumOfCounselingDuration)
-      );
-    }
-  }
-
   openEmployer(content: ElementRef | undefined): void {
-    if (!content) { return; }
+    if (!content) {
+      return;
+    }
 
     this.modalService
-        .open(content, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+        .open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'})
         .result.then(
       (result) => {
         this.closeResult.set(`Closed with: ${result}`);
@@ -280,7 +246,7 @@ export class ShowSingleClientComponent implements OnDestroy {
 
   openCloseCaseModal(close_case: any): void {
     this.modalService
-        .open(close_case, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+        .open(close_case, {ariaLabelledBy: 'modal-basic-title', size: 'md'})
         .result.then(
       (result) => {
         this.closeResult.set(`Closed with: ${result}`);
@@ -294,10 +260,12 @@ export class ShowSingleClientComponent implements OnDestroy {
   }
 
   openNewCounseling(content_create_counseling: ElementRef | undefined): void {
-    if (!content_create_counseling) { return; }
+    if (!content_create_counseling) {
+      return;
+    }
 
     this.modalService
-        .open(content_create_counseling, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+        .open(content_create_counseling, {ariaLabelledBy: 'modal-basic-title', size: 'lg'})
         .result.then(
       (result) => {
         this.closeResult.set(`Closed with: ${result}`);
@@ -335,5 +303,6 @@ export class ShowSingleClientComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.sidebarService.setClientButtons(false);
     this.sidebarService.setClientIdForCreateCounseling(null);
+    this.sidebarService.setAssignEmployer(false);
   }
 }
