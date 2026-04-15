@@ -39,343 +39,400 @@
   </div>
 } @else {
   <div>
-    <div class="row">
+    <div class="row g-3">
+
+      <!-- ── LEFT COLUMN ───────────────────────────────────────── -->
       <div class="col-xl-5">
-        <div class="row">
-          <div class="col">
-            <h2 style="font-size: x-large; font-weight: bold">
-              @if (client()!.firstName) {
-                {{ client()!.firstName }} {{ client()!.lastName }}
-              } @else {
-                {{ client()!.keyword }}
-              }
-            </h2>
-          </div>
-        </div>
+
+        <!-- Client name -->
+        <h2 class="fw-bold mb-2">
+          @if (client()!.firstName) {
+            {{ client()!.firstName }} {{ client()!.lastName }}
+          } @else {
+            {{ client()!.keyword }}
+          }
+        </h2>
 
         @if (reOpenCase()) {
-          <div class="row">
-            <div class="col-xl-5">
-              <div class="mt-1 mb-2">
-                <app-reopen-case [inputCase]="client()!.closedCases[client()!.closedCases.length - 1]"
-                                 (caseEitherNewOrReOpened)="closeModal($event)"/>
-              </div>
-            </div>
+          <div class="mb-2">
+            <app-reopen-case [inputCase]="client()!.closedCases[client()!.closedCases.length - 1]"
+                             (caseEitherNewOrReOpened)="closeModal($event)"/>
           </div>
         }
 
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col mt-1">
-                <label class="text-secondary">Keyword:</label>
-                {{ client()!.keyword }}
-              </div>
+        <!-- ── Personal info card ── -->
+        <div class="card shadow-sm">
+          <div class="card-header d-flex align-items-center justify-content-between py-2">
+            <div class="d-flex align-items-center gap-2">
+              <fa-icon [icon]="faUser" class="text-primary"></fa-icon>
+              <span class="fw-semibold">Kontaktdaten</span>
             </div>
+            <div class="d-flex align-items-center gap-3">
+              <span class="text-secondary small">Keyword:</span>
+              <span class="badge bg-info">{{ client()!.keyword }}</span>
 
-            <div #collapse="ngbCollapse" [ngbCollapse]="isCollapsed()" class="row mt-3">
-              <div class="row">
-                <div class="col-md-5">
-                  <label class="text-secondary">Email:</label>
-                </div>
-                <div class="col-md-7">
-                  {{ client()!.email }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-5">
-                  <label class="text-secondary">Telephon:</label>
-                </div>
-                <div class="col-md-7">
-                  {{ client()!.telephone }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-5">
-                  <label class="text-secondary">Stadt:</label>
-                </div>
-                <div class="col-md-7">
-                  {{ client()!.city }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-5">
-                  <label class="text-secondary">Nationalität:</label>
-                </div>
-                <div class="col-md-7">
-                  {{ client()!.nationality }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-5">
-                  <label class="text-secondary">Gender:</label>
-                </div>
-                <div class="col-md-7">
-                  {{ client()!.gender }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-5">
-                  <label class="text-secondary">weiterer Kontakt:</label>
-                </div>
-                <div class="col-md-7">
-                  {{ client()!.furtherContact }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-5">
-                  <label class="text-secondary">Kommentar:</label>
-                </div>
-                <div class="col-md-7">
-                  {{ client()!.comment }}
-                </div>
+              <button class="btn btn-sm btn-outline-secondary py-0"
+                      (click)="collapse.toggle()"
+                      [attr.aria-expanded]="!isCollapsed()"
+                      style="font-size: 0.78rem">
+                {{ isCollapsed() ? 'Details' : 'Einklappen' }}
+              </button>
+            </div>
+          </div>
+
+          <div #collapse="ngbCollapse" [ngbCollapse]="isCollapsed()">
+            <div class="card-body py-2">
+              <div class="row g-2">
+
+                @if (client()!.email) {
+                  <div class="col-sm-6 d-flex align-items-start gap-2">
+                    <fa-icon [icon]="faEnvelope" class="text-secondary mt-1" style="font-size:0.85rem"></fa-icon>
+                    <div>
+                      <div class="text-secondary" style="font-size:0.75rem">E-Mail</div>
+                      <a href="mailto:{{ client()!.email }}">{{ client()!.email }}</a>
+                    </div>
+                  </div>
+                }
+
+                @if (client()!.telephone) {
+                  <div class="col-sm-6 d-flex align-items-start gap-2">
+                    <fa-icon [icon]="faPhone" class="text-secondary mt-1" style="font-size:0.85rem"></fa-icon>
+                    <div>
+                      <div class="text-secondary" style="font-size:0.75rem">Telefon</div>
+                      <a href="tel:{{ client()!.telephone }}">{{ client()!.telephone }}</a>
+                    </div>
+                  </div>
+                }
+
+                @if (client()!.city) {
+                  <div class="col-sm-6 d-flex align-items-start gap-2">
+                    <fa-icon [icon]="faMapMarkerAlt" class="text-secondary mt-1" style="font-size:0.85rem"></fa-icon>
+                    <div>
+                      <div class="text-secondary" style="font-size:0.75rem">Stadt</div>
+                      <div>{{ client()!.city }}</div>
+                    </div>
+                  </div>
+                }
+
+                @if (client()!.nationality) {
+                  <div class="col-sm-6 d-flex align-items-start gap-2">
+                    <fa-icon [icon]="faFlag" class="text-secondary mt-1" style="font-size:0.85rem"></fa-icon>
+                    <div>
+                      <div class="text-secondary" style="font-size:0.75rem">Nationalität</div>
+                      <div>{{ client()!.nationality }}</div>
+                    </div>
+                  </div>
+                }
+
+                @if (client()!.gender) {
+                  <div class="col-sm-6 d-flex align-items-start gap-2">
+                    <fa-icon [icon]="faVenusMars" class="text-secondary mt-1" style="font-size:0.85rem"></fa-icon>
+                    <div>
+                      <div class="text-secondary" style="font-size:0.75rem">Geschlecht</div>
+                      <div>{{ client()!.gender }}</div>
+                    </div>
+                  </div>
+                }
+
+                @if (client()!.furtherContact) {
+                  <div class="col-sm-6 d-flex align-items-start gap-2">
+                    <fa-icon [icon]="faAddressBook" class="text-secondary mt-1" style="font-size:0.85rem"></fa-icon>
+                    <div>
+                      <div class="text-secondary" style="font-size:0.75rem">Weiterer Kontakt</div>
+                      <div>{{ client()!.furtherContact }}</div>
+                    </div>
+                  </div>
+                }
+
+                @if (client()!.comment) {
+                  <div class="col-12 d-flex align-items-start gap-2">
+                    <fa-icon [icon]="faComment" class="text-secondary mt-1" style="font-size:0.85rem"></fa-icon>
+                    <div>
+                      <div class="text-secondary" style="font-size:0.75rem">Kommentar</div>
+                      <div>{{ client()!.comment }}</div>
+                    </div>
+                  </div>
+                }
+
               </div>
             </div>
           </div>
         </div>
 
-        <div>
-          <app-show-client-employers [clientId]="client()!.id"></app-show-client-employers>
-        </div>
+        <!-- ── Employers section ── -->
+        <app-show-client-employers [clientId]="client()!.id"></app-show-client-employers>
 
-        <!-- Continuation from Part 1 -->
-        <div class="card mt-1">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <label class="text-secondary">Arbeitsverhältnis:</label>
-              </div>
-              <div class="col-md-6">
-                @if (client()!.openCase) {
-                  {{ client()!.openCase.workingRelationship }}
-                }
-              </div>
+        <!-- ── Case details card ── -->
+        <div class="card shadow-sm mt-2">
+          <div class="card-header d-flex align-items-center justify-content-between py-2">
+            <div class="d-flex align-items-center gap-2">
+              <fa-icon [icon]="faBriefcase" class="text-primary"></fa-icon>
+              <span class="fw-semibold">Fall</span>
+            </div>
+            <button class="btn btn-sm btn-outline-secondary py-0"
+                    (click)="collapseCase.toggle()"
+                    [attr.aria-expanded]="!isCollapsedCase()"
+                    style="font-size: 0.78rem">
+              {{ isCollapsedCase() ? 'Anzeigen' : 'Einklappen' }}
+            </button>
+          </div>
+          <div #collapseCase="ngbCollapse" [ngbCollapse]="isCollapsedCase()" class="card-body py-2">
+
+            <!-- Employment flags -->
+            <div class="row g-2">
+              @if (client()!.openCase?.workingRelationship) {
+                <div class="col-6">
+                  <div class="text-secondary small">
+                    <fa-icon [icon]="faBriefcase" class="me-1"></fa-icon>
+                    Arbeitsverhältnis
+                  </div>
+                  <div>{{ client()!.openCase.workingRelationship }}</div>
+                </div>
+              }
+              @if (client()!.openCase && client()!.openCase.humanTrafficking !== null && client()!.openCase.humanTrafficking !== undefined) {
+                <div class="col-6">
+                  <div class="text-secondary small">
+                    <fa-icon [icon]="faExclamationTriangle" class="text-warning me-1"></fa-icon>
+                    Menschenhandel
+                  </div>
+                  @if (client()!.openCase.humanTrafficking) {
+                    <span class="badge bg-danger">ja</span>
+                  } @else {
+                    <span class="badge bg-success">nein</span>
+                  }
+                </div>
+              }
+              @if (client()!.openCase && client()!.openCase.jobCenterBlock !== null && client()!.openCase.jobCenterBlock !== undefined) {
+                <div class="col-6">
+                  <div class="text-secondary small">
+                    <fa-icon [icon]="faBan" class="me-1"></fa-icon>
+                    AMS Sperre
+                  </div>
+                  @if (client()!.openCase.jobCenterBlock) {
+                    <span class="badge bg-warning text-dark">ja</span>
+                  } @else {
+                    <span class="badge bg-success">nein</span>
+                  }
+                </div>
+              }
             </div>
 
-            <div class="row">
-              <div class="col-md-6">
-                <label class="text-secondary">Menschenhandel:</label>
-              </div>
-              <div class="col-md-6">
-                <div class="col-md-8">
-                  @if (client()!.openCase) {
-                    @if (client()!.openCase.humanTrafficking === true) {
-                      <span>ja</span>
-                    } @else if (client()!.openCase.humanTrafficking === false) {
-                      <span>nein</span>
+            <!-- Legal status -->
+            @if (client()!.currentResidentStatus || (client()!.vulnerableWhenAssertingRights !== null && client()!.vulnerableWhenAssertingRights !== undefined) || client()!.openCase?.targetGroup || (client()!.interpreterNecessary !== null && client()!.interpreterNecessary !== undefined)) {
+              <hr class="my-2">
+              <div class="row g-2">
+
+                @if (client()!.currentResidentStatus) {
+                  <div class="col-6">
+                    <div class="text-secondary small">
+                      <fa-icon [icon]="faIdCard" class="me-1"></fa-icon>
+                      Aufenthaltstitel
+                    </div>
+                    <div>{{ client()!.currentResidentStatus }}</div>
+                  </div>
+                }
+                @if (client()!.vulnerableWhenAssertingRights !== null && client()!.vulnerableWhenAssertingRights !== undefined) {
+                  <div class="col-6">
+                    <div class="text-secondary small">
+                      <fa-icon [icon]="faShieldAlt" class="me-1"></fa-icon>
+                      Gefährdet bei Geltendmachung
+                    </div>
+                    @if (client()!.vulnerableWhenAssertingRights) {
+                      <span class="badge bg-danger">ja</span>
+                    } @else {
+                      <span class="badge bg-success">nein</span>
                     }
-                  }
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6">
-                <label class="text-secondary">AMS Sperre:</label>
-              </div>
-              <div class="col-md-6">
-                @if (client()!.openCase) {
-                  @if (client()!.openCase.jobCenterBlock === true) {
-                    <span>ja</span>
-                  } @else if (client()!.openCase.jobCenterBlock === false) {
-                    <span>nein</span>
-                  }
+                  </div>
                 }
-              </div>
-            </div>
-
-            <hr>
-
-            @if (client()!.currentResidentStatus) {
-              <div class="row">
-                <div class="col-md-6">
-                  <label class="text-secondary">Aufenthaltstitel:</label>
-                </div>
-                <div class="col-md-6">
-                  {{ client()!.currentResidentStatus }}
-                </div>
-              </div>
-            }
-
-            @if (client()!.vulnerableWhenAssertingRights !== null && client()!.vulnerableWhenAssertingRights !== undefined) {
-              <div class="row">
-                <div class="col-md-6">
-                  <label class="text-secondary">gefährdet bei Geltendmachung:</label>
-                </div>
-                <div class="col-md-6">
-                  @if (client()!.vulnerableWhenAssertingRights) {
-                    <span>ja</span>
-                  } @else {
-                    <span>nein</span>
-                  }
-                </div>
-              </div>
-            }
-
-            @if (client()!.openCase?.targetGroup) {
-              <div class="row">
-                <div class="col-md-6">
-                  <label class="text-secondary">Zielgruppe:</label>
-                </div>
-                <div class="col-md-6">
-                  {{ client()!.openCase.targetGroup }}
-                </div>
-              </div>
-            }
-
-            @if (client()!.openCase?.jobFunction.length > 0) {
-              <div>
-                <label class="text-secondary">Tätigkeiten:</label>&nbsp;
-                @for (jobFunction of client()!.openCase.jobFunction; track jobFunction) {
-                  <span>
-                    <span [innerHTML]="jobFunction.name"></span>&nbsp;
-                  </span>
+                @if (client()!.openCase?.targetGroup) {
+                  <div class="col-6">
+                    <div class="text-secondary small">
+                      <fa-icon [icon]="faUsers" class="me-1"></fa-icon>
+                      Zielgruppe
+                    </div>
+                    <div>{{ client()!.openCase.targetGroup }}</div>
+                  </div>
                 }
-              </div>
-            }
-
-            @if (client()!.openCase?.counselingLanguages.length > 0) {
-              <div>
-                <label class="text-secondary">Beratungssprachen:</label>&nbsp;
-                @for (language of client()!.openCase.counselingLanguages; track language) {
-                  <span>
-                    <span [innerHTML]="language.name"></span>&nbsp;
-                  </span>
+                @if (client()!.interpreterNecessary !== null && client()!.interpreterNecessary !== undefined) {
+                  <div class="col-6">
+                    <div class="text-secondary small">
+                      <fa-icon [icon]="faLanguage" class="me-1"></fa-icon>
+                      Dolmetsch erforderlich
+                    </div>
+                    @if (client()!.interpreterNecessary) {
+                      <span class="badge bg-warning text-dark">ja</span>
+                    } @else {
+                      <span class="badge bg-success">nein</span>
+                    }
+                  </div>
                 }
+
               </div>
             }
 
-            @if (client()!.interpreterNecessary !== null && client()!.interpreterNecessary !== undefined) {
-              <div class="row">
-                <div class="col-md-5">
-                  <label class="text-secondary">Dolmetch erforderlich:</label>
-                </div>
-                <div class="col-md-7">
-                  @if (client()!.interpreterNecessary) {
-                    <span>ja</span>
-                  } @else {
-                    <span>nein</span>
-                  }
-                </div>
-              </div>
-            }
+            <!-- Category badges -->
+            @if (client()!.openCase?.jobFunction?.length > 0
+            || client()!.openCase?.counselingLanguages?.length > 0
+            || client()!.openCase?.jobMarketAccess?.length > 0
+            || client()!.openCase?.originOfAttention?.length > 0
+            || client()!.openCase?.undocumentedWork?.length > 0
+            || client()!.openCase?.complaints?.length > 0
+            || client()!.openCase?.industryUnion?.length > 0
+            || client()!.openCase?.sector?.length > 0) {
+              <hr class="my-2">
+              <div class="row g-2">
 
-            @if (client()!.openCase?.jobMarketAccess.length > 0) {
-              <div>
-                <label class="text-secondary">Arbeitsmarktzugang:</label>&nbsp;
-                @for (access of client()!.openCase.jobMarketAccess; track access) {
-                  <span>
-                    <span [innerHTML]="access.name"></span>&nbsp;
-                  </span>
+                @if (client()!.openCase?.jobFunction?.length > 0) {
+                  <div class="col-6">
+                    <div class="text-secondary small">
+                      <fa-icon [icon]="faTools" class="me-1"></fa-icon>
+                      Tätigkeiten
+                    </div>
+                    @for (item of client()!.openCase.jobFunction; track item) {
+                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
+                    }
+                  </div>
                 }
-              </div>
-            }
 
-            @if (client()!.openCase?.originOfAttention.length > 0) {
-              <div>
-                <label class="text-secondary">Wo hat die Person von uns gehört:</label>&nbsp;
-                @for (access of client()!.openCase.originOfAttention; track access) {
-                  <span>
-                    <span [innerHTML]="access.name"></span>&nbsp;
-                  </span>
+                @if (client()!.openCase?.counselingLanguages?.length > 0) {
+                  <div class="col-6">
+                    <div class="text-secondary small">
+                      <fa-icon [icon]="faComments" class="me-1"></fa-icon>
+                      Beratungssprachen
+                    </div>
+                    @for (item of client()!.openCase.counselingLanguages; track item) {
+                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
+                    }
+                  </div>
                 }
-              </div>
-            }
 
-            @if (client()!.openCase?.undocumentedWork.length > 0) {
-              <div>
-                <label class="text-secondary">undokumentierte Arbeit:</label>&nbsp;
-                @for (access of client()!.openCase.undocumentedWork; track access) {
-                  <span>
-                    <span [innerHTML]="access.name"></span>&nbsp;
-                  </span>
+                @if (client()!.openCase?.jobMarketAccess?.length > 0) {
+                  <div class="col-6">
+                    <div class="text-secondary small">
+                      <fa-icon [icon]="faKey" class="me-1"></fa-icon>
+                      Arbeitsmarktzugang
+                    </div>
+                    @for (item of client()!.openCase.jobMarketAccess; track item) {
+                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
+                    }
+                  </div>
                 }
-              </div>
-            }
 
-            @if (client()!.openCase?.complaints.length > 0) {
-              <div>
-                <label class="text-secondary">{{ Label.COMPLAINT + ':' }}</label>&nbsp;
-                @for (access of client()!.openCase.complaints; track access) {
-                  <span>
-                    <span [innerHTML]="access.name"></span>&nbsp;
-                  </span>
+                @if (client()!.openCase?.originOfAttention?.length > 0) {
+                  <div class="col-6">
+                    <div class="text-secondary small">
+                      <fa-icon [icon]="faBullhorn" class="me-1"></fa-icon>
+                      Wo hat die Person von uns gehört
+                    </div>
+                    @for (item of client()!.openCase.originOfAttention; track item) {
+                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
+                    }
+                  </div>
                 }
-              </div>
-            }
 
-            @if (client()!.openCase?.industryUnion.length > 0) {
-              <div>
-                <label class="text-secondary">{{ Label.INDUSTRY_UNION + ':' }}</label>&nbsp;
-                @for (access of client()!.openCase.industryUnion; track access) {
-                  <span>
-                    <span [innerHTML]="access.name"></span>&nbsp;
-                  </span>
+                @if (client()!.openCase?.complaints?.length > 0) {
+                  <div class="col-6">
+                    <div class="text-secondary small">
+                      <fa-icon [icon]="faGavel" class="me-1"></fa-icon>
+                      {{ Label.COMPLAINT }}
+                    </div>
+                    @for (item of client()!.openCase.complaints; track item) {
+                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
+                    }
+                  </div>
+                }
+
+                @if (client()!.openCase?.industryUnion?.length > 0) {
+                  <div class="col-6">
+                    <div class="text-secondary small">
+                      <fa-icon [icon]="faIndustry" class="me-1"></fa-icon>
+                      {{ Label.INDUSTRY_UNION }}
+                    </div>
+                    @for (item of client()!.openCase.industryUnion; track item) {
+                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
+                    }
+                  </div>
+                }
+
+                @if (client()!.openCase?.sector?.length > 0) {
+                  <div class="col-6">
+                    <div class="text-secondary small">
+                      <fa-icon [icon]="faLayerGroup" class="me-1"></fa-icon>
+                      {{ Label.SECTOR }}
+                    </div>
+                    @for (item of client()!.openCase.sector; track item) {
+                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
+                    }
+                  </div>
+                }
+
+              </div>
+              <div class="row g-2 mt-1">
+                @if (client()!.openCase?.undocumentedWork?.length > 0) {
+                  <div class="col-6">
+                    <div class="text-secondary small">
+                      <fa-icon [icon]="faUserSecret" class="me-1"></fa-icon>
+                      Undokumentierte Arbeit
+                    </div>
+                    @for (item of client()!.openCase.undocumentedWork; track item) {
+                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
+                    }
+                  </div>
                 }
               </div>
             }
 
-            @if (client()!.openCase?.sector.length > 0) {
-              <div>
-                <label class="text-secondary">{{ Label.SECTOR + ':' }}</label>&nbsp;
-                @for (access of client()!.openCase.sector; track access) {
-                  <span>
-                    <span [innerHTML]="access.name"></span>&nbsp;
-                  </span>
-                }
-              </div>
-            }
           </div>
         </div>
 
-        <div class="row mt-1">
-          <div class="col text-lg-start">
-            <ul class="list-group list-group-horizontal">
-              <a class="list-group-item" [routerLink]="['edit']" title="edit">
-                <fa-icon class="text-secondary" [icon]="faEdit"></fa-icon>
-                edit
-              </a>
-              <li class="list-group-item">
-                <app-delete [idToDelete]="client()!.id"
-                            [type]="deleteTypeClient"
-                            [deleteObjectName]="client()!.keyword">
-                </app-delete>
-              </li>
-              <a class="list-group-item" [routerLink]="['/clients/' + client()!.id + '/create-counseling']">
-                <fa-icon class="text-secondary" [icon]="faTasks"></fa-icon>
-                neue beratung
-              </a>
-            </ul>
-          </div>
+        <!-- ── Actions ── -->
+        <div class="d-flex gap-2 mt-2 flex-wrap">
+          <a class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
+             [routerLink]="['edit']">
+            <fa-icon [icon]="faEdit"></fa-icon>
+            Bearbeiten
+          </a>
+          <app-delete [idToDelete]="client()!.id"
+                      [type]="deleteTypeClient"
+                      [deleteObjectName]="client()!.keyword">
+          </app-delete>
+          <a class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1"
+             [routerLink]="['/clients/' + client()!.id + '/create-counseling']">
+            <fa-icon [icon]="faTasks"></fa-icon>
+            Neue Beratung
+          </a>
         </div>
 
-        <div class="row mt-1">
-          <div class="col mt-2 mb-2">
-            <span class="text-secondary text-left">Gesamtberatungsdauer: </span>
-            <span>{{ totalHumanReadableDuration() }}</span>
+        <!-- ── Total duration ── -->
+        @if (totalHumanReadableDuration()) {
+          <div class="d-flex align-items-center gap-2 mt-2 text-secondary">
+            <fa-icon [icon]="faClock"></fa-icon>
+            <span>Gesamtberatungsdauer: <b class="text-body">{{ totalHumanReadableDuration() }}</b></span>
           </div>
-        </div>
+        }
 
+        <!-- ── Task list ── -->
         @if (client()!.openCase) {
-          <div class="row mt-1">
+          <div class="mt-2">
             <app-case-task-list [caseId]="client()!.openCase.id"></app-case-task-list>
           </div>
         }
-      </div>
 
+      </div>
+      <!-- ── END LEFT COLUMN ── -->
+
+      <!-- ── RIGHT COLUMN ── -->
       <div class="col-xl-7">
         <app-show-counselings-per-client [clientId]="client()!.id"></app-show-counselings-per-client>
       </div>
+
     </div>
 
     <!-- Modal Templates -->
     <ng-template #close_case let-modal>
       <div class="modal-header">
         <h5>Fall schließen und Klient:in weiter vermitteln</h5>
-        <button type="button" class="btn btn-lg btn-outline-dark" aria-label="Close"
-                (click)="modal.dismiss('Cross click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
       </div>
       <div class="modal-body">
         @if (client()!.openCase) {
@@ -385,57 +442,45 @@
         }
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.close('Save click')">Schließen</button>
       </div>
     </ng-template>
 
     <ng-template #content_create_counseling let-modal>
       <div class="modal-header">
         <h4 class="modal-title">Beratung anlegen</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
       </div>
       <div class="modal-body">
         <app-create-counseling></app-create-counseling>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.close('Save click')">Schließen</button>
       </div>
     </ng-template>
 
     <ng-template #edit_client let-modal>
       <div class="modal-header">
-        <h4 class="modal-title">Edit Client</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <h4 class="modal-title">Klient:in bearbeiten</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.close('Save click')">Schließen</button>
       </div>
     </ng-template>
 
     <ng-template #list_employer let-modal>
       <div class="modal-header">
-        <h4 class="modal-title">List Employer</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        </button>
+        <h4 class="modal-title">Arbeitgeber:in zuweisen</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
       </div>
       <div class="modal-body">
         <app-show-employers-list [clientId]="client()!.id"></app-show-employers-list>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-lg btn-outline-danger" (click)="modal.close('Save click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.close('Save click')">Schließen</button>
       </div>
     </ng-template>
+
   </div>
 }

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, computed, effect, ElementRef, inject, NgZone, OnDestroy, signal, viewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, computed, effect, ElementRef, inject, NgZone, OnDestroy, signal, untracked, viewChild} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {CommonModule} from '@angular/common';
@@ -24,7 +24,13 @@ import {ShowCounselingsPerClientComponent} from '../show-counselings-per-client/
 import {CloseCaseComponent} from '../case/close-case/close-case.component';
 import {CreateCounselingComponent} from '../create-counseling/create-counseling.component';
 import {ShowEmployersListComponent} from '../show-employers-list/show-employers-list.component';
-import {faEdit, faTachometerAlt, faTasks, faUsers} from '@fortawesome/free-solid-svg-icons';
+import {
+  faEdit, faTachometerAlt, faTasks, faUsers,
+  faUser, faEnvelope, faPhone, faMapMarkerAlt, faFlag, faVenusMars, faComment, faAddressBook,
+  faBriefcase, faExclamationTriangle, faClock,
+  faBan, faIdCard, faShieldAlt, faLanguage, faTools, faComments, faKey,
+  faBullhorn, faUserSecret, faGavel, faIndustry, faLayerGroup
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-show-single-client',
@@ -69,6 +75,7 @@ export class ShowSingleClientComponent implements OnDestroy {
   private id = signal<string | undefined>(undefined);
   counselings = signal<Counseling[] | undefined>(undefined);
   isCollapsed = signal<boolean>(false);
+  isCollapsedCase = signal<boolean>(true);
   closeResult = signal<string>('');
 
   // Computed signals
@@ -101,10 +108,32 @@ export class ShowSingleClientComponent implements OnDestroy {
   readonly deleteTypeClient: DeleteTypes = DeleteTypes.CLIENT;
   readonly Label = Label;
   readonly faTachometerAlt = faTachometerAlt;
-  // readonly faUser = faUser;
   readonly faUsers = faUsers;
   readonly faEdit = faEdit;
   readonly faTasks = faTasks;
+  readonly faUser = faUser;
+  readonly faEnvelope = faEnvelope;
+  readonly faPhone = faPhone;
+  readonly faMapMarkerAlt = faMapMarkerAlt;
+  readonly faFlag = faFlag;
+  readonly faVenusMars = faVenusMars;
+  readonly faComment = faComment;
+  readonly faAddressBook = faAddressBook;
+  readonly faBriefcase = faBriefcase;
+  readonly faExclamationTriangle = faExclamationTriangle;
+  readonly faClock = faClock;
+  readonly faBan = faBan;
+  readonly faIdCard = faIdCard;
+  readonly faShieldAlt = faShieldAlt;
+  readonly faLanguage = faLanguage;
+  readonly faTools = faTools;
+  readonly faComments = faComments;
+  readonly faKey = faKey;
+  readonly faBullhorn = faBullhorn;
+  readonly faUserSecret = faUserSecret;
+  readonly faGavel = faGavel;
+  readonly faIndustry = faIndustry;
+  readonly faLayerGroup = faLayerGroup;
 
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -140,6 +169,23 @@ export class ShowSingleClientComponent implements OnDestroy {
   }
 
   private setupSubscriptions(): void {
+    // Collapse personal info card automatically based on whether data is present
+    effect(() => {
+      const c = this.client();
+      if (c) {
+        const hasPersonalInfo = !!(c.email || c.telephone || c.city || c.nationality || c.gender || c.furtherContact || c.comment);
+        untracked(() => this.isCollapsed.set(!hasPersonalInfo));
+      }
+    });
+
+    // Collapse case card when there is no open case, expand when there is
+    effect(() => {
+      const c = this.client();
+      if (c) {
+        untracked(() => this.isCollapsedCase.set(!c.openCase));
+      }
+    });
+
     // Demo signal watcher
     effect(() => {
       if (this.commonService.demo() === true) {

@@ -36,6 +36,7 @@ export class ShowClientEmployersComponent {
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
   readonly isCollapsed = signal(true);
+  readonly isSectionCollapsed = signal(true);
 
   // Use employer signal directly from common service
   private readonly employerSignal = this.commonService.employer;
@@ -84,6 +85,7 @@ export class ShowClientEmployersComponent {
     this.employerService.getEmployersForClient(clientId).subscribe({
       next: (employers) => {
         this.clientEmployerJobDescriptions.set(employers);
+        this.isSectionCollapsed.set(employers.length === 0);
         this.loading.set(false);
       },
       error: (err) => {
