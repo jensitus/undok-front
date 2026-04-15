@@ -1,9 +1,9 @@
 import {Component, effect, inject, signal, untracked} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {EmployerService} from '../service/employer.service';
 import {Employer} from '../model/employer';
-import {faSurprise} from '@fortawesome/free-solid-svg-icons';
+import {faBuilding, faUser, faUsers, faPencilAlt, faEnvelope, faPhone, faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
@@ -21,7 +21,8 @@ import {AlertComponent} from '../../admin-template/layout/components/alert/alert
     DeleteComponent,
     EditEmployerComponent,
     FaIconComponent,
-    AlertComponent
+    AlertComponent,
+    RouterLink
   ],
   styleUrls: ['./show-single-employer.component.css']
 })
@@ -47,7 +48,13 @@ export class ShowSingleEmployerComponent {
 
   // Constants
   readonly deleteTypeEmployer: DeleteTypes = DeleteTypes.EMPLOYER;
-  readonly faSurprise = faSurprise;
+  readonly faBuilding = faBuilding;
+  readonly faUser = faUser;
+  readonly faUsers = faUsers;
+  readonly faPencilAlt = faPencilAlt;
+  readonly faEnvelope = faEnvelope;
+  readonly faPhone = faPhone;
+  readonly faMapMarkerAlt = faMapMarkerAlt;
 
   constructor() {
     // Watch route params and load employer when ID changes

@@ -1,11 +1,14 @@
 import { Component, input, inject, signal, effect, untracked } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { EmployerService } from '../service/employer.service';
 import { CommonService } from '../../common/services/common.service';
 import { ModalDismissReasons, NgbCollapse, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ClientEmployerJobDescription } from '../model/client-employer-job-description';
 import { EditClientEmployerJobDescriptionComponent } from '../edit-client-employer-job-description/edit-client-employer-job-description.component';
 import { DatePipe } from '@angular/common';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { faBuilding, faUser, faEnvelope, faPhone, faMapMarkerAlt, faCalendarAlt, faPencilAlt, faTrash, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-show-client-employers',
@@ -13,7 +16,9 @@ import { DatePipe } from '@angular/common';
   templateUrl: './show-client-employers.component.html',
   imports: [
     NgbCollapse,
-    DatePipe
+    DatePipe,
+    RouterLink,
+    FaIconComponent
   ],
   styleUrls: ['./show-client-employers.component.css']
 })
@@ -34,6 +39,17 @@ export class ShowClientEmployersComponent {
 
   // Use employer signal directly from common service
   private readonly employerSignal = this.commonService.employer;
+
+  // Icons
+  readonly faBuilding = faBuilding;
+  readonly faUser = faUser;
+  readonly faEnvelope = faEnvelope;
+  readonly faPhone = faPhone;
+  readonly faMapMarkerAlt = faMapMarkerAlt;
+  readonly faCalendarAlt = faCalendarAlt;
+  readonly faPencilAlt = faPencilAlt;
+  readonly faTrash = faTrash;
+  readonly faExternalLinkAlt = faExternalLinkAlt;
 
   constructor() {
     // Load employers when clientId is available or changes
