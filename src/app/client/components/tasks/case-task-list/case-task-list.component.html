@@ -1,198 +1,191 @@
-
-<div class="card">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <h5 class="mb-0">
-      <fa-icon [icon]="faTasks"></fa-icon>
-      Tasks for this Case
-    </h5>
-    <button (click)="openCreateTaskModal()" class="btn btn-sm btn-primary">
-      <fa-icon [icon]="faPlus"></fa-icon>
-      Add Task
-    </button>
+<div class="card shadow-sm mt-2">
+  <div class="card-header d-flex align-items-center justify-content-between py-2">
+    <div class="d-flex align-items-center gap-2">
+      <fa-icon [icon]="faTasks" class="text-primary"></fa-icon>
+      <span class="fw-semibold">Aufgaben</span>
+      @if (taskService.tasks().length > 0) {
+        <span class="badge bg-primary">{{ taskService.taskCount() }}</span>
+      }
+    </div>
+    <div class="d-flex gap-2">
+      <button (click)="openCreateTaskModal()" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
+        <fa-icon [icon]="faPlus"></fa-icon>
+        Neue Aufgabe
+      </button>
+      <button class="btn btn-sm btn-outline-secondary py-0"
+              (click)="collapseBody.toggle()"
+              [attr.aria-expanded]="!isCollapsed()"
+              style="font-size: 0.78rem">
+        {{ isCollapsed() ? 'Anzeigen' : 'Einklappen' }}
+      </button>
+    </div>
   </div>
 
-  <div class="card-body">
-    <!-- Loading State -->
+  <div #collapseBody="ngbCollapse" [ngbCollapse]="isCollapsed()" class="card-body p-0">
+
     @if (taskService.loading()) {
-      <div class="text-center py-4">
-        <div class="spinner-border" role="status">
+      <div class="text-center py-3">
+        <div class="spinner-border spinner-border-sm text-primary" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
     }
 
-    <!-- Error State -->
     @if (taskService.error()) {
-      <div class="alert alert-danger" role="alert">
-        {{ taskService.error() }}
-      </div>
+      <div class="alert alert-danger m-2" role="alert">{{ taskService.error() }}</div>
     }
 
-    <!-- Empty State -->
     @if (!taskService.loading() && taskService.tasks().length === 0) {
-      <div class="text-center py-4 text-muted">
-        <fa-icon [icon]="faTasks" size="3x" class="mb-3"></fa-icon>
-        <p>No tasks found for this case.</p>
-        <a (click)="openCreateTaskModal()" class="btn btn-primary">
+      <div class="text-center py-4 text-secondary">
+        <p class="mb-2">Keine Aufgaben für diesen Fall.</p>
+        <button (click)="openCreateTaskModal()" class="btn btn-sm btn-outline-primary">
           <fa-icon [icon]="faPlus"></fa-icon>
-          Create First Task
-        </a>
+          Erste Aufgabe anlegen
+        </button>
       </div>
     }
 
-    <!-- Tasks List -->
     @if (!taskService.loading() && taskService.tasks().length > 0) {
       <div class="table-responsive">
-        <table class="table table-hover">
-          <thead>
-          <tr>
-            <th>Title</th>
-            <th>Status</th>
-            <th>Due Date</th>
-            <th>Required Time</th>
-            <th class="text-end">Actions</th>
-          </tr>
+        <table class="table table-hover table-sm mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Titel</th>
+              <th>Status</th>
+              <th>Fälligkeit</th>
+              <th>Zeit</th>
+              <th class="text-end">Aktionen</th>
+            </tr>
           </thead>
           <tbody>
-          @for (task of taskService.tasks(); track task.id) {
-            <tr>
-              <td>
-                <a [routerLink]="['/clients/' + task.clientId + '/tasks', task.id]" class="text-decoration-none">
-                  {{ task.title }}
-                </a>
-                @if (task.description) {
-                  <div class="small text-muted">
-                    {{ task.description | slice:0:75 }}{{ task.description.length > 75 ? '...' : '' }}
-                  </div>
-                }
-              </td>
-              <td>
-                @if (editingStatusTaskId() !== task.id) {
-                  <span [class]="getStatusBadgeClass(task.status)">
-                    {{ task.status || 'Open' }}
-                  </span>
-                }
-                @if (editingStatusTaskId() === task.id) {
-                  <select [ngModel]="editingStatus()"
-                          (ngModelChange)="editingStatus.set($event)"
-                          class="form-select form-select-sm"
-                          (change)="updateTaskStatus(task.id)">
-                    <option value="Open">Open</option>
-                    <!--<option value="In Progress">In Progress</option>-->
-                    <option value="Completed">Completed</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-                }
-              </td>
-              <td>
-                @if (editingDueDateTaskId() !== task.id) {
-                  <span>{{ formatDate(task.dueDate) }}</span>
-                }
-                @if (editingDueDateTaskId() === task.id) {
-                  <div class="d-flex align-items-center">
-                    <input type="date"
-                           [ngModel]="editingDueDate()"
-                           (ngModelChange)="editingDueDate.set($event)"
-                           class="form-control form-control-sm me-2"
-                           style="width: 145px;">
-                    <button class="btn btn-sm btn-outline-success me-1" (click)="updateTaskDueDate(task.id)">
-                      <fa-icon [icon]="faFloppyDisk"></fa-icon>
-                    </button>
-                    <button class="btn btn-sm btn-outline-secondary" (click)="cancelEditDueDate()">
-                      <fa-icon [icon]="faXmark"></fa-icon>
-                    </button>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (editingTimeTaskId() !== task.id) {
-                  <span>{{ formatRequiredTime(task.requiredTime) }}</span>
-                }
-                @if (editingTimeTaskId() === task.id) {
-                  <div class="d-flex align-items-center">
-                    <input type="number" min="0"
-                           [ngModel]="editingHours()"
-                           (ngModelChange)="editingHours.set(+$event)"
-                           class="form-control form-control-sm"
-                           style="width: 58px;"
-                           placeholder="h">
-                    <span class="mx-1">:</span>
-                    <input type="number" min="0" max="59"
-                           [ngModel]="editingMinutes()"
-                           (ngModelChange)="editingMinutes.set(+$event)"
-                           class="form-control form-control-sm me-2"
-                           style="width: 58px;"
-                           placeholder="m">
-                    <button class="btn btn-sm btn-outline-success me-1" (click)="updateTaskRequiredTime(task.id)">
-                      <fa-icon [icon]="faFloppyDisk"></fa-icon>
-                    </button>
-                    <button class="btn btn-sm btn-outline-secondary" (click)="cancelEditTime()">
-                      <fa-icon [icon]="faXmark"></fa-icon>
-                    </button>
-                  </div>
-                }
-              </td>
-              <td class="text-end">
-                <div class="btn-group btn-group-sm" role="group">
+            @for (task of taskService.tasks(); track task.id) {
+              <tr>
+                <td>
+                  <a [routerLink]="['/clients/' + task.clientId + '/tasks', task.id]" class="text-decoration-none">
+                    {{ task.title }}
+                  </a>
+                  @if (task.description) {
+                    <div class="small text-secondary">
+                      {{ task.description | slice:0:75 }}{{ task.description.length > 75 ? '...' : '' }}
+                    </div>
+                  }
+                </td>
+                <td>
                   @if (editingStatusTaskId() !== task.id) {
-                    <button (click)="startEditStatus(task.id, task.status)"
-                            class="btn btn-outline-success"
-                            title="Change Status">
-                      <fa-icon [icon]="faGears"></fa-icon>
-                    </button>
+                    <span [class]="getStatusBadgeClass(task.status)">{{ task.status || 'Open' }}</span>
                   }
                   @if (editingStatusTaskId() === task.id) {
-                    <button (click)="endEditStatus()"
-                            class="btn btn-outline-danger"
-                            title="Cancel Status Edit">
-                      <fa-icon [icon]="faGears"></fa-icon>
-                    </button>
+                    <select [ngModel]="editingStatus()"
+                            (ngModelChange)="editingStatus.set($event)"
+                            class="form-select form-select-sm"
+                            (change)="updateTaskStatus(task.id)">
+                      <option value="Open">Open</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Cancelled">Cancelled</option>
+                    </select>
                   }
-                  @if (editingTimeTaskId() !== task.id) {
-                    <button (click)="startEditTime(task.id, task.requiredTime)"
-                            class="btn btn-outline-secondary"
-                            title="Edit Required Time">
-                      <fa-icon [icon]="faClock"></fa-icon>
-                    </button>
-                  }
+                </td>
+                <td>
                   @if (editingDueDateTaskId() !== task.id) {
-                    <button (click)="startEditDueDate(task.id, task.dueDate)"
-                            class="btn btn-outline-secondary"
-                            title="Edit Due Date">
-                      <fa-icon [icon]="faCalendarDays"></fa-icon>
-                    </button>
+                    <span>{{ formatDate(task.dueDate) }}</span>
                   }
-                  <a [routerLink]="['/clients/' + task.clientId + '/tasks', task.id]" class="btn btn-outline-primary" title="View/Edit">
-                    <fa-icon [icon]="faEdit"></fa-icon>
-                  </a>
-                  <!--<button (click)="deleteTask(task.id)" class="btn btn-outline-danger" title="Delete">
-                    <fa-icon [icon]="faTrash"></fa-icon>
-                  </button>-->
-                </div>
-              </td>
-            </tr>
-          }
+                  @if (editingDueDateTaskId() === task.id) {
+                    <div class="d-flex align-items-center">
+                      <input type="date"
+                             [ngModel]="editingDueDate()"
+                             (ngModelChange)="editingDueDate.set($event)"
+                             class="form-control form-control-sm me-1"
+                             style="width: 145px;">
+                      <button class="btn btn-sm btn-outline-success me-1" (click)="updateTaskDueDate(task.id)">
+                        <fa-icon [icon]="faFloppyDisk"></fa-icon>
+                      </button>
+                      <button class="btn btn-sm btn-outline-secondary" (click)="cancelEditDueDate()">
+                        <fa-icon [icon]="faXmark"></fa-icon>
+                      </button>
+                    </div>
+                  }
+                </td>
+                <td>
+                  @if (editingTimeTaskId() !== task.id) {
+                    <span>{{ formatRequiredTime(task.requiredTime) }}</span>
+                  }
+                  @if (editingTimeTaskId() === task.id) {
+                    <div class="d-flex align-items-center">
+                      <input type="number" min="0"
+                             [ngModel]="editingHours()"
+                             (ngModelChange)="editingHours.set(+$event)"
+                             class="form-control form-control-sm"
+                             style="width: 52px;"
+                             placeholder="h">
+                      <span class="mx-1">:</span>
+                      <input type="number" min="0" max="59"
+                             [ngModel]="editingMinutes()"
+                             (ngModelChange)="editingMinutes.set(+$event)"
+                             class="form-control form-control-sm me-1"
+                             style="width: 52px;"
+                             placeholder="m">
+                      <button class="btn btn-sm btn-outline-success me-1" (click)="updateTaskRequiredTime(task.id)">
+                        <fa-icon [icon]="faFloppyDisk"></fa-icon>
+                      </button>
+                      <button class="btn btn-sm btn-outline-secondary" (click)="cancelEditTime()">
+                        <fa-icon [icon]="faXmark"></fa-icon>
+                      </button>
+                    </div>
+                  }
+                </td>
+                <td class="text-end">
+                  <div class="btn-group btn-group-sm" role="group">
+                    @if (editingStatusTaskId() !== task.id) {
+                      <button (click)="startEditStatus(task.id, task.status)"
+                              class="btn btn-outline-success"
+                              title="Status ändern">
+                        <fa-icon [icon]="faGears"></fa-icon>
+                      </button>
+                    }
+                    @if (editingStatusTaskId() === task.id) {
+                      <button (click)="endEditStatus()"
+                              class="btn btn-outline-danger"
+                              title="Abbrechen">
+                        <fa-icon [icon]="faGears"></fa-icon>
+                      </button>
+                    }
+                    @if (editingTimeTaskId() !== task.id) {
+                      <button (click)="startEditTime(task.id, task.requiredTime)"
+                              class="btn btn-outline-secondary"
+                              title="Zeit bearbeiten">
+                        <fa-icon [icon]="faClock"></fa-icon>
+                      </button>
+                    }
+                    @if (editingDueDateTaskId() !== task.id) {
+                      <button (click)="startEditDueDate(task.id, task.dueDate)"
+                              class="btn btn-outline-secondary"
+                              title="Fälligkeit bearbeiten">
+                        <fa-icon [icon]="faCalendarDays"></fa-icon>
+                      </button>
+                    }
+                    <a [routerLink]="['/clients/' + task.clientId + '/tasks', task.id]"
+                       class="btn btn-outline-primary"
+                       title="Details">
+                      <fa-icon [icon]="faEdit"></fa-icon>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>
-
-      <!-- Task Count -->
-      <div class="mt-3 text-muted small">
-        Total: {{ taskService.taskCount() }} task(s)
-      </div>
     }
+
   </div>
 </div>
 
 <ng-template #create_task let-modal>
   <div class="modal-header">
-    <h4 class="modal-title">Create Task</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-    </button>
+    <h4 class="modal-title">Aufgabe anlegen</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
-    <app-create-task [caseId]="caseId()"
-                     (taskCreated)="onTaskCreated($event, modal)">
-    </app-create-task>
+    <app-create-task [caseId]="caseId()" (taskCreated)="onTaskCreated($event, modal)"></app-create-task>
   </div>
 </ng-template>
