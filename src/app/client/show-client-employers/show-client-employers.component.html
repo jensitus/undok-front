@@ -35,10 +35,12 @@
       <div class="d-flex align-items-center gap-2">
         <fa-icon [icon]="faBuilding" class="text-primary"></fa-icon>
         <a [routerLink]="['/clients/employers', e.employer.id]"
+           [state]="{ previousUrl: '/clients/' + clientId() }"
            class="fw-semibold text-decoration-none">
           {{ e.employer.company }}
         </a>
         <a [routerLink]="['/clients/employers', e.employer.id]"
+           [state]="{ previousUrl: '/clients/' + clientId() }"
            class="text-secondary ms-1" title="Zur Arbeitgeber-Seite">
           <fa-icon [icon]="faExternalLinkAlt" style="font-size: 0.75rem"></fa-icon>
         </a>

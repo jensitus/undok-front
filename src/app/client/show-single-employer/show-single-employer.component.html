@@ -1,5 +1,16 @@
 <app-alert></app-alert>
 
+@if (employer()) {
+  <app-page-header
+    [firstPoint]="'Dashboard'"
+    [firstIcon]="faTachometerAlt"
+    [firstLink]="'/dashboard'"
+    [secondPoint]="previousRoute.label"
+    [secondLink]="previousRoute.link"
+    [endPoint]="employer()!.company">
+  </app-page-header>
+}
+
 <div class="container py-4">
 
   @if (successMessage()) {
