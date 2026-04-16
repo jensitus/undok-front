@@ -88,6 +88,29 @@ export class ShowSingleClientComponent implements OnDestroy {
     return total > 0 ? this.durationService.getCounselingDuration(total) : undefined;
   });
 
+  readonly hasCaseContent = computed(() => {
+    const c = this.client();
+    if (!c) return false;
+    const oc = c.openCase;
+    return !!(
+      oc?.workingRelationship ||
+      oc?.humanTrafficking !== null && oc?.humanTrafficking !== undefined ||
+      oc?.jobCenterBlock !== null && oc?.jobCenterBlock !== undefined ||
+      c.currentResidentStatus ||
+      c.vulnerableWhenAssertingRights !== null && c.vulnerableWhenAssertingRights !== undefined ||
+      oc?.targetGroup ||
+      c.interpreterNecessary !== null && c.interpreterNecessary !== undefined ||
+      oc?.jobFunction?.length > 0 ||
+      oc?.counselingLanguages?.length > 0 ||
+      oc?.jobMarketAccess?.length > 0 ||
+      oc?.originOfAttention?.length > 0 ||
+      oc?.undocumentedWork?.length > 0 ||
+      oc?.complaints?.length > 0 ||
+      oc?.industryUnion?.length > 0 ||
+      oc?.sector?.length > 0
+    );
+  });
+
   reOpenCase = computed(() => {
     const c = this.client();
     return c?.openCase === null && c?.closedCases !== null;
@@ -178,14 +201,6 @@ export class ShowSingleClientComponent implements OnDestroy {
       }
     });
 
-    // Collapse case card when there is no open case, expand when there is
-    effect(() => {
-      const c = this.client();
-      if (c) {
-        untracked(() => this.isCollapsedCase.set(!c.openCase));
-      }
-    });
-
     // Demo signal watcher
     effect(() => {
       if (this.commonService.demo() === true) {
@@ -256,6 +271,7 @@ export class ShowSingleClientComponent implements OnDestroy {
           next: (res) => {
             this.ngZone.run(() => {
               this.client.set(res);
+              this.isCollapsedCase.set(!this.hasCaseContent());
               console.log('this.client', res);
 
               this.alert.set(res.alert === true);

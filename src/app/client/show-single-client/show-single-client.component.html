@@ -69,7 +69,7 @@
             </div>
             <div class="d-flex align-items-center gap-3">
               <span class="text-secondary small">Keyword:</span>
-              <span class="badge bg-info">{{ client()!.keyword }}</span>
+              <span class="badge bg-dark">{{ client()!.keyword }}</span>
 
               <button class="btn btn-sm btn-outline-secondary py-0"
                       (click)="collapse.toggle()"
@@ -289,7 +289,7 @@
                       Tätigkeiten
                     </div>
                     @for (item of client()!.openCase.jobFunction; track item) {
-                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
+                      <span class="badge bg-primary me-1" [innerHTML]="item.name"></span>
                     }
                   </div>
                 }
@@ -301,7 +301,7 @@
                       Beratungssprachen
                     </div>
                     @for (item of client()!.openCase.counselingLanguages; track item) {
-                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
+                      <span class="badge bg-primary me-1" [innerHTML]="item.name"></span>
                     }
                   </div>
                 }
@@ -313,7 +313,7 @@
                       Arbeitsmarktzugang
                     </div>
                     @for (item of client()!.openCase.jobMarketAccess; track item) {
-                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
+                      <span class="badge bg-primary me-1" [innerHTML]="item.name"></span>
                     }
                   </div>
                 }
@@ -325,7 +325,7 @@
                       Wo hat die Person von uns gehört
                     </div>
                     @for (item of client()!.openCase.originOfAttention; track item) {
-                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
+                      <span class="badge bg-primary me-1" [innerHTML]="item.name"></span>
                     }
                   </div>
                 }
@@ -337,19 +337,7 @@
                       {{ Label.COMPLAINT }}
                     </div>
                     @for (item of client()!.openCase.complaints; track item) {
-                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
-                    }
-                  </div>
-                }
-
-                @if (client()!.openCase?.industryUnion?.length > 0) {
-                  <div class="col-6">
-                    <div class="text-secondary small">
-                      <fa-icon [icon]="faIndustry" class="me-1"></fa-icon>
-                      {{ Label.INDUSTRY_UNION }}
-                    </div>
-                    @for (item of client()!.openCase.industryUnion; track item) {
-                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
+                      <span class="badge bg-primary me-1" [innerHTML]="item.name"></span>
                     }
                   </div>
                 }
@@ -361,7 +349,19 @@
                       {{ Label.SECTOR }}
                     </div>
                     @for (item of client()!.openCase.sector; track item) {
-                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
+                      <span class="badge bg-primary me-1" [innerHTML]="item.name"></span>
+                    }
+                  </div>
+                }
+
+                @if (client()!.openCase?.industryUnion?.length > 0) {
+                  <div class="col-6">
+                    <div class="text-secondary small">
+                      <fa-icon [icon]="faIndustry" class="me-1"></fa-icon>
+                      {{ Label.INDUSTRY_UNION }}
+                    </div>
+                    @for (item of client()!.openCase.industryUnion; track item) {
+                      <span class="badge bg-primary me-1" [innerHTML]="item.name"></span>
                     }
                   </div>
                 }
@@ -375,7 +375,7 @@
                       Undokumentierte Arbeit
                     </div>
                     @for (item of client()!.openCase.undocumentedWork; track item) {
-                      <span class="badge bg-dark me-1" [innerHTML]="item.name"></span>
+                      <span class="badge bg-primary me-1" [innerHTML]="item.name"></span>
                     }
                   </div>
                 }
