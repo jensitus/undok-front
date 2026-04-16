@@ -75,13 +75,16 @@
                       (click)="collapse.toggle()"
                       [attr.aria-expanded]="!isCollapsed()"
                       style="font-size: 0.78rem">
-                {{ isCollapsed() ? 'Details' : 'Einklappen' }}
+                {{ isCollapsed() ? 'Anzeigen' : 'Einklappen' }}
               </button>
             </div>
           </div>
 
           <div #collapse="ngbCollapse" [ngbCollapse]="isCollapsed()">
             <div class="card-body py-2">
+              @if (!client()!.email && !client()!.telephone && !client()!.city && !client()!.nationality && !client()!.gender && !client()!.furtherContact && !client()!.comment) {
+                <p class="text-secondary small mb-3 mt-2">Keine Kontaktdaten vorhanden.</p>
+              }
               <div class="row g-2">
 
                 @if (client()!.email) {
@@ -177,6 +180,10 @@
             </button>
           </div>
           <div #collapseCase="ngbCollapse" [ngbCollapse]="isCollapsedCase()" class="card-body py-2">
+
+            @if (!hasCaseContent()) {
+              <p class="text-secondary small mb-3 mt-2">Keine Falldaten vorhanden.</p>
+            }
 
             <!-- Employment flags -->
             <div class="row g-2">
@@ -385,22 +392,33 @@
           </div>
         </div>
 
+        <!-- ── Task list ── -->
+        @if (client()!.openCase) {
+          <div class="mt-2">
+            <app-case-task-list [caseId]="client()!.openCase.id"></app-case-task-list>
+          </div>
+        }
+
         <!-- ── Actions ── -->
         <div class="d-flex gap-2 mt-2 flex-wrap">
-          <a class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
-             [routerLink]="['edit']">
-            <fa-icon [icon]="faEdit"></fa-icon>
-            Bearbeiten
-          </a>
-          <app-delete [idToDelete]="client()!.id"
-                      [type]="deleteTypeClient"
-                      [deleteObjectName]="client()!.keyword">
-          </app-delete>
-          <a class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1"
-             [routerLink]="['/clients/' + client()!.id + '/create-counseling']">
-            <fa-icon [icon]="faTasks"></fa-icon>
-            Neue Beratung
-          </a>
+          <ul class="list-group list-group-horizontal">
+            <a class="list-group-item"
+               [routerLink]="['edit']">
+              <fa-icon class="text-success" [icon]="faEdit"></fa-icon>
+              Bearbeiten
+            </a>
+            <li class="list-group-item">
+              <app-delete [idToDelete]="client()!.id"
+                          [type]="deleteTypeClient"
+                          [deleteObjectName]="client()!.keyword">
+              </app-delete>
+            </li>
+            <a class="list-group-item"
+               [routerLink]="['/clients/' + client()!.id + '/create-counseling']">
+              <fa-icon class="text-primary" [icon]="faTasks"></fa-icon>
+              Neue Beratung
+            </a>
+          </ul>
         </div>
 
         <!-- ── Total duration ── -->
@@ -408,13 +426,6 @@
           <div class="d-flex align-items-center gap-2 mt-2 text-secondary">
             <fa-icon [icon]="faClock"></fa-icon>
             <span>Gesamtberatungsdauer: <b class="text-body">{{ totalHumanReadableDuration() }}</b></span>
-          </div>
-        }
-
-        <!-- ── Task list ── -->
-        @if (client()!.openCase) {
-          <div class="mt-2">
-            <app-case-task-list [caseId]="client()!.openCase.id"></app-case-task-list>
           </div>
         }
 
