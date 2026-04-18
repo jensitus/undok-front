@@ -23,6 +23,11 @@ interface CounselingSearchResult {
   clientId: string;
 }
 
+interface MatchedCategory {
+  categoryName: string;
+  categoryType: string;
+}
+
 interface ClientSearchResult {
   id: number;
   keyword: string;
@@ -30,7 +35,7 @@ interface ClientSearchResult {
   firstName: string;
   comment: string;
   type: string;
-  matchedCategories: string[];
+  matchedCategories: MatchedCategory[];
 }
 
 interface TaskSearchResult {
@@ -70,6 +75,56 @@ interface UnifiedSearchResponse {
   styleUrl: './search.component.css'
 })
 export class SearchComponent {
+
+  constructor() {
+    // Effect to load initial state from URL (only once)
+    effect(() => {
+      const params = this.queryParams();
+
+      // Only run once on initialization
+      if (this.hasInitialized()) {
+        return;
+      }
+
+      if (params['q']) {
+        this.searchTerm.set(params['q'] || '');
+      }
+
+      const page = parseInt(params['page'] || '0', 10);
+      const size = parseInt(params['size'] || '4', 10);
+
+      this.currentPage.set(page);
+      this.pageSize.set(size);
+
+      // Perform search if there's a search term
+      if (this.searchTerm().trim().length > 0) {
+        this.performSearchAndUpdateResults();
+      }
+
+      this.hasInitialized.set(true);
+    }, {allowSignalWrites: true});
+
+    // Setup debounced search with reasonable debounce time
+    this.searchSubject.pipe(
+      debounceTime(1500), // Changed from 1800ms to 500ms
+      switchMap(term => {
+        this.isLoading.set(true);
+        this.updateUrl();
+        return this.performSearch(term, 0);
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (results) => {
+        this.searchResults.set(results);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        this.error.set('Search failed. Please try again.');
+        this.isLoading.set(false);
+        console.error('Search error:', err);
+      }
+    });
+  }
   // Services
   private http = inject(HttpClient);
   private dateTimeService = inject(DateTimeService);
@@ -82,6 +137,13 @@ export class SearchComponent {
   readonly apiUrl = environment.api_url;
   readonly today = this.calendar.getToday();
   readonly initialFromDate: NgbDateStruct = {year: 2000, month: 1, day: 1};
+
+  // Category type labels
+  private readonly categoryTypeLabels: Record<string, string> = {
+    INDUSTRY_UNION: 'Branche/Gewerkschaft',
+    SECTOR: 'Sektor',
+    ACTIVITY: 'Aktivität',
+  };
 
   // Icons
   protected readonly faCalendarAlt = faCalendarAlt;
@@ -136,54 +198,8 @@ export class SearchComponent {
   // Subject for debounced search
   private searchSubject = new Subject<string>();
 
-  constructor() {
-    // Effect to load initial state from URL (only once)
-    effect(() => {
-      const params = this.queryParams();
-
-      // Only run once on initialization
-      if (this.hasInitialized()) {
-        return;
-      }
-
-      if (params['q']) {
-        this.searchTerm.set(params['q'] || '');
-      }
-
-      const page = parseInt(params['page'] || '0', 10);
-      const size = parseInt(params['size'] || '4', 10);
-
-      this.currentPage.set(page);
-      this.pageSize.set(size);
-
-      // Perform search if there's a search term
-      if (this.searchTerm().trim().length > 0) {
-        this.performSearchAndUpdateResults();
-      }
-
-      this.hasInitialized.set(true);
-    }, {allowSignalWrites: true});
-
-    // Setup debounced search with reasonable debounce time
-    this.searchSubject.pipe(
-      debounceTime(1500), // Changed from 1800ms to 500ms
-      switchMap(term => {
-        this.isLoading.set(true);
-        this.updateUrl();
-        return this.performSearch(term, 0);
-      }),
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe({
-      next: (results) => {
-        this.searchResults.set(results);
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        this.error.set('Search failed. Please try again.');
-        this.isLoading.set(false);
-        console.error('Search error:', err);
-      }
-    });
+  categoryTypeLabel(type: string): string {
+    return this.categoryTypeLabels[type] ?? type;
   }
 
   onSearchInput(term: string) {

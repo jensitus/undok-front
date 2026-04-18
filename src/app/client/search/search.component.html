@@ -178,7 +178,8 @@
                       <p class="mb-1">
                         <b>Matched Categories:</b><br>
                         @for (category of client.matchedCategories; track category) {
-                          <span class="badge bg-info text-dark me-1">{{ category }}</span>
+                          <span class="badge bg-info text-dark me-1">{{ category.categoryName }}</span>
+                          <span class="badge bg-secondary me-2" style="font-size:0.7rem">{{ categoryTypeLabel(category.categoryType) }}</span>
                         }
                       </p>
                     }
