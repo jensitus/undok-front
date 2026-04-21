@@ -1,26 +1,19 @@
-import { Component, signal, inject, computed } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NgbCarousel, NgbCarouselConfig, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
-import { routerTransition } from '../../../router.animations';
-import { User } from '../../../auth/model/user';
-import { CommonService } from '../../../common/services/common.service';
-import { ClientService } from '../../../client/service/client.service';
-import { EmployerService } from '../../../client/service/employer.service';
-import { AlertService } from '../components/alert/services/alert.service';
-import { TimelineComponent } from './components';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { TaskListComponent } from '../../../client/components/tasks/task-list/task-list.component';
-import { StatComponent } from '../../shared/stat/stat.component';
-import { AlertComponent } from '../components/alert/alert.component';
-import {
-  faComments,
-  faShoppingCart,
-  faSurprise,
-  faTachometerAlt,
-  faTasks,
-  faUsers
-} from '@fortawesome/free-solid-svg-icons';
+import {Component, computed, inject, signal} from '@angular/core';
+import {Router, RouterLink} from '@angular/router';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {NgbCarousel, NgbCarouselConfig, NgbSlide} from '@ng-bootstrap/ng-bootstrap';
+import {routerTransition} from '../../../router.animations';
+import {User} from '../../../auth/model/user';
+import {CommonService} from '../../../common/services/common.service';
+import {ClientService} from '../../../client/service/client.service';
+import {EmployerService} from '../../../client/service/employer.service';
+import {AlertService} from '../components/alert/services/alert.service';
+import {TimelineComponent} from './components';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {TaskListComponent} from '../../../client/components/tasks/task-list/task-list.component';
+import {StatComponent} from '../../shared/stat/stat.component';
+import {AlertComponent} from '../components/alert/alert.component';
+import {faCalendarAlt, faSurprise, faTachometerAlt, faTasks, faUsers} from '@fortawesome/free-solid-svg-icons';
 
 interface Alert {
   id: number;
@@ -89,12 +82,11 @@ export class DashboardComponent {
   isAdmin = computed(() => this.currentUser()?.admin ?? false);
 
   // Font Awesome icons
-  readonly faComments = faComments;
   readonly faTasks = faTasks;
-  readonly faShoppingCard = faShoppingCart;
   readonly faSurprise = faSurprise;
   readonly faUser = faUsers;
   readonly faTachometerAlt = faTachometerAlt;
+  protected readonly faCalendarAlt = faCalendarAlt;
 
   // Carousel configuration
   readonly showNavigationArrows = false;

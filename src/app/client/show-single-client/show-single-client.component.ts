@@ -1,4 +1,16 @@
-import {ChangeDetectorRef, Component, computed, effect, ElementRef, inject, NgZone, OnDestroy, signal, untracked, viewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  NgZone,
+  OnDestroy,
+  signal,
+  untracked,
+  viewChild
+} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {CommonModule} from '@angular/common';
@@ -25,11 +37,33 @@ import {CloseCaseComponent} from '../case/close-case/close-case.component';
 import {CreateCounselingComponent} from '../create-counseling/create-counseling.component';
 import {ShowEmployersListComponent} from '../show-employers-list/show-employers-list.component';
 import {
-  faEdit, faTachometerAlt, faTasks, faUsers,
-  faUser, faEnvelope, faPhone, faMapMarkerAlt, faFlag, faVenusMars, faComment, faAddressBook,
-  faBriefcase, faExclamationTriangle, faClock,
-  faBan, faIdCard, faShieldAlt, faLanguage, faTools, faComments, faKey,
-  faBullhorn, faUserSecret, faGavel, faIndustry, faLayerGroup
+  faAddressBook,
+  faBan,
+  faBriefcase,
+  faBullhorn,
+  faCalendarAlt,
+  faClock,
+  faComment,
+  faComments,
+  faEdit,
+  faEnvelope,
+  faExclamationTriangle,
+  faFlag,
+  faGavel,
+  faIdCard,
+  faIndustry,
+  faKey,
+  faLanguage,
+  faLayerGroup,
+  faMapMarkerAlt,
+  faPhone,
+  faShieldAlt,
+  faTachometerAlt,
+  faTools,
+  faUser,
+  faUsers,
+  faUserSecret,
+  faVenusMars
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -133,7 +167,6 @@ export class ShowSingleClientComponent implements OnDestroy {
   readonly faTachometerAlt = faTachometerAlt;
   readonly faUsers = faUsers;
   readonly faEdit = faEdit;
-  readonly faTasks = faTasks;
   readonly faUser = faUser;
   readonly faEnvelope = faEnvelope;
   readonly faPhone = faPhone;
@@ -157,6 +190,7 @@ export class ShowSingleClientComponent implements OnDestroy {
   readonly faGavel = faGavel;
   readonly faIndustry = faIndustry;
   readonly faLayerGroup = faLayerGroup;
+  protected readonly faCalendarAlt = faCalendarAlt;
 
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {

@@ -135,7 +135,7 @@ export class SearchComponent {
 
   // Constants
   readonly apiUrl = environment.api_url;
-  readonly today = this.calendar.getToday();
+  readonly initialToDate = this.addMonths(this.calendar.getToday(), 3);
   readonly initialFromDate: NgbDateStruct = {year: 2000, month: 1, day: 1};
 
   // Category type labels
@@ -370,4 +370,16 @@ export class SearchComponent {
       queryParamsHandling: 'merge'
     });
   }
+
+  private addMonths(dateStruct: NgbDateStruct, months: number): NgbDateStruct {
+    const jsDate = new Date(dateStruct.year, dateStruct.month - 1, dateStruct.day);
+    jsDate.setMonth(jsDate.getMonth() + months);
+
+    return {
+      year: jsDate.getFullYear(),
+      month: jsDate.getMonth() + 1,
+      day: jsDate.getDate()
+    };
+  }
+
 }
