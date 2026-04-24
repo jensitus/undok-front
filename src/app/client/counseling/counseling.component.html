@@ -231,6 +231,7 @@
             <div class="text-secondary mb-2" style="font-size:0.75rem">Rechtsschutzkategorie</div>
             <app-multi [categoryType]="legalCategoryType"
                        [label]="legalLabel"
+                       [dropdownPosition]="'top'"
                        (categoryValue)="showCategoryValue($event, legalCategoryType)"
                        (deSelectedEmit)="showDeSelected($event)"
                        [selectedCategories]="c.legalCategory">
@@ -325,6 +326,7 @@
             <div class="text-secondary mb-2" style="font-size:0.75rem">Aktivitätskategorie</div>
             <app-multi [categoryType]="activityCategoryType"
                        [label]="activityLabel"
+                       [dropdownPosition]="'top'"
                        (categoryValue)="showCategoryValue($event, activityCategoryType)"
                        (deSelectedEmit)="showDeSelected($event)"
                        [selectedCategories]="c.activityCategories">
@@ -393,6 +395,14 @@
   </div>
 
 </div>
+
+  <div class="row mb-5">
+
+  </div>
+  <div class="row mb-5">
+
+  </div>
+  <div class="row mb-5"></div>
 
 <!-- ── Modals ── -->
 <ng-template #edit_comment let-modal>
