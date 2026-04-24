@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {SidebarService} from '../../admin-template/shared/services/sidebar.service';
+import { Component } from '@angular/core';
+import {faTachometerAlt} from '@fortawesome/free-solid-svg-icons';
 import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
 import {ShowEmployersListComponent} from '../show-employers-list/show-employers-list.component';
+import {PageHeaderComponent} from '../../admin-template/shared/page-header/page-header.component';
 
 @Component({
   selector: 'app-show-employers',
@@ -9,17 +10,11 @@ import {ShowEmployersListComponent} from '../show-employers-list/show-employers-
   templateUrl: './show-employers.component.html',
   imports: [
     AlertComponent,
-    ShowEmployersListComponent
+    ShowEmployersListComponent,
+    PageHeaderComponent
   ],
   styleUrls: ['./show-employers.component.css']
 })
-export class ShowEmployersComponent implements OnInit {
-
-  constructor(
-    private sidebarService: SidebarService
-  ) { }
-
-  ngOnInit(): void {
-  }
-
+export class ShowEmployersComponent {
+  readonly faTachometerAlt = faTachometerAlt;
 }

@@ -89,7 +89,7 @@ export class CreateCommentComponent {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: () => {
-            this.commonService.setReload(true);
+            this.commentSaved.emit(true);
             this.isSubmitting.set(false);
           },
           error: (err) => {

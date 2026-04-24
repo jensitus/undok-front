@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, DestroyRef, effect, inject, Input, OnInit} from '@angular/core';
 import {Counseling} from '../model/counseling';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ModalDismissReasons, NgbCollapse, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
 import {CounselingService} from '../service/counseling.service';
 import {DurationService} from '../service/duration.service';
@@ -12,6 +12,21 @@ import {RouterLink} from '@angular/router';
 import {LinkifyPipe} from '../../common/helper/linkify.pipe';
 import {NewLinePipe} from '../new-line.pipe';
 import {CreateCommentComponent} from '../create-comment/create-comment.component';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {
+  faCalendarAlt,
+  faChevronDown,
+  faChevronUp,
+  faClock,
+  faComment,
+  faComments,
+  faExternalLinkAlt,
+  faGavel,
+  faSort,
+  faTag,
+  faTasks,
+  faUser
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-show-counselings-per-client',
@@ -23,7 +38,9 @@ import {CreateCommentComponent} from '../create-comment/create-comment.component
     RouterLink,
     LinkifyPipe,
     NewLinePipe,
-    CreateCommentComponent
+    CreateCommentComponent,
+    FaIconComponent,
+    NgbCollapse,
   ]
 })
 export class ShowCounselingsPerClientComponent implements OnInit {
@@ -40,8 +57,24 @@ export class ShowCounselingsPerClientComponent implements OnInit {
   private closeResult = '';
   protected counselingOrder = 'Asc';
 
+  // Collapse state: IDs in this set are expanded
+  private expandedIds = new Set<string>();
+
+  // Icons
+  protected readonly faCalendarAlt = faCalendarAlt;
+  protected readonly faComments = faComments;
+  protected readonly faGavel = faGavel;
+  protected readonly faTasks = faTasks;
+  protected readonly faTag = faTag;
+  protected readonly faClock = faClock;
+  protected readonly faUser = faUser;
+  protected readonly faComment = faComment;
+  protected readonly faExternalLinkAlt = faExternalLinkAlt;
+  protected readonly faSort = faSort;
+  protected readonly faChevronDown = faChevronDown;
+  protected readonly faChevronUp = faChevronUp;
+
   constructor() {
-    // Effect to watch for createCounseling signal changes
     effect(() => {
       if (this.commonService.createCounseling()) {
         this.modalService.dismissAll();
@@ -61,6 +94,18 @@ export class ShowCounselingsPerClientComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCounselingsByClientId();
+  }
+
+  isCollapsed(id: string): boolean {
+    return !this.expandedIds.has(id);
+  }
+
+  toggleCollapsed(id: string): void {
+    if (this.expandedIds.has(id)) {
+      this.expandedIds.delete(id);
+    } else {
+      this.expandedIds.add(id);
+    }
   }
 
   getCounselingDuration(requiredTime: number): string {
@@ -98,12 +143,12 @@ export class ShowCounselingsPerClientComponent implements OnInit {
   }
 
   getCounselingsByClientId() {
-    console.log('getCounselingsByClientId');
     this.counselingService.getCounselingsByClientId(this.clientId, this.counselingOrder)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: (counselings) => {
             this.counselings = counselings;
+            counselings.forEach(c => this.expandedIds.add(c.id));
             this.getCategories();
             this.cdr.detectChanges();
           },
@@ -142,11 +187,7 @@ export class ShowCounselingsPerClientComponent implements OnInit {
   }
 
   changeCounselingOrder() {
-    if (this.counselingOrder === 'Asc') {
-      this.counselingOrder = 'Desc';
-    } else if (this.counselingOrder === 'Desc') {
-      this.counselingOrder = 'Asc';
-    }
+    this.counselingOrder = this.counselingOrder === 'Asc' ? 'Desc' : 'Asc';
     this.getCounselingsByClientId();
   }
 }
