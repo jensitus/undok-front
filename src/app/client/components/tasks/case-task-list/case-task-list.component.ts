@@ -7,14 +7,14 @@ import {TaskService} from '../../../service/task.service';
 import {CreateTaskComponent} from '../create-task/create-task.component';
 import {Task} from '../../../model/task';
 import {AlertService} from '../../../../admin-template/layout/components/alert/services/alert.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCollapse, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 import {StatusUtility} from '../../../../common/helper/status-utility';
 
 @Component({
   selector: 'app-case-task-list',
   standalone: true,
-  imports: [RouterLink, FontAwesomeModule, CreateTaskComponent, FormsModule, SlicePipe],
+  imports: [RouterLink, FontAwesomeModule, CreateTaskComponent, FormsModule, SlicePipe, NgbCollapse],
   templateUrl: './case-task-list.component.html',
   styleUrl: './case-task-list.component.css'
 })
@@ -26,6 +26,8 @@ export class CaseTaskListComponent {
 
   readonly caseId = input.required<string>();
   readonly createTask = viewChild<TemplateRef<any>>('create_task');
+
+  readonly isCollapsed = signal(true);
 
   // Editing state as signals
   readonly editingStatusTaskId = signal<string | null>(null);
@@ -56,7 +58,9 @@ export class CaseTaskListComponent {
   }
 
   loadTasks(caseId: string): void {
-    this.taskService.getTasksByCaseId(caseId).subscribe();
+    this.taskService.getTasksByCaseId(caseId).subscribe({
+      next: () => this.isCollapsed.set(this.taskService.tasks().length === 0)
+    });
   }
 
   deleteTask(id: string): void {

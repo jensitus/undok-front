@@ -15,7 +15,7 @@ import {
   faTachometerAlt,
   faTasks,
   faUser,
-  faUsers, faAngleDoubleDown, faAngleDoubleLeft, faAngleDoubleRight
+  faUsers, faAngleDoubleDown, faAngleDoubleLeft, faAngleDoubleRight, faCalendarAlt
 } from '@fortawesome/free-solid-svg-icons';
 import {SidebarService} from '../../../shared/services/sidebar.service';
 import {NgClass} from '@angular/common';
@@ -73,6 +73,7 @@ export class SidebarComponent {
   protected readonly faAngleDoubleDown = faAngleDoubleDown;
   protected readonly faAngleDoubleLeft = faAngleDoubleLeft;
   protected readonly faAngleDoubleRight = faAngleDoubleRight;
+  protected readonly faCalendarAlt = faCalendarAlt;
 
   constructor() {
     // Set up router event subscription for mobile sidebar handling
@@ -87,18 +88,6 @@ export class SidebarComponent {
         }
       });
   }
-
-  // eventCalled(): void {
-  //   this.isActive.update(value => !value);
-  // }
-  //
-  // addExpandClass(element: string): void {
-  //   if (element === this.showMenu()) {
-  //     this.showMenu.set('0');
-  //   } else {
-  //     this.showMenu.set(element);
-  //   }
-  // }
 
   toggleCollapsed(): void {
     this.collapsed.update(value => !value);
@@ -120,22 +109,10 @@ export class SidebarComponent {
     dom.classList.toggle('rtl');
   }
 
-  // onLoggedout(): void {
-  //   localStorage.removeItem('isLoggedin');
-  // }
-
   private getCurrentUser(): User | null {
     const userJson = localStorage.getItem('currentUser');
     return userJson ? JSON.parse(userJson) : null;
   }
-
-  // newCounseling(): void {
-  //   this.sidebarService.setNewCounselingSubject(true);
-  // }
-
-  // newEmployer(): void {
-  //   this.sidebarService.setNewEmployerSubject(true);
-  // }
 
   assignEmployer(): void {
     this.sidebarService.setAssignEmployer(true);

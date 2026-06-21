@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ClientService} from '../service/client.service';
 import {Observable, Subject} from 'rxjs';
-import {faTasks} from '@fortawesome/free-solid-svg-icons';
+import {faCalendarAlt, faTasks} from '@fortawesome/free-solid-svg-icons';
 import {CounselingTableService} from '../table/counseling-table.service';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
 import {CounselingService} from '../service/counseling.service';
@@ -46,12 +46,10 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
   @ViewChild('documentLink', {static: true}) documentLink: ElementRef;
 
   private unsubscribe$ = new Subject();
-  faTasks = faTasks;
+  protected readonly faCalendarAlt = faCalendarAlt;
 
   constructor(
-    private clientService: ClientService,
     public counselingTableService: CounselingTableService,
-    private counselingService: CounselingService,
     private csvService: CsvService
   ) {
     this.total$ = counselingTableService.total$;
@@ -83,5 +81,4 @@ export class ShowCounselingsComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(blob => saveAs(blob, currentDate + '-counselings.csv'));
   }
-
 }

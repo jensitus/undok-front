@@ -1,4 +1,16 @@
-import {ChangeDetectorRef, Component, computed, effect, ElementRef, inject, NgZone, OnDestroy, signal, viewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  NgZone,
+  OnDestroy,
+  signal,
+  untracked,
+  viewChild
+} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {CommonModule} from '@angular/common';
@@ -24,7 +36,35 @@ import {ShowCounselingsPerClientComponent} from '../show-counselings-per-client/
 import {CloseCaseComponent} from '../case/close-case/close-case.component';
 import {CreateCounselingComponent} from '../create-counseling/create-counseling.component';
 import {ShowEmployersListComponent} from '../show-employers-list/show-employers-list.component';
-import {faEdit, faTachometerAlt, faTasks, faUsers} from '@fortawesome/free-solid-svg-icons';
+import {
+  faAddressBook,
+  faBan,
+  faBriefcase,
+  faBullhorn,
+  faCalendarAlt,
+  faClock,
+  faComment,
+  faComments,
+  faEdit,
+  faEnvelope,
+  faExclamationTriangle,
+  faFlag,
+  faGavel,
+  faIdCard,
+  faIndustry,
+  faKey,
+  faLanguage,
+  faLayerGroup,
+  faMapMarkerAlt,
+  faPhone,
+  faShieldAlt,
+  faTachometerAlt,
+  faTools,
+  faUser,
+  faUsers,
+  faUserSecret,
+  faVenusMars
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-show-single-client',
@@ -69,6 +109,7 @@ export class ShowSingleClientComponent implements OnDestroy {
   private id = signal<string | undefined>(undefined);
   counselings = signal<Counseling[] | undefined>(undefined);
   isCollapsed = signal<boolean>(false);
+  isCollapsedCase = signal<boolean>(true);
   closeResult = signal<string>('');
 
   // Computed signals
@@ -79,6 +120,29 @@ export class ShowSingleClientComponent implements OnDestroy {
                             .reduce((sum, t) => sum + (t.requiredTime ?? 0), 0);
     const total = counselingMinutes + taskMinutes;
     return total > 0 ? this.durationService.getCounselingDuration(total) : undefined;
+  });
+
+  readonly hasCaseContent = computed(() => {
+    const c = this.client();
+    if (!c) return false;
+    const oc = c.openCase;
+    return !!(
+      oc?.workingRelationship ||
+      oc?.humanTrafficking !== null && oc?.humanTrafficking !== undefined ||
+      oc?.jobCenterBlock !== null && oc?.jobCenterBlock !== undefined ||
+      c.currentResidentStatus ||
+      c.vulnerableWhenAssertingRights !== null && c.vulnerableWhenAssertingRights !== undefined ||
+      oc?.targetGroup ||
+      c.interpreterNecessary !== null && c.interpreterNecessary !== undefined ||
+      oc?.jobFunction?.length > 0 ||
+      oc?.counselingLanguages?.length > 0 ||
+      oc?.jobMarketAccess?.length > 0 ||
+      oc?.originOfAttention?.length > 0 ||
+      oc?.undocumentedWork?.length > 0 ||
+      oc?.complaints?.length > 0 ||
+      oc?.industryUnion?.length > 0 ||
+      oc?.sector?.length > 0
+    );
   });
 
   reOpenCase = computed(() => {
@@ -101,10 +165,32 @@ export class ShowSingleClientComponent implements OnDestroy {
   readonly deleteTypeClient: DeleteTypes = DeleteTypes.CLIENT;
   readonly Label = Label;
   readonly faTachometerAlt = faTachometerAlt;
-  // readonly faUser = faUser;
   readonly faUsers = faUsers;
   readonly faEdit = faEdit;
-  readonly faTasks = faTasks;
+  readonly faUser = faUser;
+  readonly faEnvelope = faEnvelope;
+  readonly faPhone = faPhone;
+  readonly faMapMarkerAlt = faMapMarkerAlt;
+  readonly faFlag = faFlag;
+  readonly faVenusMars = faVenusMars;
+  readonly faComment = faComment;
+  readonly faAddressBook = faAddressBook;
+  readonly faBriefcase = faBriefcase;
+  readonly faExclamationTriangle = faExclamationTriangle;
+  readonly faClock = faClock;
+  readonly faBan = faBan;
+  readonly faIdCard = faIdCard;
+  readonly faShieldAlt = faShieldAlt;
+  readonly faLanguage = faLanguage;
+  readonly faTools = faTools;
+  readonly faComments = faComments;
+  readonly faKey = faKey;
+  readonly faBullhorn = faBullhorn;
+  readonly faUserSecret = faUserSecret;
+  readonly faGavel = faGavel;
+  readonly faIndustry = faIndustry;
+  readonly faLayerGroup = faLayerGroup;
+  protected readonly faCalendarAlt = faCalendarAlt;
 
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -140,6 +226,15 @@ export class ShowSingleClientComponent implements OnDestroy {
   }
 
   private setupSubscriptions(): void {
+    // Collapse personal info card automatically based on whether data is present
+    effect(() => {
+      const c = this.client();
+      if (c) {
+        const hasPersonalInfo = !!(c.email || c.telephone || c.city || c.nationality || c.gender || c.furtherContact || c.comment);
+        untracked(() => this.isCollapsed.set(!hasPersonalInfo));
+      }
+    });
+
     // Demo signal watcher
     effect(() => {
       if (this.commonService.demo() === true) {
@@ -210,6 +305,7 @@ export class ShowSingleClientComponent implements OnDestroy {
           next: (res) => {
             this.ngZone.run(() => {
               this.client.set(res);
+              this.isCollapsedCase.set(!this.hasCaseContent());
               console.log('this.client', res);
 
               this.alert.set(res.alert === true);

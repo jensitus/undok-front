@@ -1,9 +1,9 @@
 import {Component, effect, inject, signal, untracked} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {EmployerService} from '../service/employer.service';
 import {Employer} from '../model/employer';
-import {faSurprise} from '@fortawesome/free-solid-svg-icons';
+import {faBuilding, faUser, faUsers, faPencilAlt, faEnvelope, faPhone, faMapMarkerAlt, faTachometerAlt} from '@fortawesome/free-solid-svg-icons';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonService} from '../../common/services/common.service';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
@@ -12,6 +12,7 @@ import {DeleteComponent} from '../delete/delete.component';
 import {EditEmployerComponent} from '../edit-employer/edit-employer.component';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
+import {PageHeaderComponent} from '../../admin-template/shared/page-header/page-header.component';
 
 @Component({
   selector: 'app-show-single-employer',
@@ -21,13 +22,16 @@ import {AlertComponent} from '../../admin-template/layout/components/alert/alert
     DeleteComponent,
     EditEmployerComponent,
     FaIconComponent,
-    AlertComponent
+    AlertComponent,
+    RouterLink,
+    PageHeaderComponent
   ],
   styleUrls: ['./show-single-employer.component.css']
 })
 export class ShowSingleEmployerComponent {
   // Services injected using inject()
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly modalService = inject(NgbModal);
   private readonly employerService = inject(EmployerService);
   private readonly commonService = inject(CommonService);
@@ -45,9 +49,25 @@ export class ShowSingleEmployerComponent {
   readonly error = signal<string | null>(null);
   readonly successMessage = signal<string | null>(null);
 
+  // Previous route breadcrumb — set via router state when navigating from a client page
+  readonly previousRoute = (() => {
+    const prev = history.state?.previousUrl as string | undefined;
+    if (prev?.match(/\/clients\/[0-9a-f-]{36}$/)) {
+      return { label: 'Klient:in', link: prev };
+    }
+    return { label: 'Arbeitgeber:innen', link: '/clients/employers' };
+  })();
+
   // Constants
   readonly deleteTypeEmployer: DeleteTypes = DeleteTypes.EMPLOYER;
-  readonly faSurprise = faSurprise;
+  readonly faTachometerAlt = faTachometerAlt;
+  readonly faBuilding = faBuilding;
+  readonly faUser = faUser;
+  readonly faUsers = faUsers;
+  readonly faPencilAlt = faPencilAlt;
+  readonly faEnvelope = faEnvelope;
+  readonly faPhone = faPhone;
+  readonly faMapMarkerAlt = faMapMarkerAlt;
 
   constructor() {
     // Watch route params and load employer when ID changes

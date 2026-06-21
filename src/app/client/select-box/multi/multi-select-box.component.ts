@@ -33,6 +33,7 @@ export class MultiSelectBoxComponent implements OnInit {
   selectedCategories = input<Category[]>();
   categoryType = input.required<CategoryTypes>();
   label = input<Label>();
+  dropdownPosition = input<'top' | 'bottom'>('bottom');
 
   // Outputs using modern output() API
   categoryValue = output<DropdownItem[]>();
@@ -45,15 +46,16 @@ export class MultiSelectBoxComponent implements OnInit {
   deSelectedItems = signal<DropdownItem[]>([]);
   waitForCategories = signal<boolean>(false);
 
-  // Dropdown settings (non-reactive config)
-  dropdownSettings: IDropdownSettings = {
+  // Dropdown settings derived from inputs
+  readonly dropdownSettings = computed<IDropdownSettings>(() => ({
     singleSelection: false,
     idField: 'itemId',
     textField: 'itemText',
     unSelectAllText: 'UnSelect All',
     itemsShowLimit: 4,
-    allowSearchFilter: true
-  };
+    allowSearchFilter: true,
+    position: this.dropdownPosition()
+  }));
 
   // Computed signal to derive dropdown items from categories
   private dropdownItems = computed(() => {

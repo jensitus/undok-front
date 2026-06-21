@@ -1,128 +1,173 @@
 <app-alert></app-alert>
-<div class="container">
+
+@if (employer()) {
+  <app-page-header
+    [firstPoint]="'Dashboard'"
+    [firstIcon]="faTachometerAlt"
+    [firstLink]="'/dashboard'"
+    [secondPoint]="previousRoute.label"
+    [secondLink]="previousRoute.link"
+    [endPoint]="employer()!.company">
+  </app-page-header>
+}
+
+<div class="container py-4">
+
   @if (successMessage()) {
-    <div class="row">
-      <div class="alert alert-success alert-dismissible fade show col-md-4" role="alert">
-        {{ successMessage() }}
-        <button type="button"
-                class="btn-close"
-                (click)="successMessage.set(null)"
-                aria-label="Close">
-        </button>
-      </div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ successMessage() }}
+      <button type="button" class="btn-close" (click)="successMessage.set(null)" aria-label="Close"></button>
     </div>
   }
+
   @if (loading()) {
     <div class="text-center py-5">
-      <div class="spinner-border" role="status">
+      <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
   }
 
   @if (error()) {
-    <div class="alert alert-danger" role="alert">
-      {{ error() }}
-    </div>
+    <div class="alert alert-danger" role="alert">{{ error() }}</div>
   }
 
   @if (!loading() && !error() && employer()) {
-    <div class="row">
-      <div class="col-md-4">
-        <h4>
-          <fa-icon [icon]="faSurprise" class="text-warning mr-5"></fa-icon>
-          Arbeitgeber:in
-        </h4>
+
+    <!-- Employer Header Card -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-2">
+          <fa-icon [icon]="faBuilding" class="text-primary fs-5"></fa-icon>
+          <h5 class="mb-0">{{ employer()!.company }}</h5>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1"
+                  (click)="openEditEmployer(content_edit_employer)">
+            <fa-icon [icon]="faPencilAlt"></fa-icon>
+            Bearbeiten
+          </button>
+          <app-delete [type]="deleteTypeEmployer" [idToDelete]="employer()!.id"></app-delete>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="row g-4">
+
+          <!-- Company address -->
+          <div class="col-md-6">
+            <div class="d-flex align-items-start gap-2">
+              <fa-icon [icon]="faMapMarkerAlt" class="text-secondary mt-1"></fa-icon>
+              <div>
+                <div class="text-secondary small mb-1">Adresse</div>
+                <div>{{ employer()!.street }}</div>
+                <div>{{ employer()!.zipCode }} {{ employer()!.city }}</div>
+                @if (employer()!.country) {
+                  <div>{{ employer()!.country }}</div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact person -->
+          <div class="col-md-6">
+            <div class="d-flex align-items-start gap-2">
+              <fa-icon [icon]="faUser" class="text-secondary mt-1"></fa-icon>
+              <div>
+                <div class="text-secondary small mb-1">Ansprechpartner:in</div>
+                <div class="fw-semibold">{{ employer()!.firstName }} {{ employer()!.lastName }}</div>
+                @if (employer()!.position) {
+                  <div class="text-secondary small">{{ employer()!.position }}</div>
+                }
+              </div>
+            </div>
+          </div>
+
+          @if (employer()!.email || employer()!.telephone) {
+            <!-- Email -->
+            @if (employer()!.email) {
+              <div class="col-md-6">
+                <div class="d-flex align-items-center gap-2">
+                  <fa-icon [icon]="faEnvelope" class="text-secondary"></fa-icon>
+                  <div>
+                    <div class="text-secondary small mb-1">E-Mail</div>
+                    <a href="mailto:{{ employer()!.email }}">{{ employer()!.email }}</a>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <!-- Telephone -->
+            @if (employer()!.telephone) {
+              <div class="col-md-6">
+                <div class="d-flex align-items-center gap-2">
+                  <fa-icon [icon]="faPhone" class="text-secondary"></fa-icon>
+                  <div>
+                    <div class="text-secondary small mb-1">Telefon</div>
+                    <a href="tel:{{ employer()!.telephone }}">{{ employer()!.telephone }}</a>
+                  </div>
+                </div>
+              </div>
+            }
+          }
+
+        </div>
       </div>
     </div>
 
-    <div class="row mt-5">
-      <div class="col-md-4">
-        <b>Firma</b>
-      </div>
-    </div>
-
-    <div class="row mt-3">
-      <div class="col-md-4">
-        <span class="text-secondary">Name:</span><br>
-        @if (employer()?.company) {
-          <span>{{ employer()!.company }}</span>
+    <!-- Clients Section -->
+    <div class="card shadow-sm">
+      <div class="card-header d-flex align-items-center gap-2">
+        <fa-icon [icon]="faUsers" class="text-primary fs-5"></fa-icon>
+        <h5 class="mb-0">Klient:innen</h5>
+        @if (employer()!.clients && employer()!.clients!.length > 0) {
+          <span class="badge bg-primary ms-1">{{ employer()!.clients!.length }}</span>
         }
       </div>
-      <div class="col-md-4">
-        <span class="text-secondary">Adresse:</span><br>
-        @if (employer()) {
-          <span>
-            {{ employer()!.street }}
-            {{ employer()!.zipCode }}
-            {{ employer()!.city }}
-          </span>
+
+      <div class="card-body p-0">
+        @if (!employer()!.clients || employer()!.clients!.length === 0) {
+          <div class="text-center text-secondary py-4">
+            Keine Klient:innen für diesen Arbeitgeber erfasst.
+          </div>
+        } @else {
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Keyword</th>
+                <th>Vorname</th>
+                <th>Nachname</th>
+                <th>Stadt</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (client of employer()!.clients; track client.id) {
+                <tr>
+                  <td>{{ client.keyword }}</td>
+                  <td>{{ client.firstName }}</td>
+                  <td>{{ client.lastName }}</td>
+                  <td>{{ client.city }}</td>
+                  <td class="text-end">
+                    <a [routerLink]="['/clients', client.id]" class="btn btn-sm btn-outline-secondary">
+                      Details
+                    </a>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
         }
       </div>
     </div>
 
-    <hr class="mt-5 mb-5">
-
-    <div class="row">
-      <div class="col-md-4">
-        <b>Ansprechpartner:in</b>
-      </div>
-    </div>
-
-    <div class="row mt-3">
-      <div class="col-md-4">
-        <span class="text-secondary">Name:</span><br>
-        @if (employer()) {
-          <span>{{ employer()!.firstName }} {{ employer()!.lastName }}</span>
-        }
-      </div>
-    </div>
-
-    <div class="row mt-2">
-      <div class="col-md-4">
-        <span class="text-secondary">Email:</span><br>
-        @if (employer()?.email) {
-          <span>{{ employer()!.email }}</span>
-        }
-      </div>
-      <div class="col-md-4">
-        <span class="text-secondary">Position:</span><br>
-        @if (employer()?.position) {
-          <span>{{ employer()!.position }}</span>
-        }
-      </div>
-      <div class="col-md-4">
-        <span class="text-secondary">Telephon:</span><br>
-        @if (employer()?.telephone) {
-          <span>{{ employer()!.telephone }}</span>
-        }
-      </div>
-    </div>
-
-    <div class="row mt-5">
-      <div class="col-md-4">
-        <button class="btn btn-sm btn-outline-primary"
-                (click)="openEditEmployer(content_edit_employer)">
-          edit
-        </button>
-        &nbsp;&nbsp;
-        <app-delete [type]="deleteTypeEmployer"
-                    [idToDelete]="employer()!.id">
-        </app-delete>
-      </div>
-    </div>
   }
 </div>
 
 <ng-template #content_edit_employer let-modal>
   <div class="modal-header">
-    <h4 class="modal-title">edit employer</h4>
-    <button type="button"
-            class="close"
-            aria-label="Close"
-            (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <h4 class="modal-title">Arbeitgeber:in bearbeiten</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     @if (employer()) {
@@ -130,10 +175,6 @@
     }
   </div>
   <div class="modal-footer">
-    <button type="button"
-            class="btn btn-lg btn-outline-danger"
-            (click)="modal.close('Save click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('Save click')">Schließen</button>
   </div>
 </ng-template>

@@ -13,7 +13,12 @@ import {DropdownItem} from '../model/dropdown-item';
 import {EntityTypes} from '../model/entity-types';
 import {JoinCategory} from '../model/join-category';
 import {Label} from '../model/label';
-import {faBars, faTachometerAlt} from '@fortawesome/free-solid-svg-icons';
+import {
+  faBars, faTachometerAlt,
+  faPen, faTimes, faCalendarAlt, faClock,
+  faAlignLeft, faTags, faIdCard, faUser,
+  faComment, faCheck, faUsers, faShieldAlt
+} from '@fortawesome/free-solid-svg-icons';
 import {Time} from '../model/time';
 import {DateTimeService} from '../service/date-time.service';
 import {DurationService} from '../service/duration.service';
@@ -96,6 +101,18 @@ export class CounselingComponent {
   readonly activityLabel = Label.ACTIVITY;
   readonly faBars = faBars;
   protected readonly faTachometerAlt = faTachometerAlt;
+  protected readonly faPen = faPen;
+  protected readonly faTimes = faTimes;
+  protected readonly faCalendarAlt = faCalendarAlt;
+  protected readonly faClock = faClock;
+  protected readonly faAlignLeft = faAlignLeft;
+  protected readonly faTags = faTags;
+  protected readonly faIdCard = faIdCard;
+  protected readonly faUser = faUser;
+  protected readonly faComment = faComment;
+  protected readonly faCheck = faCheck;
+  protected readonly faUsers = faUsers;
+  protected readonly faShieldAlt = faShieldAlt;
   readonly deleteTypeCounseling: DeleteTypes = DeleteTypes.COUNSELING;
 
   // Computed values
