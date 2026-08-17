@@ -24,4 +24,5 @@ export interface Case {
   industryUnion?: Category[];
   jobFunction?: Category[];
   sector?: Category[];
+  residenceStatus?: Category[];
 }

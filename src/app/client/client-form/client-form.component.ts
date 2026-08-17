@@ -65,6 +65,10 @@ export class ClientFormComponent {
   jobFunctionModel = signal<string[]>([]);
   sectorModel = signal<string[]>([]);
 
+  // Aufenthaltstitel is single-select but persisted via join_category, so we hold the
+  // whole category (we need its id, not just its name).
+  residenceStatusModel = signal<Category | null>(null);
+
   // Computed for remaining characters
   remainingCharacters = computed(() => {
     const comment = this.clientForm().comment;
@@ -104,6 +108,13 @@ export class ClientFormComponent {
     this.showCategoryValue(this.industryUnionModel(), CategoryTypes.INDUSTRY_UNION, form);
     this.showCategoryValue(this.jobFunctionModel(), CategoryTypes.JOB_FUNCTION, form);
     this.showCategoryValue(this.sectorModel(), CategoryTypes.SECTOR, form);
+
+    const residenceStatus = this.residenceStatusModel();
+    this.showCategoryValue(
+      residenceStatus?.id ? [residenceStatus.id] : [],
+      CategoryTypes.AUFENTHALTSTITEL,
+      form
+    );
   }
 
   selectGender(event: string) {
@@ -112,6 +123,15 @@ export class ClientFormComponent {
 
   selectResidentStatus(event: string) {
     this.clientForm.update(form => ({...form, currentResidentStatus: event}));
+  }
+
+  /**
+   * Aufenthaltstitel is dual-written while the migration is being verified: the name still
+   * goes to clients.current_resident_status via selectResidentStatus, the id goes to
+   * join_category from here.
+   */
+  selectResidentStatusCategory(category: Category) {
+    this.residenceStatusModel.set(category ?? null);
   }
 
   onCitizenshipChange(value: any) {
@@ -190,6 +210,9 @@ export class ClientFormComponent {
       case CategoryTypes.SECTOR:
         form.sectorSelected = joinCategories;
         break;
+      case CategoryTypes.AUFENTHALTSTITEL:
+        form.residenceStatusSelected = joinCategories;
+        break;
     }
   }
 
@@ -265,6 +288,11 @@ export class ClientFormComponent {
     );
     this.sectorModel.set(
       client.openCase?.sector?.map(c => c.id) ?? []
+    );
+    // Preload the existing selection, otherwise submitting an untouched form would send an
+    // empty list and sortOutDeselected would delete the stored join row.
+    this.residenceStatusModel.set(
+      client.openCase?.residenceStatus?.[0] ?? null
     );
   }
 

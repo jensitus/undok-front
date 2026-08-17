@@ -47,6 +47,7 @@ export interface ClientForm {
   industryUnionSelected?: JoinCategory[];
   jobFunctionSelected?: JoinCategory[];
   sectorSelected?: JoinCategory[];
+  residenceStatusSelected?: JoinCategory[];
 
   selectedJobMarketAccess?: Category[];
   selectedCounselingLanguages?: Category[];

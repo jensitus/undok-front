@@ -33,6 +33,14 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
   @Output()
   catValue = new EventEmitter<string>();
 
+  /**
+   * Emits the whole selected category, so callers that persist via join_category
+   * get the id rather than just the name. Bound only where a category type has
+   * already been migrated off its plain string column.
+   */
+  @Output()
+  catObject = new EventEmitter<Category>();
+
   faBars = faBars;
   categoriesToSelect: Category[];
 
@@ -63,6 +71,7 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
 
   onCategoryValueChange(): void {
     this.catValue.emit(this.categoryName);
+    this.catObject.emit(this.cat_model);
   }
 
   loadCategoriesByCategoryType(): void {
