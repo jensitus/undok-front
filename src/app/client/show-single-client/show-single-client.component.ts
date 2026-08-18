@@ -2,6 +2,7 @@ import {
   ChangeDetectorRef,
   Component,
   computed,
+  DestroyRef,
   effect,
   ElementRef,
   inject,
@@ -102,6 +103,7 @@ export class ShowSingleClientComponent implements OnDestroy {
   private readonly alertService = inject(AlertService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly ngZone = inject(NgZone);
+  private readonly destroyRef = inject(DestroyRef);
 
   // Signals for state
   alert = signal<boolean>(false);
@@ -124,13 +126,13 @@ export class ShowSingleClientComponent implements OnDestroy {
 
   readonly hasCaseContent = computed(() => {
     const c = this.client();
-    if (!c) return false;
+    if (!c) { return false; }
     const oc = c.openCase;
     return !!(
       oc?.workingRelationship ||
       oc?.humanTrafficking !== null && oc?.humanTrafficking !== undefined ||
       oc?.jobCenterBlock !== null && oc?.jobCenterBlock !== undefined ||
-      c.currentResidentStatus ||
+      oc?.residenceStatus?.length > 0 ||
       c.vulnerableWhenAssertingRights !== null && c.vulnerableWhenAssertingRights !== undefined ||
       oc?.targetGroup ||
       c.interpreterNecessary !== null && c.interpreterNecessary !== undefined ||
@@ -300,7 +302,7 @@ export class ShowSingleClientComponent implements OnDestroy {
 
     this.clientService
         .getSingleClient(clientId)
-        .pipe(takeUntilDestroyed())
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: (res) => {
             this.ngZone.run(() => {

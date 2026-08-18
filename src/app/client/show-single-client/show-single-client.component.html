@@ -225,11 +225,11 @@
             </div>
 
             <!-- Legal status -->
-            @if (client()!.currentResidentStatus || (client()!.vulnerableWhenAssertingRights !== null && client()!.vulnerableWhenAssertingRights !== undefined) || client()!.openCase?.targetGroup || (client()!.interpreterNecessary !== null && client()!.interpreterNecessary !== undefined)) {
+            @if (client()!.openCase?.residenceStatus?.length > 0 || (client()!.vulnerableWhenAssertingRights !== null && client()!.vulnerableWhenAssertingRights !== undefined) || client()!.openCase?.targetGroup || (client()!.interpreterNecessary !== null && client()!.interpreterNecessary !== undefined)) {
               <hr class="my-2">
               <div class="row g-2">
 
-                @if (client()!.currentResidentStatus) {
+<!--                @if (client()!.currentResidentStatus) {
                   <div class="col-6">
                     <div class="text-secondary small">
                       <fa-icon [icon]="faIdCard" class="me-1"></fa-icon>
@@ -237,7 +237,20 @@
                     </div>
                     <div>{{ client()!.currentResidentStatus }}</div>
                   </div>
+                }-->
+
+                @if (client()!.openCase?.residenceStatus?.length > 0) {
+                  <div class="col-6">
+                    <div class="text-secondary small">
+                      <fa-icon [icon]="faIdCard" class="me-1"></fa-icon>
+                      Aufenthaltstitel
+                    </div>
+                    @for (item of client()!.openCase.residenceStatus; track item) {
+                      <span [innerHTML]="item.name"></span>
+                    }
+                  </div>
                 }
+
                 @if (client()!.vulnerableWhenAssertingRights !== null && client()!.vulnerableWhenAssertingRights !== undefined) {
                   <div class="col-6">
                     <div class="text-secondary small">
