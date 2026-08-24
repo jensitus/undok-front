@@ -14,7 +14,7 @@ import {AlertComponent} from '../../admin-template/layout/components/alert/alert
 import {PageHeaderComponent} from '../../admin-template/shared/page-header/page-header.component';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {NgbHighlight, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
-import {AsyncPipe, CommonModule, NgForOf} from '@angular/common';
+import {AsyncPipe, CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {RouterLink} from '@angular/router';
 
@@ -31,7 +31,6 @@ import {RouterLink} from '@angular/router';
     AsyncPipe,
     FormsModule,
     NgbHighlight,
-    NgForOf,
     RouterLink
   ],
   styleUrls: ['./show-clients.component.css']
