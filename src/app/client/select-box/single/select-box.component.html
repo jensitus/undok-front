@@ -2,6 +2,7 @@
   <div class="form-group">
     <label>{{label}}</label>
     <ng-select [(ngModel)]="cat_model"
+               [compareWith]="compareCategories"
                (change)="selectCategory()">
       <ng-option *ngFor="let c of categoriesToSelect"
                  [value]="c">{{c.name}}

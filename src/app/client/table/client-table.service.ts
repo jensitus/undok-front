@@ -27,6 +27,11 @@ function sort(clients: AllClient[], column: SortColumn, direction: string): AllC
   }
 }
 
+/** Aufenthaltstitel is single-select, but it arrives as a list from join_category. */
+export function residenceStatusNames(client: AllClient): string {
+  return (client.residenceStatus ?? []).map(c => c.name).join(', ');
+}
+
 function matches(client: AllClient, term: string, pipe: PipeTransform) {
   if (client.firstName === null) {
     client.firstName = '...';
@@ -37,9 +42,6 @@ function matches(client: AllClient, term: string, pipe: PipeTransform) {
   if (client.sector === null) {
     client.sector = '...';
   }
-  if (client.currentResidentStatus === null) {
-    client.currentResidentStatus = '...';
-  }
   if (client.nationality === null) {
     client.nationality = '...';
   }
@@ -47,7 +49,7 @@ function matches(client: AllClient, term: string, pipe: PipeTransform) {
     || client.lastName.toLowerCase().includes(term.toLowerCase())
     || client.keyword.toLowerCase().includes(term.toLowerCase())
     || client.sector.toLowerCase().includes(term.toLowerCase())
-    || client.currentResidentStatus.toLocaleLowerCase().includes(term.toLowerCase())
+    || residenceStatusNames(client).toLowerCase().includes(term.toLowerCase())
     || client.nationality.toLowerCase().includes(term.toLowerCase());
 }
 

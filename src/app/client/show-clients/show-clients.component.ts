@@ -3,7 +3,7 @@ import {ClientService} from '../service/client.service';
 import {Observable, Subject} from 'rxjs';
 import {faTachometerAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
-import {ClientTableService} from '../table/client-table.service';
+import {ClientTableService, residenceStatusNames} from '../table/client-table.service';
 import {CsvService} from '../service/csv.service';
 import {AllClient} from '../model/all-client';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
@@ -38,6 +38,8 @@ import {RouterLink} from '@angular/router';
 })
 export class ShowClientsComponent implements OnInit, OnDestroy {
 
+  readonly residenceStatusNames = residenceStatusNames;
+
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   total$: Observable<number>;
   clients: AllClient[];
@@ -50,7 +52,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   successMessage: string;
   columns = ['id', 'keyword', 'firstName', 'lastName', 'dateOfBirth', 'email', 'telephone', 'street', 'zipCode', 'city', 'country', 'education',
     'maritalStatus', 'interpreterNecessary', 'howHasThePersonHeardFromUs', 'vulnerableWhenAssertingRights',
-    'counselings', 'nationality', 'language', 'currentResidentStatus', 'formerResidentStatus', 'labourMarketAccess', 'position',
+    'counselings', 'nationality', 'language', 'residenceStatus', 'formerResidentStatus', 'labourMarketAccess', 'position',
     'sector', 'union', 'membership', 'organization', 'gender'];
 
   CSV_FILENAME = 'clients';

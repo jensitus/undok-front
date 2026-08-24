@@ -164,7 +164,6 @@ export class ClientFormComponent {
       vulnerableWhenAssertingRights: client.vulnerableWhenAssertingRights ?? null,
       nationality: client.nationality ?? null,
       language: client.language ?? null,
-      currentResidentStatus: client.currentResidentStatus ?? null,
       jobCenterBlock: client.openCase?.jobCenterBlock ?? null,
       humanTrafficking: client.openCase?.humanTrafficking ?? null,
       gender: client.gender ?? null,

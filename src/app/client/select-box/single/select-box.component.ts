@@ -44,6 +44,19 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
   faBars = faBars;
   categoriesToSelect: Category[];
 
+  /**
+   * Option values are whole Category objects, but a preselected category usually comes from
+   * a different HTTP response than categoriesToSelect, so identity comparison fails. Match on
+   * id when both sides are objects; fall back to === for the boxes still bound to a plain
+   * string column (gender, target group, ...).
+   */
+  compareCategories = (a: any, b: any): boolean => {
+    if (a && b && typeof a === 'object' && typeof b === 'object') {
+      return a.id === b.id;
+    }
+    return a === b;
+  };
+
   category: Category;
   private subscription$: Subscription[] = [];
 

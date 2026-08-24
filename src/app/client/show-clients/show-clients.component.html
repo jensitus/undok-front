@@ -70,7 +70,7 @@
             <ngb-highlight [result]="client.sector" [term]="clientTableService.searchTerm"></ngb-highlight>
           </td>
           <td>
-            <ngb-highlight [result]="client.currentResidentStatus"
+            <ngb-highlight [result]="residenceStatusNames(client)"
                            [term]="clientTableService.searchTerm"></ngb-highlight>
           </td>
           <td>
