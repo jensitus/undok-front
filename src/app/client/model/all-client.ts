@@ -32,7 +32,8 @@ export interface AllClient {
   formerResidentStatus?: string;
   labourMarketAccess: string;
   position: string;
-  sector: string;
+  /** Sektor from join_category, scoped to the client's open case. */
+  sector?: Category[];
   union: string;
   membership: boolean;
   organization: string;

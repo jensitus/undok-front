@@ -3,7 +3,7 @@ import {ClientService} from '../service/client.service';
 import {Observable, Subject} from 'rxjs';
 import {faTachometerAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
-import {ClientTableService, residenceStatusNames} from '../table/client-table.service';
+import {ClientTableService, residenceStatusNames, sectorNames} from '../table/client-table.service';
 import {CsvService} from '../service/csv.service';
 import {AllClient} from '../model/all-client';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
@@ -38,6 +38,7 @@ import {RouterLink} from '@angular/router';
 export class ShowClientsComponent implements OnInit, OnDestroy {
 
   readonly residenceStatusNames = residenceStatusNames;
+  readonly sectorNames = sectorNames;
 
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   total$: Observable<number>;

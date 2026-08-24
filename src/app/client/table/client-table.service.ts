@@ -5,6 +5,7 @@ import {State} from './state';
 import {DecimalPipe} from '@angular/common';
 import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
 import {AllClient} from '../model/all-client';
+import {Category} from '../model/category';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {CommonService} from '../../common/services/common.service';
@@ -27,9 +28,18 @@ function sort(clients: AllClient[], column: SortColumn, direction: string): AllC
   }
 }
 
+function categoryNames(categories: Category[] | undefined): string {
+  return (categories ?? []).map(c => c.name).join(', ');
+}
+
 /** Aufenthaltstitel is single-select, but it arrives as a list from join_category. */
 export function residenceStatusNames(client: AllClient): string {
-  return (client.residenceStatus ?? []).map(c => c.name).join(', ');
+  return categoryNames(client.residenceStatus);
+}
+
+/** Sektor is multi-select and arrives as a list from join_category. */
+export function sectorNames(client: AllClient): string {
+  return categoryNames(client.sector);
 }
 
 function matches(client: AllClient, term: string, pipe: PipeTransform) {
@@ -39,16 +49,13 @@ function matches(client: AllClient, term: string, pipe: PipeTransform) {
   if (client.lastName === null) {
     client.lastName = '...';
   }
-  if (client.sector === null) {
-    client.sector = '...';
-  }
   if (client.nationality === null) {
     client.nationality = '...';
   }
   return client.firstName.toLowerCase().includes(term.toLowerCase())
     || client.lastName.toLowerCase().includes(term.toLowerCase())
     || client.keyword.toLowerCase().includes(term.toLowerCase())
-    || client.sector.toLowerCase().includes(term.toLowerCase())
+    || sectorNames(client).toLowerCase().includes(term.toLowerCase())
     || residenceStatusNames(client).toLowerCase().includes(term.toLowerCase())
     || client.nationality.toLowerCase().includes(term.toLowerCase());
 }

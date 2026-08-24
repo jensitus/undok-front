@@ -51,7 +51,7 @@
           <th>Nachname</th>
           <th>Schlüsselwort</th>
           <th>Staatsbürgerschaft</th>
-          <th>Branche</th>
+          <th>Sektor</th>
           <th>Aufenthaltstitel</th>
         </tr>
         </thead>
@@ -71,7 +71,7 @@
             <ngb-highlight [result]="client.nationality" [term]="clientTableService.searchTerm"></ngb-highlight>
           </td>
           <td>
-            <ngb-highlight [result]="client.sector" [term]="clientTableService.searchTerm"></ngb-highlight>
+            <ngb-highlight [result]="sectorNames(client)" [term]="clientTableService.searchTerm"></ngb-highlight>
           </td>
           <td>
             <ngb-highlight [result]="residenceStatusNames(client)"
