@@ -1,12 +1,14 @@
 <ng-container>
   <div class="form-group">
     <label>{{label}}</label>
+    <!-- [items] rather than projected ng-options: a preselected Category written into ng-select
+         before the category list has loaded cannot resolve its label from ng-options, and the
+         box stays blank for good. -->
     <ng-select [(ngModel)]="cat_model"
                [compareWith]="compareCategories"
+               [items]="categoriesToSelect"
+               bindLabel="name"
                (change)="selectCategory()">
-      <ng-option *ngFor="let c of categoriesToSelect"
-                 [value]="c">{{c.name}}
-      </ng-option>
     </ng-select>
   </div>
 <!--  <app-add-category [categoryType]="categoryType"

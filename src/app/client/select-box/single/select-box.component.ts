@@ -8,7 +8,6 @@ import {CommonService} from '../../../common/services/common.service';
 import {Label} from '../../model/label';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NgForOf} from '@angular/common';
 
 
 @Component({
@@ -18,7 +17,6 @@ import {NgForOf} from '@angular/common';
   imports: [
     NgSelectModule,
     FormsModule,
-    NgForOf,
     ReactiveFormsModule
   ],
   styleUrls: ['./select-box.component.css']
@@ -95,8 +93,12 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * Also runs when the clear button empties the box: ng-select nulls the model before it emits
+   * the change event, so cat_model is null here and both outputs deselect.
+   */
   selectCategory() {
-    this.categoryName = this.cat_model.name;
+    this.categoryName = this.cat_model?.name ?? null;
     this.onCategoryValueChange();
   }
 

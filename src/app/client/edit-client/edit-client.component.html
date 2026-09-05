@@ -1,34 +1,46 @@
 <app-alert></app-alert>
+<!-- clientId comes from the route, so the breadcrumb also works while the client is loading
+     or failed to load — client() is null in both of those states. -->
 <app-page-header [firstPoint]="'dashboard'" [firstIcon]="faTachometerAlt" [firstLink]="'/dashboard'"
                  [secondPoint]="'clients'" [secondIcon]="faUsers" [secondLink]="'/clients/client-list'"
-                 [thirdPoint]="'client'" [thirdIcon]="faUser" [thirdLink]="'/clients/' + client().id"
+                 [thirdPoint]="'client'" [thirdIcon]="faUser" [thirdLink]="'/clients/' + clientId()"
                  [endPointIcon]="faPencil" [endPoint]="'edit'">
 </app-page-header>
-<div class="spinner-border text-success" role="status" *ngIf="loading">
-  <span class="sr-only">Loading...</span>
-</div>
-@if (client().keyword) {
+
+@if (isLoading() || loading()) {
+  <div class="spinner-border text-success" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+}
+
+@if (error()) {
+  <div class="alert alert-danger" role="alert">
+    <span>{{ error() }}</span>
+    <button type="button" class="btn btn-link" (click)="retry()">nochmal versuchen</button>
+    <button type="button" class="btn btn-link" (click)="goBack()">zurück zur Liste</button>
+  </div>
+} @else if (client(); as loadedClient) {
   <div>
 
     <div class="row">
       <div class="col">
-        @if (client().firstName || client().lastName) {
+        @if (loadedClient.firstName || loadedClient.lastName) {
           <h2 style="font-size: x-large; font-weight: bold">
-            {{ client().firstName }} {{ client().lastName }}
+            {{ loadedClient.firstName }} {{ loadedClient.lastName }}
             <small style="font-size: medium; font-weight: lighter">
-              {{ client().keyword }}
+              {{ loadedClient.keyword }}
             </small>
           </h2>
-        } @else if (!client().firstName || !client().lastName) {
+        } @else {
           <h2 style="font-size: x-large; font-weight: bold">
-            {{ client().keyword }}
+            {{ loadedClient.keyword }}
           </h2>
         }
 
       </div>
     </div>
 
-    <app-client-form [client]="client()" (submitted)="showSubmitted($event)"></app-client-form>
+    <app-client-form [client]="loadedClient" (submitted)="showSubmitted($event)"></app-client-form>
 
   </div>
 }
