@@ -18,12 +18,15 @@
     </div>
   </div>
 
-  <form class="mt-3" *ngIf="clients$">
+  @if (clients$) {
+    <form class="mt-3">
 
     <div class="form-group form-inline">
       Filter: <input class="form-control ml-2" type="text" name="searchTerm"
                      [(ngModel)]="clientTableService.searchTerm"/>
-      <span class="ml-3" *ngIf="clientTableService.loading$ | async">Loading...</span>
+      @if (clientTableService.loading$ | async) {
+        <span class="ml-3">Loading...</span>
+      }
     </div>
 
 
@@ -48,12 +51,13 @@
           <th>Nachname</th>
           <th>Schlüsselwort</th>
           <th>Staatsbürgerschaft</th>
-          <th>Branche</th>
+          <th>Sektor</th>
           <th>Aufenthaltstitel</th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let client of clients$ | async">
+        @for (client of clients$ | async; track client.id) {
+        <tr>
           <td>
             <ngb-highlight [result]="client.firstName" [term]="clientTableService.searchTerm"></ngb-highlight>
           </td>
@@ -67,19 +71,21 @@
             <ngb-highlight [result]="client.nationality" [term]="clientTableService.searchTerm"></ngb-highlight>
           </td>
           <td>
-            <ngb-highlight [result]="client.sector" [term]="clientTableService.searchTerm"></ngb-highlight>
+            <ngb-highlight [result]="sectorNames(client)" [term]="clientTableService.searchTerm"></ngb-highlight>
           </td>
           <td>
-            <ngb-highlight [result]="client.currentResidentStatus"
+            <ngb-highlight [result]="residenceStatusNames(client)"
                            [term]="clientTableService.searchTerm"></ngb-highlight>
           </td>
           <td>
             <a [routerLink]="['/clients', client.id]"><small>link</small></a>
           </td>
         </tr>
+        }
         </tbody>
       </table>
     </ng-container>
 
-  </form>
+    </form>
+  }
 

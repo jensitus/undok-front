@@ -125,7 +125,8 @@
     <div class="mb-4">
       <app-select-box [categoryType]="CategoryTypes.AUFENTHALTSTITEL"
                       (catValue)="selectResidentStatus($event)"
-                      [cat_model]="clientForm().currentResidentStatus"
+                      (catObject)="selectResidentStatusCategory($event)"
+                      [cat_model]="residenceStatusModel()"
                       [label]="Label.AUFENTHALTSTITEL"></app-select-box>
     </div>
 

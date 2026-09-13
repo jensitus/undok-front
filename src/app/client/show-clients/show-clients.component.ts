@@ -3,7 +3,7 @@ import {ClientService} from '../service/client.service';
 import {Observable, Subject} from 'rxjs';
 import {faTachometerAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
 import {NgbdSortableHeader, SortEvent} from '../table/sortable.directive';
-import {ClientTableService} from '../table/client-table.service';
+import {ClientTableService, residenceStatusNames, sectorNames} from '../table/client-table.service';
 import {CsvService} from '../service/csv.service';
 import {AllClient} from '../model/all-client';
 import {AlertService} from '../../admin-template/layout/components/alert/services/alert.service';
@@ -14,7 +14,7 @@ import {AlertComponent} from '../../admin-template/layout/components/alert/alert
 import {PageHeaderComponent} from '../../admin-template/shared/page-header/page-header.component';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {NgbHighlight, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
-import {AsyncPipe, CommonModule, NgForOf} from '@angular/common';
+import {AsyncPipe, CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {RouterLink} from '@angular/router';
 
@@ -31,12 +31,14 @@ import {RouterLink} from '@angular/router';
     AsyncPipe,
     FormsModule,
     NgbHighlight,
-    NgForOf,
     RouterLink
   ],
   styleUrls: ['./show-clients.component.css']
 })
 export class ShowClientsComponent implements OnInit, OnDestroy {
+
+  readonly residenceStatusNames = residenceStatusNames;
+  readonly sectorNames = sectorNames;
 
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   total$: Observable<number>;
@@ -50,7 +52,7 @@ export class ShowClientsComponent implements OnInit, OnDestroy {
   successMessage: string;
   columns = ['id', 'keyword', 'firstName', 'lastName', 'dateOfBirth', 'email', 'telephone', 'street', 'zipCode', 'city', 'country', 'education',
     'maritalStatus', 'interpreterNecessary', 'howHasThePersonHeardFromUs', 'vulnerableWhenAssertingRights',
-    'counselings', 'nationality', 'language', 'currentResidentStatus', 'formerResidentStatus', 'labourMarketAccess', 'position',
+    'counselings', 'nationality', 'language', 'residenceStatus', 'formerResidentStatus', 'labourMarketAccess', 'position',
     'sector', 'union', 'membership', 'organization', 'gender'];
 
   CSV_FILENAME = 'clients';

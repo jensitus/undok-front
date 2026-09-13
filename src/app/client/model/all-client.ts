@@ -1,4 +1,5 @@
 import {Counseling} from './counseling';
+import {Category} from './category';
 
 export interface AllClient {
   id: string;
@@ -26,11 +27,13 @@ export interface AllClient {
 
   nationality: string;
   language: string;
-  currentResidentStatus: string;
+  /** Aufenthaltstitel from join_category, scoped to the client's open case. */
+  residenceStatus?: Category[];
   formerResidentStatus?: string;
   labourMarketAccess: string;
   position: string;
-  sector: string;
+  /** Sektor from join_category, scoped to the client's open case. */
+  sector?: Category[];
   union: string;
   membership: boolean;
   organization: string;
