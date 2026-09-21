@@ -28,7 +28,7 @@ import {DeleteTypes} from '../delete/delete-types';
 import {Label} from '../model/label';
 import {AlertComponent} from '../../admin-template/layout/components/alert/alert.component';
 import {PageHeaderComponent} from '../../admin-template/shared/page-header/page-header.component';
-import {ReopenCaseComponent} from '../case/reopen-case/reopen-case.component';
+import {ClosedCaseBannerComponent} from '../case/closed-case-banner/closed-case-banner.component';
 import {ShowClientEmployersComponent} from '../show-client-employers/show-client-employers.component';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {DeleteComponent} from '../delete/delete.component';
@@ -76,7 +76,7 @@ import {
     NgbAlert,
     AlertComponent,
     PageHeaderComponent,
-    ReopenCaseComponent,
+    ClosedCaseBannerComponent,
     NgbCollapse,
     ShowClientEmployersComponent,
     FaIconComponent,
@@ -147,15 +147,13 @@ export class ShowSingleClientComponent implements OnDestroy {
     );
   });
 
-  reOpenCase = computed(() => {
+  /** The banner only makes sense once there is a closed case and nothing open. */
+  showClosedCaseBanner = computed(() => {
     const c = this.client();
-    return c?.openCase === null && c?.closedCases !== null;
+    return !c?.openCase && c?.closedCases?.length > 0;
   });
 
-  closeCase = computed(() => {
-    const c = this.client();
-    return c?.openCase !== null;
-  });
+  canCloseCase = computed(() => !!this.client()?.openCase);
 
   // ViewChild signals
   // readonly showTask = viewChild<TemplateRef<any>>('show_task');

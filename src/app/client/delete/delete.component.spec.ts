@@ -2,13 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DeleteComponent } from './delete.component';
 
+import {defaultTestProviders} from '../../../testing/test-providers';
+
 describe('DeleteComponent', () => {
   let component: DeleteComponent;
   let fixture: ComponentFixture<DeleteComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [DeleteComponent]
+    imports: [DeleteComponent],
+      providers: [...defaultTestProviders()]
 })
     .compileComponents();
   });

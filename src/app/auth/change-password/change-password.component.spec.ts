@@ -2,13 +2,16 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChangePasswordComponent } from './change-password.component';
 
+import {defaultTestProviders} from '../../../testing/test-providers';
+
 describe('ChangePasswordComponent', () => {
   let component: ChangePasswordComponent;
   let fixture: ComponentFixture<ChangePasswordComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [ChangePasswordComponent]
+    imports: [ChangePasswordComponent],
+      providers: [...defaultTestProviders()]
 })
     .compileComponents();
   }));

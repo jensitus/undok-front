@@ -2,13 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ShowSingleEmployerComponent } from './show-single-employer.component';
 
+import {defaultTestProviders} from '../../../testing/test-providers';
+
 describe('ShowSingleEmployerComponent', () => {
   let component: ShowSingleEmployerComponent;
   let fixture: ComponentFixture<ShowSingleEmployerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [ShowSingleEmployerComponent]
+    imports: [ShowSingleEmployerComponent],
+      providers: [...defaultTestProviders()]
 })
     .compileComponents();
   });

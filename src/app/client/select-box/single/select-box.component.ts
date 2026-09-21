@@ -26,6 +26,8 @@ export class SelectBoxComponent implements OnInit, OnDestroy {
   @Input() categoryType: CategoryTypes;
   @Input() cat_model: any | undefined;
   @Input() label: Label;
+  /** Shows the current value but blocks changes — used when the case is closed. */
+  @Input() readonly = false;
   categoryName: string;
 
   @Output()

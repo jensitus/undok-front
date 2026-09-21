@@ -2,13 +2,16 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditUserComponent } from './edit-user.component';
 
+import {defaultTestProviders} from '../../../testing/test-providers';
+
 describe('EditUserComponent', () => {
   let component: EditUserComponent;
   let fixture: ComponentFixture<EditUserComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [EditUserComponent]
+    imports: [EditUserComponent],
+      providers: [...defaultTestProviders()]
 })
     .compileComponents();
   }));

@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject, effect } from '@angular/core';
+import { Component, DestroyRef, OnInit, signal, inject, effect } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
@@ -27,6 +27,7 @@ export class ConfirmAccountComponent implements OnInit {
   private readonly alertService = inject(AlertService);
   private readonly authService = inject(AuthenticationService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   // Use signals for reactive state
   token = signal<string>('');
@@ -41,7 +42,7 @@ export class ConfirmAccountComponent implements OnInit {
   ngOnInit() {
     // Get route params and confirm account
     this.activatedRoute.params
-        .pipe(takeUntilDestroyed())
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(params => {
           this.token.set(params['token']);
           this.email.set(params['email']);
@@ -49,7 +50,7 @@ export class ConfirmAccountComponent implements OnInit {
           console.log(this.token(), this.email());
 
           this.userService.confirmAccount(this.token(), this.email())
-              .pipe(takeUntilDestroyed())
+              .pipe(takeUntilDestroyed(this.destroyRef))
               .subscribe({
                 next: (data) => {
                   this.data.set(data);
@@ -82,7 +83,7 @@ export class ConfirmAccountComponent implements OnInit {
     };
 
     this.authService.confirmAccountAndSetNewPassword(confirmAccountDto)
-        .pipe(takeUntilDestroyed())
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: (result) => {
             this.responseMessage.set(result);

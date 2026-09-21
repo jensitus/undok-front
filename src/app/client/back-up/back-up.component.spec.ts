@@ -2,13 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BackUpComponent } from './back-up.component';
 
+import {defaultTestProviders} from '../../../testing/test-providers';
+
 describe('BackUpComponent', () => {
   let component: BackUpComponent;
   let fixture: ComponentFixture<BackUpComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [BackUpComponent]
+    imports: [BackUpComponent],
+      providers: [...defaultTestProviders()]
 })
     .compileComponents();
 

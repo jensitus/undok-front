@@ -8,8 +8,9 @@ export interface Case {
   name: string;
   counselings?: Counseling[];
   status: string;
-  startTime: Date;
-  endTime?: Date;
+  /** ISO yyyy-MM-dd, as the backend serialises LocalDate. */
+  startDate?: string;
+  endDate?: string;
   referredTo?: string;
   clientId: string;
   targetGroup?: string;

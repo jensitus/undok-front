@@ -81,7 +81,9 @@ describe('CounselingComponent', () => {
       setDelete: jasmine.createSpy('setDelete').and.callFake((value: boolean) => deleteSignal.set(value))
     } as any;
 
-    alertServiceSpy = jasmine.createSpyObj('AlertService', ['error', 'success']);
+    // getMessage is needed by the AlertComponent in the template, not by the component itself
+    alertServiceSpy = jasmine.createSpyObj('AlertService', ['error', 'success', 'getMessage']);
+    alertServiceSpy.getMessage.and.returnValue(new Subject());
 
     dateTimeServiceSpy = jasmine.createSpyObj('DateTimeService', ['mergeDateAndTime']);
     dateTimeServiceSpy.mergeDateAndTime.and.returnValue('2024-01-20T14:30:00');
@@ -334,8 +336,28 @@ describe('CounselingComponent', () => {
       expect(component.time().minute).toBe(45);
     });
 
-    it('should update counselingDuration', () => {
-      component.updateCounselingDuration('02:15');
+    it('should update the duration hours, keeping the minutes', () => {
+      component.counselingDuration.set('01:15');
+
+      component.updateDurationHours(2);
+
+      expect(component.counselingDuration()).toBe('02:15');
+      expect(component.durationHours()).toBe(2);
+      expect(component.durationMinutes()).toBe(15);
+    });
+
+    it('should update the duration minutes, keeping the hours', () => {
+      component.counselingDuration.set('01:15');
+
+      component.updateDurationMinutes(45);
+
+      expect(component.counselingDuration()).toBe('01:45');
+    });
+
+    it('should carry minutes over 59 into the hours', () => {
+      component.counselingDuration.set('01:15');
+
+      component.updateDurationMinutes(75);
 
       expect(component.counselingDuration()).toBe('02:15');
     });
@@ -516,7 +538,7 @@ describe('CounselingComponent', () => {
     }));
 
     it('should call setCounselingDuration with correct minutes', fakeAsync(() => {
-      component.updateCounselingDuration('02:30');
+      component.counselingDuration.set('02:30');
 
       component.saveRequiredTime();
       tick();

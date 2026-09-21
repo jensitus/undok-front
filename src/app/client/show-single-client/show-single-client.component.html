@@ -53,10 +53,10 @@
           }
         </h2>
 
-        @if (reOpenCase()) {
+        @if (showClosedCaseBanner()) {
           <div class="mb-2">
-            <app-reopen-case [inputCase]="client()!.closedCases[client()!.closedCases.length - 1]"
-                             (caseEitherNewOrReOpened)="closeModal($event)"/>
+            <app-closed-case-banner
+              [closedCase]="client()!.closedCases[client()!.closedCases.length - 1]"/>
           </div>
         }
 
@@ -172,12 +172,21 @@
               <fa-icon [icon]="faBriefcase" class="text-primary"></fa-icon>
               <span class="fw-semibold">Fall</span>
             </div>
-            <button class="btn btn-sm btn-outline-secondary py-0"
-                    (click)="collapseCase.toggle()"
-                    [attr.aria-expanded]="!isCollapsedCase()"
-                    style="font-size: 0.78rem">
-              {{ isCollapsedCase() ? 'Anzeigen' : 'Einklappen' }}
-            </button>
+            <div class="d-flex align-items-center gap-2">
+              @if (canCloseCase()) {
+                <button class="btn btn-sm btn-outline-success py-0"
+                        (click)="openCloseCaseModal(close_case)"
+                        style="font-size: 0.78rem">
+                  Fall abschließen
+                </button>
+              }
+              <button class="btn btn-sm btn-outline-secondary py-0"
+                      (click)="collapseCase.toggle()"
+                      [attr.aria-expanded]="!isCollapsedCase()"
+                      style="font-size: 0.78rem">
+                {{ isCollapsedCase() ? 'Anzeigen' : 'Einklappen' }}
+              </button>
+            </div>
           </div>
           <div #collapseCase="ngbCollapse" [ngbCollapse]="isCollapsedCase()" class="card-body py-2">
 
@@ -450,9 +459,8 @@
       </div>
       <div class="modal-body">
         @if (client()!.openCase) {
-          <app-close-case (caseClosed)="closeCaseModal($event)"
-                          [inputCase]="client()!.openCase"
-                          [closeCaseProperty]="true"/>
+          <app-close-case [caseToClose]="client()!.openCase"
+                          (caseClosed)="closeCaseModal($event)"/>
         }
       </div>
       <div class="modal-footer">
