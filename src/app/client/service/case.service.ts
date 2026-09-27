@@ -22,6 +22,10 @@ export class CaseService {
     return this.http.put<Case>(this.apiUrl + '/service/undok/case/' + caseId + '/close', form);
   }
 
+  reopenCase(caseId: string): Observable<Case> {
+    return this.http.put<Case>(this.apiUrl + '/service/undok/case/' + caseId + '/reopen', {});
+  }
+
   newCase(newCase: Case): Observable<Case> {
     return this.http.post<Case>(this.apiUrl + '/service/undok/case', newCase);
   }

@@ -35,6 +35,7 @@ import {DeleteComponent} from '../delete/delete.component';
 import {CaseTaskListComponent} from '../components/tasks/case-task-list/case-task-list.component';
 import {ShowCounselingsPerClientComponent} from '../show-counselings-per-client/show-counselings-per-client.component';
 import {CloseCaseComponent} from '../case/close-case/close-case.component';
+import {ReopenCaseComponent} from '../case/reopen-case/reopen-case.component';
 import {CreateCounselingComponent} from '../create-counseling/create-counseling.component';
 import {ShowEmployersListComponent} from '../show-employers-list/show-employers-list.component';
 import {
@@ -84,6 +85,7 @@ import {
     CaseTaskListComponent,
     ShowCounselingsPerClientComponent,
     CloseCaseComponent,
+    ReopenCaseComponent,
     CreateCounselingComponent,
     ShowEmployersListComponent,
     RouterLink
@@ -154,6 +156,12 @@ export class ShowSingleClientComponent implements OnDestroy {
   });
 
   canCloseCase = computed(() => !!this.client()?.openCase);
+
+  /** Only offered once nothing is open — a client must never end up with two open cases. */
+  canReopenCase = computed(() => {
+    const c = this.client();
+    return !c?.openCase && (c?.closedCases?.length ?? 0) > 0;
+  });
 
   // ViewChild signals
   // readonly showTask = viewChild<TemplateRef<any>>('show_task');
@@ -355,6 +363,21 @@ export class ShowSingleClientComponent implements OnDestroy {
     );
   }
 
+  openReopenCaseModal(reopen_case: any): void {
+    this.modalService
+        .open(reopen_case, {ariaLabelledBy: 'modal-basic-title', size: 'md'})
+        .result.then(
+      (result) => {
+        this.closeResult.set(`Closed with: ${result}`);
+      },
+      (reason) => {
+        this.closeResult.set(
+          `Dismissed ${ShowSingleClientComponent.getDismissReason(reason)}`
+        );
+      }
+    );
+  }
+
   openNewCounseling(content_create_counseling: ElementRef | undefined): void {
     if (!content_create_counseling) {
       return;
@@ -386,6 +409,13 @@ export class ShowSingleClientComponent implements OnDestroy {
   }
 
   closeCaseModal(event: boolean): void {
+    if (event) {
+      this.modalService.dismissAll();
+      this.closeOrOpenCase();
+    }
+  }
+
+  reopenCaseModal(event: boolean): void {
     if (event) {
       this.modalService.dismissAll();
       this.closeOrOpenCase();

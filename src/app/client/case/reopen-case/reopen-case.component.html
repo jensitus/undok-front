@@ -1,0 +1,52 @@
+<div class="card mt-1">
+  <div class="card-body">
+
+    @if (candidates().length === 1) {
+      <p class="mb-3">
+        Der Fall <strong>{{ candidates()[0].name }}</strong> wird wieder geöffnet, damit die
+        Falldaten bearbeitet werden können. Enddatum, Weitervermittlung und die festgeschriebene
+        Gesamtberatungsdauer werden dabei zurückgesetzt.
+      </p>
+    } @else {
+      <p class="mb-3">
+        Welcher Fall soll wieder geöffnet werden? Enddatum, Weitervermittlung und die
+        festgeschriebene Gesamtberatungsdauer des gewählten Falls werden zurückgesetzt.
+      </p>
+
+      <div class="list-group mb-3">
+        @for (c of candidates(); track c.id; let i = $index) {
+          <label class="list-group-item d-flex gap-2 align-items-start">
+            <!-- Plain [checked] rather than ngModel: ngModel's model-to-view write is async,
+                 so the preselected case would not come up checked on first render. -->
+            <input class="form-check-input flex-shrink-0 mt-1"
+                   type="radio"
+                   name="caseToReopen"
+                   [checked]="selectedCase()?.id === c.id"
+                   (change)="selectedId.set(c.id)"/>
+            <span>
+              <span class="fw-semibold">{{ c.name }}</span>
+              @if (i === 0) {
+                <span class="badge bg-secondary ms-2">zuletzt abgeschlossen</span>
+              }
+              <span class="d-block text-secondary small">
+                @if (c.startDate) { {{ c.startDate | date: 'dd.MM.yyyy' }} }
+                –
+                @if (c.endDate) { {{ c.endDate | date: 'dd.MM.yyyy' }} } @else { <span>ohne Enddatum</span> }
+                @if (c.referredTo) { <span> · weitervermittelt an {{ c.referredTo }}</span> }
+              </span>
+            </span>
+          </label>
+        }
+      </div>
+    }
+
+    <div class="mt-3">
+      <button class="btn btn-sm btn-outline-success"
+              [disabled]="saving() || !selectedCase()"
+              (click)="reopenCase()">
+        Fall wieder öffnen
+      </button>
+    </div>
+
+  </div>
+</div>
