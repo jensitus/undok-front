@@ -50,6 +50,19 @@ export class DateTimeService {
   //    return parseInt(s, 0);
   // }
 
+  /**
+   * yyyy-MM-dd, which is what Jackson binds to a LocalDate. NgbFormatterService.format emits
+   * dd/MM/yyyy and is for display only.
+   */
+  toIsoDate(dateObject: NgbDateStruct): string | null {
+    if (!dateObject) {
+      return null;
+    }
+    const month = dateObject.month.toString().padStart(2, '0');
+    const day = dateObject.day.toString().padStart(2, '0');
+    return dateObject.year + '-' + month + '-' + day;
+  }
+
   convertToNgbDate(dateString: string): NgbDate | null {
     if (!dateString) { return null; }
 

@@ -2,13 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditClientEmployerJobDescriptionComponent } from './edit-client-employer-job-description.component';
 
+import {defaultTestProviders} from '../../../testing/test-providers';
+
 describe('EditClientEmployerJobDescriptionComponent', () => {
   let component: EditClientEmployerJobDescriptionComponent;
   let fixture: ComponentFixture<EditClientEmployerJobDescriptionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [EditClientEmployerJobDescriptionComponent]
+    imports: [EditClientEmployerJobDescriptionComponent],
+      providers: [...defaultTestProviders()]
 })
     .compileComponents();
   });

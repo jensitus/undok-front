@@ -1,94 +1,63 @@
-import {Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal, WritableSignal} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {Subscription} from 'rxjs';
+import {Component, computed, inject, input, output, signal} from '@angular/core';
+import {DatePipe} from '@angular/common';
 import {Case} from '../../model/case';
 import {CaseService} from '../../service/case.service';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {AlertService} from '../../../admin-template/layout/components/alert/services/alert.service';
 
+/**
+ * Reopens a closed case so the counsellor can edit its properties again. With several closed
+ * cases the counsellor picks which one — most recently closed first, preselected.
+ */
 @Component({
   selector: 'app-reopen-case',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    FormsModule
-  ],
   templateUrl: './reopen-case.component.html',
+  imports: [
+    DatePipe
+  ],
   styleUrl: './reopen-case.component.css'
 })
-export class ReopenCaseComponent implements OnInit, OnDestroy {
+export class ReopenCaseComponent {
 
-  @Input() inputCase: Case;
-  @Output() caseEitherNewOrReOpened = new EventEmitter<boolean>();
-  private subscription$: Subscription[] = [];
-  protected createNewCase = false;
-  protected newCaseName: string | undefined;
+  /** As the backend delivers them: end date ascending, so the last one closed most recently. */
+  closedCases = input.required<Case[]>();
+  caseReopened = output<boolean>();
+
   private caseService = inject(CaseService);
-  private modalService = inject(NgbModal);
-  closeResult: WritableSignal<string> = signal('');
+  private alertService = inject(AlertService);
 
-  ngOnDestroy(): void {
-    this.subscription$.forEach((s) => {
-      s.unsubscribe();
-    });
-  }
+  /** Most recently closed first — that is the one counsellors reach for. */
+  protected readonly candidates = computed(() => [...this.closedCases()].reverse());
 
-  ngOnInit(): void {
-    this.newCaseName = this.inputCase.name + '-02';
-  }
+  protected selectedId = signal<string | undefined>(undefined);
+  protected saving = signal(false);
 
-  createNewCaseForm() {
-    this.createNewCase = !this.createNewCase;
-  }
+  protected readonly selectedCase = computed(() => {
+    const id = this.selectedId();
+    const list = this.candidates();
+    return id ? list.find(c => c.id === id) : list[0];
+  });
 
-  newCase() {
-    const newCase: Case = {
-      name: this.newCaseName ? this.newCaseName : this.inputCase.name + '-02',
-      status: 'OPEN',
-      startTime: null,
-      clientId: this.inputCase.clientId,
-    };
-    this.subscription$.push(
-      this.caseService.newCase(newCase).subscribe({
-        next: value => {
-          console.log(value);
-          this.caseEitherNewOrReOpened.emit(true);
-        },
-        error: error => {
-          console.log(error);
-        }
-      })
-    );
-  }
-
-  checkReopenCase() {
-    const openCase: Case = {
-      id:         this.inputCase ? this.inputCase.id         : null,
-      name:       this.inputCase ? this.inputCase.name       : null,
-      referredTo: this.inputCase ? this.inputCase.referredTo : null,
-      status: 'OPEN',
-      startTime:  this.inputCase ? this.inputCase.startTime  : null,
-      endTime:    this.inputCase ? this.inputCase.endTime    : null,
-      clientId:   this.inputCase ? this.inputCase.clientId   : undefined,
-    };
-  }
-
-  openReopenCaseModal(reopen_case) {
-    this.modalService.open(reopen_case, {ariaLabelledBy: 'modal-basic-title', size: 'md'}).result.then((result) => {
-      this.closeResult.set(`Closed with: ${result}`);
-    }, (reason) => {
-      this.closeResult.set(`Dismissed ${this.getDismissReason(reason)}`);
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    switch (reason) {
-      case ModalDismissReasons.ESC:
-        return 'by pressing ESC';
-      case ModalDismissReasons.BACKDROP_CLICK:
-        return 'by clicking on a backdrop';
-      default:
-        return `with: ${reason}`;
+  reopenCase(): void {
+    const caseId = this.selectedCase()?.id;
+    if (!caseId || this.saving()) {
+      return;
     }
+    this.saving.set(true);
+    this.caseService.reopenCase(caseId).subscribe({
+      next: () => {
+        this.saving.set(false);
+        this.alertService.success('Fall wieder geöffnet');
+        this.caseReopened.emit(true);
+      },
+      error: error => {
+        this.saving.set(false);
+        // 409 is silent in the ErrorInterceptor, so the message has to come from here.
+        // The backend's Message DTO carries the text under `text`, not `message`.
+        this.alertService.error(error?.error?.text ?? 'Der Fall konnte nicht wieder geöffnet werden');
+        this.caseReopened.emit(false);
+      }
+    });
   }
 
 }

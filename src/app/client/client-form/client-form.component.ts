@@ -1,4 +1,5 @@
 import {Component, inject, input, output, effect, signal, computed, DestroyRef} from '@angular/core';
+import {Case} from '../model/case';
 import {Client} from '../model/client';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Label} from '../model/label';
@@ -39,6 +40,20 @@ export class ClientFormComponent {
 
   // Modern Angular 21 Input/Output
   client = input<Client>();
+
+  /**
+   * The case the form shows. Case-scoped fields hang off the OPEN case, but once it is closed
+   * there is none — so fall back to the most recently closed one (the list is ordered oldest
+   * first by the backend) rather than rendering the whole case section blank.
+   */
+  displayCase = computed<Case | null>(() => {
+    const c = this.client();
+    if (!c) { return null; }
+    return c.openCase ?? c.closedCases?.[c.closedCases.length - 1] ?? null;
+  });
+
+  /** True when the form is showing a closed case: values are visible but not editable. */
+  caseIsClosed = computed(() => !!this.client() && !this.client().openCase && !!this.displayCase());
   submitted = output<ClientForm>();
 
   // Signals for state management
@@ -151,6 +166,9 @@ export class ClientFormComponent {
   }
 
   mapClient(client: Client): ClientForm {
+    // mapClient is called with the client the effect just saw, so read the case off that
+    // argument rather than the displayCase() computed, which may not have recomputed yet.
+    const displayCase = client.openCase ?? client.closedCases?.[client.closedCases.length - 1] ?? null;
     return {
       keyword: client.keyword ?? null,
       firstName: client.firstName ?? null,
@@ -164,12 +182,12 @@ export class ClientFormComponent {
       vulnerableWhenAssertingRights: client.vulnerableWhenAssertingRights ?? null,
       nationality: client.nationality ?? null,
       language: client.language ?? null,
-      jobCenterBlock: client.openCase?.jobCenterBlock ?? null,
-      humanTrafficking: client.openCase?.humanTrafficking ?? null,
+      jobCenterBlock: displayCase?.jobCenterBlock ?? null,
+      humanTrafficking: displayCase?.humanTrafficking ?? null,
       gender: client.gender ?? null,
       union: client.union ?? null,
-      targetGroup: client.openCase?.targetGroup ?? null,
-      workingRelationship: client.openCase?.workingRelationship ?? null,
+      targetGroup: displayCase?.targetGroup ?? null,
+      workingRelationship: displayCase?.workingRelationship ?? null,
       furtherContact: client.furtherContact ?? null,
       comment: client.comment ?? null,
       alert: client.alert ?? null,
@@ -178,7 +196,11 @@ export class ClientFormComponent {
 
   showCategoryValue(eventIds: string[], categoryType: CategoryTypes, form: ClientForm) {
     const client = this.client();
-    if (!client) { return; }
+    // Category selections hang off the CASE, so with no open case there is nowhere to write
+    // them. Leaving the form field untouched (rather than setting an empty list) is what makes
+    // the backend skip this category type: ClientService.updateCategorySelection ignores a null
+    // list but treats an empty one as a deliberate deselect-all.
+    if (!client?.openCase) { return; }
 
     const joinCategories = eventIds.map(id =>
       this.createJoinCategory(id, categoryType, client.openCase.id, EntityTypes.CASE)
@@ -265,33 +287,33 @@ export class ClientFormComponent {
 
   fillNgModels(client: Client) {
     this.counselingLanguageModel.set(
-      client.openCase?.counselingLanguages?.map(c => c.id) ?? []
+      this.displayCase()?.counselingLanguages?.map(c => c.id) ?? []
     );
     this.jobMarketAccessModel.set(
-      client.openCase?.jobMarketAccess?.map(c => c.id) ?? []
+      this.displayCase()?.jobMarketAccess?.map(c => c.id) ?? []
     );
     this.originOfAttentionModel.set(
-      client.openCase?.originOfAttention?.map(c => c.id) ?? []
+      this.displayCase()?.originOfAttention?.map(c => c.id) ?? []
     );
     this.undocumentedWorkModel.set(
-      client.openCase?.undocumentedWork?.map(c => c.id) ?? []
+      this.displayCase()?.undocumentedWork?.map(c => c.id) ?? []
     );
     this.complaintsModel.set(
-      client.openCase?.complaints?.map(c => c.id) ?? []
+      this.displayCase()?.complaints?.map(c => c.id) ?? []
     );
     this.industryUnionModel.set(
-      client.openCase?.industryUnion?.map(c => c.id) ?? []
+      this.displayCase()?.industryUnion?.map(c => c.id) ?? []
     );
     this.jobFunctionModel.set(
-      client.openCase?.jobFunction?.map(c => c.id) ?? []
+      this.displayCase()?.jobFunction?.map(c => c.id) ?? []
     );
     this.sectorModel.set(
-      client.openCase?.sector?.map(c => c.id) ?? []
+      this.displayCase()?.sector?.map(c => c.id) ?? []
     );
     // Preload the existing selection, otherwise submitting an untouched form would send an
     // empty list and sortOutDeselected would delete the stored join row.
     this.residenceStatusModel.set(
-      client.openCase?.residenceStatus?.[0] ?? null
+      this.displayCase()?.residenceStatus?.[0] ?? null
     );
   }
 

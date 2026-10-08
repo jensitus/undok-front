@@ -1,15 +1,15 @@
-import {Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal, WritableSignal} from '@angular/core';
+import {Component, inject, input, output, signal} from '@angular/core';
 import {Label} from '../../model/label';
 import {CategoryTypes} from '../../model/category-types';
 import {Case} from '../../model/case';
 import {CaseService} from '../../service/case.service';
+import {DateTimeService} from '../../service/date-time.service';
 import {SelectBoxComponent} from '../../select-box/single/select-box.component';
-import {ModalDismissReasons, NgbCalendar, NgbDateStruct, NgbInputDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCalendar, NgbDateStruct, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
-import {NgbFormatterService} from '../../../common/services/ngb-formatter.service';
-import {Subscription} from 'rxjs';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {faCalendar} from '@fortawesome/free-solid-svg-icons';
+import {AlertService} from '../../../admin-template/layout/components/alert/services/alert.service';
 
 @Component({
   selector: 'app-close-case',
@@ -23,78 +23,52 @@ import {faCalendar} from '@fortawesome/free-solid-svg-icons';
   ],
   styleUrl: './close-case.component.css'
 })
-export class CloseCaseComponent implements OnInit, OnDestroy {
+export class CloseCaseComponent {
 
-  @Input() inputCase: Case | undefined;
-  @Input() closeCaseProperty = false;
-  @Input() reopenProperty = false;
-  @Output() caseClosed = new EventEmitter<boolean>();
-  protected forwardedTo: string = undefined;
-  protected cat_forwarded = CategoryTypes.REFERRED_TO;
-  private counselingCase: Case;
+  caseToClose = input.required<Case>();
+  caseClosed = output<boolean>();
+
   protected readonly Label = Label;
-  dateStruct: NgbDateStruct;
-  today = inject(NgbCalendar).getToday();
-  private modalService = inject(NgbModal);
-  private caseService = inject(CaseService);
-  private ngbFormatter = inject(NgbFormatterService);
-  closeResult: WritableSignal<string> = signal('');
-  private subscription$: Subscription[] = [];
   protected readonly faCalendar = faCalendar;
+  protected readonly catForwarded = CategoryTypes.REFERRED_TO;
 
-  ngOnDestroy(): void {
-    this.subscription$.forEach((s) => {
-      s.unsubscribe();
-    });
-  }
+  private caseService = inject(CaseService);
+  private dateTimeService = inject(DateTimeService);
+  private alertService = inject(AlertService);
 
-  ngOnInit(): void {
-    this.dateStruct = this.today;
-  }
+  /** A case cannot end in the future, so the picker stops at today. */
+  protected readonly today: NgbDateStruct = inject(NgbCalendar).getToday();
+  protected endDate = signal<NgbDateStruct>(this.today);
+  protected referredTo = signal<string | undefined>(undefined);
+  protected saving = signal(false);
 
-  selectOrganization(event: string) {
-    this.forwardedTo = event;
+  selectOrganization(event: string): void {
+    this.referredTo.set(event || undefined);
   }
 
   closeCase(): void {
-    const closeCase: Case = {
-      id: this.inputCase ? this.inputCase.id : undefined,
-      startTime: this.inputCase ? this.inputCase.startTime : null,
-      name: this.inputCase ? this.inputCase.name : undefined,
-      status: 'CLOSED',
-      referredTo: this.forwardedTo || undefined,
-      clientId: this.inputCase ? this.inputCase.clientId : undefined,
-    };
-    this.subscription$.push(
-      this.caseService.closeCase(closeCase).subscribe({
-        next: value => {
-          console.log(value);
-          this.caseClosed.emit(true);
-        }, error: error => {
-          console.log(error);
-          this.caseClosed.emit(false);
-        }
-      })
-    );
-  }
-
-  openReopenCaseModal(reopen_case) {
-    this.modalService.open(reopen_case, {ariaLabelledBy: 'modal-basic-title', size: 'md'}).result.then((result) => {
-      this.closeResult.set(`Closed with: ${result}`);
-    }, (reason) => {
-      this.closeResult.set(`Dismissed ${this.getDismissReason(reason)}`);
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    switch (reason) {
-      case ModalDismissReasons.ESC:
-        return 'by pressing ESC';
-      case ModalDismissReasons.BACKDROP_CLICK:
-        return 'by clicking on a backdrop';
-      default:
-        return `with: ${reason}`;
+    const caseId = this.caseToClose().id;
+    if (!caseId || this.saving()) {
+      return;
     }
+    this.saving.set(true);
+    this.caseService.closeCase(caseId, {
+      endDate: this.dateTimeService.toIsoDate(this.endDate()),
+      referredTo: this.referredTo()
+    }).subscribe({
+      next: () => {
+        this.saving.set(false);
+        this.alertService.success('Fall abgeschlossen');
+        this.caseClosed.emit(true);
+      },
+      error: error => {
+        this.saving.set(false);
+        // 409/422 are silent in the ErrorInterceptor, so the message has to come from here.
+        // The backend's Message DTO carries the text under `text`, not `message`.
+        this.alertService.error(error?.error?.text ?? 'Der Fall konnte nicht abgeschlossen werden');
+        this.caseClosed.emit(false);
+      }
+    });
   }
 
 }

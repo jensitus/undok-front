@@ -2,13 +2,16 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserComponent } from './user.component';
 
+import {defaultTestProviders} from '../../../testing/test-providers';
+
 describe('UserComponent', () => {
   let component: UserComponent;
   let fixture: ComponentFixture<UserComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [UserComponent]
+    imports: [UserComponent],
+      providers: [...defaultTestProviders()]
 })
     .compileComponents();
   }));

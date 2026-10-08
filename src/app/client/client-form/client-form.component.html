@@ -1,3 +1,11 @@
+@if (caseIsClosed()) {
+  <div class="alert alert-secondary py-2 mb-3" role="status">
+    <strong>Fall ist abgeschlossen.</strong>
+    Die Falldaten werden zur Ansicht angezeigt und können nicht bearbeitet werden.
+    Die Daten der Klient:in lassen sich weiterhin ändern.
+  </div>
+}
+
 <div class="row">
   <div class="col-md-7">
 
@@ -65,6 +73,7 @@
       <div class="col-md-5">
         <div>
           <app-select-box [categoryType]="cat_working_relationship"
+                          [readonly]="caseIsClosed()"
                           (catValue)="selectWorkingRelationship($event)"
                           [cat_model]="clientForm().workingRelationship"
                           [label]="Label.WORKING_RELATIONSHIP"></app-select-box>
@@ -73,11 +82,13 @@
       <div class="col-md-4 mt-3">
         <div class="form-check mt-1">
           <input type="checkbox" class="form-check-input" [ngModel]="clientForm().humanTrafficking" (ngModelChange)="updateFormField('humanTrafficking', $event)"
+                 [disabled]="caseIsClosed()"
                  name="humanTrafficking">
           <label class="form-check-label">Verdacht auf Menschenhandel</label>
         </div>
         <div class="form-check mt-1">
           <input type="checkbox" class="form-check-input" [ngModel]="clientForm().jobCenterBlock" (ngModelChange)="updateFormField('jobCenterBlock', $event)"
+                 [disabled]="caseIsClosed()"
                  name="jobCenterBlock">
           <label class="form-check-label">AMS Sperre</label>
         </div>
@@ -110,6 +121,7 @@
 
     <div class="mb-4">
       <app-select-box (catValue)="selectTargetGroup($event)"
+                      [readonly]="caseIsClosed()"
                       [categoryType]="CategoryTypes.TARGET_GROUP"
                       [cat_model]="clientForm().targetGroup"
                       [label]="Label.TARGET_GROUP"/>
@@ -124,6 +136,7 @@
 
     <div class="mb-4">
       <app-select-box [categoryType]="CategoryTypes.AUFENTHALTSTITEL"
+                      [readonly]="caseIsClosed()"
                       (catValue)="selectResidentStatus($event)"
                       (catObject)="selectResidentStatusCategory($event)"
                       [cat_model]="residenceStatusModel()"
@@ -150,7 +163,7 @@
 <div class="row mt-3">
   <div class="col-md-3">
     <label>{{ Label.ORIGIN_OF_ATTENTION }}</label>
-    <ng-select [multiple]="true" [ngModel]="originOfAttentionModel()" (ngModelChange)="originOfAttentionModel.set($event)">
+    <ng-select [multiple]="true" [readonly]="caseIsClosed()" [ngModel]="originOfAttentionModel()" (ngModelChange)="originOfAttentionModel.set($event)">
       @for (category of originOfAttentionCategoriesToSelect(); track category) {
         <ng-option [value]="category.id">{{ category.name }}</ng-option>
       }
@@ -159,7 +172,7 @@
   <div class="col-md-3">
     <div>
       <label>{{ Label.COUNSELING_LANGUAGE }}</label>
-      <ng-select [multiple]="true" [ngModel]="counselingLanguageModel()" (ngModelChange)="counselingLanguageModel.set($event)">
+      <ng-select [multiple]="true" [readonly]="caseIsClosed()" [ngModel]="counselingLanguageModel()" (ngModelChange)="counselingLanguageModel.set($event)">
         @for (category of counselingLanguagesCategoriesToSelect(); track category) {
           <ng-option [value]="category.id">{{ category.name }}</ng-option>
         }
@@ -175,7 +188,7 @@
   </div>
   <div class="col-md-3">
     <label>{{ Label.JOB_MARKET_ACCESS }}</label>
-    <ng-select [multiple]="true" [ngModel]="jobMarketAccessModel()" (ngModelChange)="jobMarketAccessModel.set($event)">
+    <ng-select [multiple]="true" [readonly]="caseIsClosed()" [ngModel]="jobMarketAccessModel()" (ngModelChange)="jobMarketAccessModel.set($event)">
       @for (category of jobMarketAccessCategoriesToSelect(); track category) {
         <ng-option [value]="category.id">{{ category.name }}</ng-option>
       }
@@ -185,7 +198,7 @@
 <div class="row mt-3">
   <div class="col-md-3">
     <label>{{ Label.UNDOCUMENTED_WORK }}</label>
-    <ng-select [multiple]="true" [ngModel]="undocumentedWorkModel()" (ngModelChange)="undocumentedWorkModel.set($event)">
+    <ng-select [multiple]="true" [readonly]="caseIsClosed()" [ngModel]="undocumentedWorkModel()" (ngModelChange)="undocumentedWorkModel.set($event)">
       @for (category of undocumentedWorkCategoriesToSelect(); track category) {
         <ng-option [value]="category.id">{{ category.name }}</ng-option>
       }
@@ -193,7 +206,7 @@
   </div>
   <div class="col-md-3">
     <label>{{ Label.COMPLAINT }}</label>
-    <ng-select [multiple]="true" [ngModel]="complaintsModel()" (ngModelChange)="complaintsModel.set($event)">
+    <ng-select [multiple]="true" [readonly]="caseIsClosed()" [ngModel]="complaintsModel()" (ngModelChange)="complaintsModel.set($event)">
       @for (category of complaintsToSelected(); track category) {
         <ng-option [value]="category.id">{{ category.name }}</ng-option>
       }
@@ -201,7 +214,7 @@
   </div>
   <div class="col-md-3">
     <label>{{ Label.INDUSTRY_UNION }}</label>
-    <ng-select [multiple]="true" [ngModel]="industryUnionModel()" (ngModelChange)="industryUnionModel.set($event)">
+    <ng-select [multiple]="true" [readonly]="caseIsClosed()" [ngModel]="industryUnionModel()" (ngModelChange)="industryUnionModel.set($event)">
       @for (category of industryUnionToSelect(); track category) {
         <ng-option [value]="category.id">{{ category.name }}</ng-option>
       }
@@ -214,7 +227,7 @@
 <div class="row mt-3">
   <div class="col-md-3">
     <label>{{ Label.JOB_FUNCTION }}</label>
-    <ng-select [multiple]="true" [ngModel]="jobFunctionModel()" (ngModelChange)="jobFunctionModel.set($event)">
+    <ng-select [multiple]="true" [readonly]="caseIsClosed()" [ngModel]="jobFunctionModel()" (ngModelChange)="jobFunctionModel.set($event)">
       @for (category of jobFunctionToSelect(); track category) {
         <ng-option [value]="category.id">{{ category.name }}</ng-option>
       }
@@ -222,7 +235,7 @@
   </div>
   <div class="col-md-3">
     <label>{{ Label.SECTOR }}</label>
-    <ng-select [multiple]="true" [ngModel]="sectorModel()" (ngModelChange)="sectorModel.set($event)">
+    <ng-select [multiple]="true" [readonly]="caseIsClosed()" [ngModel]="sectorModel()" (ngModelChange)="sectorModel.set($event)">
       @for (category of sectorToSelect(); track category) {
         <ng-option [value]="category.id">{{ category.name }}</ng-option>
       }

@@ -29,7 +29,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
   submitted = false;
   avatar_upload_url: string;
   apiUrl = environment.api_url;
-  private subscription$: Subscription[];
+  private subscription$: Subscription[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,

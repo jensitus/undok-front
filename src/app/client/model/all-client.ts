@@ -37,4 +37,13 @@ export interface AllClient {
   union: string;
   membership: boolean;
   organization: string;
+  /**
+   * The case that currently represents this client: the open one if there is one, otherwise
+   * the most recently closed one. All five are undefined when the client has no case at all.
+   */
+  caseId?: string;
+  caseStatus?: 'OPEN' | 'CLOSED';
+  caseStartDate?: string;
+  caseEndDate?: string;
+  referredTo?: string;
 }

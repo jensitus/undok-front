@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Case} from '../model/case';
+import {CloseCaseForm} from '../model/close-case-form';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 
@@ -17,8 +18,12 @@ export class CaseService {
     return this.http.get<Case>(this.apiUrl + '/service/undok/case/' + id);
   }
 
-  closeCase(counselingCase: Case): Observable<Case> {
-    return this.http.put<Case>(this.apiUrl + '/service/undok/case/' + counselingCase.id, counselingCase);
+  closeCase(caseId: string, form: CloseCaseForm): Observable<Case> {
+    return this.http.put<Case>(this.apiUrl + '/service/undok/case/' + caseId + '/close', form);
+  }
+
+  reopenCase(caseId: string): Observable<Case> {
+    return this.http.put<Case>(this.apiUrl + '/service/undok/case/' + caseId + '/reopen', {});
   }
 
   newCase(newCase: Case): Observable<Case> {

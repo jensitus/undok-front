@@ -4,6 +4,8 @@ import { SearchComponent } from './search.component';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {FormsModule} from '@angular/forms';
 
+import {defaultTestProviders} from '../../../testing/test-providers';
+
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
@@ -11,7 +13,8 @@ describe('SearchComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [SearchComponent, HttpClientTestingModule, FormsModule]
+      imports: [SearchComponent, HttpClientTestingModule, FormsModule],
+      providers: [...defaultTestProviders()]
     });
 
     fixture = TestBed.createComponent(SearchComponent);
@@ -23,17 +26,21 @@ describe('SearchComponent', () => {
     httpMock.verify();
   });
 
+  const isSearchRequest = (req: {url: string}) => req.url.includes('/service/undok/search');
+
   it('should debounce search input', fakeAsync(() => {
     component.onSearchInput('test');
 
-    // No request yet
-    httpMock.expectNone('/api/search');
+    // nothing goes out before the 1500ms debounce has elapsed
+    httpMock.expectNone(isSearchRequest);
+    tick(1400);
+    httpMock.expectNone(isSearchRequest);
 
-    tick(800);
+    tick(200);
 
-    // Now request should be made
-    const req = httpMock.expectOne((req) => req.url === '/api/search');
+    const req = httpMock.expectOne(isSearchRequest);
     expect(req.request.method).toBe('GET');
+    expect(req.request.params.get('q')).toBe('test');
     req.flush({ counselings: [], clients: [], tasks: [], totalResults: 0, pagination: {} });
   }));
 

@@ -2,13 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ShowSingleTaskComponent } from './show-single-task.component';
 
+import {defaultTestProviders} from '../../../../../testing/test-providers';
+
 describe('ShowSingleTaskComponent', () => {
   let component: ShowSingleTaskComponent;
   let fixture: ComponentFixture<ShowSingleTaskComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ShowSingleTaskComponent]
+      imports: [ShowSingleTaskComponent],
+      providers: [...defaultTestProviders()]
     })
     .compileComponents();
     
