@@ -63,6 +63,11 @@ export class ReportComponent {
   readonly fromTime = signal<Time>({ hour: 0, minute: 0 });
   readonly toTime = signal<Time>({ hour: 23, minute: 59 });
 
+  // Default range: the whole previous calendar year
+  private readonly lastYear = new Date().getFullYear() - 1;
+  readonly defaultFromDate: NgbDateStruct = { year: this.lastYear, month: 1, day: 1 };
+  readonly defaultToDate: NgbDateStruct = { year: this.lastYear, month: 12, day: 31 };
+
   readonly loading = signal(false);
   readonly generalError = signal<string | null>(null);
 

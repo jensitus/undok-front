@@ -3,8 +3,8 @@
 
   <app-date-picker [mode]="'date'"
                    (dateRangeChange)="onDateRangeSelected($event)"
-                   [initialFromDate]="{year: 2024, month: 1, day: 1}"
-                   [initialToDate]="{year: 2024, month: 12, day: 31}">
+                   [initialFromDate]="defaultFromDate"
+                   [initialToDate]="defaultToDate">
   </app-date-picker>
 
   <button class="btn btn-primary"
